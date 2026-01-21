@@ -6,10 +6,10 @@ export function FeatureButton({
   title,
   icon,
   onPress,
-  badgeType = null, // "Premium" | "Pro" | null
+  badgeType = null,
   isDarkMode,
   large = false,
-  userTier, // ⭐ FIX — προσθέτουμε το userTier
+  userTier,
 }: {
   title: string;
   icon: string;
@@ -17,7 +17,7 @@ export function FeatureButton({
   badgeType?: "Premium" | "Pro" | null;
   isDarkMode: boolean;
   large?: boolean;
-  userTier: string; // ⭐ FIX — δηλώνουμε το type
+  userTier: string;
 }) {
   const [pressed, setPressed] = useState(false);
 
@@ -35,8 +35,8 @@ export function FeatureButton({
       <LinearGradient
         colors={
           isDarkMode
-            ? ["#8e2de2", "#4a00e0"]
-            : ["#a1c4fd", "#c2e9fb"]
+            ? ["#8e2de2", "#4a00e0"] // DARK MODE stays the same
+            : ["#e5e5ea", "#d4d4d8"] // ⭐ NEW LIGHT THEME COLORS
         }
         style={{
           padding: 2,
