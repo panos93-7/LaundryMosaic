@@ -1,0 +1,48 @@
+{
+  "title": "LaundryMosaic",
+  "start": "Démarrer le lavage",
+  "screenTitle": "Paramètres de lavage",
+
+  "fabricTypeLabel": "Type de tissu",
+  "fabricColorLabel": "Couleur du tissu",
+  "laundryProgram": "Programme de lavage",
+  "language": "Langue",
+
+  "savePreset": "Enregistrer le préréglage",
+  "loadPreset": "Charger le préréglage",
+
+  "lightMode": "Mode clair",
+  "darkMode": "Mode sombre",
+
+  "fabricLabel": "Tissu",
+  "colorLabel": "Couleur",
+  "programLabel": "Programme",
+  "temperatureLabel": "Température",
+  "spinSpeedLabel": "Vitesse d'essorage",
+  "rpm": "tr/min",
+
+  "fabricValues": {
+    "cotton": "Coton",
+    "synthetics": "Synthétiques",
+    "wool": "Laine",
+    "delicate": "Délicats"
+  },
+
+  "colorValues": {
+    "white": "Blanc",
+    "colored": "Colorés",
+    "dark": "Foncés"
+  },
+
+  "programs": {
+    "cottonIntensive": "Coton Intensif",
+    "cottonColors": "Coton Couleurs",
+    "darkCare": "Soin des Foncés",
+    "synthetics": "Synthétiques",
+    "syntheticsColor": "Synthétiques Couleurs",
+    "darkSynthetic": "Synthétiques Foncés",
+    "woolHand": "Laine / Lavage à la main",
+    "delicates": "Délicats"
+  }
+}
+

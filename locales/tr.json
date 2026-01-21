@@ -1,0 +1,47 @@
+{
+  "title": "LaundryMosaic",
+  "start": "Yıkamayı Başlat",
+  "screenTitle": "Yıkama Ayarları",
+
+  "fabricTypeLabel": "Kumaş Türü",
+  "fabricColorLabel": "Kumaş Rengi",
+  "laundryProgram": "Yıkama Programı",
+  "language": "Dil",
+
+  "savePreset": "Ön Ayarı Kaydet",
+  "loadPreset": "Ön Ayarı Yükle",
+
+  "lightMode": "Açık Tema",
+  "darkMode": "Koyu Tema",
+
+  "fabricLabel": "Kumaş",
+  "colorLabel": "Renk",
+  "programLabel": "Program",
+  "temperatureLabel": "Sıcaklık",
+  "spinSpeedLabel": "Sıkma Hızı",
+  "rpm": "devir/dk",
+
+  "fabricValues": {
+    "cotton": "Pamuklu",
+    "synthetics": "Sentetik",
+    "wool": "Yün",
+    "delicate": "Hassas"
+  },
+
+  "colorValues": {
+    "white": "Beyaz",
+    "colored": "Renkli",
+    "dark": "Koyu"
+  },
+
+  "programs": {
+    "cottonIntensive": "Pamuklu Yoğun",
+    "cottonColors": "Pamuklu Renkli",
+    "darkCare": "Koyu Bakım",
+    "synthetics": "Sentetik",
+    "syntheticsColor": "Sentetik Renkli",
+    "darkSynthetic": "Sentetik Koyu",
+    "woolHand": "Yün / Elde Yıkama",
+    "delicates": "Hassas"
+  }
+}

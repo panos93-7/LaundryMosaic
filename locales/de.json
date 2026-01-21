@@ -1,0 +1,47 @@
+{
+  "title": "LaundryMosaic",
+  "start": "Waschen starten",
+  "screenTitle": "Wascheinstellungen",
+
+  "fabricTypeLabel": "Stoffart",
+  "fabricColorLabel": "Stofffarbe",
+  "laundryProgram": "Waschprogramm",
+  "language": "Sprache",
+
+  "savePreset": "Voreinstellung speichern",
+  "loadPreset": "Voreinstellung laden",
+
+  "lightMode": "Helles Design",
+  "darkMode": "Dunkles Design",
+
+  "fabricLabel": "Stoff",
+  "colorLabel": "Farbe",
+  "programLabel": "Programm",
+  "temperatureLabel": "Temperatur",
+  "spinSpeedLabel": "Schleuderdrehzahl",
+  "rpm": "U/min",
+
+  "fabricValues": {
+    "cotton": "Baumwolle",
+    "synthetics": "Synthetik",
+    "wool": "Wolle",
+    "delicate": "Feinwäsche"
+  },
+
+  "colorValues": {
+    "white": "Weiß",
+    "colored": "Bunt",
+    "dark": "Dunkel"
+  },
+
+  "programs": {
+    "cottonIntensive": "Baumwolle Intensiv",
+    "cottonColors": "Baumwolle Bunt",
+    "darkCare": "Dunkelpflege",
+    "synthetics": "Synthetik",
+    "syntheticsColor": "Synthetik Bunt",
+    "darkSynthetic": "Synthetik Dunkel",
+    "woolHand": "Wolle / Handwäsche",
+    "delicates": "Feinwäsche"
+  }
+}

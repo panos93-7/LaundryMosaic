@@ -51,3 +51,53 @@ export const Fonts = Platform.select({
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });
+
+import { StyleSheet } from "react-native";
+
+export const lightTheme: any = StyleSheet.create({
+  safe: { backgroundColor: "#f5f7fa" },
+  container: { backgroundColor: "#f5f7fa" },
+  text: { color: "#000" },
+  textSecondary: { color: "#666" },
+  card: {
+    backgroundColor: "#fff",
+    borderColor: "#ddd",
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 14,
+  },
+
+  button: {
+    backgroundColor: "rgba(0,0,0,0.05)",
+    borderColor: "rgba(0,0,0,0.1)",
+    borderWidth: 1,
+    borderRadius: 12,
+  },
+  buttonText: {
+    color: "#333",
+  },
+});
+
+export const darkTheme: any = StyleSheet.create({
+  safe: { backgroundColor: "#121212" },
+  container: { backgroundColor: "#121212" },
+  text: { color: "#fff" },
+  textSecondary: { color: "#aaa" },
+  card: {
+    backgroundColor: "#1e1e1e",
+    borderColor: "#333",
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 14,
+  },
+
+  button: {
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderColor: "rgba(255,255,255,0.15)",
+    borderWidth: 1,
+    borderRadius: 12,
+  },
+  buttonText: {
+    color: "#fff",
+  },
+});

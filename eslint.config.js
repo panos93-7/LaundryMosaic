@@ -6,5 +6,8 @@ module.exports = defineConfig([
   expoConfig,
   {
     ignores: ['dist/*'],
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+    },
   },
 ]);

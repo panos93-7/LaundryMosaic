@@ -1,0 +1,51 @@
+{
+  "title": "LaundryMosaic",
+  "start": "Start Washing",
+  "screenTitle": "Washing Settings",
+
+  "fabricTypeLabel": "Fabric Type",
+  "fabricColorLabel": "Fabric Color",
+  "laundryProgram": "Laundry Program",
+  "language": "Language",
+
+  "savePreset": "Save Preset",
+  "loadPreset": "Load Preset",
+
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+
+  "fabricLabel": "Fabric",
+  "colorLabel": "Color",
+  "programLabel": "Program",
+  "temperatureLabel": "Temperature",
+  "spinSpeedLabel": "Spin Speed",
+  "rpm": "rpm",
+
+  "fabricValues": {
+    "cotton": "Cotton",
+    "synthetics": "Synthetics",
+    "wool": "Wool",
+    "delicate": "Delicate"
+  },
+
+  "colorValues": {
+    "white": "White",
+    "dark": "Dark",
+    "colored": "Colored"
+  },
+
+  "programs": {
+    "cottonIntensive": "Cotton Intensive",
+    "cottonColors": "Cotton Colors",
+    "darkCare": "Dark Care",
+    "synthetics": "Synthetics",
+    "syntheticsColor": "Synthetics Color",
+    "darkSynthetic": "Dark Synthetic",
+    "woolHand": "Wool / Hand Wash",
+    "delicates": "Delicates"
+  }
+}
+
+
+
+

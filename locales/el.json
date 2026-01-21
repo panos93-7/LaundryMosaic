@@ -1,0 +1,47 @@
+{
+  "title": "LaundryMosaic",
+  "start": "Πλύσιμο",
+  "screenTitle": "Ρυθμίσεις Πλύσης",
+
+  "fabricTypeLabel": "Τύπος Υφάσματος",
+  "fabricColorLabel": "Χρώμα Υφάσματος",
+  "laundryProgram": "Πρόγραμμα Πλύσης",
+  "language": "Γλώσσα",
+
+  "savePreset": "Αποθήκευση Προεπιλογής",
+  "loadPreset": "Φόρτωση Προεπιλογής",
+
+  "lightMode": "Φωτεινό Θέμα",
+  "darkMode": "Σκοτεινό Θέμα",
+
+  "fabricLabel": "Ύφασμα",
+  "colorLabel": "Χρώμα",
+  "programLabel": "Πρόγραμμα",
+  "temperatureLabel": "Θερμοκρασία",
+  "spinSpeedLabel": "Στροφές",
+  "rpm": "σ.α.λ.",
+
+  "fabricValues": {
+    "cotton": "Βαμβακερά",
+    "synthetics": "Συνθετικά",
+    "wool": "Μάλλινα",
+    "delicate": "Ευαίσθητα"
+  },
+
+  "colorValues": {
+    "white": "Λευκά",
+    "colored": "Χρωματιστά",
+    "dark": "Σκούρα"
+  },
+
+  "programs": {
+    "cottonIntensive": "Βαμβακερά Έντονο",
+    "cottonColors": "Βαμβακερά Χρωματιστά",
+    "darkCare": "Φροντίδα Σκούρων",
+    "synthetics": "Συνθετικά",
+    "syntheticsColor": "Συνθετικά Χρωματιστά",
+    "darkSynthetic": "Συνθετικά Σκούρα",
+    "woolHand": "Μάλλινα / Στο Χέρι",
+    "delicates": "Ευαίσθητα"
+  }
+}

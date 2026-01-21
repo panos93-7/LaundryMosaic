@@ -1,0 +1,47 @@
+{
+  "title": "LaundryMosaic",
+  "start": "Начать стирку",
+  "screenTitle": "Настройки стирки",
+
+  "fabricTypeLabel": "Тип ткани",
+  "fabricColorLabel": "Цвет ткани",
+  "laundryProgram": "Программа стирки",
+  "language": "Язык",
+
+  "savePreset": "Сохранить пресет",
+  "loadPreset": "Загрузить пресет",
+
+  "lightMode": "Светлая тема",
+  "darkMode": "Тёмная тема",
+
+  "fabricLabel": "Ткань",
+  "colorLabel": "Цвет",
+  "programLabel": "Программа",
+  "temperatureLabel": "Температура",
+  "spinSpeedLabel": "Обороты",
+  "rpm": "об/мин",
+
+  "fabricValues": {
+    "cotton": "Хлопок",
+    "synthetics": "Синтетика",
+    "wool": "Шерсть",
+    "delicate": "Деликатные"
+  },
+
+  "colorValues": {
+    "white": "Белые",
+    "colored": "Цветные",
+    "dark": "Тёмные"
+  },
+
+  "programs": {
+    "cottonIntensive": "Хлопок Интенсивный",
+    "cottonColors": "Хлопок Цветной",
+    "darkCare": "Уход за тёмными",
+    "synthetics": "Синтетика",
+    "syntheticsColor": "Синтетика Цветная",
+    "darkSynthetic": "Синтетика Тёмная",
+    "woolHand": "Шерсть / Ручная стирка",
+    "delicates": "Деликатные"
+  }
+}
