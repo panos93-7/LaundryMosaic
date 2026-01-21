@@ -1,6 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Constants from "expo-constants";
 
-const genAI = new GoogleGenerativeAI(process.env.EXPO_PUBLIC_GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY!
+);
 
 /**
  * PRO Fabric Care Generator

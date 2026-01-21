@@ -1,6 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Constants from "expo-constants";
 
-const genAI = new GoogleGenerativeAI(process.env.EXPO_PUBLIC_GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY!
+);
 
 /**
  * Generate step-by-step stain removal instructions
@@ -49,7 +52,9 @@ Rules:
     return {
       stain: parsed.stain ?? stain,
       fabric: parsed.fabric ?? fabric,
-      steps: Array.isArray(parsed.steps) ? parsed.steps : ["No steps provided"],
+      steps: Array.isArray(parsed.steps)
+        ? parsed.steps
+        : ["No steps provided"],
     };
   } catch (err) {
     console.log("❌ generateStainRemovalTips error:", err);

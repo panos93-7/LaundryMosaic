@@ -1,7 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Constants from "expo-constants";
 import { preprocessImage } from "./AI/preprocessImage";
 
-const genAI = new GoogleGenerativeAI(process.env.EXPO_PUBLIC_GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY!
+);
 
 /**
  * PRO Fabric Analyzer
@@ -64,8 +67,8 @@ Return JSON in this exact format:
           parts: [
             {
               inlineData: {
-                data: processedBase64, // ⭐ FIX
-                mimeType: mimeType,    // ⭐ FIX
+                data: processedBase64,
+                mimeType: mimeType,
               },
             },
             { text: prompt },

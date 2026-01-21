@@ -1,7 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Constants from "expo-constants";
 import { getProgramFor } from "../constants/programMapping";
 
-const genAI = new GoogleGenerativeAI(process.env.EXPO_PUBLIC_GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(
+  Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY!
+);
 
 export async function analyzeImageWithGemini(base64: string, mimeType?: string) {
   try {
