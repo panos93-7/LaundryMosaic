@@ -11,6 +11,9 @@ import {
 import Purchases from "react-native-purchases";
 import { markPurchasesConfigured } from "./utils/syncEntitlements";
 
+// ⭐ NEW: import restoreEntitlements
+import { restoreEntitlements } from "./store/userStore";
+
 // ⭐ Configure RevenueCat BEFORE the app renders
 try {
   Purchases.configure({
@@ -40,6 +43,11 @@ export default function App() {
     };
 
     run();
+  }, []);
+
+  // ⭐ NEW: Restore entitlements on startup
+  useEffect(() => {
+    restoreEntitlements();
   }, []);
 
   return <AppNavigator />;
