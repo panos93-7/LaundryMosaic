@@ -11,8 +11,12 @@ import {
 import Purchases from "react-native-purchases";
 import { markPurchasesConfigured } from "./utils/syncEntitlements";
 
-// ⭐ NEW: import restoreEntitlements
-import { restoreEntitlements } from "./store/userStore";
+import Constants from "expo-constants";
+
+// 🔍 DEBUG LOGS ΓΙΑ ΤΟ PRODUCTION BUILD
+console.log("🔑 EXPO KEY:", Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY);
+console.log("🔧 EXTRA:", Constants.expoConfig?.extra);
+console.log("📦 FULL CONFIG:", Constants.expoConfig);
 
 // ⭐ Configure RevenueCat BEFORE the app renders
 try {
@@ -43,11 +47,6 @@ export default function App() {
     };
 
     run();
-  }, []);
-
-  // ⭐ NEW: Restore entitlements on startup
-  useEffect(() => {
-    restoreEntitlements();
   }, []);
 
   return <AppNavigator />;
