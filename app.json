@@ -25,6 +25,7 @@
     "android": {
       "package": "com.panos9393.LaundryMosaic",
       "permissions": [
+        "INTERNET",
         "com.android.vending.BILLING"
       ],
       "googleServicesFile": "./google-services.json",
