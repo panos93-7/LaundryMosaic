@@ -33,7 +33,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "versionCode": 103
+      "versionCode": 104
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -43,9 +43,7 @@
       "expo-font",
       "expo-localization"
     ],
-
     "runtimeVersion": "2.0.0-reset",
-
     "extra": {
       "EXPO_PUBLIC_GEMINI_API_KEY": "***REMOVED***",
       "eas": {
