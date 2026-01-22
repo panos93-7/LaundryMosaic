@@ -6,22 +6,25 @@
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
+
     "updates": {
       "enabled": false,
-      "checkAutomatically": "ON_ERROR_RECOVERY"
+      "checkAutomatically": "NEVER"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+
+    "assetBundlePatterns": ["**/*"],
+
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.panos9393.LaundryMosaic"
     },
+
     "android": {
       "package": "com.panos9393.LaundryMosaic",
       "permissions": [
@@ -33,17 +36,23 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "versionCode": 104
+      "versionCode": 105
     },
+
     "web": {
       "favicon": "./assets/favicon.png"
     },
+
     "plugins": [
       "expo-web-browser",
       "expo-font",
       "expo-localization"
     ],
-    "runtimeVersion": "2.0.0-reset",
+
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+
     "extra": {
       "EXPO_PUBLIC_GEMINI_API_KEY": "***REMOVED***",
       "eas": {
