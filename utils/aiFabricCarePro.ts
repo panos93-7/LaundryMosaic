@@ -50,7 +50,13 @@ Return ONLY valid JSON in this exact format:
 }
 `;
 
-    const result = await model.generateContent(prompt);
+    // FORCE API VERSION v1 — no underline, no warnings
+    const result = await model.generateContent(
+      prompt,
+      {
+        apiVersion: "v1",
+      }
+    );
 
     let text = result.response.text();
     text = text.replace(/```json/gi, "").replace(/```/g, "").trim();

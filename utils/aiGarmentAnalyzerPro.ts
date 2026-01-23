@@ -56,23 +56,28 @@ Return ONLY valid JSON in this exact format:
 }
 `;
 
-    // CORRECT GEMINI VISION FORMAT
-    const result = await model.generateContent({
-      contents: [
-        {
-          role: "user",
-          parts: [
-            {
-              inlineData: {
-                data: processedBase64,
-                mimeType: mimeType,
+    // FORCE API VERSION v1 — no underline, no warnings
+    const result = await model.generateContent(
+      {
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                inlineData: {
+                  data: processedBase64,
+                  mimeType: mimeType,
+                },
               },
-            },
-            { text: prompt },
-          ],
-        },
-      ],
-    });
+              { text: prompt },
+            ],
+          },
+        ],
+      },
+      {
+        apiVersion: "v1",
+      }
+    );
 
     let text = result.response.text();
     text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
