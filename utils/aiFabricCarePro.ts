@@ -17,7 +17,7 @@ const genAI = new GoogleGenerativeAI(
 export async function generateCareInstructionsPro(fabricName: string) {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-1.0-pro-latest",
     });
 
     const prompt = `
@@ -50,7 +50,6 @@ Return ONLY valid JSON in this exact format:
 }
 `;
 
-    // FORCE API VERSION v1 — no underline, no warnings
     const result = await model.generateContent(
       prompt,
       {

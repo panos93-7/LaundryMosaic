@@ -15,11 +15,33 @@ export async function analyzeImageWithGemini(base64: string, mimeType?: string) 
       (cleanedBase64.startsWith("/9j/") ? "image/jpeg" : "image/png");
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-1.0-pro-vision-latest",
     });
 
     const prompt = `
 You are an expert laundry assistant. Analyze the image and return ONLY valid JSON.
+
+Extract:
+- fabric type (cotton, synthetics, wool, delicate)
+- color category (white, colored, dark)
+- stains (array)
+- recommended washing settings:
+  - temp (°C)
+  - spin (rpm)
+  - program (short name)
+
+Return JSON in this exact format:
+
+{
+  "fabric": "...",
+  "color": "...",
+  "stains": ["..."],
+  "recommended": {
+    "temp": 40,
+    "spin": 1000,
+    "program": "Cotton Colors"
+  }
+}
 `;
 
     const result = await model.generateContent(
@@ -39,9 +61,7 @@ You are an expert laundry assistant. Analyze the image and return ONLY valid JSO
           },
         ],
       },
-      {
-        apiVersion: "v1",
-      }
+      { apiVersion: "v1" }
     );
 
     let text = result.response.text() || "";

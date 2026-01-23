@@ -26,7 +26,7 @@ export async function analyzeFabricPro(base64: string) {
     );
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-1.0-pro-vision-latest",
     });
 
     const prompt = `
