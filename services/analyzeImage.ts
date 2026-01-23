@@ -15,7 +15,7 @@ export async function analyzeImageWithGemini(base64: string, mimeType?: string) 
       (cleanedBase64.startsWith("/9j/") ? "image/jpeg" : "image/png");
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.0-pro-vision-latest",
+      model: "gemini-1.0-pro-vision",
     });
 
     const prompt = `

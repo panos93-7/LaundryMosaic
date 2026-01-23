@@ -6,27 +6,16 @@ const genAI = new GoogleGenerativeAI(
   Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY!
 );
 
-/**
- * PRO Fabric Analyzer
- * Analyzes a fabric image and returns:
- * - fabricType
- * - weave
- * - sensitivity
- * - recommended wash settings
- * - care instructions
- */
 export async function analyzeFabricPro(base64: string) {
   try {
-    // Clean base64 input (remove prefix if exists)
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
 
-    // Preprocess → returns { base64, mimeType }
     const { base64: processedBase64, mimeType } = await preprocessImage(
       `data:image/jpeg;base64,${cleaned}`
     );
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.0-pro-vision-latest",
+      model: "gemini-1.0-pro-vision",
     });
 
     const prompt = `
@@ -34,15 +23,11 @@ You are a textile and laundry expert. Analyze the fabric in the image and return
 
 Extract the following fields:
 
-- fabricType: (cotton, wool, linen, denim, polyester, nylon, silk, blend, fleece, viscose, acrylic)
-- weave: (knit, woven, twill, satin, jersey, ribbed, canvas, unknown)
-- sensitivity: (delicate, normal, durable)
-- recommended: {
-    temp: number (°C),
-    spin: number (rpm),
-    program: short wash program name
-}
-- careInstructions: array of 3–6 short bullet points
+- fabricType
+- weave
+- sensitivity
+- recommended: { temp, spin, program }
+- careInstructions: array of bullet points
 
 Return JSON in this exact format:
 
@@ -59,7 +44,6 @@ Return JSON in this exact format:
 }
 `;
 
-    // CORRECT GEMINI VISION FORMAT + FORCE API VERSION v1
     const result = await model.generateContent(
       {
         contents: [
@@ -77,9 +61,7 @@ Return JSON in this exact format:
           },
         ],
       },
-      {
-        apiVersion: "v1",
-      }
+      { apiVersion: "v1" }
     );
 
     let text = result.response.text();

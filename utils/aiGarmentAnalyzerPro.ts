@@ -8,16 +8,14 @@ const genAI = new GoogleGenerativeAI(
 
 export async function analyzeGarmentPro(base64: string) {
   try {
-    // Clean base64 input (remove prefix if exists)
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
 
-    // Preprocess → returns { base64, mimeType }
     const { base64: processedBase64, mimeType } = await preprocessImage(
       `data:image/jpeg;base64,${cleaned}`
     );
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.0-pro-vision-latest",
+      model: "gemini-1.0-pro-vision",
     });
 
     const prompt = `
@@ -25,18 +23,14 @@ You are an expert fashion and laundry assistant. Analyze the garment in the imag
 
 Extract the following fields:
 
-- name: a short human-friendly garment name combining color + fabric + type (e.g. "Brown Wool Sweater")
-- type: (t-shirt, hoodie, sweater, shirt, jeans, pants, shorts, skirt, dress, jacket, coat, underwear, socks, accessory)
-- category: (top, bottom, outerwear, underwear, accessory)
-- fabric: (cotton, wool, denim, polyester, nylon, linen, silk, blend, synthetic)
-- color: (white, black, gray, beige, brown, blue, red, green, yellow, multicolor)
-- pattern: (solid, striped, plaid, printed, textured, knitted)
-- stains: array of detected stains (or empty array)
-- recommended: {
-    temp: number,
-    spin: number,
-    program: string
-  }
+- name
+- type
+- category
+- fabric
+- color
+- pattern
+- stains: array
+- recommended: { temp, spin, program }
 
 Return ONLY valid JSON in this exact format:
 
@@ -56,7 +50,6 @@ Return ONLY valid JSON in this exact format:
 }
 `;
 
-    // FORCE API VERSION v1 — no underline, no warnings
     const result = await model.generateContent(
       {
         contents: [
@@ -74,9 +67,7 @@ Return ONLY valid JSON in this exact format:
           },
         ],
       },
-      {
-        apiVersion: "v1",
-      }
+      { apiVersion: "v1" }
     );
 
     let text = result.response.text();
