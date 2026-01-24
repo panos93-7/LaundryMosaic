@@ -14,8 +14,9 @@ export async function analyzeFabricPro(base64: string) {
       `data:image/jpeg;base64,${cleaned}`
     );
 
+    // ⭐ UPDATED MODEL
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.0-pro-vision",
+      model: "models/gemini-2.5-pro",
     });
 
     const prompt = `
@@ -64,8 +65,11 @@ Return JSON in this exact format:
       { apiVersion: "v1" }
     );
 
-    let text = result.response.text();
-    text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+    let text = result.response.text() || "";
+    text = text
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
 
     const parsed = JSON.parse(text);
 

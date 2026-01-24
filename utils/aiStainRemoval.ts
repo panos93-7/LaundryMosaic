@@ -11,8 +11,9 @@ const genAI = new GoogleGenerativeAI(
  */
 export async function generateStainRemovalTips(stain: string, fabric: string) {
   try {
+    // ⭐ UPDATED MODEL
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.0-pro-latest",
+      model: "models/gemini-2.5-pro",
     });
 
     const prompt = `
@@ -40,14 +41,9 @@ Rules:
 }
 `;
 
-    const result = await model.generateContent(
-      prompt,
-      {
-        apiVersion: "v1",
-      }
-    );
+    const result = await model.generateContent(prompt);
 
-    let text = result.response.text();
+    let text = result.response.text() || "";
 
     // Clean markdown wrappers
     text = text

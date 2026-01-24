@@ -14,8 +14,9 @@ export async function analyzeGarmentPro(base64: string) {
       `data:image/jpeg;base64,${cleaned}`
     );
 
+    // ⭐ UPDATED MODEL
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.0-pro-vision",
+      model: "models/gemini-2.5-pro",
     });
 
     const prompt = `
@@ -50,32 +51,29 @@ Return ONLY valid JSON in this exact format:
 }
 `;
 
-    const result = await model.generateContent(
-      {
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                inlineData: {
-                  data: processedBase64,
-                  mimeType: mimeType,
-                },
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              inlineData: {
+                data: processedBase64,
+                mimeType: mimeType,
               },
-              { text: prompt },
-            ],
-          },
-        ],
-      },
-      { apiVersion: "v1" }
-    );
+            },
+            { text: prompt },
+          ],
+        },
+      ],
+    });
 
-    let text = result.response.text();
+    let text = result.response.text() || "";
     text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
 
     const parsed = JSON.parse(text);
-
     return parsed;
+
   } catch (err) {
     console.log("❌ PRO analyzer error:", err);
     return null;

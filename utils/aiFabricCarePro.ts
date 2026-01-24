@@ -17,7 +17,8 @@ const genAI = new GoogleGenerativeAI(
 export async function generateCareInstructionsPro(fabricName: string) {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.0-pro-latest",
+      // ⭐ UPDATED MODEL
+      model: "models/gemini-2.5-pro",
     });
 
     const prompt = `
