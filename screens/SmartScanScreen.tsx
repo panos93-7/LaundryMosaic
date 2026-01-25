@@ -34,14 +34,15 @@ export default function SmartScanScreen({ navigation }: any) {
 
   // 🔥 Block hardware back
   useFocusEffect(() => {
-  const subscription = BackHandler.addEventListener(
-    "hardwareBackPress",
-    () => true // block back
-  );
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true // block back
+    );
 
-  return () => subscription.remove();
-});
-    useEffect(() => {
+    return () => subscription.remove();
+  });
+
+  useEffect(() => {
     (async () => {
       await ImagePicker.requestCameraPermissionsAsync();
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -160,27 +161,8 @@ export default function SmartScanScreen({ navigation }: any) {
         colors={["#0f0c29", "#302b63", "#24243e"]}
         style={{ flex: 1, padding: 20 }}
       >
-        {/* 🔥 MINIMAL CLOSE BUTTON (πάνω δεξιά) */}
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            position: "absolute",
-            top: 10,
-            right: 10,
-            padding: 10,
-            zIndex: 10,
-          }}
-        >
-          <Text
-            style={{
-              color: "#ff6b6b",
-              fontSize: 18,
-              fontWeight: "700",
-            }}
-          >
-            Close
-          </Text>
-        </TouchableOpacity>
+        {/* ❌ REMOVE THIS — OLD CLOSE BUTTON */}
+        {/* (deleted) */}
 
         <Text
           style={{
@@ -228,7 +210,7 @@ export default function SmartScanScreen({ navigation }: any) {
         {image && (
           <ScrollView
             style={{ flex: 1 }}
-            contentContainerStyle={{ paddingBottom: 120 }}
+            contentContainerStyle={{ paddingBottom: 160 }}
             showsVerticalScrollIndicator={false}
           >
             <View style={{ alignItems: "center", marginTop: 20 }}>
@@ -450,7 +432,29 @@ export default function SmartScanScreen({ navigation }: any) {
                     </Text>
                   </TouchableOpacity>
 
-                  {/* 🔥 ONLY BUTTON LEFT */}
+                  {/* ⭐ NEW CLOSE BUTTON (BOTTOM) */}
+                  <TouchableOpacity
+                    onPress={resetState}
+                    style={{
+                      marginTop: 14,
+                      backgroundColor: "rgba(255,255,255,0.15)",
+                      padding: 14,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "700",
+                      }}
+                    >
+                      Close
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* ORIGINAL BUTTON */}
                   <TouchableOpacity
                     onPress={handleAutoAdd}
                     style={{
