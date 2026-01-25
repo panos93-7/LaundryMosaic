@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import {
   Animated,
   FlatList,
+  Image,
   Modal,
   Text,
   TextInput,
@@ -33,6 +34,8 @@ export default function CustomFabricsScreen() {
   const [careInstructions, setCareInstructions] = useState<string[]>([]);
   const [loadingAI, setLoadingAI] = useState(false);
 
+  const [statusMessage, setStatusMessage] = useState("");
+
   const [fabOpen, setFabOpen] = useState(false);
   const fadeAnim = useState(new Animated.Value(0))[0];
   const slideAnim = useState(new Animated.Value(10))[0];
@@ -58,6 +61,8 @@ export default function CustomFabricsScreen() {
   };
 
   const saveFabric = () => {
+    setStatusMessage(editing ? "Updating Fabric..." : "Adding Fabric...");
+
     if (editing) {
       updateFabric({
         ...editing,
@@ -73,7 +78,9 @@ export default function CustomFabricsScreen() {
         careInstructions,
       });
     }
+
     setModalVisible(false);
+    setStatusMessage("");
   };
 
   const generateAI = async () => {
@@ -91,6 +98,7 @@ export default function CustomFabricsScreen() {
 
   const handleScanFabric = async () => {
     setFabOpen(false);
+    setStatusMessage("Uploading Fabric...");
 
     const res = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -98,7 +106,10 @@ export default function CustomFabricsScreen() {
       base64: true,
     });
 
-    if (res.canceled) return;
+    if (res.canceled) {
+      setStatusMessage("");
+      return;
+    }
 
     const base64 = res.assets[0].base64!;
     const uri = res.assets[0].uri;
@@ -124,6 +135,7 @@ export default function CustomFabricsScreen() {
     }
 
     setLoadingAI(false);
+    setStatusMessage("");
   };
 
   const toggleFab = () => {
@@ -143,8 +155,7 @@ export default function CustomFabricsScreen() {
       }),
     ]).start();
   };
-
-  return (
+    return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
@@ -156,18 +167,32 @@ export default function CustomFabricsScreen() {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 20,
+            marginBottom: 10,
           }}
         >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 28,
-              fontWeight: "700",
-            }}
-          >
-            Custom Fabrics
-          </Text>
+          <View>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 28,
+                fontWeight: "700",
+              }}
+            >
+              Custom Fabrics
+            </Text>
+
+            {statusMessage !== "" && (
+              <Text
+                style={{
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: 16,
+                  marginTop: 4,
+                }}
+              >
+                {statusMessage}
+              </Text>
+            )}
+          </View>
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
@@ -206,22 +231,6 @@ export default function CustomFabricsScreen() {
             >
               Add your own fabrics or scan new ones with AI.
             </Text>
-
-            {/* Upload Fabric (AI) */}
-            <TouchableOpacity
-              onPress={handleScanFabric}
-              style={{
-                backgroundColor: "#2575fc",
-                paddingVertical: 12,
-                paddingHorizontal: 20,
-                borderRadius: 12,
-                marginBottom: 20,
-              }}
-            >
-              <Text style={{ color: "#fff", fontSize: 16 }}>
-                📤 Upload Fabric (AI)
-              </Text>
-            </TouchableOpacity>
 
             {/* Centered (+) */}
             <TouchableOpacity
@@ -294,29 +303,69 @@ export default function CustomFabricsScreen() {
                   padding: 16,
                   borderRadius: 12,
                   marginBottom: 12,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 14,
                 }}
               >
-                <Text
-                  style={{
-                    color: "#fff",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    marginBottom: 4,
-                  }}
-                >
-                  {item.name}
-                </Text>
-
-                {item.description ? (
-                  <Text
+                {/* Thumbnail */}
+                {item.image ? (
+                  <View
                     style={{
-                      color: "rgba(255,255,255,0.7)",
-                      fontSize: 14,
+                      width: 55,
+                      height: 55,
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      backgroundColor: "rgba(255,255,255,0.1)",
                     }}
                   >
-                    {item.description}
+                    <Image
+                      source={{ uri: item.image }}
+                      style={{ width: "100%", height: "100%" }}
+                      resizeMode="cover"
+                    />
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      width: 55,
+                      height: 55,
+                      borderRadius: 10,
+                      backgroundColor: "rgba(255,255,255,0.08)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 12 }}>
+                      No Image
+                    </Text>
+                  </View>
+                )}
+
+                {/* Text */}
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 18,
+                      fontWeight: "600",
+                      marginBottom: 4,
+                    }}
+                  >
+                    {item.name}
                   </Text>
-                ) : null}
+
+                  {item.description ? (
+                    <Text
+                      style={{
+                        color: "rgba(255,255,255,0.7)",
+                        fontSize: 14,
+                      }}
+                    >
+                      {item.description}
+                    </Text>
+                  ) : null}
+                </View>
               </TouchableOpacity>
             )}
           />

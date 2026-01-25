@@ -161,8 +161,26 @@ export default function SmartScanScreen({ navigation }: any) {
         colors={["#0f0c29", "#302b63", "#24243e"]}
         style={{ flex: 1, padding: 20 }}
       >
-        {/* ❌ REMOVE THIS — OLD CLOSE BUTTON */}
-        {/* (deleted) */}
+       <TouchableOpacity
+  onPress={() => navigation.navigate("HomeScreen")}
+  style={{
+    position: "absolute",
+    top: 10,
+    right: 10,
+    padding: 10,
+    zIndex: 20,
+  }}
+>
+  <Text
+    style={{
+      color: "#ff6b6b",
+      fontSize: 18,
+      fontWeight: "700",
+    }}
+  >
+    Close
+  </Text>
+</TouchableOpacity>
 
         <Text
           style={{
