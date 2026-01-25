@@ -12,6 +12,10 @@ import Purchases from "react-native-purchases";
 import { markPurchasesConfigured } from "./utils/syncEntitlements";
 
 import Constants from "expo-constants";
+import * as Updates from "expo-updates";
+
+console.log("CHANNEL:", Updates.channel);
+console.log("RUNTIME:", Updates.runtimeVersion);
 
 // 🔍 DEBUG LOGS ΓΙΑ ΤΟ PRODUCTION BUILD
 console.log("🔑 EXPO KEY:", Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY);
