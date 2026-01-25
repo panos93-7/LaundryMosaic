@@ -35,7 +35,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "versionCode": 279
+      "versionCode": 280
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -260,75 +260,104 @@ setCareInstructions(ai.careInstructions);
           />
         )}
 
-        {/* ----------------------------- */}
-        {/* FAB MENU */}
-        {/* ----------------------------- */}
-        <View
-             style={{
-             position: "absolute",
-             bottom: 30,
-             left: 0,
-             right: 0,
-             alignItems: "center",
-         }}
-            >
-          {/* MENU ITEMS */}
-          {fabOpen && (
-            <Animated.View
-              style={{
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-                marginBottom: 10,
-              }}
-            >
-              <TouchableOpacity
-                onPress={handleScanFabric}
-                style={{
-                  backgroundColor: "#2575fc",
-                  paddingVertical: 10,
-                  paddingHorizontal: 16,
-                  borderRadius: 10,
-                  marginBottom: 8,
-                }}
-              >
-                <Text style={{ color: "#fff", fontSize: 16 }}>
-                  📤 Upload Fabric (AI)
-                </Text>
-              </TouchableOpacity>
+{/* ----------------------------- */}
+{/* FAB MENU */}
+{/* ----------------------------- */}
 
-              <TouchableOpacity
-                onPress={openAddModal}
-                style={{
-                  backgroundColor: "#4CAF50",
-                  paddingVertical: 10,
-                  paddingHorizontal: 16,
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={{ color: "#fff", fontSize: 16 }}>
-                  ＋ Add Fabric
-                </Text>
-              </TouchableOpacity>
-            </Animated.View>
-          )}
+{/* EMPTY STATE FAB (CENTER) */}
+{fabrics.length === 0 && (
+  <View
+    style={{
+      position: "absolute",
+      bottom: 80,
+      left: 0,
+      right: 0,
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    <TouchableOpacity
+      onPress={openAddModal}
+      style={{
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        backgroundColor: "#2575fc",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text style={{ color: "#fff", fontSize: 36, fontWeight: "700" }}>+</Text>
+    </TouchableOpacity>
+  </View>
+)}
 
-          {/* MAIN FAB */}
-          <TouchableOpacity
-            onPress={toggleFab}
-            style={{
-              backgroundColor: "#2575fc",
-              width: 60,
-              height: 60,
-              borderRadius: 30,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "#fff", fontSize: 30 }}>
-              {fabOpen ? "×" : "+"}
-            </Text>
-          </TouchableOpacity>
-        </View>
+{/* FULL LIST FAB (BOTTOM RIGHT) */}
+{fabrics.length > 0 && (
+  <View
+    style={{
+      position: "absolute",
+      bottom: 30,
+      right: 30,
+      alignItems: "center",
+    }}
+  >
+    {/* MENU ITEMS */}
+    {fabOpen && (
+      <Animated.View
+        style={{
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+          marginBottom: 10,
+        }}
+      >
+        <TouchableOpacity
+          onPress={handleScanFabric}
+          style={{
+            backgroundColor: "#2575fc",
+            paddingVertical: 10,
+            paddingHorizontal: 16,
+            borderRadius: 10,
+            marginBottom: 8,
+          }}
+        >
+          <Text style={{ color: "#fff", fontSize: 16 }}>
+            📤 Upload Fabric (AI)
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={openAddModal}
+          style={{
+            backgroundColor: "#4CAF50",
+            paddingVertical: 10,
+            paddingHorizontal: 16,
+            borderRadius: 10,
+          }}
+        >
+          <Text style={{ color: "#fff", fontSize: 16 }}>＋ Add Fabric</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    )}
+
+    {/* MAIN FAB */}
+    <TouchableOpacity
+      onPress={toggleFab}
+      style={{
+        backgroundColor: "#2575fc",
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text style={{ color: "#fff", fontSize: 30 }}>
+        {fabOpen ? "×" : "+"}
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
 
         {/* MODAL */}
         <Modal visible={modalVisible} transparent animationType="fade">

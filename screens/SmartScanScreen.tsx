@@ -1,8 +1,10 @@
+import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  BackHandler,
   Image,
   ScrollView,
   Text,
@@ -12,13 +14,13 @@ import {
 import Animated, { FadeIn, FadeInUp, Layout } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Events } from "../analytics/events";
 import { analyzeImageWithGemini } from "../services/analyzeImage";
-import { useFabricsStore } from "../store/fabricsStore";
-import { useScanStore } from "../store/scanStore";
-import { useUserStore } from "../store/userStore";
 import { preprocessImage } from "../utils/AI/preprocessImage";
 import { generateStainRemovalTips } from "../utils/aiStainRemoval";
+
+import { useUserStore } from "../store/userStore";
 
 export default function SmartScanScreen({ navigation }: any) {
   const [image, setImage] = useState<string | null>(null);
@@ -26,24 +28,38 @@ export default function SmartScanScreen({ navigation }: any) {
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const setScanResult = useScanStore((s) => s.setScanResult);
-
   const isPremiumAnnual = useUserStore((s) => s.isPremiumAnnual);
   const isPro = useUserStore((s) => s.isPro);
   const userTier = useUserStore((s) => s.userTier);
 
-  const fabricsStore = useFabricsStore();
+  // 🔥 Block hardware back
+  useFocusEffect(() => {
+  const subscription = BackHandler.addEventListener(
+    "hardwareBackPress",
+    () => true // block back
+  );
 
-  useEffect(() => {
+  return () => subscription.remove();
+});
+    useEffect(() => {
     (async () => {
       await ImagePicker.requestCameraPermissionsAsync();
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     })();
   }, []);
 
-  // -----------------------------------------------------
-  // PICK FROM GALLERY
-  // -----------------------------------------------------
+  const resetState = () => {
+    setImage(null);
+    setResult(null);
+    setError(null);
+    setLoading(false);
+  };
+
+  const takeAnotherPhoto = () => {
+    resetState();
+    takePhoto();
+  };
+
   const pickImage = async () => {
     resetState();
     const res = await ImagePicker.launchImageLibraryAsync({
@@ -58,14 +74,9 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  // -----------------------------------------------------
-  // TAKE PHOTO
-  // -----------------------------------------------------
   const takePhoto = async () => {
     resetState();
-    const res = await ImagePicker.launchCameraAsync({
-      quality: 0.9,
-    });
+    const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
 
     if (!res.canceled) {
       setImage(res.assets[0].uri);
@@ -74,33 +85,13 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  const resetState = () => {
-    setImage(null);
-    setResult(null);
-    setError(null);
-    setLoading(false);
-  };
-  const takeAnotherPhoto = () => {
-  setResult(null);
-  setError(null);
-  setLoading(false);
-  setImage(null);
-  takePhoto(); // ανοίγει ξανά την κάμερα
-};
-
-  // -----------------------------------------------------
-  // ANALYZE (pipeline)
-  // -----------------------------------------------------
   const analyze = async (uri: string) => {
     setLoading(true);
     setResult(null);
     setError(null);
 
     try {
-      // 1) Preprocess (crop + enhance)
       const { base64, mimeType } = await preprocessImage(uri);
-
-      // 2) Send to Gemini
       const aiResult = await analyzeImageWithGemini(base64, mimeType);
 
       if (!aiResult) {
@@ -109,62 +100,58 @@ export default function SmartScanScreen({ navigation }: any) {
         return;
       }
 
-      // 4) Generate stain removal tips (one block per stain)
       let stainTips: any[] = [];
-
-      if (aiResult.stains && aiResult.stains.length > 0) {
+      if (aiResult.stains?.length > 0) {
         for (const stain of aiResult.stains) {
           try {
             const tips = await generateStainRemovalTips(stain, aiResult.fabric);
             stainTips.push(tips);
-          } catch (err) {
-            console.log("Stain AI error:", err);
-          }
+          } catch {}
         }
       }
 
-      // 5) Final enriched result
-      const enriched = {
-        ...aiResult,
-        stainTips,
-      };
-
-      setResult(enriched);
-    } catch (err) {
+      setResult({ ...aiResult, stainTips });
+    } catch {
       setError("AI could not analyze the image.");
     }
 
     setLoading(false);
   };
 
-  const applyToMachine = () => {
+  // 🔥 REAL SAVE TO PLANNER
+  const handleAutoAdd = async () => {
     if (!result) return;
 
     if (!isPremiumAnnual && !isPro) {
-  navigation.navigate("PremiumMonthlyPaywall", { source: "autoAdd" });
-  return;
-}
+      navigation.navigate("PremiumMonthlyPaywall", { source: "autoAdd" });
+      return;
+    }
+
+    const now = new Date();
+
+    const newItem = {
+      title: result.fabric || "Laundry Item",
+      type: result.fabric || "General",
+      time: "Any time",
+      day: now.getDate(),
+      month: now.getMonth(),
+      year: now.getFullYear(),
+    };
+
+    try {
+      const existing = await AsyncStorage.getItem("PLANS");
+      const plans = existing ? JSON.parse(existing) : [];
+
+      plans.push(newItem);
+
+      await AsyncStorage.setItem("PLANS", JSON.stringify(plans));
+    } catch (err) {
+      console.log("Failed to save to planner", err);
+    }
 
     Events.featureUnlockedUsed("ai_smart_scan", userTier);
-    setScanResult(result);
-    navigation.navigate("Home");
-  };
 
-  const handleAutoAdd = () => {
-    if (!result) return;
-
-    if (!isPremiumAnnual && !isPro) {
-  navigation.navigate("PremiumMonthlyPaywall", { source: "autoAdd" });
-  return;
-}
-
-    navigation.navigate("Planner", {
-      autoAdd: {
-        title: result.fabric || "Laundry Item",
-        type: result.fabric || "General",
-        time: "Any time",
-      },
-    });
+    navigation.navigate("Planner");
   };
 
   return (
@@ -173,9 +160,26 @@ export default function SmartScanScreen({ navigation }: any) {
         colors={["#0f0c29", "#302b63", "#24243e"]}
         style={{ flex: 1, padding: 20 }}
       >
-        {/* Back Button */}
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={{ color: "#fff", fontSize: 18 }}>← Back</Text>
+        {/* 🔥 MINIMAL CLOSE BUTTON (πάνω δεξιά) */}
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            padding: 10,
+            zIndex: 10,
+          }}
+        >
+          <Text
+            style={{
+              color: "#ff6b6b",
+              fontSize: 18,
+              fontWeight: "700",
+            }}
+          >
+            Close
+          </Text>
         </TouchableOpacity>
 
         <Text
@@ -242,70 +246,68 @@ export default function SmartScanScreen({ navigation }: any) {
                 <ActivityIndicator size="large" color="#fff" style={{ marginTop: 10 }} />
               )}
 
-{error && !loading && (
-  <View
-    style={{
-      backgroundColor: "rgba(255, 80, 80, 0.15)",
-      padding: 20,
-      borderRadius: 14,
-      width: "100%",
-      marginTop: 10,
-      borderWidth: 1,
-      borderColor: "rgba(255, 80, 80, 0.4)",
-    }}
-  >
-    <Text style={{ color: "#ff6b6b", fontSize: 18, marginBottom: 10 }}>
-      ❌ AI Scan Failed
-    </Text>
+              {error && !loading && (
+                <View
+                  style={{
+                    backgroundColor: "rgba(255, 80, 80, 0.15)",
+                    padding: 20,
+                    borderRadius: 14,
+                    width: "100%",
+                    marginTop: 10,
+                    borderWidth: 1,
+                    borderColor: "rgba(255, 80, 80, 0.4)",
+                  }}
+                >
+                  <Text style={{ color: "#ff6b6b", fontSize: 18, marginBottom: 10 }}>
+                    ❌ AI Scan Failed
+                  </Text>
 
-    <Text style={{ color: "#fff", fontSize: 16, marginBottom: 20 }}>
-      The AI could not analyze the image. Try again with a clearer photo.
-    </Text>
+                  <Text style={{ color: "#fff", fontSize: 16, marginBottom: 20 }}>
+                    The AI could not analyze the image. Try again with a clearer photo.
+                  </Text>
 
-    {/* RETRY SCAN */}
-    <TouchableOpacity
-      onPress={() => analyze(image!)}
-      style={{
-        backgroundColor: "#ff6b6b",
-        padding: 14,
-        borderRadius: 12,
-      }}
-    >
-      <Text
-        style={{
-          color: "#fff",
-          textAlign: "center",
-          fontSize: 18,
-          fontWeight: "600",
-        }}
-      >
-        Retry Scan
-      </Text>
-    </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => analyze(image!)}
+                    style={{
+                      backgroundColor: "#ff6b6b",
+                      padding: 14,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "600",
+                      }}
+                    >
+                      Retry Scan
+                    </Text>
+                  </TouchableOpacity>
 
-    {/* TAKE ANOTHER PHOTO */}
-    <TouchableOpacity
-      onPress={takeAnotherPhoto}
-      style={{
-        marginTop: 12,
-        padding: 14,
-        borderRadius: 12,
-        backgroundColor: "rgba(255,255,255,0.15)",
-      }}
-    >
-      <Text
-        style={{
-          color: "#fff",
-          textAlign: "center",
-          fontSize: 18,
-          fontWeight: "600",
-        }}
-      >
-        Take Another Photo
-      </Text>
-    </TouchableOpacity>
-  </View>
-)}
+                  <TouchableOpacity
+                    onPress={takeAnotherPhoto}
+                    style={{
+                      marginTop: 12,
+                      padding: 14,
+                      borderRadius: 12,
+                      backgroundColor: "rgba(255,255,255,0.15)",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "600",
+                      }}
+                    >
+                      Take Another Photo
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
 
               {result && !loading && !error && (
                 <Animated.View
@@ -319,7 +321,6 @@ export default function SmartScanScreen({ navigation }: any) {
                     marginTop: 10,
                   }}
                 >
-                  {/* FABRIC */}
                   <Animated.Text
                     entering={FadeIn.delay(100)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
@@ -327,7 +328,6 @@ export default function SmartScanScreen({ navigation }: any) {
                     🧵 Fabric: {result.fabric}
                   </Animated.Text>
 
-                  {/* COLOR */}
                   <Animated.Text
                     entering={FadeIn.delay(200)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
@@ -335,7 +335,6 @@ export default function SmartScanScreen({ navigation }: any) {
                     🎨 Color: {result.color}
                   </Animated.Text>
 
-                  {/* STAINS */}
                   <Animated.Text
                     entering={FadeIn.delay(300)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
@@ -343,7 +342,6 @@ export default function SmartScanScreen({ navigation }: any) {
                     🧽 Stains: {result.stains.join(", ") || "None detected"}
                   </Animated.Text>
 
-                  {/* RECOMMENDED PROGRAM */}
                   <Animated.Text
                     entering={FadeIn.delay(400)}
                     style={{ color: "#fff", fontSize: 18 }}
@@ -352,7 +350,6 @@ export default function SmartScanScreen({ navigation }: any) {
                     {result.recommended.temp ?? "?"}°C / {result.recommended.spin ?? "?"} rpm)
                   </Animated.Text>
 
-                  {/* CARE INSTRUCTIONS */}
                   {result.careInstructions?.length > 0 && (
                     <View style={{ marginTop: 20 }}>
                       <Text
@@ -381,7 +378,6 @@ export default function SmartScanScreen({ navigation }: any) {
                     </View>
                   )}
 
-                  {/* STAIN REMOVAL TIPS */}
                   {result.stainTips?.length > 0 && (
                     <View style={{ marginTop: 25 }}>
                       <Text
@@ -432,74 +428,49 @@ export default function SmartScanScreen({ navigation }: any) {
                       ))}
                     </View>
                   )}
+
                   <TouchableOpacity
-  onPress={takeAnotherPhoto}
-  style={{
-    marginTop: 20,
-    backgroundColor: "rgba(255,255,255,0.15)",
-    padding: 14,
-    borderRadius: 12,
-  }}
->
-  <Text
-    style={{
-      color: "#fff",
-      textAlign: "center",
-      fontSize: 18,
-      fontWeight: "600",
-    }}
-  >
-    Take Another Photo
-  </Text>
-</TouchableOpacity>
-
-                  {/* APPLY TO MACHINE */}
-                  <Animated.View entering={FadeIn.delay(500)}>
-                    <TouchableOpacity
-                      onPress={applyToMachine}
+                    onPress={takeAnotherPhoto}
+                    style={{
+                      marginTop: 20,
+                      backgroundColor: "rgba(255,255,255,0.15)",
+                      padding: 14,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
                       style={{
-                        marginTop: 20,
-                        backgroundColor: "#4CAF50",
-                        padding: 14,
-                        borderRadius: 12,
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "600",
                       }}
                     >
-                      <Text
-                        style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          fontSize: 18,
-                          fontWeight: "600",
-                        }}
-                      >
-                        Apply to Machine
-                      </Text>
-                    </TouchableOpacity>
-                  </Animated.View>
+                      Take Another Photo
+                    </Text>
+                  </TouchableOpacity>
 
-                  {/* AUTO ADD TO PLANNER */}
-                  <Animated.View entering={FadeIn.delay(600)}>
-                    <TouchableOpacity
-                      onPress={handleAutoAdd}
+                  {/* 🔥 ONLY BUTTON LEFT */}
+                  <TouchableOpacity
+                    onPress={handleAutoAdd}
+                    style={{
+                      marginTop: 14,
+                      backgroundColor: "#2575fc",
+                      padding: 14,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
                       style={{
-                        marginTop: 14,
-                        backgroundColor: "#2575fc",
-                        padding: 14,
-                        borderRadius: 12,
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "700",
                       }}
                     >
-                      <Text
-                        style={{
-                          color: "#fff",
-                          textAlign: "center",
-                          fontSize: 18,
-                          fontWeight: "700",
-                        }}
-                      >
-                        Add to Planner automatically
-                      </Text>
-                    </TouchableOpacity>
-                  </Animated.View>
+                      Add to Planner automatically
+                    </Text>
+                  </TouchableOpacity>
                 </Animated.View>
               )}
             </View>

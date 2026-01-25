@@ -3,12 +3,22 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-
 import Animated, { FadeInUp } from "react-native-reanimated";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { analyzeImageWithGemini } from "../services/analyzeImage";
 import { preprocessImage } from "../utils/AI/preprocessImage";
+
+// ---------------------------------------------
+// TYPES
+// ---------------------------------------------
+type FabricGroup = {
+  fabric: string;
+  count: number;
+  items: any[];
+  compatible: boolean;
+  conflict: string | null;
+};
 
 export default function BatchScanScreen() {
   const navigation = useNavigation<any>();
@@ -29,90 +39,162 @@ export default function BatchScanScreen() {
     setIsProcessing(false);
   };
 
+  const generateSmartSuggestions = (groups: FabricGroup[], globalCompatible: boolean) => {
+    const suggestions: string[] = [];
+
+    const delicate = groups.filter(g =>
+      g.fabric.toLowerCase().includes("wool") ||
+      g.fabric.toLowerCase().includes("delicate")
+    );
+
+    const highTemp = groups.filter(g => {
+      const sample = g.items[0];
+      return sample.recommended?.temp > 40;
+    });
+
+    const cotton = groups.filter(g => g.fabric.toLowerCase().includes("cotton"));
+
+    // 1) If everything is compatible
+    if (globalCompatible) {
+      suggestions.push("All items can be washed together safely.");
+    }
+
+    // 2) Delicate fabrics
+    if (delicate.length > 0) {
+      suggestions.push("Delicate fabrics (like wool) should be washed separately.");
+    }
+
+    // 3) High temperature fabrics
+    if (highTemp.length > 0) {
+      suggestions.push("Some fabrics require high temperature — avoid mixing with delicate items.");
+    }
+
+    // 4) Cotton grouping
+    if (cotton.length > 0) {
+      const totalCotton = cotton.reduce((sum, g) => sum + g.count, 0);
+      suggestions.push(`You have ${totalCotton} cotton items — ideal for a cotton program.`);
+    }
+
+    // 5) If there are conflicts
+    const conflicts = groups.filter(g => !g.compatible);
+    if (conflicts.length > 0) {
+      suggestions.push("Some items are incompatible — consider splitting the load.");
+    }
+
+    return suggestions;
+  };
+
   const handleCapture = async () => {
     if (!cameraRef.current) return;
 
     try {
       setIsProcessing(true);
 
-      // 1) Take photo
       const photo = await cameraRef.current.takePictureAsync({
         quality: 0.7,
         base64: true,
       });
 
-      // 2) Preprocess (resize → jpeg → base64)
       const { base64, mimeType } = await preprocessImage(photo.uri);
 
-      // 3) Analyze with Gemini
       const aiResult = await analyzeImageWithGemini(base64, mimeType);
 
-      if (!aiResult) {
+      if (!aiResult || !aiResult.items || aiResult.items.length === 0) {
         setResult({
           itemsDetected: 0,
+          groups: [],
           compatible: false,
-          recommendedProgram: "Unable to analyze",
-          warning: "⚠️ Unable to analyze the image",
-          conflictReason: null,
+          warnings: ["⚠️ Unable to analyze the image"],
+          suggestions: [],
         });
         setIsProcessing(false);
         return;
       }
 
-      // -----------------------------------------
-      // 4) Compatibility rules (single item)
-      // -----------------------------------------
-      let incompatible = false;
-      let conflictReason = null;
+      // GROUP BY FABRIC
+      const grouped = aiResult.items.reduce((acc: any, item: any) => {
+        const fabric = item.fabric || "Unknown";
 
-      const fabric = aiResult.fabric?.toLowerCase() || "";
-      const temp = aiResult.recommended?.temp || 0;
-      const spin = aiResult.recommended?.spin || 0;
+        if (!acc[fabric]) {
+          acc[fabric] = {
+            fabric,
+            count: 0,
+            items: [],
+            compatible: true,
+            conflict: null,
+          };
+        }
 
-      // Rule 1: Delicate fabrics
-      if (fabric === "wool" || fabric === "delicate") {
-        incompatible = true;
-        conflictReason = `The fabric "${aiResult.fabric}" requires a separate wash.`;
+        acc[fabric].count += 1;
+        acc[fabric].items.push(item);
+
+        return acc;
+      }, {});
+
+      const groups: FabricGroup[] = Object.values(grouped);
+
+      // COMPATIBILITY RULES
+      let globalCompatible = true;
+      let warnings: string[] = [];
+
+      for (const group of groups) {
+        const sample = group.items[0];
+        const fabric = sample.fabric?.toLowerCase() || "";
+        const temp = sample.recommended?.temp || 0;
+        const spin = sample.recommended?.spin || 0;
+
+        let incompatible = false;
+        let reason: string | null = null;
+
+        if (fabric === "wool" || fabric === "delicate") {
+          incompatible = true;
+          reason = `The fabric "${sample.fabric}" requires a separate wash.`;
+        }
+
+        if (!incompatible && temp > 40) {
+          incompatible = true;
+          reason = `Temperature ${temp}°C is too high for mixed loads.`;
+        }
+
+        if (!incompatible && spin > 1000) {
+          incompatible = true;
+          reason = `${spin} rpm is too aggressive for delicate fabrics.`;
+        }
+
+        group.compatible = !incompatible;
+        group.conflict = reason;
+
+        if (incompatible) {
+          globalCompatible = false;
+          warnings.push(reason!);
+        }
       }
 
-      // Rule 2: High temperature
-      if (!incompatible && temp > 40) {
-        incompatible = true;
-        conflictReason = `Temperature ${temp}°C is too high for mixed loads.`;
-      }
+      // SMART SUGGESTIONS
+      const suggestions = generateSmartSuggestions(groups, globalCompatible);
 
-      // Rule 3: High spin
-      if (!incompatible && spin > 1000) {
-        incompatible = true;
-        conflictReason = `${spin} rpm is too aggressive for delicate fabrics.`;
-      }
-
-      // -----------------------------------------
-      // 5) Final Batch Result
-      // -----------------------------------------
-      const batchResult = {
-        itemsDetected: 1, // single-item pipeline
-        compatible: !incompatible,
-        recommendedProgram: `${aiResult.recommended.program} ${aiResult.recommended.temp}°C`,
-        warning: incompatible ? "⚠️ Incompatible item detected" : null,
-        conflictReason: incompatible ? conflictReason : null,
-      };
-
-      setResult(batchResult);
+      setResult({
+        itemsDetected: aiResult.items.length,
+        groups,
+        compatible: globalCompatible,
+        warnings,
+        suggestions,
+      });
     } catch (err) {
       console.log("BatchScan AI error:", err);
       setResult({
         itemsDetected: 0,
+        groups: [],
         compatible: false,
-        recommendedProgram: "Error analyzing image",
-        warning: "⚠️ Error during analysis",
-        conflictReason: null,
+        warnings: ["⚠️ Error during analysis"],
+        suggestions: [],
       });
     }
 
     setIsProcessing(false);
   };
 
+  // PERMISSION SCREEN
   if (!permission || !permission.granted) {
     return (
       <LinearGradient
@@ -138,13 +220,13 @@ export default function BatchScanScreen() {
     );
   }
 
+  // MAIN UI
   return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        
         {/* HEADER */}
         <View
           style={{
@@ -172,12 +254,15 @@ export default function BatchScanScreen() {
 
         {/* CAMERA VIEW */}
         {!result && (
-          <View style={{ flex: 1, borderRadius: 20, overflow: "hidden", margin: 20 }}>
-            <CameraView
-              ref={cameraRef}
-              facing="back"
-              style={{ flex: 1 }}
-            />
+          <View
+            style={{
+              flex: 1,
+              borderRadius: 20,
+              overflow: "hidden",
+              margin: 20,
+            }}
+          >
+            <CameraView ref={cameraRef} facing="back" style={{ flex: 1 }} />
           </View>
         )}
 
@@ -239,20 +324,95 @@ export default function BatchScanScreen() {
               Compatible: {result.compatible ? "Yes" : "No"}
             </Text>
 
-            <Text style={{ color: "#fff", marginTop: 6 }}>
-              Recommended Program: {result.recommendedProgram}
-            </Text>
+            {/* FABRIC GROUPS */}
+            <View style={{ marginTop: 16 }}>
+              {result.groups.map((g: FabricGroup, i: number) => (
+                <View
+                  key={i}
+                  style={{
+                    padding: 12,
+                    backgroundColor: "rgba(255,255,255,0.08)",
+                    borderRadius: 12,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 16,
+                      fontWeight: "700",
+                    }}
+                  >
+                    {g.fabric} × {g.count}
+                  </Text>
 
-            {result.warning && (
-              <Text style={{ color: "#ff6b6b", marginTop: 10, fontWeight: "700" }}>
-                {result.warning}
-              </Text>
+                  {!g.compatible && (
+                    <Text
+                      style={{
+                        color: "#ff6b6b",
+                        marginTop: 6,
+                        fontSize: 14,
+                      }}
+                    >
+                      ⚠️ {g.conflict}
+                    </Text>
+                  )}
+                </View>
+              ))}
+            </View>
+
+            {/* GLOBAL WARNINGS */}
+            {result.warnings.length > 0 && (
+              <View style={{ marginTop: 10 }}>
+                {result.warnings.map((w: string, i: number) => (
+                  <Text
+                    key={i}
+                    style={{
+                      color: "#ff9f9f",
+                      marginTop: 4,
+                      fontSize: 14,
+                    }}
+                  >
+                    {w}
+                  </Text>
+                ))}
+              </View>
             )}
 
-            {result.conflictReason && (
-              <Text style={{ color: "#ff9f9f", marginTop: 6 }}>
-                {result.conflictReason}
-              </Text>
+            {/* SMART SUGGESTIONS */}
+            {result.suggestions.length > 0 && (
+              <View
+                style={{
+                  marginTop: 20,
+                  padding: 14,
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                  borderRadius: 12,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 18,
+                    fontWeight: "700",
+                    marginBottom: 10,
+                  }}
+                >
+                  🔥 Smart Suggestions
+                </Text>
+
+                {result.suggestions.map((s: string, i: number) => (
+                  <Text
+                    key={i}
+                    style={{
+                      color: "rgba(255,255,255,0.85)",
+                      marginBottom: 6,
+                      fontSize: 15,
+                    }}
+                  >
+                    • {s}
+                  </Text>
+                ))}
+              </View>
             )}
 
             {/* SCAN AGAIN BUTTON */}
@@ -272,7 +432,6 @@ export default function BatchScanScreen() {
             </TouchableOpacity>
           </Animated.View>
         )}
-
       </SafeAreaView>
     </LinearGradient>
   );
