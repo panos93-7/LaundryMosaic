@@ -29,7 +29,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_GEMINI_API_KEY": "@gemini_api_key"
+        "EXPO_PUBLIC_GEMINI_API_KEY": "EXPO_PUBLIC_GEMINI_API_KEY"
       }
     },
 
