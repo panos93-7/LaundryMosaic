@@ -1,10 +1,14 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Constants from "expo-constants";
 import { preprocessImage } from "./AI/preprocessImage";
 
-const genAI = new GoogleGenerativeAI(
-  Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY!
-);
+// ⭐ Load API key from EAS secret / .env
+const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+
+if (!apiKey) {
+  console.log("❌ Missing EXPO_PUBLIC_GEMINI_API_KEY");
+}
+
+const genAI = new GoogleGenerativeAI(apiKey!);
 
 export async function analyzeGarmentPro(base64: string) {
   try {
@@ -14,7 +18,7 @@ export async function analyzeGarmentPro(base64: string) {
       `data:image/jpeg;base64,${cleaned}`
     );
 
-    // ⭐ UPDATED MODEL
+    // ⭐ Correct model
     const model = genAI.getGenerativeModel({
       model: "models/gemini-2.5-pro",
     });

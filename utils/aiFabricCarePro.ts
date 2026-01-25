@@ -1,9 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Constants from "expo-constants";
 
-const genAI = new GoogleGenerativeAI(
-  Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY!
-);
+// ⭐ Load API key from EAS secret / .env
+const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+
+if (!apiKey) {
+  console.log("❌ Missing EXPO_PUBLIC_GEMINI_API_KEY");
+}
+
+const genAI = new GoogleGenerativeAI(apiKey!);
 
 /**
  * PRO Fabric Care Generator
@@ -17,7 +21,6 @@ const genAI = new GoogleGenerativeAI(
 export async function generateCareInstructionsPro(fabricName: string) {
   try {
     const model = genAI.getGenerativeModel({
-      // ⭐ UPDATED MODEL
       model: "models/gemini-2.5-pro",
     });
 

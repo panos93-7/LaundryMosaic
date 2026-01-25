@@ -24,11 +24,12 @@
 
     "production": {
       "autoIncrement": true,
+      "channel": "production",
       "android": {
         "buildType": "app-bundle"
       },
       "env": {
-        "GEMINI_API_KEY": "@gemini_api_key"
+        "EXPO_PUBLIC_GEMINI_API_KEY": "@gemini_api_key"
       }
     },
 
