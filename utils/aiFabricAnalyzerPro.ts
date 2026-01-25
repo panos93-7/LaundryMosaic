@@ -1,29 +1,25 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { preprocessImage } from "./AI/preprocessImage";
-
-// ⭐ Load API key from EAS secret / .env
-const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-
-if (!apiKey) {
-  console.log("❌ Missing EXPO_PUBLIC_GEMINI_API_KEY");
-}
-
-const genAI = new GoogleGenerativeAI(apiKey!);
 
 export async function analyzeFabricPro(base64: string) {
   try {
+    // Clean base64 prefix
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
 
+    // Preprocess image (resize, compress, JPEG)
     const { base64: processedBase64, mimeType } = await preprocessImage(
       `data:image/jpeg;base64,${cleaned}`
     );
 
-    // ⭐ Correct model
-    const model = genAI.getGenerativeModel({
-      model: "models/gemini-2.5-pro",
-    });
-
-    const prompt = `
+    // Call Cloudflare Worker
+    const response = await fetch(
+      "https://gemini-proxy.panos-ai.workers.dev",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageBase64: processedBase64,
+          mimeType,
+          prompt: `
 You are a textile and laundry expert. Analyze the fabric in the image and return ONLY valid JSON.
 
 Extract the following fields:
@@ -47,36 +43,19 @@ Return JSON in this exact format:
   },
   "careInstructions": ["...", "..."]
 }
-`;
-
-    const result = await model.generateContent(
-      {
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                inlineData: {
-                  data: processedBase64,
-                  mimeType: mimeType,
-                },
-              },
-              { text: prompt },
-            ],
-          },
-        ],
-      },
-      { apiVersion: "v1" }
+`
+        }),
+      }
     );
 
-    let text = result.response.text() || "";
-    text = text
-      .replace(/```json/gi, "")
-      .replace(/```/g, "")
-      .trim();
+    if (!response.ok) {
+      console.log("❌ Worker error:", await response.text());
+      return fallbackFabricPro();
+    }
 
-    const parsed = JSON.parse(text);
+    const parsed = await response.json();
 
+    // Validate + normalize
     return {
       fabricType: parsed.fabricType ?? "Unknown",
       weave: parsed.weave ?? "Unknown",

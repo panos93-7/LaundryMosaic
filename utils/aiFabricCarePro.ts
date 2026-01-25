@@ -1,16 +1,5 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-// ⭐ Load API key from EAS secret / .env
-const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-
-if (!apiKey) {
-  console.log("❌ Missing EXPO_PUBLIC_GEMINI_API_KEY");
-}
-
-const genAI = new GoogleGenerativeAI(apiKey!);
-
 /**
- * PRO Fabric Care Generator
+ * PRO Fabric Care Generator (via Cloudflare Worker)
  * Generates:
  * - fabricType (normalized)
  * - weave (guessed)
@@ -18,13 +7,17 @@ const genAI = new GoogleGenerativeAI(apiKey!);
  * - recommended wash settings
  * - care instructions
  */
+
 export async function generateCareInstructionsPro(fabricName: string) {
   try {
-    const model = genAI.getGenerativeModel({
-      model: "models/gemini-2.5-pro",
-    });
-
-    const prompt = `
+    // Call Cloudflare Worker
+    const response = await fetch(
+      "https://gemini-proxy.panos-ai.workers.dev",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: `
 You are a textile and laundry expert. Based ONLY on the fabric name "${fabricName}", return structured care information.
 
 Extract the following fields:
@@ -52,19 +45,17 @@ Return ONLY valid JSON in this exact format:
   },
   "careInstructions": ["...", "..."]
 }
-`;
-
-    const result = await model.generateContent(
-      prompt,
-      {
-        apiVersion: "v1",
+`
+        }),
       }
     );
 
-    let text = result.response.text();
-    text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+    if (!response.ok) {
+      console.log("❌ Worker error:", await response.text());
+      return fallbackCare(fabricName);
+    }
 
-    const parsed = JSON.parse(text);
+    const parsed = await response.json();
 
     return {
       fabricType: parsed.fabricType ?? normalizeFabric(fabricName),

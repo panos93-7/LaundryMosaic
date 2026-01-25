@@ -10,6 +10,10 @@ export async function preprocessImage(
   uri: string
 ): Promise<{ base64: string; mimeType: string }> {
   try {
+    if (!uri) {
+      throw new Error("Invalid image URI");
+    }
+
     const manipulated = await ImageManipulator.manipulateAsync(
       uri,
       [{ resize: { width: 1024 } }],
@@ -20,18 +24,15 @@ export async function preprocessImage(
       }
     );
 
-    if (!manipulated.base64) {
-      throw new Error("No base64 returned");
+    if (!manipulated || !manipulated.base64) {
+      throw new Error("ImageManipulator returned no base64 data");
     }
 
     // Always JPEG output
     const mimeType = "image/jpeg";
 
     // Clean base64 (remove accidental prefixes)
-    const cleanedBase64 = manipulated.base64.replace(
-      /^data:.*;base64,/,
-      ""
-    );
+    const cleanedBase64 = manipulated.base64.replace(/^data:.*;base64,/, "");
 
     return {
       base64: cleanedBase64,

@@ -1,29 +1,28 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getProgramFor } from "../constants/programMapping";
 
-// ⭐ Load API key from EAS secret / .env
-const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-
-if (!apiKey) {
-  console.log("❌ Missing EXPO_PUBLIC_GEMINI_API_KEY");
-}
-
-const genAI = new GoogleGenerativeAI(apiKey!);
-
-export async function analyzeImageWithGemini(base64: string, mimeType?: string) {
+export async function analyzeImageWithGemini(
+  base64: string,
+  mimeType?: string
+) {
   try {
+    // Clean base64
     const cleanedBase64 = base64.replace(/^data:.*;base64,/, "").trim();
 
+    // Detect mime type if missing
     const finalMime =
       mimeType ||
       (cleanedBase64.startsWith("/9j/") ? "image/jpeg" : "image/png");
 
-    // ⭐ Correct model
-    const model = genAI.getGenerativeModel({
-      model: "models/gemini-2.5-pro",
-    });
-
-    const prompt = `
+    // Call Cloudflare Worker
+    const response = await fetch(
+      "https://gemini-proxy.panos-ai.workers.dev",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageBase64: cleanedBase64,
+          mimeType: finalMime,
+          prompt: `
 You are an expert laundry assistant. Analyze the image and return ONLY valid JSON.
 
 Extract:
@@ -47,49 +46,27 @@ Return JSON in this exact format:
     "program": "Cotton Colors"
   }
 }
-`;
-
-    const result = await model.generateContent(
-      {
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                inlineData: {
-                  data: cleanedBase64,
-                  mimeType: finalMime,
-                },
-              },
-              { text: prompt },
-            ],
-          },
-        ],
-      },
-      { apiVersion: "v1" }
+`
+        }),
+      }
     );
 
-    let text = result.response.text() || "";
-    text = text
-      .replace(/```json/gi, "")
-      .replace(/```/g, "")
-      .replace(/[\u0000-\u001F]+/g, "")
-      .trim();
-
-    let parsed = null;
-
-    try {
-      parsed = JSON.parse(text);
-    } catch {
-      console.log("❌ Gemini returned non-JSON:", text);
+    if (!response.ok) {
+      console.log("❌ Worker error:", await response.text());
       return null;
     }
+
+    const data = await response.json();
+
+    // Worker returns Gemini JSON directly
+    let parsed = data;
 
     if (!parsed || !parsed.fabric || !parsed.color) {
-      console.log("❌ Gemini returned incomplete JSON:", parsed);
+      console.log("❌ Incomplete JSON:", parsed);
       return null;
     }
 
+    // Auto-fill recommended program if missing
     if (!parsed.recommended) {
       parsed.recommended = getProgramFor(parsed.fabric, parsed.color) || {
         temp: 30,
@@ -104,6 +81,7 @@ Return JSON in this exact format:
       program: parsed.recommended.program ?? "Quick Wash",
     };
 
+    // Normalize stains
     if (!Array.isArray(parsed.stains)) {
       parsed.stains = [];
     }
@@ -114,7 +92,7 @@ Return JSON in this exact format:
 
     return parsed;
   } catch (err) {
-    console.log("❌ Gemini error:", err);
+    console.log("❌ analyzeImageWithGemini error:", err);
     return null;
   }
 }

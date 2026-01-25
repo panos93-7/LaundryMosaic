@@ -1,25 +1,16 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-// ⭐ Load API key from EAS secret / .env
-const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-
-if (!apiKey) {
-  console.log("❌ Missing EXPO_PUBLIC_GEMINI_API_KEY");
-}
-
-const genAI = new GoogleGenerativeAI(apiKey!);
-
 /**
  * Generate step-by-step stain removal instructions
- * based on stain + fabric.
+ * based on stain + fabric using Cloudflare Worker.
  */
 export async function generateStainRemovalTips(stain: string, fabric: string) {
   try {
-    const model = genAI.getGenerativeModel({
-      model: "models/gemini-2.5-pro",
-    });
-
-    const prompt = `
+    const response = await fetch(
+      "https://gemini-proxy.panos-ai.workers.dev",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: `
 You are a professional textile care expert.
 
 Provide a clear, step-by-step stain removal guide for:
@@ -42,19 +33,17 @@ Rules:
     "Step 3..."
   ]
 }
-`;
+`
+        }),
+      }
+    );
 
-    const result = await model.generateContent(prompt);
+    if (!response.ok) {
+      console.log("❌ Worker error:", await response.text());
+      return fallback(stain, fabric);
+    }
 
-    let text = result.response.text() || "";
-
-    // Clean markdown wrappers
-    text = text
-      .replace(/```json/gi, "")
-      .replace(/```/g, "")
-      .trim();
-
-    const parsed = JSON.parse(text);
+    const parsed = await response.json();
 
     return {
       stain: parsed.stain ?? stain,
@@ -65,15 +54,18 @@ Rules:
     };
   } catch (err) {
     console.log("❌ generateStainRemovalTips error:", err);
-
-    return {
-      stain,
-      fabric,
-      steps: [
-        "Blot gently with cold water",
-        "Apply mild detergent",
-        "Rinse and repeat if needed",
-      ],
-    };
+    return fallback(stain, fabric);
   }
+}
+
+function fallback(stain: string, fabric: string) {
+  return {
+    stain,
+    fabric,
+    steps: [
+      "Blot gently with cold water",
+      "Apply mild detergent",
+      "Rinse and repeat if needed",
+    ],
+  };
 }

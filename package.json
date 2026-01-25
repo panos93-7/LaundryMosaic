@@ -1,7 +1,7 @@
 {
   "name": "myapp",
   "main": "index.js",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
-    "@google/generative-ai": "^0.24.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-picker/picker": "2.11.1",
     "@react-navigation/bottom-tabs": "^7.4.0",

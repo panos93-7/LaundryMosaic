@@ -3,7 +3,7 @@
     "name": "LaundryMosaic",
     "slug": "Laundry-Mosaic",
     "scheme": "laundrymosaic",
-    "version": "2.0.14",
+    "version": "2.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,14 +28,14 @@
       "package": "com.panos9393.LaundryMosaic",
       "permissions": [
         "INTERNET",
-        "com.android.vending.BILLING",
+        "com.android.vending.BILLING"
       ],
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "versionCode": 249
+      "versionCode": 259
     },
     "web": {
       "favicon": "./assets/favicon.png"
