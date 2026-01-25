@@ -55,7 +55,27 @@ Return ONLY valid JSON in this exact format:
       return fallbackCare(fabricName);
     }
 
-    const parsed = await response.json();
+    const data = await response.json();
+
+    // -----------------------------
+    //  BULLETPROOF JSON EXTRACTION
+    // -----------------------------
+    let rawText =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    const cleanedJson = rawText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(cleanedJson);
+    } catch (e) {
+      console.log("❌ Failed to parse JSON:", cleanedJson);
+      return fallbackCare(fabricName);
+    }
 
     return {
       fabricType: parsed.fabricType ?? normalizeFabric(fabricName),
@@ -70,6 +90,7 @@ Return ONLY valid JSON in this exact format:
         ? parsed.careInstructions
         : defaultCare(fabricName),
     };
+
   } catch (err) {
     console.log("❌ generateCareInstructionsPro error:", err);
     return fallbackCare(fabricName);

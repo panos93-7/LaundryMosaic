@@ -58,8 +58,26 @@ Return JSON in this exact format:
 
     const data = await response.json();
 
-    // Worker returns Gemini JSON directly
-    let parsed = data;
+    // -----------------------------
+    //  BULLETPROOF JSON EXTRACTION
+    // -----------------------------
+    let rawText =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    // Clean markdown fences
+    const cleaned = rawText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(cleaned);
+    } catch (e) {
+      console.log("❌ Failed to parse JSON:", cleaned);
+      return null;
+    }
 
     if (!parsed || !parsed.fabric || !parsed.color) {
       console.log("❌ Incomplete JSON:", parsed);
@@ -91,6 +109,7 @@ Return JSON in this exact format:
     );
 
     return parsed;
+
   } catch (err) {
     console.log("❌ analyzeImageWithGemini error:", err);
     return null;

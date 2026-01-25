@@ -32,14 +32,31 @@ export async function analyzeImageWithGemini({
       throw new Error("Worker error: " + err);
     }
 
-    const json = await response.json();
+    const data = await response.json();
 
-    // Optional: validate JSON structure
-    if (!json || typeof json !== "object") {
+    // -----------------------------
+    //  BULLETPROOF JSON EXTRACTION
+    // -----------------------------
+    let rawText =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    // Clean markdown fences
+    const cleaned = rawText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(cleaned);
+    } catch (e) {
+      console.error("❌ Failed to parse JSON:", cleaned);
       throw new Error("Invalid JSON returned from Worker");
     }
 
-    return json;
+    return parsed;
+
   } catch (error: any) {
     console.error("Gemini Worker Error:", error.message);
     throw error;
