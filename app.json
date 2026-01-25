@@ -3,7 +3,7 @@
     "name": "LaundryMosaic",
     "slug": "Laundry-Mosaic",
     "scheme": "laundrymosaic",
-    "version": "2.0.12",
+    "version": "2.0.13",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -37,7 +37,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "versionCode": 229
+      "versionCode": 239
     },
     "web": {
       "favicon": "./assets/favicon.png"
