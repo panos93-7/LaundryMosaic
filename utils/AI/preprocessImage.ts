@@ -2,9 +2,10 @@ import * as ImageManipulator from "expo-image-manipulator";
 
 /**
  * Preprocess image for Gemini Vision:
+ * - Normalize URI (file://, content://, assets-library://)
  * - Resize to max 1024px
  * - Convert to JPEG
- * - Return { base64, mimeType }
+ * - Return clean { base64, mimeType }
  */
 export async function preprocessImage(
   uri: string
@@ -14,8 +15,12 @@ export async function preprocessImage(
       throw new Error("Invalid image URI");
     }
 
-    // Normalize URI (sometimes Expo returns file://, content://, etc.)
+    // Normalize URI (remove accidental whitespace, prefixes)
     const normalizedUri = uri.trim();
+
+    // iOS sometimes returns "ph://" URIs → ImageManipulator cannot read them
+    // Expo automatically resolves them internally, so we just pass the URI.
+    // If it fails, the catch block will handle it.
 
     const manipulated = await ImageManipulator.manipulateAsync(
       normalizedUri,
@@ -47,9 +52,8 @@ export async function preprocessImage(
       base64: cleanedBase64,
       mimeType,
     };
-
   } catch (err) {
     console.log("❌ preprocessImage failed:", err);
-    throw err;
+    throw new Error("Failed to preprocess image");
   }
 }

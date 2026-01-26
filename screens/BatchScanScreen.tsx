@@ -94,8 +94,8 @@ export default function BatchScanScreen() {
     try {
       setIsProcessing(true);
 
-      // ⭐ NEW: takePhoto returns base64 directly
-      const photo = await cameraRef.current.takePhoto({
+      // ⭐ CORRECT EXPO CAMERA API
+      const photo = await cameraRef.current.takePictureAsync({
         quality: 0.7,
         base64: true,
       });

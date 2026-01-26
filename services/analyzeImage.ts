@@ -5,15 +5,34 @@ export async function analyzeImageWithGemini(
   mimeType?: string
 ) {
   try {
-    // Clean base64
-    const cleanedBase64 = base64.replace(/^data:.*;base64,/, "").trim();
+    if (!base64 || typeof base64 !== "string") {
+      console.log("❌ Invalid base64 input");
+      return null;
+    }
 
-    // Detect mime type if missing
+    // ---------------------------------------------
+    // CLEAN BASE64
+    // ---------------------------------------------
+    const cleanedBase64 = base64
+      .replace(/^data:.*;base64,/, "")
+      .replace(/\s/g, "")
+      .trim();
+
+    if (cleanedBase64.length < 50) {
+      console.log("❌ Base64 too small or corrupted");
+      return null;
+    }
+
+    // ---------------------------------------------
+    // MIME TYPE DETECTION
+    // ---------------------------------------------
     const finalMime =
       mimeType ||
       (cleanedBase64.startsWith("/9j/") ? "image/jpeg" : "image/png");
 
-    // Call Cloudflare Worker
+    // ---------------------------------------------
+    // CALL CLOUDFLARE WORKER
+    // ---------------------------------------------
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
       {
@@ -58,20 +77,30 @@ Return JSON in this exact format:
 
     const data = await response.json();
 
-    // -----------------------------
-    //  BULLETPROOF JSON EXTRACTION
-    // -----------------------------
+    // ---------------------------------------------
+    // EXTRACT RAW TEXT FROM GEMINI RESPONSE
+    // ---------------------------------------------
     let rawText =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    // Clean markdown fences
+    if (!rawText) {
+      console.log("❌ No text returned from Gemini");
+      return null;
+    }
+
+    // ---------------------------------------------
+    // CLEAN JSON (remove markdown, noise, etc.)
+    // ---------------------------------------------
     const cleaned = rawText
       .replace(/```json/g, "")
       .replace(/```/g, "")
+      .replace(/[\u0000-\u001F]+/g, "") // remove control chars
       .trim();
 
+    // ---------------------------------------------
+    // PARSE JSON SAFELY
+    // ---------------------------------------------
     let parsed;
-
     try {
       parsed = JSON.parse(cleaned);
     } catch (e) {
@@ -79,12 +108,22 @@ Return JSON in this exact format:
       return null;
     }
 
-    if (!parsed || !parsed.fabric || !parsed.color) {
-      console.log("❌ Incomplete JSON:", parsed);
+    if (!parsed || typeof parsed !== "object") {
+      console.log("❌ Parsed JSON invalid:", parsed);
       return null;
     }
 
-    // Auto-fill recommended program if missing
+    // ---------------------------------------------
+    // VALIDATE REQUIRED FIELDS
+    // ---------------------------------------------
+    if (!parsed.fabric || !parsed.color) {
+      console.log("❌ Missing fabric or color:", parsed);
+      return null;
+    }
+
+    // ---------------------------------------------
+    // NORMALIZE RECOMMENDED PROGRAM
+    // ---------------------------------------------
     if (!parsed.recommended) {
       parsed.recommended = getProgramFor(parsed.fabric, parsed.color) || {
         temp: 30,
@@ -99,13 +138,15 @@ Return JSON in this exact format:
       program: parsed.recommended.program ?? "Quick Wash",
     };
 
-    // Normalize stains
+    // ---------------------------------------------
+    // NORMALIZE STAINS
+    // ---------------------------------------------
     if (!Array.isArray(parsed.stains)) {
       parsed.stains = [];
     }
 
     parsed.stains = parsed.stains.map((s: string) =>
-      s.toLowerCase().trim()
+      String(s).toLowerCase().trim()
     );
 
     return parsed;
