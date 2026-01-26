@@ -89,5 +89,26 @@
     "suggest_synthetics": "Synthetik erkannt — verwende das Synthetikprogramm.",
     "suggest_stains": "Einige Artikel haben Flecken — Vorbehandlung empfohlen.",
     "suggest_mixed": "Gemischte Ladung erkannt — verwende ein schonendes Mischprogramm."
-  }
+  },
+  "features": {
+  "aiSmartScan": "AI Smart Scan",
+  "batchScan": "Mehrfachscan",
+  "smartWardrobe": "Intelligenter Kleiderschrank",
+  "customFabrics": "Benutzerdefinierte Stoffe",
+  "planner": "Planer"
+ },
+ "planner": {
+  "title": "Waschplaner",
+  "viewHistory": "Verlauf anzeigen",
+  "openCalendar": "Kalender öffnen",
+  "description": "Organisiere deine wöchentlichen Waschgänge, setze Erinnerungen und behalte deine Routine im Blick.",
+  "addNewWash": "Neuen Waschgang hinzufügen",
+  "washesForDate": "{{date}} Waschgänge",
+  "noWashes": "Keine Waschgänge für diesen Tag.",
+  "deleteTitle": "Waschgang löschen",
+  "deleteMessage": "Bist du sicher?",
+  "cancel": "Abbrechen",
+  "delete": "Löschen",
+  "washSuffix": "Waschgang"
+ }
 }

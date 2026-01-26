@@ -89,5 +89,26 @@
     "suggest_synthetics": "Sentetik tespit edildi — Sentetik programını kullanın.",
     "suggest_stains": "Bazı ürünlerde lekeler var — ön işlem önerilir.",
     "suggest_mixed": "Karışık yük tespit edildi — hassas karışık programı kullanın."
-  }
+  },
+  "features": {
+  "aiSmartScan": "AI Akıllı Tarama",
+  "batchScan": "Toplu Tarama",
+  "smartWardrobe": "Akıllı Gardırop",
+  "customFabrics": "Özel Kumaşlar",
+  "planner": "Planlayıcı"
+ },
+ "planner": {
+  "title": "Çamaşır Planlayıcı",
+  "viewHistory": "Geçmişi Görüntüle",
+  "openCalendar": "Takvimi Aç",
+  "description": "Haftalık yıkamalarını düzenle, hatırlatıcılar ayarla ve rutini kontrol altında tut.",
+  "addNewWash": "Yeni Yıkama Ekle",
+  "washesForDate": "{{date}} Yıkama",
+  "noWashes": "Bu gün için yıkama yok.",
+  "deleteTitle": "Yıkamayı Sil",
+  "deleteMessage": "Emin misin?",
+  "cancel": "İptal",
+  "delete": "Sil",
+  "washSuffix": "yıkama"
+ }
 }

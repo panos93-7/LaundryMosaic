@@ -89,5 +89,26 @@
     "suggest_synthetics": "Rilevati sintetici — usa il programma Sintetici.",
     "suggest_stains": "Alcuni articoli hanno macchie — valuta un pretrattamento.",
     "suggest_mixed": "Carico misto rilevato — usa un programma delicato per tessuti misti."
-  }
+  },
+  "features": {
+  "aiSmartScan": "Scansione Intelligente AI",
+  "batchScan": "Scansione Multipla",
+  "smartWardrobe": "Guardaroba Intelligente",
+  "customFabrics": "Tessuti Personalizzati",
+  "planner": "Planner"
+ },
+ "planner": {
+  "title": "Pianificatore di Lavaggio",
+  "viewHistory": "Visualizza Cronologia",
+  "openCalendar": "Apri Calendario",
+  "description": "Organizza i tuoi lavaggi settimanali, imposta promemoria e mantieni la tua routine.",
+  "addNewWash": "Aggiungi Nuovo Lavaggio",
+  "washesForDate": "{{date}} Lavaggi",
+  "noWashes": "Nessun lavaggio per questo giorno.",
+  "deleteTitle": "Elimina Lavaggio",
+  "deleteMessage": "Sei sicuro?",
+  "cancel": "Annulla",
+  "delete": "Elimina",
+  "washSuffix": "lavaggio"
+ }
 }

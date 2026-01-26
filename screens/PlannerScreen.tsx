@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddWashModal from "../components/AddWashModal";
+import i18n from "../i18n";
 import { useUserStore } from "../store/userStore";
 import { cancelReminder, scheduleSmartReminder } from "../utils/smartReminder";
 
@@ -28,8 +29,8 @@ export default function PlannerScreen({ navigation }: any) {
   });
 
   const isPremium = useUserStore(
-  (s) => s.isPremiumMonthly || s.isPremiumAnnual || s.isPro
-);
+    (s) => s.isPremiumMonthly || s.isPremiumAnnual || s.isPro
+  );
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -97,17 +98,21 @@ export default function PlannerScreen({ navigation }: any) {
   }
 
   async function handleDeleteWash(wash: any) {
-    Alert.alert("Delete Wash", "Are you sure?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: async () => {
-          if (wash.reminderId) await cancelReminder(wash.reminderId);
-          setPlans((prev) => prev.filter((p) => p !== wash));
+    Alert.alert(
+      String(i18n.t("planner.deleteTitle")),
+      String(i18n.t("planner.deleteMessage")),
+      [
+        { text: String(i18n.t("planner.cancel")), style: "cancel" },
+        {
+          text: String(i18n.t("planner.delete")),
+          style: "destructive",
+          onPress: async () => {
+            if (wash.reminderId) await cancelReminder(wash.reminderId);
+            setPlans((prev) => prev.filter((p) => p !== wash));
+          },
         },
-      },
-    ]);
+      ]
+    );
   }
 
   const washesForSelectedDay = plans.filter(
@@ -117,10 +122,11 @@ export default function PlannerScreen({ navigation }: any) {
       p.year === selectedDay.year
   );
 
+  const formattedDate = `${selectedDay.day}/${selectedDay.month + 1}/${selectedDay.year}`;
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0d0d0d" }}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 24 }}>
-        
         {/* PREMIUM HEADER */}
         <View style={{ marginBottom: 28 }}>
           <Text
@@ -131,7 +137,7 @@ export default function PlannerScreen({ navigation }: any) {
               marginBottom: 20,
             }}
           >
-            Laundry Planner
+            {String(i18n.t("planner.title"))}
           </Text>
 
           {/* HISTORY BUTTON */}
@@ -162,7 +168,7 @@ export default function PlannerScreen({ navigation }: any) {
                   textAlign: "center",
                 }}
               >
-                View History
+                {String(i18n.t("planner.viewHistory"))}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -194,14 +200,14 @@ export default function PlannerScreen({ navigation }: any) {
                   textAlign: "center",
                 }}
               >
-                Open Calendar
+                {String(i18n.t("planner.openCalendar"))}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
 
         <Text style={{ color: "#bbb", marginBottom: 28 }}>
-          Organize your weekly washes, set reminders, and stay on top of your laundry routine.
+          {String(i18n.t("planner.description"))}
         </Text>
 
         {/* ADD NEW WASH BUTTON */}
@@ -229,7 +235,7 @@ export default function PlannerScreen({ navigation }: any) {
                   textAlign: "center",
                 }}
               >
-                Add New Wash
+                {String(i18n.t("planner.addNewWash"))}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -244,7 +250,7 @@ export default function PlannerScreen({ navigation }: any) {
             marginBottom: 16,
           }}
         >
-          {selectedDay.day}/{selectedDay.month + 1}/{selectedDay.year} Washes
+          {String(i18n.t("planner.washesForDate", { date: formattedDate }))}
         </Text>
 
         {/* EMPTY STATE */}
@@ -261,7 +267,7 @@ export default function PlannerScreen({ navigation }: any) {
             }}
           >
             <Text style={{ color: "#ccc", fontSize: 16 }}>
-              No washes for this day.
+              {String(i18n.t("planner.noWashes"))}
             </Text>
           </View>
         )}
@@ -289,7 +295,7 @@ export default function PlannerScreen({ navigation }: any) {
             </Text>
             <Text style={{ color: "#bbb", marginTop: 4 }}>{plan.time}</Text>
             <Text style={{ color: "#888", marginTop: 4 }}>
-              {plan.type} wash
+              {plan.type} {String(i18n.t("planner.washSuffix"))}
             </Text>
           </TouchableOpacity>
         ))}

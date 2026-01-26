@@ -89,5 +89,26 @@
     "suggest_synthetics": "Synthetics load detected — use Synthetics program.",
     "suggest_stains": "Some items have stains — consider pre-treatment.",
     "suggest_mixed": "Mixed load detected — use a gentle mixed program."
-  }
+  },
+  "features": {
+  "aiSmartScan": "AI Smart Scan",
+  "batchScan": "Batch Scan",
+  "smartWardrobe": "Smart Wardrobe",
+  "customFabrics": "Custom Fabrics",
+  "planner": "Planner"
+ },
+ "planner": {
+  "title": "Laundry Planner",
+  "viewHistory": "View History",
+  "openCalendar": "Open Calendar",
+  "description": "Organize your weekly washes, set reminders, and stay on top of your laundry routine.",
+  "addNewWash": "Add New Wash",
+  "washesForDate": "{{date}} Washes",
+  "noWashes": "No washes for this day.",
+  "deleteTitle": "Delete Wash",
+  "deleteMessage": "Are you sure?",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "washSuffix": "wash"
+ }
 }

@@ -89,5 +89,26 @@
     "suggest_synthetics": "Se detectaron sintéticos — usa el programa Sintéticos.",
     "suggest_stains": "Algunos artículos tienen manchas — considera un pretratamiento.",
     "suggest_mixed": "Carga mixta detectada — usa un programa suave para mezclas."
-  }
+  },
+  "features": {
+  "aiSmartScan": "Escaneo Inteligente AI",
+  "batchScan": "Escaneo por Lotes",
+  "smartWardrobe": "Armario Inteligente",
+  "customFabrics": "Telas Personalizadas",
+  "planner": "Planificador"
+ },
+ "planner": {
+  "title": "Planificador de Lavado",
+  "viewHistory": "Ver Historial",
+  "openCalendar": "Abrir Calendario",
+  "description": "Organiza tus lavados semanales, configura recordatorios y mantén tu rutina al día.",
+  "addNewWash": "Agregar Nuevo Lavado",
+  "washesForDate": "{{date}} Lavados",
+  "noWashes": "No hay lavados para este día.",
+  "deleteTitle": "Eliminar Lavado",
+  "deleteMessage": "¿Estás seguro?",
+  "cancel": "Cancelar",
+  "delete": "Eliminar",
+  "washSuffix": "lavado"
+ }
 }
