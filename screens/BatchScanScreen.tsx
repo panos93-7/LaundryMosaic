@@ -435,4 +435,3 @@ export default function BatchScanScreen() {
     </LinearGradient>
   );
 }
-// FORCE OTA REBUILD
