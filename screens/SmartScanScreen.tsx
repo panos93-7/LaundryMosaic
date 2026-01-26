@@ -181,12 +181,7 @@ export default function SmartScanScreen({ navigation }: any) {
           </Text>
 
           <TouchableOpacity
-            onPress={() =>
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "HomeScreen" }],
-              })
-            }
+          onPress={() => navigation.navigate("Home")}
           >
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
           </TouchableOpacity>
