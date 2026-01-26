@@ -7,7 +7,6 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { analyzeImageWithGemini } from "../services/analyzeImage";
-import { preprocessImage } from "../utils/AI/preprocessImage";
 
 // ---------------------------------------------
 // TYPES
@@ -95,12 +94,18 @@ export default function BatchScanScreen() {
     try {
       setIsProcessing(true);
 
+      // ⭐ NEW: takePhoto returns base64 directly
       const photo = await cameraRef.current.takePhoto({
         quality: 0.7,
-        skipMetadata: true,
+        base64: true,
       });
 
-      const { base64, mimeType } = await preprocessImage(photo.uri);
+      if (!photo?.base64) {
+        throw new Error("Camera did not return base64");
+      }
+
+      const base64 = photo.base64;
+      const mimeType = "image/jpeg";
 
       const aiResult = await analyzeImageWithGemini(base64, mimeType);
 
