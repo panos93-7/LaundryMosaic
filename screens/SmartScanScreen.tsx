@@ -20,6 +20,7 @@ import { analyzeImageWithGemini } from "../services/analyzeImage";
 import { preprocessImage } from "../utils/AI/preprocessImage";
 import { generateStainRemovalTips } from "../utils/aiStainRemoval";
 
+import i18n from "../i18n";
 import { useUserStore } from "../store/userStore";
 
 export default function SmartScanScreen({ navigation }: any) {
@@ -95,7 +96,7 @@ export default function SmartScanScreen({ navigation }: any) {
       const aiResult = await analyzeImageWithGemini(base64, mimeType);
 
       if (!aiResult) {
-        setError("AI could not analyze the image.");
+        setError(i18n.t("smartScan.errorMessage"));
         setLoading(false);
         return;
       }
@@ -112,7 +113,7 @@ export default function SmartScanScreen({ navigation }: any) {
 
       setResult({ ...aiResult, stainTips });
     } catch {
-      setError("AI could not analyze the image.");
+      setError(i18n.t("smartScan.errorMessage"));
     }
 
     setLoading(false);
@@ -130,9 +131,9 @@ export default function SmartScanScreen({ navigation }: any) {
     const now = new Date();
 
     const newItem = {
-      title: result.fabric || "Laundry Item",
-      type: result.fabric || "General",
-      time: "Any time",
+      title: result.fabric || i18n.t("smartScan.plannerDefaultTitle"),
+      type: result.fabric || i18n.t("smartScan.plannerDefaultType"),
+      time: i18n.t("smartScan.plannerAnyTime"),
       day: now.getDate(),
       month: now.getMonth(),
       year: now.getFullYear(),
@@ -153,15 +154,13 @@ export default function SmartScanScreen({ navigation }: any) {
 
     navigation.navigate("Planner");
   };
-
-  return (
+return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         colors={["#0f0c29", "#302b63", "#24243e"]}
         style={{ flex: 1, padding: 20 }}
       >
-
-        {/* ⭐ NEW FIXED HEADER (like BatchScan) */}
+        {/* ⭐ HEADER */}
         <View
           style={{
             paddingBottom: 10,
@@ -177,13 +176,13 @@ export default function SmartScanScreen({ navigation }: any) {
               color: "#fff",
             }}
           >
-            AI Smart Scan
+            {i18n.t("smartScan.title")}
           </Text>
 
-          <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
-          >
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+              {i18n.t("smartScan.close")}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -200,7 +199,7 @@ export default function SmartScanScreen({ navigation }: any) {
               }}
             >
               <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
-                📸 Take Photo
+                📸 {i18n.t("smartScan.takePhoto")}
               </Text>
             </TouchableOpacity>
 
@@ -213,12 +212,13 @@ export default function SmartScanScreen({ navigation }: any) {
               }}
             >
               <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
-                🖼️ Choose from Gallery
+                🖼️ {i18n.t("smartScan.chooseFromGallery")}
               </Text>
             </TouchableOpacity>
           </>
         )}
- {/* RESULT VIEW */}
+
+        {/* RESULT VIEW */}
         {image && (
           <ScrollView
             style={{ flex: 1 }}
@@ -266,7 +266,7 @@ export default function SmartScanScreen({ navigation }: any) {
                       marginBottom: 10,
                     }}
                   >
-                    ❌ AI Scan Failed
+                    ❌ {i18n.t("smartScan.errorTitle")}
                   </Text>
 
                   <Text
@@ -276,8 +276,7 @@ export default function SmartScanScreen({ navigation }: any) {
                       marginBottom: 20,
                     }}
                   >
-                    The AI could not analyze the image. Try again with a clearer
-                    photo.
+                    {i18n.t("smartScan.errorMessage")}
                   </Text>
 
                   <TouchableOpacity
@@ -296,7 +295,7 @@ export default function SmartScanScreen({ navigation }: any) {
                         fontWeight: "600",
                       }}
                     >
-                      Retry Scan
+                      {i18n.t("smartScan.retry")}
                     </Text>
                   </TouchableOpacity>
 
@@ -317,7 +316,7 @@ export default function SmartScanScreen({ navigation }: any) {
                         fontWeight: "600",
                       }}
                     >
-                      Take Another Photo
+                      {i18n.t("smartScan.takeAnother")}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -337,33 +336,39 @@ export default function SmartScanScreen({ navigation }: any) {
                   }}
                 >
                   <Animated.Text
-                    entering={FadeIn.delay(100)}
-                    style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
-                  >
-                    🧵 Fabric: {result.fabric}
-                  </Animated.Text>
+  entering={FadeIn.delay(100)}
+  style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
+>
+  🧵 {String(i18n.t("smartScan.fabric"))}:{" "}
+  {String(i18n.t(`fabricValues.${result?.fabric ?? "cotton"}`))}
+</Animated.Text>
 
-                  <Animated.Text
-                    entering={FadeIn.delay(200)}
-                    style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
-                  >
-                    🎨 Color: {result.color}
-                  </Animated.Text>
+<Animated.Text
+  entering={FadeIn.delay(200)}
+  style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
+>
+  🎨 {String(i18n.t("smartScan.color"))}:{" "}
+  {String(i18n.t(`colorValues.${result?.color ?? "white"}`))}
+</Animated.Text>
 
                   <Animated.Text
                     entering={FadeIn.delay(300)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
-                    🧽 Stains: {result.stains.join(", ") || "None detected"}
+                    🧽 {i18n.t("smartScan.stains")}:{" "}
+                    {result.stains?.length > 0
+                      ? result.stains.join(", ")
+                      : i18n.t("smartScan.noStains")}
                   </Animated.Text>
 
                   <Animated.Text
                     entering={FadeIn.delay(400)}
                     style={{ color: "#fff", fontSize: 18 }}
                   >
-                    ⭐ Recommended Program: {result.recommended.program} (
+                    ⭐ {i18n.t("smartScan.recommendedProgram")}:{" "}
+                    {result.recommended.program} (
                     {result.recommended.temp ?? "?"}°C /{" "}
-                    {result.recommended.spin ?? "?"} rpm)
+                    {result.recommended.spin ?? "?"} {i18n.t("rpm")})
                   </Animated.Text>
 
                   {/* CARE INSTRUCTIONS */}
@@ -377,7 +382,7 @@ export default function SmartScanScreen({ navigation }: any) {
                           marginBottom: 10,
                         }}
                       >
-                        🧼 Care Instructions
+                        🧼 {i18n.t("smartScan.careInstructions")}
                       </Text>
 
                       {result.careInstructions.map((line: string, i: number) => (
@@ -406,7 +411,7 @@ export default function SmartScanScreen({ navigation }: any) {
                           marginBottom: 10,
                         }}
                       >
-                        🧴 Stain Removal Tips
+                        🧴 {i18n.t("smartScan.stainTips")}
                       </Text>
 
                       {result.stainTips.map((tip: any, i: number) => (
@@ -465,11 +470,11 @@ export default function SmartScanScreen({ navigation }: any) {
                         fontWeight: "600",
                       }}
                     >
-                      Take Another Photo
+                      {i18n.t("smartScan.takeAnother")}
                     </Text>
                   </TouchableOpacity>
 
-                  {/* CLOSE RESULT (RESET STATE) */}
+                  {/* CLOSE RESULT */}
                   <TouchableOpacity
                     onPress={resetState}
                     style={{
@@ -487,7 +492,7 @@ export default function SmartScanScreen({ navigation }: any) {
                         fontWeight: "700",
                       }}
                     >
-                      Close
+                      {i18n.t("smartScan.close")}
                     </Text>
                   </TouchableOpacity>
 
@@ -509,7 +514,7 @@ export default function SmartScanScreen({ navigation }: any) {
                         fontWeight: "700",
                       }}
                     >
-                      Add to Planner automatically
+                      {i18n.t("smartScan.addToPlanner")}
                     </Text>
                   </TouchableOpacity>
                 </Animated.View>

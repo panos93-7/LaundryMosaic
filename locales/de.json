@@ -43,5 +43,51 @@
     "darkSynthetic": "Synthetik Dunkel",
     "woolHand": "Wolle / Handwäsche",
     "delicates": "Feinwäsche"
+  },
+
+  "smartScan": {
+    "title": "AI Smart Scan",
+    "close": "Schließen",
+
+    "takePhoto": "Foto aufnehmen",
+    "chooseFromGallery": "Aus Galerie wählen",
+
+    "errorTitle": "Analyse fehlgeschlagen",
+    "errorMessage": "Die KI konnte das Bild nicht analysieren. Bitte versuche es mit einem klareren Foto erneut.",
+    "retry": "Erneut scannen",
+    "takeAnother": "Neues Foto aufnehmen",
+
+    "fabric": "Stoff",
+    "color": "Farbe",
+    "stains": "Flecken",
+    "noStains": "Keine erkannt",
+    "recommendedProgram": "Empfohlenes Programm",
+    "careInstructions": "Pflegehinweise",
+    "stainTips": "Fleckenentfernungstipps",
+
+    "addToPlanner": "Automatisch zum Planer hinzufügen",
+
+    "plannerDefaultTitle": "Wäsche",
+    "plannerDefaultType": "Allgemein",
+    "plannerAnyTime": "Jederzeit"
+  },
+
+  "batchScan": {
+    "title": "Mehrfachscan",
+    "close": "Schließen",
+    "analyzing": "Analysiere…",
+    "itemsDetected": "Erkannte Artikel:",
+    "conflicts": "Konflikte",
+    "suggestions": "Vorschläge",
+    "scanAgain": "Erneut scannen",
+
+    "conflict_wool": "Wollartikel sollten separat gewaschen werden.",
+    "conflict_delicate": "Feinwäsche sollte nicht mit anderen Stoffen gemischt werden.",
+    "conflict_cotton_wool": "Baumwolle und Wolle benötigen unterschiedliche Temperaturen.",
+
+    "suggest_cotton": "Perfekte Ladung für das Programm Baumwolle Bunt.",
+    "suggest_synthetics": "Synthetik erkannt — verwende das Synthetikprogramm.",
+    "suggest_stains": "Einige Artikel haben Flecken — Vorbehandlung empfohlen.",
+    "suggest_mixed": "Gemischte Ladung erkannt — verwende ein schonendes Mischprogramm."
   }
 }

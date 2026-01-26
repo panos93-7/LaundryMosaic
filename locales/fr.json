@@ -43,6 +43,51 @@
     "darkSynthetic": "Synthétiques Foncés",
     "woolHand": "Laine / Lavage à la main",
     "delicates": "Délicats"
+  },
+
+  "smartScan": {
+    "title": "Analyse Intelligente AI",
+    "close": "Fermer",
+
+    "takePhoto": "Prendre une photo",
+    "chooseFromGallery": "Choisir depuis la galerie",
+
+    "errorTitle": "Échec de l'analyse",
+    "errorMessage": "L'IA n'a pas pu analyser l'image. Réessayez avec une photo plus claire.",
+    "retry": "Réessayer l'analyse",
+    "takeAnother": "Prendre une autre photo",
+
+    "fabric": "Tissu",
+    "color": "Couleur",
+    "stains": "Taches",
+    "noStains": "Aucune détectée",
+    "recommendedProgram": "Programme recommandé",
+    "careInstructions": "Instructions d'entretien",
+    "stainTips": "Conseils pour enlever les taches",
+
+    "addToPlanner": "Ajouter automatiquement au planificateur",
+
+    "plannerDefaultTitle": "Vêtement",
+    "plannerDefaultType": "Général",
+    "plannerAnyTime": "N'importe quand"
+  },
+
+  "batchScan": {
+    "title": "Analyse par lot",
+    "close": "Fermer",
+    "analyzing": "Analyse…",
+    "itemsDetected": "Articles détectés :",
+    "conflicts": "Conflits",
+    "suggestions": "Suggestions",
+    "scanAgain": "Analyser à nouveau",
+
+    "conflict_wool": "Les articles en laine doivent être lavés séparément.",
+    "conflict_delicate": "Les articles délicats ne doivent pas être mélangés avec d'autres tissus.",
+    "conflict_cotton_wool": "Le coton et la laine nécessitent des températures différentes.",
+
+    "suggest_cotton": "Charge idéale pour le programme Coton Couleurs.",
+    "suggest_synthetics": "Synthétiques détectés — utilisez le programme Synthétiques.",
+    "suggest_stains": "Certains articles ont des taches — envisagez un prétraitement.",
+    "suggest_mixed": "Charge mixte détectée — utilisez un programme doux pour mélanges."
   }
 }
-

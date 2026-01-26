@@ -43,5 +43,51 @@
     "darkSynthetic": "Sintéticos Oscuros",
     "woolHand": "Lana / A Mano",
     "delicates": "Delicados"
+  },
+
+  "smartScan": {
+    "title": "Escaneo Inteligente AI",
+    "close": "Cerrar",
+
+    "takePhoto": "Tomar Foto",
+    "chooseFromGallery": "Elegir de la Galería",
+
+    "errorTitle": "Error en el Análisis",
+    "errorMessage": "La IA no pudo analizar la imagen. Intenta nuevamente con una foto más clara.",
+    "retry": "Reintentar Escaneo",
+    "takeAnother": "Tomar Otra Foto",
+
+    "fabric": "Tela",
+    "color": "Color",
+    "stains": "Manchas",
+    "noStains": "Ninguna detectada",
+    "recommendedProgram": "Programa Recomendado",
+    "careInstructions": "Instrucciones de Cuidado",
+    "stainTips": "Consejos para Quitar Manchas",
+
+    "addToPlanner": "Agregar al Planificador automáticamente",
+
+    "plannerDefaultTitle": "Prenda",
+    "plannerDefaultType": "General",
+    "plannerAnyTime": "En cualquier momento"
+  },
+
+  "batchScan": {
+    "title": "Escaneo por Lotes",
+    "close": "Cerrar",
+    "analyzing": "Analizando…",
+    "itemsDetected": "Artículos detectados:",
+    "conflicts": "Conflictos",
+    "suggestions": "Sugerencias",
+    "scanAgain": "Escanear Nuevamente",
+
+    "conflict_wool": "Las prendas de lana deben lavarse por separado.",
+    "conflict_delicate": "Las prendas delicadas no deben mezclarse con otros tejidos.",
+    "conflict_cotton_wool": "El algodón y la lana requieren diferentes temperaturas.",
+
+    "suggest_cotton": "Carga ideal para el programa Algodón Colores.",
+    "suggest_synthetics": "Se detectaron sintéticos — usa el programa Sintéticos.",
+    "suggest_stains": "Algunos artículos tienen manchas — considera un pretratamiento.",
+    "suggest_mixed": "Carga mixta detectada — usa un programa suave para mezclas."
   }
 }

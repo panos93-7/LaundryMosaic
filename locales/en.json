@@ -43,9 +43,51 @@
     "darkSynthetic": "Dark Synthetic",
     "woolHand": "Wool / Hand Wash",
     "delicates": "Delicates"
+  },
+
+  "smartScan": {
+    "title": "AI Smart Scan",
+    "close": "Close",
+
+    "takePhoto": "Take Photo",
+    "chooseFromGallery": "Choose from Gallery",
+
+    "errorTitle": "AI Scan Failed",
+    "errorMessage": "The AI could not analyze the image. Try again with a clearer photo.",
+    "retry": "Retry Scan",
+    "takeAnother": "Take Another Photo",
+
+    "fabric": "Fabric",
+    "color": "Color",
+    "stains": "Stains",
+    "noStains": "None detected",
+    "recommendedProgram": "Recommended Program",
+    "careInstructions": "Care Instructions",
+    "stainTips": "Stain Removal Tips",
+
+    "addToPlanner": "Add to Planner automatically",
+
+    "plannerDefaultTitle": "Laundry Item",
+    "plannerDefaultType": "General",
+    "plannerAnyTime": "Any time"
+  },
+
+  "batchScan": {
+    "title": "Batch Scan",
+    "close": "Close",
+    "analyzing": "Analyzing…",
+    "itemsDetected": "Items detected:",
+    "conflicts": "Conflicts",
+    "suggestions": "Suggestions",
+    "scanAgain": "Scan Again",
+
+    "conflict_wool": "Wool items should be washed separately.",
+    "conflict_delicate": "Delicate items should not be mixed with other fabrics.",
+    "conflict_cotton_wool": "Cotton and wool require different temperatures.",
+
+    "suggest_cotton": "Perfect load for Cotton Colors program.",
+    "suggest_synthetics": "Synthetics load detected — use Synthetics program.",
+    "suggest_stains": "Some items have stains — consider pre-treatment.",
+    "suggest_mixed": "Mixed load detected — use a gentle mixed program."
   }
 }
-
-
-
-

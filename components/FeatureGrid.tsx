@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
 import { Events } from "../analytics/events";
+import i18n from "../i18n";
 import { useUserStore } from "../store/userStore";
 import { FeatureButton } from "./FeatureButton";
 
-export function FeatureGrid({ isDarkMode }: any) {
+export function FeatureGrid({ isDarkMode, language }: any) {
   const navigation = useNavigation<any>();
   const userTier = useUserStore((s) => s.userTier);
   const isPremiumUser = userTier !== "free";
@@ -23,7 +24,7 @@ export function FeatureGrid({ isDarkMode }: any) {
     }
 
     Events.featureUnlockedEntry(featureName, userTier);
-    navigation.navigate(screen);
+    navigation.navigate(screen, { language });
   };
 
   return (
@@ -31,12 +32,12 @@ export function FeatureGrid({ isDarkMode }: any) {
 
       {/* AI SMART SCAN — PREMIUM */}
       <FeatureButton
-        title="AI Smart Scan"
+        title={i18n.t("features.aiSmartScan")}
         icon="🔍"
         large
         badgeType="Premium"
         isDarkMode={isDarkMode}
-        userTier={userTier}   // ⭐ FIX
+        userTier={userTier}
         onPress={() =>
           handleFeaturePress("ai_smart_scan", "SmartScan", true)
         }
@@ -52,11 +53,11 @@ export function FeatureGrid({ isDarkMode }: any) {
       >
         <View style={{ width: "48%" }}>
           <FeatureButton
-            title="Batch Scan"
+            title={i18n.t("features.batchScan")}
             icon="🧺"
             badgeType="Pro"
             isDarkMode={isDarkMode}
-            userTier={userTier}   // ⭐ FIX
+            userTier={userTier}
             onPress={() =>
               handleFeaturePress("batch_scan", "BatchScan", true)
             }
@@ -65,11 +66,11 @@ export function FeatureGrid({ isDarkMode }: any) {
 
         <View style={{ width: "48%" }}>
           <FeatureButton
-            title="Smart Wardrobe"
+            title={i18n.t("features.smartWardrobe")}
             icon="👕"
             badgeType="Pro"
             isDarkMode={isDarkMode}
-            userTier={userTier}   // ⭐ FIX
+            userTier={userTier}
             onPress={() =>
               handleFeaturePress("smart_wardrobe", "Wardrobe", true)
             }
@@ -87,11 +88,11 @@ export function FeatureGrid({ isDarkMode }: any) {
       >
         <View style={{ width: "48%" }}>
           <FeatureButton
-            title="Planner"
+            title={i18n.t("features.planner")}
             icon="📅"
             badgeType={null}
             isDarkMode={isDarkMode}
-            userTier={userTier}   // ⭐ FIX
+            userTier={userTier}
             onPress={() =>
               handleFeaturePress("planner", "Planner", false)
             }
@@ -100,11 +101,11 @@ export function FeatureGrid({ isDarkMode }: any) {
 
         <View style={{ width: "48%" }}>
           <FeatureButton
-            title="Custom Fabrics"
+            title={i18n.t("features.customFabrics")}
             icon="🧵"
             badgeType="Pro"
             isDarkMode={isDarkMode}
-            userTier={userTier}   // ⭐ FIX
+            userTier={userTier}
             onPress={() =>
               handleFeaturePress("custom_fabrics", "CustomFabrics", true)
             }

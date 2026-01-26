@@ -43,5 +43,51 @@
     "darkSynthetic": "Sentetik Koyu",
     "woolHand": "Yün / Elde Yıkama",
     "delicates": "Hassas"
+  },
+
+  "smartScan": {
+    "title": "AI Akıllı Tarama",
+    "close": "Kapat",
+
+    "takePhoto": "Fotoğraf Çek",
+    "chooseFromGallery": "Galeriden Seç",
+
+    "errorTitle": "Analiz Başarısız",
+    "errorMessage": "AI görüntüyü analiz edemedi. Daha net bir fotoğrafla tekrar deneyin.",
+    "retry": "Tekrar Tara",
+    "takeAnother": "Yeni Fotoğraf Çek",
+
+    "fabric": "Kumaş",
+    "color": "Renk",
+    "stains": "Lekeler",
+    "noStains": "Tespit edilmedi",
+    "recommendedProgram": "Önerilen Program",
+    "careInstructions": "Bakım Talimatları",
+    "stainTips": "Leke Çıkarma İpuçları",
+
+    "addToPlanner": "Planlayıcıya otomatik ekle",
+
+    "plannerDefaultTitle": "Giysi",
+    "plannerDefaultType": "Genel",
+    "plannerAnyTime": "Herhangi bir zaman"
+  },
+
+  "batchScan": {
+    "title": "Toplu Tarama",
+    "close": "Kapat",
+    "analyzing": "Analiz ediliyor…",
+    "itemsDetected": "Tespit edilen öğeler:",
+    "conflicts": "Çakışmalar",
+    "suggestions": "Öneriler",
+    "scanAgain": "Tekrar Tara",
+
+    "conflict_wool": "Yünlü ürünler ayrı yıkanmalıdır.",
+    "conflict_delicate": "Hassas kumaşlar diğerleriyle karıştırılmamalıdır.",
+    "conflict_cotton_wool": "Pamuklu ve yün farklı sıcaklık gerektirir.",
+
+    "suggest_cotton": "Pamuklu Renkli programı için ideal yük.",
+    "suggest_synthetics": "Sentetik tespit edildi — Sentetik programını kullanın.",
+    "suggest_stains": "Bazı ürünlerde lekeler var — ön işlem önerilir.",
+    "suggest_mixed": "Karışık yük tespit edildi — hassas karışık programı kullanın."
   }
 }

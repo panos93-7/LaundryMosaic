@@ -718,8 +718,11 @@ export default function HomeScreen({ navigation }: any) {
 
           {/* FEATURE GRID WRAPPER — ⭐ FIX #2 */}
           <View style={{ width: "100%", marginTop: 20 }}>
-            <FeatureGrid isDarkMode={isDarkMode} navigation={navigation} />
-          </View>
+  <FeatureGrid 
+    isDarkMode={isDarkMode} 
+    language={language}   // ⭐ ADD THIS
+  />
+</View>
 
           <View style={{ height: 80 }} />
         </ScrollView>

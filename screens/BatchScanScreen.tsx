@@ -12,6 +12,7 @@ import {
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import i18n from "../i18n";
 import { analyzeImageWithGemini } from "../services/analyzeImage";
 import { preprocessImage } from "../utils/AI/preprocessImage";
 
@@ -22,7 +23,6 @@ export default function BatchScanScreen() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<any>(null);
 
-  // ⭐ Open camera immediately
   useEffect(() => {
     openCamera();
   }, []);
@@ -53,7 +53,6 @@ export default function BatchScanScreen() {
         return;
       }
 
-      // ⭐ SUPPORT SINGLE + MULTI ITEM
       let items: any[] = [];
 
       if (Array.isArray(ai.items)) {
@@ -62,7 +61,6 @@ export default function BatchScanScreen() {
         items = [ai];
       }
 
-      // ⭐ GROUPING
       const grouped = items.reduce((acc: any, item: any) => {
         const fabric = item.fabric || "Unknown";
 
@@ -80,39 +78,37 @@ export default function BatchScanScreen() {
         return acc;
       }, {});
 
-      // ⭐ COMPATIBILITY
       const fabrics = Object.keys(grouped);
       const conflicts: string[] = [];
 
       if (fabrics.includes("wool") && fabrics.some(f => f !== "wool")) {
-        conflicts.push("Wool items should be washed separately.");
+        conflicts.push(i18n.t("batchScan.conflict_wool"));
       }
 
       if (fabrics.includes("delicate") && fabrics.some(f => f !== "delicate")) {
-        conflicts.push("Delicate items should not be mixed with other fabrics.");
+        conflicts.push(i18n.t("batchScan.conflict_delicate"));
       }
 
       if (fabrics.includes("cotton") && fabrics.includes("wool")) {
-        conflicts.push("Cotton and wool require different temperatures.");
+        conflicts.push(i18n.t("batchScan.conflict_cotton_wool"));
       }
 
-      // ⭐ SUGGESTIONS
       const suggestions: string[] = [];
 
       if (fabrics.includes("cotton") && fabrics.length === 1) {
-        suggestions.push("Perfect load for Cotton Colors program.");
+        suggestions.push(i18n.t("batchScan.suggest_cotton"));
       }
 
       if (fabrics.includes("synthetics") && fabrics.length === 1) {
-        suggestions.push("Synthetics load detected — use Synthetics program.");
+        suggestions.push(i18n.t("batchScan.suggest_synthetics"));
       }
 
       if (items.some(i => i.stains?.length > 0)) {
-        suggestions.push("Some items have stains — consider pre-treatment.");
+        suggestions.push(i18n.t("batchScan.suggest_stains"));
       }
 
       if (fabrics.length > 1 && conflicts.length === 0) {
-        suggestions.push("Mixed load detected — use a gentle mixed program.");
+        suggestions.push(i18n.t("batchScan.suggest_mixed"));
       }
 
       setResult({
@@ -132,9 +128,7 @@ export default function BatchScanScreen() {
     setPhoto(null);
     setResult(null);
     openCamera();
-  };
-
-  return (
+  };  return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
@@ -149,10 +143,12 @@ export default function BatchScanScreen() {
           }}
         >
           <Text style={{ color: "#fff", fontSize: 28, fontWeight: "700" }}>
-            Batch Scan
+            {i18n.t("batchScan.title")}
           </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
+            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+              {i18n.t("batchScan.close")}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -175,7 +171,7 @@ export default function BatchScanScreen() {
           <View style={{ marginTop: 40 }}>
             <ActivityIndicator size="large" color="#fff" />
             <Text style={{ color: "#fff", textAlign: "center", marginTop: 10 }}>
-              Analyzing…
+              {i18n.t("batchScan.analyzing")}
             </Text>
           </View>
         )}
@@ -192,7 +188,7 @@ export default function BatchScanScreen() {
             }}
           >
             <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-              Items detected: {result.total}
+              {i18n.t("batchScan.itemsDetected")} {result.total}
             </Text>
 
             {/* GROUPS */}
@@ -207,7 +203,9 @@ export default function BatchScanScreen() {
                     marginBottom: 10,
                   }}
                 >
-                  <Text style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>
+                  <Text
+                    style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}
+                  >
                     {g.fabric} × {g.count}
                   </Text>
                 </View>
@@ -217,8 +215,10 @@ export default function BatchScanScreen() {
             {/* CONFLICTS */}
             {result.conflicts.length > 0 && (
               <View style={{ marginTop: 20 }}>
-                <Text style={{ color: "#ff6b6b", fontSize: 18, fontWeight: "700" }}>
-                  ⚠️ Conflicts
+                <Text
+                  style={{ color: "#ff6b6b", fontSize: 18, fontWeight: "700" }}
+                >
+                  ⚠️ {i18n.t("batchScan.conflicts")}
                 </Text>
                 {result.conflicts.map((c: string, i: number) => (
                   <Text key={i} style={{ color: "#fff", marginTop: 6 }}>
@@ -231,8 +231,10 @@ export default function BatchScanScreen() {
             {/* SUGGESTIONS */}
             {result.suggestions.length > 0 && (
               <View style={{ marginTop: 20 }}>
-                <Text style={{ color: "#4cd964", fontSize: 18, fontWeight: "700" }}>
-                  💡 Suggestions
+                <Text
+                  style={{ color: "#4cd964", fontSize: 18, fontWeight: "700" }}
+                >
+                  💡 {i18n.t("batchScan.suggestions")}
                 </Text>
                 {result.suggestions.map((s: string, i: number) => (
                   <Text key={i} style={{ color: "#fff", marginTop: 6 }}>
@@ -252,7 +254,7 @@ export default function BatchScanScreen() {
               }}
             >
               <Text style={{ color: "#fff", textAlign: "center", fontSize: 16 }}>
-                Scan Again
+                {i18n.t("batchScan.scanAgain")}
               </Text>
             </TouchableOpacity>
           </Animated.View>

@@ -43,5 +43,51 @@
     "darkSynthetic": "Sintetici Scuri",
     "woolHand": "Lana / Lavaggio a Mano",
     "delicates": "Delicati"
+  },
+
+  "smartScan": {
+    "title": "Scansione Intelligente AI",
+    "close": "Chiudi",
+
+    "takePhoto": "Scatta Foto",
+    "chooseFromGallery": "Scegli dalla Galleria",
+
+    "errorTitle": "Analisi Fallita",
+    "errorMessage": "L'AI non è riuscita ad analizzare l'immagine. Riprova con una foto più chiara.",
+    "retry": "Riprova Scansione",
+    "takeAnother": "Scatta un'Altra Foto",
+
+    "fabric": "Tessuto",
+    "color": "Colore",
+    "stains": "Macchie",
+    "noStains": "Nessuna rilevata",
+    "recommendedProgram": "Programma Consigliato",
+    "careInstructions": "Istruzioni di Cura",
+    "stainTips": "Consigli per Rimuovere le Macchie",
+
+    "addToPlanner": "Aggiungi automaticamente al Planner",
+
+    "plannerDefaultTitle": "Indumento",
+    "plannerDefaultType": "Generale",
+    "plannerAnyTime": "Qualsiasi orario"
+  },
+
+  "batchScan": {
+    "title": "Scansione Multipla",
+    "close": "Chiudi",
+    "analyzing": "Analisi in corso…",
+    "itemsDetected": "Articoli rilevati:",
+    "conflicts": "Conflitti",
+    "suggestions": "Suggerimenti",
+    "scanAgain": "Scansiona di nuovo",
+
+    "conflict_wool": "Gli indumenti in lana devono essere lavati separatamente.",
+    "conflict_delicate": "I delicati non devono essere mescolati con altri tessuti.",
+    "conflict_cotton_wool": "Cotone e lana richiedono temperature diverse.",
+
+    "suggest_cotton": "Carico ideale per il programma Cotone Colorati.",
+    "suggest_synthetics": "Rilevati sintetici — usa il programma Sintetici.",
+    "suggest_stains": "Alcuni articoli hanno macchie — valuta un pretrattamento.",
+    "suggest_mixed": "Carico misto rilevato — usa un programma delicato per tessuti misti."
   }
 }
