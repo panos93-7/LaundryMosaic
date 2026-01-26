@@ -1,11 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -19,77 +18,120 @@ import { preprocessImage } from "../utils/AI/preprocessImage";
 export default function BatchScanScreen() {
   const navigation = useNavigation<any>();
 
-  const [images, setImages] = useState<string[]>([]);
+  const [photo, setPhoto] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<any>(null);
 
-  const pickImage = async () => {
+  // ⭐ Open camera immediately
+  useEffect(() => {
+    openCamera();
+  }, []);
+
+  const openCamera = async () => {
     const res = await ImagePicker.launchCameraAsync({
       quality: 0.7,
       base64: false,
     });
 
     if (!res.canceled && res.assets?.length > 0) {
-      setImages((prev) => [...prev, res.assets[0].uri]);
+      setPhoto(res.assets[0].uri);
+      analyze(res.assets[0].uri);
+    } else {
+      navigation.goBack();
     }
   };
 
-  const analyzeAll = async () => {
-    if (images.length === 0) return;
-
+  const analyze = async (uri: string) => {
     setIsProcessing(true);
 
-    const allItems: any[] = [];
+    try {
+      const { base64, mimeType } = await preprocessImage(uri);
+      const ai = await analyzeImageWithGemini(base64, mimeType);
 
-    for (const uri of images) {
-      try {
-        const { base64, mimeType } = await preprocessImage(uri);
-        const ai = await analyzeImageWithGemini(base64, mimeType);
+      if (!ai) {
+        setIsProcessing(false);
+        return;
+      }
 
-        if (!ai) continue;
+      // ⭐ SUPPORT SINGLE + MULTI ITEM
+      let items: any[] = [];
 
-        // ⭐ SUPPORT BOTH SINGLE ITEM AND MULTI-ITEM AI RESPONSES
-        if (Array.isArray(ai.items)) {
-          // Multi-item response
-          allItems.push(...ai.items);
-        } else {
-          // Single item response
-          allItems.push(ai);
+      if (Array.isArray(ai.items)) {
+        items = ai.items;
+      } else {
+        items = [ai];
+      }
+
+      // ⭐ GROUPING
+      const grouped = items.reduce((acc: any, item: any) => {
+        const fabric = item.fabric || "Unknown";
+
+        if (!acc[fabric]) {
+          acc[fabric] = {
+            fabric,
+            count: 0,
+            items: [],
+          };
         }
-      } catch (err) {
-        console.log("❌ Error analyzing image:", err);
+
+        acc[fabric].count += 1;
+        acc[fabric].items.push(item);
+
+        return acc;
+      }, {});
+
+      // ⭐ COMPATIBILITY
+      const fabrics = Object.keys(grouped);
+      const conflicts: string[] = [];
+
+      if (fabrics.includes("wool") && fabrics.some(f => f !== "wool")) {
+        conflicts.push("Wool items should be washed separately.");
       }
+
+      if (fabrics.includes("delicate") && fabrics.some(f => f !== "delicate")) {
+        conflicts.push("Delicate items should not be mixed with other fabrics.");
+      }
+
+      if (fabrics.includes("cotton") && fabrics.includes("wool")) {
+        conflicts.push("Cotton and wool require different temperatures.");
+      }
+
+      // ⭐ SUGGESTIONS
+      const suggestions: string[] = [];
+
+      if (fabrics.includes("cotton") && fabrics.length === 1) {
+        suggestions.push("Perfect load for Cotton Colors program.");
+      }
+
+      if (fabrics.includes("synthetics") && fabrics.length === 1) {
+        suggestions.push("Synthetics load detected — use Synthetics program.");
+      }
+
+      if (items.some(i => i.stains?.length > 0)) {
+        suggestions.push("Some items have stains — consider pre-treatment.");
+      }
+
+      if (fabrics.length > 1 && conflicts.length === 0) {
+        suggestions.push("Mixed load detected — use a gentle mixed program.");
+      }
+
+      setResult({
+        total: items.length,
+        groups: Object.values(grouped),
+        conflicts,
+        suggestions,
+      });
+    } catch (err) {
+      console.log("❌ Error analyzing image:", err);
     }
-
-    // ⭐ FIXED GROUPING (NO MORE cotton × 3 FROM ONE ITEM)
-    const grouped = allItems.reduce((acc: any, item: any) => {
-      const fabric = item.fabric || "Unknown";
-
-      if (!acc[fabric]) {
-        acc[fabric] = {
-          fabric,
-          count: 0,
-          items: [],
-        };
-      }
-
-      acc[fabric].count += 1;
-      acc[fabric].items.push(item);
-
-      return acc;
-    }, {});
-
-    setResult({
-      total: allItems.length,
-      groups: Object.values(grouped),
-    });
 
     setIsProcessing(false);
   };
 
   const reset = () => {
-    setImages([]);
+    setPhoto(null);
     setResult(null);
+    openCamera();
   };
 
   return (
@@ -114,62 +156,32 @@ export default function BatchScanScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* IMAGE PREVIEW */}
-        <ScrollView horizontal style={{ paddingHorizontal: 20 }}>
-          {images.map((uri, i) => (
-            <Image
-              key={i}
-              source={{ uri }}
-              style={{
-                width: 120,
-                height: 120,
-                borderRadius: 12,
-                marginRight: 12,
-              }}
-            />
-          ))}
-        </ScrollView>
+        {/* PHOTO PREVIEW */}
+        {photo && (
+          <Image
+            source={{ uri: photo }}
+            style={{
+              width: "90%",
+              height: 260,
+              alignSelf: "center",
+              borderRadius: 16,
+              marginTop: 10,
+            }}
+          />
+        )}
 
-        {/* BUTTONS */}
-        {!result && (
-          <View style={{ padding: 20 }}>
-            <TouchableOpacity
-              onPress={pickImage}
-              style={{
-                backgroundColor: "rgba(255,255,255,0.15)",
-                padding: 16,
-                borderRadius: 12,
-                marginBottom: 12,
-              }}
-            >
-              <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
-                📸 Add Photo
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={analyzeAll}
-              disabled={images.length === 0 || isProcessing}
-              style={{
-                backgroundColor:
-                  images.length === 0 ? "rgba(255,255,255,0.05)" : "#2575fc",
-                padding: 16,
-                borderRadius: 12,
-              }}
-            >
-              {isProcessing ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
-                  Analyze All
-                </Text>
-              )}
-            </TouchableOpacity>
+        {/* LOADING */}
+        {isProcessing && (
+          <View style={{ marginTop: 40 }}>
+            <ActivityIndicator size="large" color="#fff" />
+            <Text style={{ color: "#fff", textAlign: "center", marginTop: 10 }}>
+              Analyzing…
+            </Text>
           </View>
         )}
 
         {/* RESULT */}
-        {result && (
+        {result && !isProcessing && (
           <Animated.View
             entering={FadeInUp.duration(350)}
             style={{
@@ -183,6 +195,7 @@ export default function BatchScanScreen() {
               Items detected: {result.total}
             </Text>
 
+            {/* GROUPS */}
             <View style={{ marginTop: 16 }}>
               {result.groups.map((g: any, i: number) => (
                 <View
@@ -200,6 +213,34 @@ export default function BatchScanScreen() {
                 </View>
               ))}
             </View>
+
+            {/* CONFLICTS */}
+            {result.conflicts.length > 0 && (
+              <View style={{ marginTop: 20 }}>
+                <Text style={{ color: "#ff6b6b", fontSize: 18, fontWeight: "700" }}>
+                  ⚠️ Conflicts
+                </Text>
+                {result.conflicts.map((c: string, i: number) => (
+                  <Text key={i} style={{ color: "#fff", marginTop: 6 }}>
+                    • {c}
+                  </Text>
+                ))}
+              </View>
+            )}
+
+            {/* SUGGESTIONS */}
+            {result.suggestions.length > 0 && (
+              <View style={{ marginTop: 20 }}>
+                <Text style={{ color: "#4cd964", fontSize: 18, fontWeight: "700" }}>
+                  💡 Suggestions
+                </Text>
+                {result.suggestions.map((s: string, i: number) => (
+                  <Text key={i} style={{ color: "#fff", marginTop: 6 }}>
+                    • {s}
+                  </Text>
+                ))}
+              </View>
+            )}
 
             <TouchableOpacity
               onPress={reset}
