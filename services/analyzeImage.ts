@@ -10,9 +10,6 @@ export async function analyzeImageWithGemini(
       return null;
     }
 
-    // ---------------------------------------------
-    // CLEAN BASE64
-    // ---------------------------------------------
     const cleanedBase64 = base64
       .replace(/^data:.*;base64,/, "")
       .replace(/\s/g, "")
@@ -23,16 +20,10 @@ export async function analyzeImageWithGemini(
       return null;
     }
 
-    // ---------------------------------------------
-    // MIME TYPE DETECTION
-    // ---------------------------------------------
     const finalMime =
       mimeType ||
       (cleanedBase64.startsWith("/9j/") ? "image/jpeg" : "image/png");
 
-    // ---------------------------------------------
-    // CALL CLOUDFLARE WORKER
-    // ---------------------------------------------
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
       {
@@ -42,29 +33,32 @@ export async function analyzeImageWithGemini(
           imageBase64: cleanedBase64,
           mimeType: finalMime,
           prompt: `
-You are an expert laundry assistant. Analyze the image and return ONLY valid JSON.
+You are an expert laundry assistant.
 
-Extract:
-- fabric type (cotton, synthetics, wool, delicate)
-- color category (white, colored, dark)
-- stains (array)
-- recommended washing settings:
-  - temp (°C)
-  - spin (rpm)
-  - program (short name)
+Analyze ALL garments visible in the image and return ONLY valid JSON.
 
 Return JSON in this exact format:
 
 {
-  "fabric": "...",
-  "color": "...",
-  "stains": ["..."],
-  "recommended": {
-    "temp": 40,
-    "spin": 1000,
-    "program": "Cotton Colors"
-  }
+  "items": [
+    {
+      "fabric": "cotton | synthetics | wool | delicate",
+      "color": "white | colored | dark",
+      "stains": ["..."],
+      "recommended": {
+        "temp": 40,
+        "spin": 1000,
+        "program": "Cotton Colors"
+      }
+    }
+  ]
 }
+
+Rules:
+- Detect ALL garments in the image (not just one).
+- Each garment must be a separate object in the "items" array.
+- If uncertain, make the best guess.
+- Do NOT include any text outside the JSON.
 `
         }),
       }
@@ -77,9 +71,6 @@ Return JSON in this exact format:
 
     const data = await response.json();
 
-    // ---------------------------------------------
-    // EXTRACT RAW TEXT FROM GEMINI RESPONSE
-    // ---------------------------------------------
     let rawText =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
@@ -88,18 +79,12 @@ Return JSON in this exact format:
       return null;
     }
 
-    // ---------------------------------------------
-    // CLEAN JSON (remove markdown, noise, etc.)
-    // ---------------------------------------------
     const cleaned = rawText
       .replace(/```json/g, "")
       .replace(/```/g, "")
-      .replace(/[\u0000-\u001F]+/g, "") // remove control chars
+      .replace(/[\u0000-\u001F]+/g, "")
       .trim();
 
-    // ---------------------------------------------
-    // PARSE JSON SAFELY
-    // ---------------------------------------------
     let parsed;
     try {
       parsed = JSON.parse(cleaned);
@@ -113,43 +98,51 @@ Return JSON in this exact format:
       return null;
     }
 
-    // ---------------------------------------------
-    // VALIDATE REQUIRED FIELDS
-    // ---------------------------------------------
-    if (!parsed.fabric || !parsed.color) {
-      console.log("❌ Missing fabric or color:", parsed);
-      return null;
+    let items: any[] = [];
+
+    if (Array.isArray(parsed.items)) {
+      items = parsed.items;
+    } else {
+      items = [parsed];
     }
 
-    // ---------------------------------------------
-    // NORMALIZE RECOMMENDED PROGRAM
-    // ---------------------------------------------
-    if (!parsed.recommended) {
-      parsed.recommended = getProgramFor(parsed.fabric, parsed.color) || {
-        temp: 30,
-        spin: 800,
-        program: "Quick Wash",
-      };
+    const normalized = items
+      .map((item) => {
+        if (!item.fabric || !item.color) {
+          return null;
+        }
+
+        if (!item.recommended) {
+          item.recommended = getProgramFor(item.fabric, item.color) || {
+            temp: 30,
+            spin: 800,
+            program: "Quick Wash",
+          };
+        }
+
+        item.recommended = {
+          temp: item.recommended.temp ?? 30,
+          spin: item.recommended.spin ?? 800,
+          program: item.recommended.program ?? "Quick Wash",
+        };
+
+        if (!Array.isArray(item.stains)) {
+          item.stains = [];
+        }
+
+        item.stains = item.stains.map((s: string) =>
+          String(s).toLowerCase().trim()
+        );
+
+        return item;
+      })
+      .filter(Boolean);
+
+    if (normalized.length === 1) {
+      return normalized[0];
     }
 
-    parsed.recommended = {
-      temp: parsed.recommended.temp ?? 30,
-      spin: parsed.recommended.spin ?? 800,
-      program: parsed.recommended.program ?? "Quick Wash",
-    };
-
-    // ---------------------------------------------
-    // NORMALIZE STAINS
-    // ---------------------------------------------
-    if (!Array.isArray(parsed.stains)) {
-      parsed.stains = [];
-    }
-
-    parsed.stains = parsed.stains.map((s: string) =>
-      String(s).toLowerCase().trim()
-    );
-
-    return parsed;
+    return { items: normalized };
 
   } catch (err) {
     console.log("❌ analyzeImageWithGemini error:", err);
