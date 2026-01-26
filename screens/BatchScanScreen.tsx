@@ -39,44 +39,49 @@ export default function BatchScanScreen() {
     setIsProcessing(false);
   };
 
-  const generateSmartSuggestions = (groups: FabricGroup[], globalCompatible: boolean) => {
+  const generateSmartSuggestions = (
+    groups: FabricGroup[],
+    globalCompatible: boolean
+  ) => {
     const suggestions: string[] = [];
 
-    const delicate = groups.filter(g =>
-      g.fabric.toLowerCase().includes("wool") ||
-      g.fabric.toLowerCase().includes("delicate")
+    const delicate = groups.filter(
+      (g) =>
+        g.fabric.toLowerCase().includes("wool") ||
+        g.fabric.toLowerCase().includes("delicate")
     );
 
-    const highTemp = groups.filter(g => {
+    const highTemp = groups.filter((g) => {
       const sample = g.items[0];
       return sample.recommended?.temp > 40;
     });
 
-    const cotton = groups.filter(g => g.fabric.toLowerCase().includes("cotton"));
+    const cotton = groups.filter((g) =>
+      g.fabric.toLowerCase().includes("cotton")
+    );
 
-    // 1) If everything is compatible
     if (globalCompatible) {
       suggestions.push("All items can be washed together safely.");
     }
 
-    // 2) Delicate fabrics
     if (delicate.length > 0) {
       suggestions.push("Delicate fabrics (like wool) should be washed separately.");
     }
 
-    // 3) High temperature fabrics
     if (highTemp.length > 0) {
-      suggestions.push("Some fabrics require high temperature — avoid mixing with delicate items.");
+      suggestions.push(
+        "Some fabrics require high temperature — avoid mixing with delicate items."
+      );
     }
 
-    // 4) Cotton grouping
     if (cotton.length > 0) {
       const totalCotton = cotton.reduce((sum, g) => sum + g.count, 0);
-      suggestions.push(`You have ${totalCotton} cotton items — ideal for a cotton program.`);
+      suggestions.push(
+        `You have ${totalCotton} cotton items — ideal for a cotton program.`
+      );
     }
 
-    // 5) If there are conflicts
-    const conflicts = groups.filter(g => !g.compatible);
+    const conflicts = groups.filter((g) => !g.compatible);
     if (conflicts.length > 0) {
       suggestions.push("Some items are incompatible — consider splitting the load.");
     }
@@ -85,31 +90,32 @@ export default function BatchScanScreen() {
   };
 
   const handleCapture = async () => {
-  if (!cameraRef.current) return;
+    if (!cameraRef.current) return;
 
-  try {
-    setIsProcessing(true);
+    try {
+      setIsProcessing(true);
 
-    const photo = await cameraRef.current.takePhoto({
-      quality: 0.7,
-      skipMetadata: true,
-    });
-
-    const { base64, mimeType } = await preprocessImage(photo.uri);
-
-    const aiResult = await analyzeImageWithGemini(base64, mimeType);
-
-    if (!aiResult || !aiResult.items || aiResult.items.length === 0) {
-      setResult({
-        itemsDetected: 0,
-        groups: [],
-        compatible: false,
-        warnings: ["⚠️ Unable to analyze the image"],
-        suggestions: [],
+      const photo = await cameraRef.current.takePhoto({
+        quality: 0.7,
+        skipMetadata: true,
       });
-      setIsProcessing(false);
-      return;
-    }
+
+      const { base64, mimeType } = await preprocessImage(photo.uri);
+
+      const aiResult = await analyzeImageWithGemini(base64, mimeType);
+
+      if (!aiResult || !aiResult.items || aiResult.items.length === 0) {
+        setResult({
+          itemsDetected: 0,
+          groups: [],
+          compatible: false,
+          warnings: ["⚠️ Unable to analyze the image"],
+          suggestions: [],
+        });
+        setIsProcessing(false);
+        return;
+      }
+
       // GROUP BY FABRIC
       const grouped = aiResult.items.reduce((acc: any, item: any) => {
         const fabric = item.fabric || "Unknown";
@@ -169,7 +175,6 @@ export default function BatchScanScreen() {
         }
       }
 
-      // SMART SUGGESTIONS
       const suggestions = generateSmartSuggestions(groups, globalCompatible);
 
       setResult({
@@ -180,18 +185,18 @@ export default function BatchScanScreen() {
         suggestions,
       });
     } catch (err) {
-    console.log("BatchScan AI error:", err);
-    setResult({
-      itemsDetected: 0,
-      groups: [],
-      compatible: false,
-      warnings: ["⚠️ Error during analysis"],
-      suggestions: [],
-    });
-  }
+      console.log("BatchScan AI error:", err);
+      setResult({
+        itemsDetected: 0,
+        groups: [],
+        compatible: false,
+        warnings: ["⚠️ Error during analysis"],
+        suggestions: [],
+      });
+    }
 
-  setIsProcessing(false);
-};
+    setIsProcessing(false);
+  };
 
   // PERMISSION SCREEN
   if (!permission || !permission.granted) {

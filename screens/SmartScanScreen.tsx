@@ -36,9 +36,8 @@ export default function SmartScanScreen({ navigation }: any) {
   useFocusEffect(() => {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
-      () => true // block back
+      () => true
     );
-
     return () => subscription.remove();
   });
 
@@ -161,44 +160,39 @@ export default function SmartScanScreen({ navigation }: any) {
         colors={["#0f0c29", "#302b63", "#24243e"]}
         style={{ flex: 1, padding: 20 }}
       >
-       <TouchableOpacity
-  onPress={() =>
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "HomeScreen" }],
-    })
-  }
-  style={{
-    position: "absolute",
-    top: 10,
-    right: 10,
-    padding: 10,
-    zIndex: 20,
-  }}
->
-  <Text
-    style={{
-      color: "#ff6b6b",
-      fontSize: 16,
-      fontWeight: "600",
-    }}
-  >
-    Close
-  </Text>
-</TouchableOpacity>
 
-        <Text
+        {/* ⭐ NEW FIXED HEADER (like BatchScan) */}
+        <View
           style={{
-            fontSize: 28,
-            fontWeight: "800",
-            color: "#fff",
-            marginBottom: 20,
-            marginTop: 10,
+            paddingBottom: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          AI Smart Scan
-        </Text>
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: "800",
+              color: "#fff",
+            }}
+          >
+            AI Smart Scan
+          </Text>
 
+          <TouchableOpacity
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "HomeScreen" }],
+              })
+            }
+          >
+            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* PHOTO OPTIONS */}
         {!image && (
           <>
             <TouchableOpacity
@@ -229,7 +223,7 @@ export default function SmartScanScreen({ navigation }: any) {
             </TouchableOpacity>
           </>
         )}
-
+ {/* RESULT VIEW */}
         {image && (
           <ScrollView
             style={{ flex: 1 }}
@@ -237,6 +231,7 @@ export default function SmartScanScreen({ navigation }: any) {
             showsVerticalScrollIndicator={false}
           >
             <View style={{ alignItems: "center", marginTop: 20 }}>
+              {/* IMAGE PREVIEW */}
               <Image
                 source={{ uri: image }}
                 style={{
@@ -247,10 +242,16 @@ export default function SmartScanScreen({ navigation }: any) {
                 }}
               />
 
+              {/* LOADING */}
               {loading && (
-                <ActivityIndicator size="large" color="#fff" style={{ marginTop: 10 }} />
+                <ActivityIndicator
+                  size="large"
+                  color="#fff"
+                  style={{ marginTop: 10 }}
+                />
               )}
 
+              {/* ERROR PANEL */}
               {error && !loading && (
                 <View
                   style={{
@@ -263,12 +264,25 @@ export default function SmartScanScreen({ navigation }: any) {
                     borderColor: "rgba(255, 80, 80, 0.4)",
                   }}
                 >
-                  <Text style={{ color: "#ff6b6b", fontSize: 18, marginBottom: 10 }}>
+                  <Text
+                    style={{
+                      color: "#ff6b6b",
+                      fontSize: 18,
+                      marginBottom: 10,
+                    }}
+                  >
                     ❌ AI Scan Failed
                   </Text>
 
-                  <Text style={{ color: "#fff", fontSize: 16, marginBottom: 20 }}>
-                    The AI could not analyze the image. Try again with a clearer photo.
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 16,
+                      marginBottom: 20,
+                    }}
+                  >
+                    The AI could not analyze the image. Try again with a clearer
+                    photo.
                   </Text>
 
                   <TouchableOpacity
@@ -314,6 +328,7 @@ export default function SmartScanScreen({ navigation }: any) {
                 </View>
               )}
 
+              {/* RESULT PANEL */}
               {result && !loading && !error && (
                 <Animated.View
                   entering={FadeInUp.duration(500).springify()}
@@ -352,9 +367,11 @@ export default function SmartScanScreen({ navigation }: any) {
                     style={{ color: "#fff", fontSize: 18 }}
                   >
                     ⭐ Recommended Program: {result.recommended.program} (
-                    {result.recommended.temp ?? "?"}°C / {result.recommended.spin ?? "?"} rpm)
+                    {result.recommended.temp ?? "?"}°C /{" "}
+                    {result.recommended.spin ?? "?"} rpm)
                   </Animated.Text>
 
+                  {/* CARE INSTRUCTIONS */}
                   {result.careInstructions?.length > 0 && (
                     <View style={{ marginTop: 20 }}>
                       <Text
@@ -383,6 +400,7 @@ export default function SmartScanScreen({ navigation }: any) {
                     </View>
                   )}
 
+                  {/* STAIN TIPS */}
                   {result.stainTips?.length > 0 && (
                     <View style={{ marginTop: 25 }}>
                       <Text
@@ -434,6 +452,7 @@ export default function SmartScanScreen({ navigation }: any) {
                     </View>
                   )}
 
+                  {/* TAKE ANOTHER PHOTO */}
                   <TouchableOpacity
                     onPress={takeAnotherPhoto}
                     style={{
@@ -455,7 +474,7 @@ export default function SmartScanScreen({ navigation }: any) {
                     </Text>
                   </TouchableOpacity>
 
-                  {/* ⭐ NEW CLOSE BUTTON (BOTTOM) */}
+                  {/* CLOSE RESULT (RESET STATE) */}
                   <TouchableOpacity
                     onPress={resetState}
                     style={{
@@ -477,7 +496,7 @@ export default function SmartScanScreen({ navigation }: any) {
                     </Text>
                   </TouchableOpacity>
 
-                  {/* ORIGINAL BUTTON */}
+                  {/* ADD TO PLANNER */}
                   <TouchableOpacity
                     onPress={handleAutoAdd}
                     style={{
