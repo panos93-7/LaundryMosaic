@@ -162,7 +162,12 @@ export default function SmartScanScreen({ navigation }: any) {
         style={{ flex: 1, padding: 20 }}
       >
        <TouchableOpacity
-  onPress={() => navigation.navigate("HomeScreen")}
+  onPress={() =>
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "HomeScreen" }],
+    })
+  }
   style={{
     position: "absolute",
     top: 10,
@@ -174,8 +179,8 @@ export default function SmartScanScreen({ navigation }: any) {
   <Text
     style={{
       color: "#ff6b6b",
-      fontSize: 18,
-      fontWeight: "700",
+      fontSize: 16,
+      fontWeight: "600",
     }}
   >
     Close

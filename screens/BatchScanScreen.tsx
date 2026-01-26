@@ -85,32 +85,31 @@ export default function BatchScanScreen() {
   };
 
   const handleCapture = async () => {
-    if (!cameraRef.current) return;
+  if (!cameraRef.current) return;
 
-    try {
-      setIsProcessing(true);
+  try {
+    setIsProcessing(true);
 
-      const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.7,
-        base64: true,
+    const photo = await cameraRef.current.takePhoto({
+      quality: 0.7,
+      skipMetadata: true,
+    });
+
+    const { base64, mimeType } = await preprocessImage(photo.uri);
+
+    const aiResult = await analyzeImageWithGemini(base64, mimeType);
+
+    if (!aiResult || !aiResult.items || aiResult.items.length === 0) {
+      setResult({
+        itemsDetected: 0,
+        groups: [],
+        compatible: false,
+        warnings: ["⚠️ Unable to analyze the image"],
+        suggestions: [],
       });
-
-      const { base64, mimeType } = await preprocessImage(photo.uri);
-
-      const aiResult = await analyzeImageWithGemini(base64, mimeType);
-
-      if (!aiResult || !aiResult.items || aiResult.items.length === 0) {
-        setResult({
-          itemsDetected: 0,
-          groups: [],
-          compatible: false,
-          warnings: ["⚠️ Unable to analyze the image"],
-          suggestions: [],
-        });
-        setIsProcessing(false);
-        return;
-      }
-
+      setIsProcessing(false);
+      return;
+    }
       // GROUP BY FABRIC
       const grouped = aiResult.items.reduce((acc: any, item: any) => {
         const fabric = item.fabric || "Unknown";
@@ -181,18 +180,18 @@ export default function BatchScanScreen() {
         suggestions,
       });
     } catch (err) {
-      console.log("BatchScan AI error:", err);
-      setResult({
-        itemsDetected: 0,
-        groups: [],
-        compatible: false,
-        warnings: ["⚠️ Error during analysis"],
-        suggestions: [],
-      });
-    }
+    console.log("BatchScan AI error:", err);
+    setResult({
+      itemsDetected: 0,
+      groups: [],
+      compatible: false,
+      warnings: ["⚠️ Error during analysis"],
+      suggestions: [],
+    });
+  }
 
-    setIsProcessing(false);
-  };
+  setIsProcessing(false);
+};
 
   // PERMISSION SCREEN
   if (!permission || !permission.granted) {
