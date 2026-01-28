@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, createNavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import { AppState } from "react-native";
@@ -39,8 +39,36 @@ import FabricDetailsScreen from "../screens/FabricDetailsScreen";
 
 const Stack = createNativeStackNavigator();
 
+// ⭐⭐⭐ THE FIX: Inline route type declaration ⭐⭐⭐
+type AppRoutes = {
+  Home: undefined;
+  Paywall: undefined;
+  PremiumMonthlyPaywall: undefined;
+  PremiumFallback: undefined;
+
+  Planner: undefined;
+  MonthCalendar: undefined;
+  History: undefined;
+  SmartScan: undefined;
+
+  BatchScan: undefined;
+  Wardrobe: undefined;
+  CustomFabrics: undefined;
+
+  GarmentDetails: undefined;
+  EditGarment: undefined;
+  FabricDetails: undefined;
+
+  OnboardingWelcome: undefined;
+  OnboardingValue: undefined;
+  OnboardingPersonalization: undefined;
+  OnboardingPaywallRedirect: undefined;
+};
+
+// ⭐ Navigation ref with correct typing
+export const navRef = createNavigationContainerRef<AppRoutes>();
+
 export default function AppNavigator() {
-  // ⭐ SELECTORS
   const hasSeenOnboarding = useUserStore((s) => s.hasSeenOnboarding);
   const isPro = useUserStore((s) => s.isPro);
   const isPremiumAnnual = useUserStore((s) => s.isPremiumAnnual);
@@ -48,62 +76,52 @@ export default function AppNavigator() {
   const isFree = useUserStore((s) => s.isFree);
   const entitlementsLoaded = useUserStore((s) => s.entitlementsLoaded);
 
-  // ⭐ FORCE RE-RENDER όταν αλλάζει το entitlement
   useUserStore((s) => s.userTier);
 
-  // ⭐ FADE-OUT SPLASH COMPLETION
   const [splashDone, setSplashDone] = useState(false);
 
-  // ⭐ RUN ON STARTUP
   useEffect(() => {
     syncEntitlements();
   }, []);
 
-  // ⭐ RUN WHEN APP RETURNS TO FOREGROUND
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
-      if (state === "active") {
-        syncEntitlements();
-      }
+      if (state === "active") syncEntitlements();
     });
     return () => sub.remove();
   }, []);
 
-  // ---------------------------------------------------
-  // ⭐ WAIT UNTIL ENTITLEMENTS + SPLASH FADE-OUT ARE DONE
-  // ---------------------------------------------------
   if (!entitlementsLoaded || !splashDone) {
     return <CustomSplash onFinish={() => setSplashDone(true)} />;
   }
 
   // ---------------------------------------------------
-  // ⭐ ONBOARDING FLOW
+  // ONBOARDING
   // ---------------------------------------------------
   if (isFree && !hasSeenOnboarding) {
     return (
-      <NavigationContainer key={"onboarding"}>
+      <NavigationContainer ref={navRef} key={"onboarding"}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
           <Stack.Screen name="OnboardingValue" component={OnboardingValue} />
-          <Stack.Screen
-            name="OnboardingPersonalization"
-            component={OnboardingPersonalization}
-          />
-          <Stack.Screen
-            name="OnboardingPaywallRedirect"
-            component={OnboardingPaywallRedirect}
-          />
+          <Stack.Screen name="OnboardingPersonalization" component={OnboardingPersonalization} />
+          <Stack.Screen name="OnboardingPaywallRedirect" component={OnboardingPaywallRedirect} />
+
+          {/* Paywall routes */}
+          <Stack.Screen name="Paywall" component={PaywallScreen} />
+          <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />
+          <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   // ---------------------------------------------------
-  // ⭐ PRO USERS
+  // PRO USERS
   // ---------------------------------------------------
   if (isPro) {
     return (
-      <NavigationContainer key={"pro"}>
+      <NavigationContainer ref={navRef} key={"pro"}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SmartScan" component={SmartScanScreen} />
@@ -119,17 +137,28 @@ export default function AppNavigator() {
           <Stack.Screen name="EditGarment" component={EditGarmentScreen} />
 
           <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
+
+          {/* Paywall routes */}
+          <Stack.Screen name="Paywall" component={PaywallScreen} />
+          <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />
+          <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   // ---------------------------------------------------
-  // ⭐ PREMIUM ANNUAL
+  // PREMIUM ANNUAL
   // ---------------------------------------------------
   if (isPremiumAnnual) {
     return (
-      <NavigationContainer key={"premium_annual"}>
+      <NavigationContainer
+        ref={navRef}
+        key={"premium_annual"}
+        onReady={() => {
+          navRef.navigate("Paywall"); // ⭐ PRO paywall on launch
+        }}
+      >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SmartScan" component={SmartScanScreen} />
@@ -144,17 +173,28 @@ export default function AppNavigator() {
           <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
           <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
           <Stack.Screen name="EditGarment" component={PaywallScreen} />
+
+          {/* Paywall routes */}
+          <Stack.Screen name="Paywall" component={PaywallScreen} />
+          <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />
+          <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   // ---------------------------------------------------
-  // ⭐ PREMIUM MONTHLY
+  // PREMIUM MONTHLY
   // ---------------------------------------------------
   if (isPremiumMonthly) {
     return (
-      <NavigationContainer key={"premium_monthly"}>
+      <NavigationContainer
+        ref={navRef}
+        key={"premium_monthly"}
+        onReady={() => {
+          navRef.navigate("Paywall"); // ⭐ PRO paywall on launch
+        }}
+      >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Planner" component={PlannerScreen} />
@@ -170,16 +210,21 @@ export default function AppNavigator() {
           <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
           <Stack.Screen name="FabricDetails" component={PaywallScreen} />
+
+          {/* Paywall routes */}
+          <Stack.Screen name="Paywall" component={PaywallScreen} />
+          <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />
+          <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   // ---------------------------------------------------
-  // ⭐ FREE USERS
+  // FREE USERS
   // ---------------------------------------------------
   return (
-    <NavigationContainer key={"free"}>
+    <NavigationContainer ref={navRef} key={"free"}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Planner" component={PlannerScreen} />
@@ -195,6 +240,11 @@ export default function AppNavigator() {
         <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
         <Stack.Screen name="FabricDetails" component={PaywallScreen} />
+
+        {/* Paywall routes */}
+        <Stack.Screen name="Paywall" component={PaywallScreen} />
+        <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />
+        <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
