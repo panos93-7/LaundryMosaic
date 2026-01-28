@@ -38,12 +38,14 @@ export function FeatureGrid({ isDarkMode, language }: any) {
         badgeType="Premium"
         isDarkMode={isDarkMode}
         userTier={userTier}
-       onPress={() => {
+   onPress={() => {
+  // FREE + PREMIUM MONTHLY → PremiumFallbackScreen
   if (userTier === "free" || userTier === "premium_monthly") {
-    navigation.navigate("PremiumMonthlyPaywall");
+    navigation.navigate("PremiumFallback");
     return;
   }
 
+  // PREMIUM ANNUAL + PRO → SmartScan
   navigation.navigate("SmartScan", { language });
 }}
       />
