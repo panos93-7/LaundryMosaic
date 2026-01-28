@@ -1,5 +1,6 @@
 // SAFE import for Expo Go (avoids native crash)
 let Purchases: any;
+
 if (__DEV__) {
   Purchases = {
     isConfigured: true,
@@ -9,7 +10,8 @@ if (__DEV__) {
     }),
   };
 } else {
-  Purchases = require("react-native-purchases").default;
+  // ⭐ FIX: Χωρίς .default — αυτό ήταν το root cause
+  Purchases = require("react-native-purchases");
 }
 
 // Track if configure() has run
@@ -62,7 +64,6 @@ export async function syncEntitlements() {
 
     // --- FREE ---
     useUserStore.getState().setFromEntitlement("free");
-
   } catch (e) {
     console.log("Error syncing entitlements:", e);
     useUserStore.getState().setFromEntitlement("free");
