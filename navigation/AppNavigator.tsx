@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AppState } from "react-native";
 
 import { CustomSplash } from "../components/CustomSplash";
@@ -51,6 +51,14 @@ export default function AppNavigator() {
   // ⭐ FORCE RE-RENDER όταν αλλάζει το entitlement
   useUserStore((s) => s.userTier);
 
+  // ⭐ MINIMUM SPLASH DURATION (για να παίξει το animation)
+  const [minSplashDone, setMinSplashDone] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setMinSplashDone(true), 600); // 600ms
+    return () => clearTimeout(t);
+  }, []);
+
   // ⭐ RUN ON STARTUP
   useEffect(() => {
     syncEntitlements();
@@ -67,9 +75,9 @@ export default function AppNavigator() {
   }, []);
 
   // ---------------------------------------------------
-  // ⭐ WAIT UNTIL ENTITLEMENTS ARE LOADED
+  // ⭐ WAIT UNTIL ENTITLEMENTS + MIN SPLASH ARE DONE
   // ---------------------------------------------------
-  if (!entitlementsLoaded) {
+  if (!entitlementsLoaded || !minSplashDone) {
     return <CustomSplash />;
   }
 
