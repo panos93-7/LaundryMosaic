@@ -7,8 +7,14 @@ import en from "./locales/en.json"; // English
 import es from "./locales/es.json"; // Spanish
 import fr from "./locales/fr.json"; // French
 import it from "./locales/it.json"; // Italian
+import ja from "./locales/ja.json";
+import ko from "./locales/ko.json";
+import ptBR from "./locales/pt-BR.json";
+import ptPT from "./locales/pt-PT.json";
 import ru from "./locales/ru.json"; // Russian
 import tr from "./locales/tr.json"; // Turkish
+import zhTW from "./locales/zh-TW.json";
+
 
 const i18n = new I18n();
 
@@ -21,7 +27,12 @@ i18n.translations = {
   de,
   it,
   tr,
-  ru
+  ru,
+  ja,
+  ko,
+  zhTW,
+  ptPT,
+  ptBR
 };
 
 // @ts-ignore
