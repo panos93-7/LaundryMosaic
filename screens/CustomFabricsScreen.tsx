@@ -167,47 +167,48 @@ export default function CustomFabricsScreen() {
       style={{ flex: 1 }}
     >
       <SafeAreaView style={{ flex: 1, padding: 20 }}>
-        {/* HEADER */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 10,
-          }}
-        >
-          <View>
-            <Text
+{/* HEADER */}
+<View
   style={{
-    color: "#fff",
-    fontSize: 28,
-    fontWeight: "700",
-    flexShrink: 1,
-    marginRight: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
   }}
-  numberOfLines={2}
 >
-  {String(i18n.t("customFabrics.title"))}
-</Text>
-            {statusMessage !== "" && (
-              <Text
-                style={{
-                  color: "rgba(255,255,255,0.8)",
-                  fontSize: 16,
-                  marginTop: 4,
-                }}
-              >
-                {statusMessage}
-              </Text>
-            )}
-          </View>
+  {/* LEFT SIDE: Title + Status */}
+  <View style={{ flexShrink: 1, marginRight: 10 }}>
+    <Text
+      style={{
+        color: "#fff",
+        fontSize: 28,
+        fontWeight: "700",
+      }}
+      numberOfLines={2}
+    >
+      {String(i18n.t("customFabrics.title"))}
+    </Text>
 
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
-              {String(i18n.t("customFabrics.close"))}
-            </Text>
-          </TouchableOpacity>
-        </View>
+    {statusMessage !== "" && (
+      <Text
+        style={{
+          color: "rgba(255,255,255,0.8)",
+          fontSize: 16,
+          marginTop: 4,
+        }}
+      >
+        {statusMessage}
+      </Text>
+    )}
+  </View>
+
+  {/* CLOSE BUTTON */}
+  <TouchableOpacity onPress={() => navigation.goBack()}>
+    <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+      {String(i18n.t("customFabrics.close"))}
+    </Text>
+  </TouchableOpacity>
+</View>
 
         {/* EMPTY STATE */}
         {fabrics.length === 0 && (
