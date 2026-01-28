@@ -51,7 +51,7 @@ export default function AppNavigator() {
   // ⭐ FORCE RE-RENDER όταν αλλάζει το entitlement
   useUserStore((s) => s.userTier);
 
-  // ⭐ RUN ON STARTUP (FIX)
+  // ⭐ RUN ON STARTUP
   useEffect(() => {
     syncEntitlements();
   }, []);
@@ -76,121 +76,122 @@ export default function AppNavigator() {
   // ---------------------------------------------------
   // ⭐ ONBOARDING FLOW
   // ---------------------------------------------------
-  if (!(isPro || isPremiumAnnual || isPremiumMonthly)) {
-    if (!hasSeenOnboarding) {
-      return (
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-            <Stack.Screen name="OnboardingValue" component={OnboardingValue} />
-            <Stack.Screen
-              name="OnboardingPersonalization"
-              component={OnboardingPersonalization}
-            />
-            <Stack.Screen
-              name="OnboardingPaywallRedirect"
-              component={OnboardingPaywallRedirect}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      );
-    }
+  if (isFree && !hasSeenOnboarding) {
+    return (
+      <NavigationContainer key={"onboarding"}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+          <Stack.Screen name="OnboardingValue" component={OnboardingValue} />
+          <Stack.Screen
+            name="OnboardingPersonalization"
+            component={OnboardingPersonalization}
+          />
+          <Stack.Screen
+            name="OnboardingPaywallRedirect"
+            component={OnboardingPaywallRedirect}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
   }
 
   // ---------------------------------------------------
-  // ⭐ MAIN APP FLOW
+  // ⭐ PRO USERS
+  // ---------------------------------------------------
+  if (isPro) {
+    return (
+      <NavigationContainer key={"pro"}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SmartScan" component={SmartScanScreen} />
+          <Stack.Screen name="Planner" component={PlannerScreen} />
+          <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
+          <Stack.Screen name="History" component={HistoryScreen} />
+
+          <Stack.Screen name="BatchScan" component={BatchScanScreen} />
+          <Stack.Screen name="Wardrobe" component={WardrobeScreen} />
+          <Stack.Screen name="CustomFabrics" component={CustomFabricsScreen} />
+
+          <Stack.Screen name="GarmentDetails" component={GarmentDetailsScreen} />
+          <Stack.Screen name="EditGarment" component={EditGarmentScreen} />
+
+          <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
+  // ---------------------------------------------------
+  // ⭐ PREMIUM ANNUAL
+  // ---------------------------------------------------
+  if (isPremiumAnnual) {
+    return (
+      <NavigationContainer key={"premium_annual"}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SmartScan" component={SmartScanScreen} />
+          <Stack.Screen name="Planner" component={PlannerScreen} />
+          <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
+          <Stack.Screen name="History" component={HistoryScreen} />
+
+          <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
+
+          <Stack.Screen name="BatchScan" component={PaywallScreen} />
+          <Stack.Screen name="Wardrobe" component={PaywallScreen} />
+          <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
+          <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
+          <Stack.Screen name="EditGarment" component={PaywallScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
+  // ---------------------------------------------------
+  // ⭐ PREMIUM MONTHLY
+  // ---------------------------------------------------
+  if (isPremiumMonthly) {
+    return (
+      <NavigationContainer key={"premium_monthly"}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Planner" component={PlannerScreen} />
+          <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
+          <Stack.Screen name="History" component={HistoryScreen} />
+
+          <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
+
+          <Stack.Screen name="BatchScan" component={PaywallScreen} />
+          <Stack.Screen name="Wardrobe" component={PaywallScreen} />
+          <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
+          <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
+          <Stack.Screen name="EditGarment" component={PaywallScreen} />
+
+          <Stack.Screen name="FabricDetails" component={PaywallScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
+  // ---------------------------------------------------
+  // ⭐ FREE USERS
   // ---------------------------------------------------
   return (
-    <NavigationContainer>
+    <NavigationContainer key={"free"}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Planner" component={PlannerScreen} />
+        <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
 
-        {/* GLOBAL PAYWALL SCREENS */}
-        <Stack.Screen name="Paywall" component={PaywallScreen} />
-        <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
-        <Stack.Screen
-          name="PremiumMonthlyPaywall"
-          component={PremiumMonthlyPaywall}
-        />
+        <Stack.Screen name="History" component={PremiumMonthlyPaywall} />
+        <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
 
-        {/* PRO USERS */}
-        {isPro && (
-          <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="SmartScan" component={SmartScanScreen} />
-            <Stack.Screen name="Planner" component={PlannerScreen} />
-            <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
-            <Stack.Screen name="History" component={HistoryScreen} />
+        <Stack.Screen name="BatchScan" component={PaywallScreen} />
+        <Stack.Screen name="Wardrobe" component={PaywallScreen} />
+        <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
+        <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
+        <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
-            <Stack.Screen name="BatchScan" component={BatchScanScreen} />
-            <Stack.Screen name="Wardrobe" component={WardrobeScreen} />
-            <Stack.Screen name="CustomFabrics" component={CustomFabricsScreen} />
-
-            <Stack.Screen name="GarmentDetails" component={GarmentDetailsScreen} />
-            <Stack.Screen name="EditGarment" component={EditGarmentScreen} />
-
-            <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
-          </>
-        )}
-
-        {/* PREMIUM ANNUAL */}
-        {isPremiumAnnual && !isPro && (
-          <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="SmartScan" component={SmartScanScreen} />
-            <Stack.Screen name="Planner" component={PlannerScreen} />
-            <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
-            <Stack.Screen name="History" component={HistoryScreen} />
-
-            <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
-
-            <Stack.Screen name="BatchScan" component={PaywallScreen} />
-            <Stack.Screen name="Wardrobe" component={PaywallScreen} />
-            <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
-            <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
-            <Stack.Screen name="EditGarment" component={PaywallScreen} />
-          </>
-        )}
-
-        {/* PREMIUM MONTHLY */}
-        {isPremiumMonthly && !isPro && !isPremiumAnnual && (
-          <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Planner" component={PlannerScreen} />
-            <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
-            <Stack.Screen name="History" component={HistoryScreen} />
-
-            <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
-
-            <Stack.Screen name="BatchScan" component={PaywallScreen} />
-            <Stack.Screen name="Wardrobe" component={PaywallScreen} />
-            <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
-            <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
-            <Stack.Screen name="EditGarment" component={PaywallScreen} />
-
-            <Stack.Screen name="FabricDetails" component={PaywallScreen} />
-          </>
-        )}
-
-        {/* FREE USERS */}
-        {isFree && (
-          <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Planner" component={PlannerScreen} />
-            <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
-
-            <Stack.Screen name="History" component={PremiumMonthlyPaywall} />
-            <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
-
-            <Stack.Screen name="BatchScan" component={PaywallScreen} />
-            <Stack.Screen name="Wardrobe" component={PaywallScreen} />
-            <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
-            <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
-            <Stack.Screen name="EditGarment" component={PaywallScreen} />
-
-            <Stack.Screen name="FabricDetails" component={PaywallScreen} />
-          </>
-        )}
-
+        <Stack.Screen name="FabricDetails" component={PaywallScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
