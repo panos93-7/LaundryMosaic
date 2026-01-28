@@ -110,5 +110,74 @@
   "cancel": "Annulla",
   "delete": "Elimina",
   "washSuffix": "lavaggio"
+ },
+ "customFabrics": {
+  "title": "Tessuti Personalizzati",
+  "close": "Chiudi",
+
+  "emptyTitle": "Nessun tessuto personalizzato",
+  "emptySubtitle": "Aggiungi i tuoi tessuti o scansionane di nuovi con l’IA.",
+
+  "uploadFabric": "📤 Carica Tessuto (IA)",
+  "addFabric": "＋ Aggiungi Tessuto",
+
+  "noImage": "Nessuna immagine",
+
+  "editFabric": "Modifica Tessuto",
+  "addFabricModal": "Aggiungi Tessuto",
+
+  "fabricName": "Nome del tessuto",
+  "descriptionOptional": "Descrizione (opzionale)",
+
+  "careInstructions": "Istruzioni di cura",
+  "noCareInstructions": "Nessuna istruzione di cura",
+
+  "generating": "Generazione…",
+  "generateWithAI": "Genera con IA",
+
+  "save": "Salva",
+  "delete": "Elimina",
+  "cancel": "Annulla",
+
+  "statusUploading": "Caricamento tessuto...",
+  "statusAdding": "Aggiunta tessuto...",
+  "statusUpdating": "Aggiornamento tessuto...",
+
+  "unknownFabric": "Tessuto sconosciuto"
+ },
+ "editGarment": {
+  "back": "Indietro",
+  "title": "Modifica Indumento",
+
+  "tapToAddImage": "Tocca per aggiungere un'immagine",
+
+  "name": "Nome",
+  "type": "Tipo",
+  "color": "Colore",
+  "category": "Categoria",
+  "fabric": "Tessuto",
+  "pattern": "Motivo",
+
+  "saveChanges": "Salva Modifiche",
+  "deleteGarment": "Elimina Indumento",
+
+  "alertTitle": "Elimina Indumento",
+  "alertMessage": "Sei sicuro di voler eliminare questo elemento?",
+  "cancel": "Annulla",
+  "delete": "Elimina"
+ },
+ "fabricDetails": {
+  "back": "Indietro",
+  "fabricType": "Tipo di Tessuto",
+  "weave": "Trama",
+  "sensitivity": "Sensibilità",
+  "recommendedProgram": "Programma di Lavaggio Consigliato",
+  "program": "Programma",
+  "temp": "Temperatura",
+  "spin": "Centrifuga",
+  "description": "Descrizione",
+  "careInstructions": "Istruzioni di Cura",
+  "noCareInstructions": "Nessuna istruzione di cura disponibile.",
+  "regenerate": "Rigenera con IA"
  }
 }

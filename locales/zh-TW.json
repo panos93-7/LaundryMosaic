@@ -1,0 +1,186 @@
+{
+  "title": "LaundryMosaic",
+  "start": "開始洗衣",
+  "screenTitle": "洗衣設定",
+
+  "fabricTypeLabel": "布料種類",
+  "fabricColorLabel": "布料顏色",
+  "laundryProgram": "洗衣行程",
+  "language": "語言",
+
+  "savePreset": "儲存預設",
+  "loadPreset": "載入預設",
+
+  "lightMode": "淺色模式",
+  "darkMode": "深色模式",
+
+  "fabricLabel": "布料",
+  "colorLabel": "顏色",
+  "programLabel": "行程",
+  "temperatureLabel": "溫度",
+  "spinSpeedLabel": "脫水轉速",
+  "rpm": "rpm",
+
+  "fabricValues": {
+    "cotton": "棉質",
+    "synthetics": "化纖",
+    "wool": "羊毛",
+    "delicate": "精緻衣物"
+  },
+
+  "colorValues": {
+    "white": "白色",
+    "dark": "深色",
+    "colored": "彩色"
+  },
+
+  "programs": {
+    "cottonIntensive": "棉質強力洗",
+    "cottonColors": "棉質彩色洗",
+    "darkCare": "深色衣物護理",
+    "synthetics": "化纖洗",
+    "syntheticsColor": "化纖彩色洗",
+    "darkSynthetic": "深色化纖",
+    "woolHand": "羊毛／手洗",
+    "delicates": "精緻衣物"
+  },
+
+  "smartScan": {
+    "title": "AI 智能掃描",
+    "close": "關閉",
+
+    "takePhoto": "拍照",
+    "chooseFromGallery": "從相簿選取",
+
+    "errorTitle": "AI 分析失敗",
+    "errorMessage": "無法分析此圖片，請使用更清晰的照片再試一次。",
+    "retry": "重新掃描",
+    "takeAnother": "再拍一張",
+
+    "fabric": "布料",
+    "color": "顏色",
+    "stains": "污漬",
+    "noStains": "未偵測到污漬",
+    "recommendedProgram": "推薦行程",
+    "careInstructions": "保養方式",
+    "stainTips": "去漬小技巧",
+
+    "addToPlanner": "自動加入排程",
+
+    "plannerDefaultTitle": "洗衣項目",
+    "plannerDefaultType": "一般",
+    "plannerAnyTime": "任何時間"
+  },
+
+  "batchScan": {
+    "title": "批次掃描",
+    "close": "關閉",
+    "analyzing": "分析中…",
+    "itemsDetected": "偵測到的項目：",
+    "conflicts": "注意事項",
+    "suggestions": "建議",
+    "scanAgain": "重新掃描",
+
+    "conflict_wool": "羊毛衣物需單獨清洗。",
+    "conflict_delicate": "精緻衣物不建議與其他布料混洗。",
+    "conflict_cotton_wool": "棉質與羊毛適用的溫度不同，請勿混洗。",
+
+    "suggest_cotton": "適合使用棉質彩色洗行程。",
+    "suggest_synthetics": "偵測到化纖衣物，建議使用化纖行程。",
+    "suggest_stains": "部分衣物有污漬，建議先進行預處理。",
+    "suggest_mixed": "偵測到混合材質，建議使用溫和混合洗行程。"
+  },
+
+  "features": {
+    "aiSmartScan": "AI 智能掃描",
+    "batchScan": "批次掃描",
+    "smartWardrobe": "智慧衣櫥",
+    "customFabrics": "自訂布料",
+    "planner": "洗衣排程"
+  },
+
+  "planner": {
+    "title": "洗衣排程",
+    "viewHistory": "查看歷史紀錄",
+    "openCalendar": "開啟行事曆",
+    "description": "整理每週洗衣計畫、設定提醒，讓洗衣更有條理。",
+    "addNewWash": "新增洗衣項目",
+    "washesForDate": "{{date}} 的洗衣項目",
+    "noWashes": "這天沒有洗衣項目。",
+    "deleteTitle": "刪除洗衣項目",
+    "deleteMessage": "確定要刪除嗎？",
+    "cancel": "取消",
+    "delete": "刪除",
+    "washSuffix": "次洗衣"
+  },
+
+  "customFabrics": {
+    "title": "自訂布料",
+    "close": "關閉",
+
+    "emptyTitle": "尚無自訂布料",
+    "emptySubtitle": "可自行新增布料，或使用 AI 掃描新的布料。",
+
+    "uploadFabric": "📤 上傳布料（AI）",
+    "addFabric": "＋ 新增布料",
+
+    "noImage": "無圖片",
+
+    "editFabric": "編輯布料",
+    "addFabricModal": "新增布料",
+
+    "fabricName": "布料名稱",
+    "descriptionOptional": "描述（選填）",
+
+    "careInstructions": "保養方式",
+    "noCareInstructions": "尚無保養方式",
+
+    "generating": "生成中…",
+    "generateWithAI": "使用 AI 生成",
+
+    "save": "儲存",
+    "delete": "刪除",
+    "cancel": "取消",
+
+    "statusUploading": "上傳布料中…",
+    "statusAdding": "新增布料中…",
+    "statusUpdating": "更新布料中…",
+
+    "unknownFabric": "未知布料"
+  },
+  "editGarment": {
+  "back": "返回",
+  "title": "編輯衣物",
+
+  "tapToAddImage": "點擊以新增圖片",
+
+  "name": "名稱",
+  "type": "種類",
+  "color": "顏色",
+  "category": "分類",
+  "fabric": "布料",
+  "pattern": "圖案",
+
+  "saveChanges": "儲存變更",
+  "deleteGarment": "刪除衣物",
+
+  "alertTitle": "刪除衣物",
+  "alertMessage": "確定要刪除此項目嗎？",
+  "cancel": "取消",
+  "delete": "刪除"
+ },
+ "fabricDetails": {
+  "back": "返回",
+  "fabricType": "布料種類",
+  "weave": "織法",
+  "sensitivity": "敏感度",
+  "recommendedProgram": "推薦洗衣行程",
+  "program": "行程",
+  "temp": "溫度",
+  "spin": "脫水",
+  "description": "描述",
+  "careInstructions": "保養方式",
+  "noCareInstructions": "目前沒有可用的保養方式。",
+  "regenerate": "使用 AI 重新生成"
+ }
+}

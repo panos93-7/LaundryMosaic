@@ -10,6 +10,7 @@ import {
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import i18n from "../i18n";
 import { useFabricsStore } from "../store/fabricsStore";
 import { generateCareInstructionsPro } from "../utils/aiFabricCarePro";
 
@@ -31,18 +32,18 @@ export default function FabricDetailsScreen({ route, navigation }: any) {
     try {
       const ai = await generateCareInstructionsPro(fabricName);
 
-setCareInstructions(ai.careInstructions);
+      setCareInstructions(ai.careInstructions);
 
-if (fabric) {
-  fabricsStore.updateFabric({
-    ...fabric,
-    careInstructions: ai.careInstructions,
-    fabricType: ai.fabricType,
-    weave: ai.weave,
-    sensitivity: ai.sensitivity,
-    recommended: ai.recommended,
-  });
-}
+      if (fabric) {
+        fabricsStore.updateFabric({
+          ...fabric,
+          careInstructions: ai.careInstructions,
+          fabricType: ai.fabricType,
+          weave: ai.weave,
+          sensitivity: ai.sensitivity,
+          recommended: ai.recommended,
+        });
+      }
     } catch (err) {
       console.log("AI error:", err);
     }
@@ -57,7 +58,9 @@ if (fabric) {
       >
         {/* Back */}
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={{ color: "#fff", fontSize: 18 }}>← Back</Text>
+          <Text style={{ color: "#fff", fontSize: 18 }}>
+            ← {String(i18n.t("fabricDetails.back"))}
+          </Text>
         </TouchableOpacity>
 
         {/* Title */}
@@ -115,7 +118,7 @@ if (fabric) {
                   marginBottom: 10,
                 }}
               >
-                Fabric Type
+                {String(i18n.t("fabricDetails.fabricType"))}
               </Text>
               <Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 15 }}>
                 {fabric.fabricType}
@@ -142,7 +145,7 @@ if (fabric) {
                   marginBottom: 10,
                 }}
               >
-                Weave
+                {String(i18n.t("fabricDetails.weave"))}
               </Text>
               <Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 15 }}>
                 {fabric.weave}
@@ -169,7 +172,7 @@ if (fabric) {
                   marginBottom: 10,
                 }}
               >
-                Sensitivity
+                {String(i18n.t("fabricDetails.sensitivity"))}
               </Text>
               <Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 15 }}>
                 {fabric.sensitivity}
@@ -196,17 +199,17 @@ if (fabric) {
                   marginBottom: 10,
                 }}
               >
-                Recommended Wash Program
+                {String(i18n.t("fabricDetails.recommendedProgram"))}
               </Text>
 
               <Text style={{ color: "#fff", marginBottom: 6 }}>
-                Program: {fabric.recommended.program}
+                {String(i18n.t("fabricDetails.program"))}: {fabric.recommended.program}
               </Text>
               <Text style={{ color: "#fff", marginBottom: 6 }}>
-                Temp: {fabric.recommended.temp}°C
+                {String(i18n.t("fabricDetails.temp"))}: {fabric.recommended.temp}°C
               </Text>
               <Text style={{ color: "#fff", marginBottom: 6 }}>
-                Spin: {fabric.recommended.spin} rpm
+                {String(i18n.t("fabricDetails.spin"))}: {fabric.recommended.spin} rpm
               </Text>
             </Animated.View>
           )}
@@ -230,7 +233,7 @@ if (fabric) {
                   marginBottom: 10,
                 }}
               >
-                Description
+                {String(i18n.t("fabricDetails.description"))}
               </Text>
 
               <Text
@@ -263,7 +266,7 @@ if (fabric) {
                 marginBottom: 10,
               }}
             >
-              Care Instructions
+              {String(i18n.t("fabricDetails.careInstructions"))}
             </Text>
 
             {careInstructions.length > 0 ? (
@@ -286,7 +289,7 @@ if (fabric) {
                   fontSize: 15,
                 }}
               >
-                No care instructions available.
+                {String(i18n.t("fabricDetails.noCareInstructions"))}
               </Text>
             )}
           </Animated.View>
@@ -314,7 +317,7 @@ if (fabric) {
                     fontWeight: "700",
                   }}
                 >
-                  Regenerate with AI
+                  {String(i18n.t("fabricDetails.regenerate"))}
                 </Text>
               )}
             </TouchableOpacity>

@@ -110,5 +110,74 @@
   "cancel": "Annuler",
   "delete": "Supprimer",
   "washSuffix": "lavage"
+ },
+ "customFabrics": {
+  "title": "Tissus Personnalisés",
+  "close": "Fermer",
+
+  "emptyTitle": "Aucun tissu personnalisé pour le moment",
+  "emptySubtitle": "Ajoutez vos propres tissus ou scannez-en de nouveaux avec l’IA.",
+
+  "uploadFabric": "📤 Importer un tissu (IA)",
+  "addFabric": "＋ Ajouter un tissu",
+
+  "noImage": "Pas d’image",
+
+  "editFabric": "Modifier le tissu",
+  "addFabricModal": "Ajouter un tissu",
+
+  "fabricName": "Nom du tissu",
+  "descriptionOptional": "Description (optionnel)",
+
+  "careInstructions": "Instructions d’entretien",
+  "noCareInstructions": "Aucune instruction d’entretien pour le moment",
+
+  "generating": "Génération…",
+  "generateWithAI": "Générer avec l’IA",
+
+  "save": "Enregistrer",
+  "delete": "Supprimer",
+  "cancel": "Annuler",
+
+  "statusUploading": "Téléversement du tissu...",
+  "statusAdding": "Ajout du tissu...",
+  "statusUpdating": "Mise à jour du tissu...",
+
+  "unknownFabric": "Tissu inconnu"
+ },
+ "editGarment": {
+  "back": "Retour",
+  "title": "Modifier le Vêtement",
+
+  "tapToAddImage": "Appuyez pour ajouter une image",
+
+  "name": "Nom",
+  "type": "Type",
+  "color": "Couleur",
+  "category": "Catégorie",
+  "fabric": "Tissu",
+  "pattern": "Motif",
+
+  "saveChanges": "Enregistrer les Modifications",
+  "deleteGarment": "Supprimer le Vêtement",
+
+  "alertTitle": "Supprimer le Vêtement",
+  "alertMessage": "Êtes-vous sûr de vouloir supprimer cet article ?",
+  "cancel": "Annuler",
+  "delete": "Supprimer"
+ },
+ "fabricDetails": {
+  "back": "Retour",
+  "fabricType": "Type de Tissu",
+  "weave": "Tissage",
+  "sensitivity": "Sensibilité",
+  "recommendedProgram": "Programme de Lavage Recommandé",
+  "program": "Programme",
+  "temp": "Température",
+  "spin": "Essorage",
+  "description": "Description",
+  "careInstructions": "Instructions d’Entretien",
+  "noCareInstructions": "Aucune instruction d’entretien disponible.",
+  "regenerate": "Régénérer avec l’IA"
  }
 }

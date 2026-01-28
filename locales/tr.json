@@ -110,5 +110,74 @@
   "cancel": "İptal",
   "delete": "Sil",
   "washSuffix": "yıkama"
+ },
+ "customFabrics": {
+  "title": "Özel Kumaşlar",
+  "close": "Kapat",
+
+  "emptyTitle": "Henüz özel kumaş yok",
+  "emptySubtitle": "Kendi kumaşlarını ekle veya yenilerini yapay zeka ile tara.",
+
+  "uploadFabric": "📤 Kumaş Yükle (AI)",
+  "addFabric": "＋ Kumaş Ekle",
+
+  "noImage": "Görüntü yok",
+
+  "editFabric": "Kumaşı Düzenle",
+  "addFabricModal": "Kumaş Ekle",
+
+  "fabricName": "Kumaş adı",
+  "descriptionOptional": "Açıklama (isteğe bağlı)",
+
+  "careInstructions": "Bakım Talimatları",
+  "noCareInstructions": "Henüz bakım talimatı yok",
+
+  "generating": "Oluşturuluyor…",
+  "generateWithAI": "Yapay zeka ile oluştur",
+
+  "save": "Kaydet",
+  "delete": "Sil",
+  "cancel": "İptal",
+
+  "statusUploading": "Kumaş yükleniyor...",
+  "statusAdding": "Kumaş ekleniyor...",
+  "statusUpdating": "Kumaş güncelleniyor...",
+
+  "unknownFabric": "Bilinmeyen kumaş"
+ },
+ "editGarment": {
+  "back": "Geri",
+  "title": "Giysiyi Düzenle",
+
+  "tapToAddImage": "Resim eklemek için dokun",
+
+  "name": "Ad",
+  "type": "Tür",
+  "color": "Renk",
+  "category": "Kategori",
+  "fabric": "Kumaş",
+  "pattern": "Desen",
+
+  "saveChanges": "Değişiklikleri Kaydet",
+  "deleteGarment": "Giysiyi Sil",
+
+  "alertTitle": "Giysiyi Sil",
+  "alertMessage": "Bu öğeyi silmek istediğinizden emin misiniz?",
+  "cancel": "İptal",
+  "delete": "Sil"
+ },
+ "fabricDetails": {
+  "back": "Geri",
+  "fabricType": "Kumaş Türü",
+  "weave": "Dokuma",
+  "sensitivity": "Hassasiyet",
+  "recommendedProgram": "Önerilen Yıkama Programı",
+  "program": "Program",
+  "temp": "Sıcaklık",
+  "spin": "Sıkma",
+  "description": "Açıklama",
+  "careInstructions": "Bakım Talimatları",
+  "noCareInstructions": "Herhangi bir bakım talimatı bulunmuyor.",
+  "regenerate": "Yapay Zekâ ile Yeniden Oluştur"
  }
 }

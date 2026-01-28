@@ -110,5 +110,74 @@
   "cancel": "Cancelar",
   "delete": "Eliminar",
   "washSuffix": "lavado"
+ },
+ "customFabrics": {
+  "title": "Tejidos Personalizados",
+  "close": "Cerrar",
+
+  "emptyTitle": "Aún no hay tejidos personalizados",
+  "emptySubtitle": "Agrega tus propios tejidos o escanea nuevos con IA.",
+
+  "uploadFabric": "📤 Subir Tejido (IA)",
+  "addFabric": "＋ Agregar Tejido",
+
+  "noImage": "Sin imagen",
+
+  "editFabric": "Editar Tejido",
+  "addFabricModal": "Agregar Tejido",
+
+  "fabricName": "Nombre del tejido",
+  "descriptionOptional": "Descripción (opcional)",
+
+  "careInstructions": "Instrucciones de cuidado",
+  "noCareInstructions": "Aún no hay instrucciones de cuidado",
+
+  "generating": "Generando…",
+  "generateWithAI": "Generar con IA",
+
+  "save": "Guardar",
+  "delete": "Eliminar",
+  "cancel": "Cancelar",
+
+  "statusUploading": "Subiendo tejido...",
+  "statusAdding": "Agregando tejido...",
+  "statusUpdating": "Actualizando tejido...",
+
+  "unknownFabric": "Tejido desconocido"
+ },
+ "editGarment": {
+  "back": "Volver",
+  "title": "Editar Prenda",
+
+  "tapToAddImage": "Toca para añadir imagen",
+
+  "name": "Nombre",
+  "type": "Tipo",
+  "color": "Color",
+  "category": "Categoría",
+  "fabric": "Tejido",
+  "pattern": "Patrón",
+
+  "saveChanges": "Guardar Cambios",
+  "deleteGarment": "Eliminar Prenda",
+
+  "alertTitle": "Eliminar Prenda",
+  "alertMessage": "¿Seguro que deseas eliminar este artículo?",
+  "cancel": "Cancelar",
+  "delete": "Eliminar"
+ },
+ "fabricDetails": {
+  "back": "Volver",
+  "fabricType": "Tipo de Tejido",
+  "weave": "Tejido",
+  "sensitivity": "Sensibilidad",
+  "recommendedProgram": "Programa de Lavado Recomendado",
+  "program": "Programa",
+  "temp": "Temperatura",
+  "spin": "Centrifugado",
+  "description": "Descripción",
+  "careInstructions": "Instrucciones de Cuidado",
+  "noCareInstructions": "No hay instrucciones de cuidado disponibles.",
+  "regenerate": "Regenerar con IA"
  }
 }

@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import i18n from "../i18n";
 
 export default function EditGarmentScreen() {
   const navigation = useNavigation<any>();
@@ -19,7 +20,6 @@ export default function EditGarmentScreen() {
 
   const { garment, onSave, onDelete } = route.params;
 
-  // PRO fields
   const [name, setName] = useState(garment.name);
   const [type, setType] = useState(garment.type);
   const [color, setColor] = useState(garment.color ?? "");
@@ -57,12 +57,12 @@ export default function EditGarmentScreen() {
 
   const handleDelete = () => {
     Alert.alert(
-      "Delete Garment",
-      "Are you sure you want to delete this item?",
+      String(i18n.t("editGarment.alertTitle")),
+      String(i18n.t("editGarment.alertMessage")),
       [
-        { text: "Cancel", style: "cancel" },
+        { text: String(i18n.t("editGarment.cancel")), style: "cancel" },
         {
-          text: "Delete",
+          text: String(i18n.t("editGarment.delete")),
           style: "destructive",
           onPress: () => {
             onDelete(garment.id);
@@ -86,7 +86,9 @@ export default function EditGarmentScreen() {
 
           {/* BACK */}
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>← Back</Text>
+            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+              ← {String(i18n.t("editGarment.back"))}
+            </Text>
           </TouchableOpacity>
 
           {/* TITLE */}
@@ -98,7 +100,7 @@ export default function EditGarmentScreen() {
               marginBottom: 20,
             }}
           >
-            Edit Garment
+            {String(i18n.t("editGarment.title"))}
           </Text>
 
           {/* IMAGE PICKER */}
@@ -125,13 +127,17 @@ export default function EditGarmentScreen() {
                   marginBottom: 20,
                 }}
               >
-                <Text style={{ color: "#fff" }}>Tap to add image</Text>
+                <Text style={{ color: "#fff" }}>
+                  {String(i18n.t("editGarment.tapToAddImage"))}
+                </Text>
               </View>
             )}
           </TouchableOpacity>
 
           {/* NAME */}
-          <Text style={{ color: "#fff", marginBottom: 6 }}>Name</Text>
+          <Text style={{ color: "#fff", marginBottom: 6 }}>
+            {String(i18n.t("editGarment.name"))}
+          </Text>
           <TextInput
             value={name}
             onChangeText={setName}
@@ -145,7 +151,9 @@ export default function EditGarmentScreen() {
           />
 
           {/* TYPE */}
-          <Text style={{ color: "#fff", marginBottom: 6 }}>Type</Text>
+          <Text style={{ color: "#fff", marginBottom: 6 }}>
+            {String(i18n.t("editGarment.type"))}
+          </Text>
           <TextInput
             value={type}
             onChangeText={setType}
@@ -159,7 +167,9 @@ export default function EditGarmentScreen() {
           />
 
           {/* COLOR */}
-          <Text style={{ color: "#fff", marginBottom: 6 }}>Color</Text>
+          <Text style={{ color: "#fff", marginBottom: 6 }}>
+            {String(i18n.t("editGarment.color"))}
+          </Text>
           <TextInput
             value={color}
             onChangeText={setColor}
@@ -173,7 +183,9 @@ export default function EditGarmentScreen() {
           />
 
           {/* CATEGORY */}
-          <Text style={{ color: "#fff", marginBottom: 6 }}>Category</Text>
+          <Text style={{ color: "#fff", marginBottom: 6 }}>
+            {String(i18n.t("editGarment.category"))}
+          </Text>
           <TextInput
             value={category}
             onChangeText={setCategory}
@@ -187,7 +199,9 @@ export default function EditGarmentScreen() {
           />
 
           {/* FABRIC */}
-          <Text style={{ color: "#fff", marginBottom: 6 }}>Fabric</Text>
+          <Text style={{ color: "#fff", marginBottom: 6 }}>
+            {String(i18n.t("editGarment.fabric"))}
+          </Text>
           <TextInput
             value={fabric}
             onChangeText={setFabric}
@@ -201,7 +215,9 @@ export default function EditGarmentScreen() {
           />
 
           {/* PATTERN */}
-          <Text style={{ color: "#fff", marginBottom: 6 }}>Pattern</Text>
+          <Text style={{ color: "#fff", marginBottom: 6 }}>
+            {String(i18n.t("editGarment.pattern"))}
+          </Text>
           <TextInput
             value={pattern}
             onChangeText={setPattern}
@@ -232,7 +248,7 @@ export default function EditGarmentScreen() {
                 fontWeight: "600",
               }}
             >
-              Save Changes
+              {String(i18n.t("editGarment.saveChanges"))}
             </Text>
           </TouchableOpacity>
 
@@ -254,7 +270,7 @@ export default function EditGarmentScreen() {
                 fontWeight: "600",
               }}
             >
-              Delete Garment
+              {String(i18n.t("editGarment.deleteGarment"))}
             </Text>
           </TouchableOpacity>
 

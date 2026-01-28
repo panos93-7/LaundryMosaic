@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import i18n from "../i18n";
 import { useFabricsStore } from "../store/fabricsStore";
 import { analyzeFabricPro } from "../utils/aiFabricAnalyzerPro";
 import { generateCareInstructionsPro } from "../utils/aiFabricCarePro";
@@ -61,7 +62,11 @@ export default function CustomFabricsScreen() {
   };
 
   const saveFabric = () => {
-    setStatusMessage(editing ? "Updating Fabric..." : "Adding Fabric...");
+    setStatusMessage(
+      editing
+        ? String(i18n.t("customFabrics.statusUpdating"))
+        : String(i18n.t("customFabrics.statusAdding"))
+    );
 
     if (editing) {
       updateFabric({
@@ -98,7 +103,7 @@ export default function CustomFabricsScreen() {
 
   const handleScanFabric = async () => {
     setFabOpen(false);
-    setStatusMessage("Uploading Fabric...");
+    setStatusMessage(String(i18n.t("customFabrics.statusUploading")));
 
     const res = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -121,7 +126,7 @@ export default function CustomFabricsScreen() {
 
       await addFabric({
         id: Date.now(),
-        name: ai.fabricType ?? "Unknown Fabric",
+        name: ai.fabricType ?? String(i18n.t("customFabrics.unknownFabric")),
         description: ai.weave ?? "",
         fabricType: ai.fabricType,
         weave: ai.weave,
@@ -155,7 +160,8 @@ export default function CustomFabricsScreen() {
       }),
     ]).start();
   };
-    return (
+
+  return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
@@ -178,7 +184,7 @@ export default function CustomFabricsScreen() {
                 fontWeight: "700",
               }}
             >
-              Custom Fabrics
+              {String(i18n.t("customFabrics.title"))}
             </Text>
 
             {statusMessage !== "" && (
@@ -195,7 +201,9 @@ export default function CustomFabricsScreen() {
           </View>
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
+            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+              {String(i18n.t("customFabrics.close"))}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -217,7 +225,7 @@ export default function CustomFabricsScreen() {
                 marginBottom: 10,
               }}
             >
-              No custom fabrics yet
+              {String(i18n.t("customFabrics.emptyTitle"))}
             </Text>
 
             <Text
@@ -229,7 +237,7 @@ export default function CustomFabricsScreen() {
                 marginBottom: 30,
               }}
             >
-              Add your own fabrics or scan new ones with AI.
+              {String(i18n.t("customFabrics.emptySubtitle"))}
             </Text>
 
             {/* Centered (+) */}
@@ -270,7 +278,7 @@ export default function CustomFabricsScreen() {
                   }}
                 >
                   <Text style={{ color: "#fff", fontSize: 16 }}>
-                    📤 Upload Fabric (AI)
+                    {String(i18n.t("customFabrics.uploadFabric"))}
                   </Text>
                 </TouchableOpacity>
 
@@ -283,7 +291,9 @@ export default function CustomFabricsScreen() {
                     borderRadius: 10,
                   }}
                 >
-                  <Text style={{ color: "#fff", fontSize: 16 }}>＋ Add Fabric</Text>
+                  <Text style={{ color: "#fff", fontSize: 16 }}>
+                    {String(i18n.t("customFabrics.addFabric"))}
+                  </Text>
                 </TouchableOpacity>
               </Animated.View>
             )}
@@ -336,8 +346,13 @@ export default function CustomFabricsScreen() {
                       alignItems: "center",
                     }}
                   >
-                    <Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 12 }}>
-                      No Image
+                    <Text
+                      style={{
+                        color: "rgba(255,255,255,0.4)",
+                        fontSize: 12,
+                      }}
+                    >
+                      {String(i18n.t("customFabrics.noImage"))}
                     </Text>
                   </View>
                 )}
@@ -400,7 +415,7 @@ export default function CustomFabricsScreen() {
                   }}
                 >
                   <Text style={{ color: "#fff", fontSize: 16 }}>
-                    📤 Upload Fabric (AI)
+                    {String(i18n.t("customFabrics.uploadFabric"))}
                   </Text>
                 </TouchableOpacity>
 
@@ -413,7 +428,9 @@ export default function CustomFabricsScreen() {
                     borderRadius: 10,
                   }}
                 >
-                  <Text style={{ color: "#fff", fontSize: 16 }}>＋ Add Fabric</Text>
+                  <Text style={{ color: "#fff", fontSize: 16 }}>
+                    {String(i18n.t("customFabrics.addFabric"))}
+                  </Text>
                 </TouchableOpacity>
               </Animated.View>
             )}
@@ -461,12 +478,14 @@ export default function CustomFabricsScreen() {
                   marginBottom: 16,
                 }}
               >
-                {editing ? "Edit Fabric" : "Add Fabric"}
+                {editing
+                  ? String(i18n.t("customFabrics.editFabric"))
+                  : String(i18n.t("customFabrics.addFabricModal"))}
               </Text>
 
               {/* NAME */}
               <TextInput
-                placeholder="Fabric name"
+                placeholder={String(i18n.t("customFabrics.fabricName"))}
                 placeholderTextColor="rgba(255,255,255,0.4)"
                 value={name}
                 onChangeText={setName}
@@ -481,7 +500,9 @@ export default function CustomFabricsScreen() {
 
               {/* DESCRIPTION */}
               <TextInput
-                placeholder="Description (optional)"
+                placeholder={String(
+                  i18n.t("customFabrics.descriptionOptional")
+                )}
                 placeholderTextColor="rgba(255,255,255,0.4)"
                 value={description}
                 onChangeText={setDescription}
@@ -496,7 +517,7 @@ export default function CustomFabricsScreen() {
 
               {/* CARE INSTRUCTIONS */}
               <Text style={{ color: "#fff", marginBottom: 6 }}>
-                Care Instructions
+                {String(i18n.t("customFabrics.careInstructions"))}
               </Text>
 
               {careInstructions.length > 0 ? (
@@ -519,7 +540,7 @@ export default function CustomFabricsScreen() {
                     marginBottom: 10,
                   }}
                 >
-                  No care instructions yet
+                  {String(i18n.t("customFabrics.noCareInstructions"))}
                 </Text>
               )}
 
@@ -543,7 +564,9 @@ export default function CustomFabricsScreen() {
                     fontWeight: "600",
                   }}
                 >
-                  {loadingAI ? "Generating…" : "Generate with AI"}
+                  {loadingAI
+                    ? String(i18n.t("customFabrics.generating"))
+                    : String(i18n.t("customFabrics.generateWithAI"))}
                 </Text>
               </TouchableOpacity>
 
@@ -565,7 +588,7 @@ export default function CustomFabricsScreen() {
                     fontWeight: "600",
                   }}
                 >
-                  Save
+                  {String(i18n.t("customFabrics.save"))}
                 </Text>
               </TouchableOpacity>
 
@@ -591,7 +614,7 @@ export default function CustomFabricsScreen() {
                       fontWeight: "600",
                     }}
                   >
-                    Delete
+                    {String(i18n.t("customFabrics.delete"))}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -611,7 +634,7 @@ export default function CustomFabricsScreen() {
                     fontSize: 16,
                   }}
                 >
-                  Cancel
+                  {String(i18n.t("customFabrics.cancel"))}
                 </Text>
               </TouchableOpacity>
             </View>

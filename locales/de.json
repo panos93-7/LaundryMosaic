@@ -110,5 +110,74 @@
   "cancel": "Abbrechen",
   "delete": "Löschen",
   "washSuffix": "Waschgang"
+ },
+ "customFabrics": {
+  "title": "Benutzerdefinierte Stoffe",
+  "close": "Schließen",
+
+  "emptyTitle": "Noch keine benutzerdefinierten Stoffe",
+  "emptySubtitle": "Füge eigene Stoffe hinzu oder scanne neue mit KI.",
+
+  "uploadFabric": "📤 Stoff hochladen (KI)",
+  "addFabric": "＋ Stoff hinzufügen",
+
+  "noImage": "Kein Bild",
+
+  "editFabric": "Stoff bearbeiten",
+  "addFabricModal": "Stoff hinzufügen",
+
+  "fabricName": "Stoffname",
+  "descriptionOptional": "Beschreibung (optional)",
+
+  "careInstructions": "Pflegehinweise",
+  "noCareInstructions": "Noch keine Pflegehinweise",
+
+  "generating": "Wird generiert…",
+  "generateWithAI": "Mit KI generieren",
+
+  "save": "Speichern",
+  "delete": "Löschen",
+  "cancel": "Abbrechen",
+
+  "statusUploading": "Stoff wird hochgeladen...",
+  "statusAdding": "Stoff wird hinzugefügt...",
+  "statusUpdating": "Stoff wird aktualisiert...",
+
+  "unknownFabric": "Unbekannter Stoff"
+ },
+ "editGarment": {
+  "back": "Zurück",
+  "title": "Kleidungsstück Bearbeiten",
+
+  "tapToAddImage": "Tippen, um ein Bild hinzuzufügen",
+
+  "name": "Name",
+  "type": "Typ",
+  "color": "Farbe",
+  "category": "Kategorie",
+  "fabric": "Stoff",
+  "pattern": "Muster",
+
+  "saveChanges": "Änderungen Speichern",
+  "deleteGarment": "Kleidungsstück Löschen",
+
+  "alertTitle": "Kleidungsstück Löschen",
+  "alertMessage": "Möchten Sie dieses Kleidungsstück wirklich löschen?",
+  "cancel": "Abbrechen",
+  "delete": "Löschen"
+ },
+ "fabricDetails": {
+  "back": "Zurück",
+  "fabricType": "Stoffart",
+  "weave": "Webart",
+  "sensitivity": "Empfindlichkeit",
+  "recommendedProgram": "Empfohlenes Waschprogramm",
+  "program": "Programm",
+  "temp": "Temperatur",
+  "spin": "Schleudern",
+  "description": "Beschreibung",
+  "careInstructions": "Pflegehinweise",
+  "noCareInstructions": "Keine Pflegehinweise verfügbar.",
+  "regenerate": "Mit KI neu generieren"
  }
 }

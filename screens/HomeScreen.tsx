@@ -189,15 +189,22 @@ export default function HomeScreen({ navigation }: any) {
   const [languageOpen, setLanguageOpen] = useState(false);
 
   const languageItems = [
-    { label: "🇬🇷 Ελληνικά", value: "el" },
-    { label: "🇬🇧 English", value: "en" },
-    { label: "🇪🇸 Español", value: "es" },
-    { label: "🇫🇷 Français", value: "fr" },
-    { label: "🇩🇪 Deutsch", value: "de" },
-    { label: "🇮🇹 Italiano", value: "it" },
-    { label: "🇹🇷 Türkçe", value: "tr" },
-    { label: "🇷🇺 Русский", value: "ru" },
-  ];
+  { label: "🇬🇷 Ελληνικά", value: "el" },
+  { label: "🇬🇧 English", value: "en" },
+  { label: "🇪🇸 Español", value: "es" },
+  { label: "🇫🇷 Français", value: "fr" },
+  { label: "🇩🇪 Deutsch", value: "de" },
+  { label: "🇮🇹 Italiano", value: "it" },
+  { label: "🇹🇷 Türkçe", value: "tr" },
+  { label: "🇷🇺 Русский", value: "ru" },
+  { label: "🇯🇵 日本語", value: "ja" },
+  { label: "🇰🇷 한국어", value: "ko" },
+  { label: "🇹🇼 繁體中文", value: "zh-TW" },
+  { label: "🇵🇹 Português (PT)", value: "pt-PT" },
+  { label: "🇧🇷 Português (BR)", value: "pt-BR" }
+];
+
+
 
   const fabricItems = [
     { label: i18n.t("fabricValues.cotton"), value: "cotton" },

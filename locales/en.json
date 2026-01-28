@@ -110,5 +110,74 @@
   "cancel": "Cancel",
   "delete": "Delete",
   "washSuffix": "wash"
+ },
+ "customFabrics": {
+  "title": "Custom Fabrics",
+  "close": "Close",
+
+  "emptyTitle": "No custom fabrics yet",
+  "emptySubtitle": "Add your own fabrics or scan new ones with AI.",
+
+  "uploadFabric": "📤 Upload Fabric (AI)",
+  "addFabric": "＋ Add Fabric",
+
+  "noImage": "No Image",
+
+  "editFabric": "Edit Fabric",
+  "addFabricModal": "Add Fabric",
+
+  "fabricName": "Fabric name",
+  "descriptionOptional": "Description (optional)",
+
+  "careInstructions": "Care Instructions",
+  "noCareInstructions": "No care instructions yet",
+
+  "generating": "Generating…",
+  "generateWithAI": "Generate with AI",
+
+  "save": "Save",
+  "delete": "Delete",
+  "cancel": "Cancel",
+
+  "statusUploading": "Uploading Fabric...",
+  "statusAdding": "Adding Fabric...",
+  "statusUpdating": "Updating Fabric...",
+
+  "unknownFabric": "Unknown Fabric"
+ },
+ "editGarment": {
+  "back": "Back",
+  "title": "Edit Garment",
+
+  "tapToAddImage": "Tap to add image",
+
+  "name": "Name",
+  "type": "Type",
+  "color": "Color",
+  "category": "Category",
+  "fabric": "Fabric",
+  "pattern": "Pattern",
+
+  "saveChanges": "Save Changes",
+  "deleteGarment": "Delete Garment",
+
+  "alertTitle": "Delete Garment",
+  "alertMessage": "Are you sure you want to delete this item?",
+  "cancel": "Cancel",
+  "delete": "Delete"
+ },
+ "fabricDetails": {
+  "back": "Back",
+  "fabricType": "Fabric Type",
+  "weave": "Weave",
+  "sensitivity": "Sensitivity",
+  "recommendedProgram": "Recommended Wash Program",
+  "program": "Program",
+  "temp": "Temp",
+  "spin": "Spin",
+  "description": "Description",
+  "careInstructions": "Care Instructions",
+  "noCareInstructions": "No care instructions available.",
+  "regenerate": "Regenerate with AI"
  }
 }

@@ -1,0 +1,186 @@
+{
+  "title": "LaundryMosaic",
+  "start": "Iniciar Lavagem",
+  "screenTitle": "Configurações de Lavagem",
+
+  "fabricTypeLabel": "Tipo de Tecido",
+  "fabricColorLabel": "Cor do Tecido",
+  "laundryProgram": "Programa de Lavagem",
+  "language": "Idioma",
+
+  "savePreset": "Salvar Predefinição",
+  "loadPreset": "Carregar Predefinição",
+
+  "lightMode": "Modo Claro",
+  "darkMode": "Modo Escuro",
+
+  "fabricLabel": "Tecido",
+  "colorLabel": "Cor",
+  "programLabel": "Programa",
+  "temperatureLabel": "Temperatura",
+  "spinSpeedLabel": "Velocidade de Centrifugação",
+  "rpm": "rpm",
+
+  "fabricValues": {
+    "cotton": "Algodão",
+    "synthetics": "Sintéticos",
+    "wool": "Lã",
+    "delicate": "Delicado"
+  },
+
+  "colorValues": {
+    "white": "Branco",
+    "dark": "Escuro",
+    "colored": "Colorido"
+  },
+
+  "programs": {
+    "cottonIntensive": "Algodão Intensivo",
+    "cottonColors": "Algodão Colorido",
+    "darkCare": "Cuidado com Escuros",
+    "synthetics": "Sintéticos",
+    "syntheticsColor": "Sintéticos Coloridos",
+    "darkSynthetic": "Sintético Escuro",
+    "woolHand": "Lã / Lavagem à Mão",
+    "delicates": "Delicados"
+  },
+
+  "smartScan": {
+    "title": "Smart Scan com IA",
+    "close": "Fechar",
+
+    "takePhoto": "Tirar Foto",
+    "chooseFromGallery": "Escolher da Galeria",
+
+    "errorTitle": "Falha na Análise da IA",
+    "errorMessage": "A IA não conseguiu analisar a imagem. Tente novamente com uma foto mais nítida.",
+    "retry": "Tentar Novamente",
+    "takeAnother": "Tirar Outra Foto",
+
+    "fabric": "Tecido",
+    "color": "Cor",
+    "stains": "Manchas",
+    "noStains": "Nenhuma mancha detectada",
+    "recommendedProgram": "Programa Recomendado",
+    "careInstructions": "Instruções de Cuidado",
+    "stainTips": "Dicas para Remover Manchas",
+
+    "addToPlanner": "Adicionar ao Planner automaticamente",
+
+    "plannerDefaultTitle": "Item de Lavagem",
+    "plannerDefaultType": "Geral",
+    "plannerAnyTime": "A qualquer momento"
+  },
+
+  "batchScan": {
+    "title": "Scan em Lote",
+    "close": "Fechar",
+    "analyzing": "Analisando…",
+    "itemsDetected": "Itens detectados:",
+    "conflicts": "Conflitos",
+    "suggestions": "Sugestões",
+    "scanAgain": "Escanear Novamente",
+
+    "conflict_wool": "Itens de lã devem ser lavados separadamente.",
+    "conflict_delicate": "Tecidos delicados não devem ser misturados com outros.",
+    "conflict_cotton_wool": "Algodão e lã exigem temperaturas diferentes.",
+
+    "suggest_cotton": "Carga ideal para o programa Algodão Colorido.",
+    "suggest_synthetics": "Carga sintética detectada — use o programa Sintéticos.",
+    "suggest_stains": "Alguns itens têm manchas — considere pré-tratamento.",
+    "suggest_mixed": "Carga mista detectada — use um programa suave."
+  },
+
+  "features": {
+    "aiSmartScan": "Smart Scan com IA",
+    "batchScan": "Scan em Lote",
+    "smartWardrobe": "Guarda‑roupa Inteligente",
+    "customFabrics": "Tecidos Personalizados",
+    "planner": "Planner"
+  },
+
+  "planner": {
+    "title": "Planner de Lavagem",
+    "viewHistory": "Ver Histórico",
+    "openCalendar": "Abrir Calendário",
+    "description": "Organize suas lavagens semanais, configure lembretes e mantenha sua rotina em dia.",
+    "addNewWash": "Adicionar Nova Lavagem",
+    "washesForDate": "Lavagens em {{date}}",
+    "noWashes": "Nenhuma lavagem para este dia.",
+    "deleteTitle": "Excluir Lavagem",
+    "deleteMessage": "Tem certeza?",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "washSuffix": "lavagem"
+  },
+
+  "customFabrics": {
+    "title": "Tecidos Personalizados",
+    "close": "Fechar",
+
+    "emptyTitle": "Nenhum tecido personalizado ainda",
+    "emptySubtitle": "Adicione seus próprios tecidos ou escaneie novos com IA.",
+
+    "uploadFabric": "📤 Enviar Tecido (IA)",
+    "addFabric": "＋ Adicionar Tecido",
+
+    "noImage": "Sem imagem",
+
+    "editFabric": "Editar Tecido",
+    "addFabricModal": "Adicionar Tecido",
+
+    "fabricName": "Nome do tecido",
+    "descriptionOptional": "Descrição (opcional)",
+
+    "careInstructions": "Instruções de Cuidado",
+    "noCareInstructions": "Nenhuma instrução de cuidado ainda",
+
+    "generating": "Gerando…",
+    "generateWithAI": "Gerar com IA",
+
+    "save": "Salvar",
+    "delete": "Excluir",
+    "cancel": "Cancelar",
+
+    "statusUploading": "Enviando tecido...",
+    "statusAdding": "Adicionando tecido...",
+    "statusUpdating": "Atualizando tecido...",
+
+    "unknownFabric": "Tecido desconhecido"
+  },
+  "editGarment": {
+  "back": "Voltar",
+  "title": "Editar Peça",
+
+  "tapToAddImage": "Toque para adicionar imagem",
+
+  "name": "Nome",
+  "type": "Tipo",
+  "color": "Cor",
+  "category": "Categoria",
+  "fabric": "Tecido",
+  "pattern": "Estampa",
+
+  "saveChanges": "Salvar Alterações",
+  "deleteGarment": "Excluir Peça",
+
+  "alertTitle": "Excluir Peça",
+  "alertMessage": "Tem certeza de que deseja excluir este item?",
+  "cancel": "Cancelar",
+  "delete": "Excluir"
+ },
+ "fabricDetails": {
+  "back": "Voltar",
+  "fabricType": "Tipo de Tecido",
+  "weave": "Trama",
+  "sensitivity": "Sensibilidade",
+  "recommendedProgram": "Programa de Lavagem Recomendado",
+  "program": "Programa",
+  "temp": "Temperatura",
+  "spin": "Centrifugação",
+  "description": "Descrição",
+  "careInstructions": "Instruções de Cuidado",
+  "noCareInstructions": "Nenhuma instrução de cuidado disponível.",
+  "regenerate": "Regenerar com IA"
+ }
+}
