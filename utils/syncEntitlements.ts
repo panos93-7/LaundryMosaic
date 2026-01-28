@@ -9,13 +9,16 @@ export function markPurchasesConfigured() {
 }
 
 export async function syncEntitlements() {
+  console.log("🔵 syncEntitlements START");
+
   try {
     if (!isConfigured) {
-      console.log("syncEntitlements skipped: Purchases not configured yet");
+      console.log("🟡 SKIPPED: Purchases not configured");
       return;
     }
 
     const info = await Purchases.getCustomerInfo();
+    console.log("🟢 CustomerInfo:", info);
 
     if (!info) {
       useUserStore.getState().setFromEntitlement("free");
@@ -46,7 +49,10 @@ export async function syncEntitlements() {
 
     useUserStore.getState().setFromEntitlement("free");
   } catch (e) {
-    console.log("Error syncing entitlements:", e);
+    console.log("🔴 syncEntitlements ERROR:", e);
     useUserStore.getState().setFromEntitlement("free");
+  } finally {
+    console.log("🟣 syncEntitlements FINISHED → setting entitlementsLoaded = true");
+    useUserStore.getState().setEntitlementsLoaded(true);
   }
 }
