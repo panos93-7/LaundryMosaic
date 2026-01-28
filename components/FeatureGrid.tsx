@@ -38,9 +38,14 @@ export function FeatureGrid({ isDarkMode, language }: any) {
         badgeType="Premium"
         isDarkMode={isDarkMode}
         userTier={userTier}
-        onPress={() =>
-          handleFeaturePress("ai_smart_scan", "SmartScan", true)
-        }
+       onPress={() => {
+  if (userTier === "free" || userTier === "premium_monthly") {
+    navigation.navigate("PremiumMonthlyPaywall");
+    return;
+  }
+
+  navigation.navigate("SmartScan", { language });
+}}
       />
 
       {/* ROW 1 */}
