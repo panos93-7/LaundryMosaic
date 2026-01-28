@@ -88,10 +88,16 @@ export async function restoreEntitlements() {
     } else {
       useUserStore.getState().setFromEntitlement("free");
     }
+
+    // ⭐ ΜΟΝΟ ΕΔΩ — αφού έχουμε βάλει entitlement
+    useUserStore.getState().setEntitlementsLoaded(true);
+
   } catch (err) {
     console.log("❌ Failed to restore entitlements:", err);
+
     useUserStore.getState().setFromEntitlement("free");
-  } finally {
+
+    // ⭐ ΑΚΟΜΑ ΚΑΙ ΣΤΟ ERROR → ΜΕΤΑ το setFromEntitlement
     useUserStore.getState().setEntitlementsLoaded(true);
   }
 }
