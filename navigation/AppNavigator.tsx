@@ -45,6 +45,7 @@ export default function AppNavigator() {
     isPremiumAnnual,
     isPremiumMonthly,
     isFree,
+    entitlementsLoaded,
   } = useUserStore();
 
   // Sync entitlements on startup
@@ -62,13 +63,20 @@ export default function AppNavigator() {
     return () => sub.remove();
   }, []);
 
-  // -----------------------------
-  // ONBOARDING FLOW (FIXED)
-  // -----------------------------
+  // ---------------------------------------------------
+  // ⭐ WAIT UNTIL ENTITLEMENTS ARE LOADED
+  // ---------------------------------------------------
+  if (!entitlementsLoaded) {
+    return null; // αφήνουμε το cinematic splash να παίζει
+  }
+
+  // ---------------------------------------------------
+  // ⭐ ONBOARDING FLOW
+  // ---------------------------------------------------
 
   // PREMIUM USERS → ΠΟΤΕ onboarding
   if (isPro || isPremiumAnnual || isPremiumMonthly) {
-    // Skip onboarding entirely
+    // skip onboarding entirely
   } else {
     // FREE USERS → onboarding only once
     if (!hasSeenOnboarding) {
@@ -91,16 +99,14 @@ export default function AppNavigator() {
     }
   }
 
-  // -----------------------------
-  // MAIN APP FLOW
-  // -----------------------------
+  // ---------------------------------------------------
+  // ⭐ MAIN APP FLOW
+  // ---------------------------------------------------
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-        {/* ================================= */}
-        {/* GLOBAL PAYWALL SCREENS — ALWAYS ON */}
-        {/* ================================= */}
+        {/* GLOBAL PAYWALL SCREENS */}
         <Stack.Screen name="Paywall" component={PaywallScreen} />
         <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
         <Stack.Screen
@@ -108,9 +114,7 @@ export default function AppNavigator() {
           component={PremiumMonthlyPaywall}
         />
 
-        {/* ========================= */}
-        {/* PRO — FULL ACCESS         */}
-        {/* ========================= */}
+        {/* PRO USERS */}
         {isPro && (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -119,23 +123,18 @@ export default function AppNavigator() {
             <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
             <Stack.Screen name="History" component={HistoryScreen} />
 
-            {/* PRO Features */}
             <Stack.Screen name="BatchScan" component={BatchScanScreen} />
             <Stack.Screen name="Wardrobe" component={WardrobeScreen} />
             <Stack.Screen name="CustomFabrics" component={CustomFabricsScreen} />
 
-            {/* Wardrobe Flow */}
             <Stack.Screen name="GarmentDetails" component={GarmentDetailsScreen} />
             <Stack.Screen name="EditGarment" component={EditGarmentScreen} />
 
-            {/* Fabric Details */}
             <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
           </>
         )}
 
-        {/* ========================= */}
-        {/* PREMIUM ANNUAL            */}
-        {/* ========================= */}
+        {/* PREMIUM ANNUAL */}
         {isPremiumAnnual && !isPro && (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -144,10 +143,8 @@ export default function AppNavigator() {
             <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
             <Stack.Screen name="History" component={HistoryScreen} />
 
-            {/* Fabric Details */}
             <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
 
-            {/* PRO-only → PRO paywall */}
             <Stack.Screen name="BatchScan" component={PaywallScreen} />
             <Stack.Screen name="Wardrobe" component={PaywallScreen} />
             <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
@@ -156,9 +153,7 @@ export default function AppNavigator() {
           </>
         )}
 
-        {/* ========================= */}
-        {/* PREMIUM MONTHLY           */}
-        {/* ========================= */}
+        {/* PREMIUM MONTHLY */}
         {isPremiumMonthly && !isPro && !isPremiumAnnual && (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -166,44 +161,34 @@ export default function AppNavigator() {
             <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
             <Stack.Screen name="History" component={HistoryScreen} />
 
-            {/* SmartScan → needs Annual */}
             <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
 
-            {/* PRO-only → PRO paywall */}
             <Stack.Screen name="BatchScan" component={PaywallScreen} />
             <Stack.Screen name="Wardrobe" component={PaywallScreen} />
             <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
             <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
             <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
-            {/* Fabric Details → PRO paywall */}
             <Stack.Screen name="FabricDetails" component={PaywallScreen} />
           </>
         )}
 
-        {/* ========================= */}
-        {/* FREE USERS                */}
-        {/* ========================= */}
+        {/* FREE USERS */}
         {isFree && (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Planner" component={PlannerScreen} />
             <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
 
-            {/* History → Premium Monthly */}
             <Stack.Screen name="History" component={PremiumMonthlyPaywall} />
-
-            {/* SmartScan → Premium Annual */}
             <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
 
-            {/* PRO-only → PRO paywall */}
             <Stack.Screen name="BatchScan" component={PaywallScreen} />
             <Stack.Screen name="Wardrobe" component={PaywallScreen} />
             <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
             <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
             <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
-            {/* Fabric Details → PRO paywall */}
             <Stack.Screen name="FabricDetails" component={PaywallScreen} />
           </>
         )}

@@ -20,6 +20,10 @@ type UserStore = {
   // Sync from entitlements
   setFromEntitlement: (tier: Tier) => void;
 
+  // --- ENTITLEMENT LOADING FLAG ---
+  entitlementsLoaded: boolean;
+  setEntitlementsLoaded: (v: boolean) => void;
+
   // --- ONBOARDING ---
   hasSeenOnboarding: boolean;
   setHasSeenOnboarding: (v: boolean) => void;
@@ -52,6 +56,12 @@ export const useUserStore = create<UserStore>((set) => ({
   },
 
   // -----------------------------
+  // ENTITLEMENT LOADING FLAG
+  // -----------------------------
+  entitlementsLoaded: false,
+  setEntitlementsLoaded: (v) => set({ entitlementsLoaded: v }),
+
+  // -----------------------------
   // ONBOARDING
   // -----------------------------
   hasSeenOnboarding: false,
@@ -59,7 +69,7 @@ export const useUserStore = create<UserStore>((set) => ({
 }));
 
 // ---------------------------------------------------------
-// ⭐ RESTORE ENTITLEMENTS (the missing piece)
+// ⭐ RESTORE ENTITLEMENTS
 // ---------------------------------------------------------
 export async function restoreEntitlements() {
   try {
@@ -71,23 +81,17 @@ export async function restoreEntitlements() {
 
     if (hasPro) {
       useUserStore.getState().setFromEntitlement("pro");
-      return;
-    }
-
-    if (hasPremiumAnnual) {
+    } else if (hasPremiumAnnual) {
       useUserStore.getState().setFromEntitlement("premium_annual");
-      return;
-    }
-
-    if (hasPremiumMonthly) {
+    } else if (hasPremiumMonthly) {
       useUserStore.getState().setFromEntitlement("premium_monthly");
-      return;
+    } else {
+      useUserStore.getState().setFromEntitlement("free");
     }
-
-    // Default fallback
-    useUserStore.getState().setFromEntitlement("free");
   } catch (err) {
     console.log("❌ Failed to restore entitlements:", err);
     useUserStore.getState().setFromEntitlement("free");
+  } finally {
+    useUserStore.getState().setEntitlementsLoaded(true);
   }
 }
