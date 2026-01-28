@@ -51,7 +51,12 @@ export default function AppNavigator() {
   // ⭐ FORCE RE-RENDER όταν αλλάζει το entitlement
   useUserStore((s) => s.userTier);
 
-  // Sync entitlements ONLY when app returns to foreground
+  // ⭐ RUN ON STARTUP (FIX)
+  useEffect(() => {
+    syncEntitlements();
+  }, []);
+
+  // ⭐ RUN WHEN APP RETURNS TO FOREGROUND
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
       if (state === "active") {
