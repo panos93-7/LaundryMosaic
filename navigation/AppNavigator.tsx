@@ -48,12 +48,7 @@ export default function AppNavigator() {
     entitlementsLoaded,
   } = useUserStore();
 
-  // Sync entitlements on startup
-  useEffect(() => {
-    syncEntitlements();
-  }, []);
-
-  // Sync entitlements when app returns to foreground
+  // ❗ Sync entitlements ONLY when app returns to foreground
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
       if (state === "active") {
