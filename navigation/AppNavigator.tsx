@@ -63,25 +63,32 @@ export default function AppNavigator() {
   }, []);
 
   // -----------------------------
-  // ONBOARDING FLOW
+  // ONBOARDING FLOW (FIXED)
   // -----------------------------
-  if (!hasSeenOnboarding) {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-          <Stack.Screen name="OnboardingValue" component={OnboardingValue} />
-          <Stack.Screen
-            name="OnboardingPersonalization"
-            component={OnboardingPersonalization}
-          />
-          <Stack.Screen
-            name="OnboardingPaywallRedirect"
-            component={OnboardingPaywallRedirect}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
+
+  // PREMIUM USERS → ΠΟΤΕ onboarding
+  if (isPro || isPremiumAnnual || isPremiumMonthly) {
+    // Skip onboarding entirely
+  } else {
+    // FREE USERS → onboarding only once
+    if (!hasSeenOnboarding) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+            <Stack.Screen name="OnboardingValue" component={OnboardingValue} />
+            <Stack.Screen
+              name="OnboardingPersonalization"
+              component={OnboardingPersonalization}
+            />
+            <Stack.Screen
+              name="OnboardingPaywallRedirect"
+              component={OnboardingPaywallRedirect}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    }
   }
 
   // -----------------------------
