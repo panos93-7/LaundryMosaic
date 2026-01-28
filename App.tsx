@@ -11,7 +11,7 @@ import {
 } from "./utils/PaywallLogic";
 
 import Purchases from "react-native-purchases";
-import { markPurchasesConfigured } from "./utils/syncEntitlements";
+import { markPurchasesConfigured, syncEntitlements } from "./utils/syncEntitlements";
 
 import Constants from "expo-constants";
 import * as Updates from "expo-updates";
@@ -35,6 +35,19 @@ try {
 
 export default function App() {
   const [updating, setUpdating] = useState(false);
+  const [loadingEntitlements, setLoadingEntitlements] = useState(true);
+
+  // ⭐ Load entitlements BEFORE showing the app
+  useEffect(() => {
+    async function loadEntitlements() {
+      try {
+        await syncEntitlements();
+      } finally {
+        setLoadingEntitlements(false);
+      }
+    }
+    loadEntitlements();
+  }, []);
 
   // ⭐ Auto‑OTA update check
   useEffect(() => {
@@ -95,6 +108,25 @@ export default function App() {
           }}
         >
           Updating app…
+        </Text>
+      </View>
+    );
+  }
+
+  // ⭐ NEW: Entitlement loading screen
+  if (loadingEntitlements) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#0f0c29",
+        }}
+      >
+        <ActivityIndicator size="large" color="#fff" />
+        <Text style={{ color: "#fff", marginTop: 20, fontSize: 16 }}>
+          Loading…
         </Text>
       </View>
     );
