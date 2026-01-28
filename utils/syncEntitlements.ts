@@ -9,19 +9,28 @@ export async function syncEntitlements() {
     console.log("🟢 CustomerInfo:", info);
 
     const ent = info?.entitlements?.active || {};
-    const products = info?.activeSubscriptions || [];
 
-    // PRO
+    // ⭐ PRO (lifetime or subscription)
     if (ent["Pro"]) {
+      console.log("🏆 SET TIER → PRO");
       useUserStore.getState().setFromEntitlement("pro");
       useUserStore.getState().setEntitlementsLoaded(true);
       return;
     }
 
-    // PREMIUM (annual or monthly)
+    // ⭐ PREMIUM (monthly or annual)
     if (ent["Premium"]) {
-      const isAnnual = products.some((p: string) =>
-        p.toLowerCase().includes("annual")
+      const productId =
+        ent["Premium"].productIdentifier?.toLowerCase() || "";
+
+      const isAnnual =
+        productId.includes("annual") ||
+        productId.includes("year") ||
+        productId.includes("yr");
+
+      console.log(
+        "🏆 SET TIER → PREMIUM",
+        isAnnual ? "ANNUAL" : "MONTHLY"
       );
 
       useUserStore
@@ -32,7 +41,8 @@ export async function syncEntitlements() {
       return;
     }
 
-    // FREE
+    // ⭐ FREE
+    console.log("🏆 SET TIER → FREE");
     useUserStore.getState().setFromEntitlement("free");
     useUserStore.getState().setEntitlementsLoaded(true);
 

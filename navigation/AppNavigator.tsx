@@ -1,10 +1,3 @@
-console.log("🔥 NAV FIRST RENDER", {
-  entitlementsLoaded: useUserStore.getState().entitlementsLoaded,
-  userTier: useUserStore.getState().userTier,
-  isFree: useUserStore.getState().isFree,
-  isPro: useUserStore.getState().isPro,
-  hasSeenOnboarding: useUserStore.getState().hasSeenOnboarding,
-});
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
@@ -47,13 +40,16 @@ import FabricDetailsScreen from "../screens/FabricDetailsScreen";
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  // ⭐ SELECTORS (ΟΧΙ snapshot)
+  // ⭐ SELECTORS
   const hasSeenOnboarding = useUserStore((s) => s.hasSeenOnboarding);
   const isPro = useUserStore((s) => s.isPro);
   const isPremiumAnnual = useUserStore((s) => s.isPremiumAnnual);
   const isPremiumMonthly = useUserStore((s) => s.isPremiumMonthly);
   const isFree = useUserStore((s) => s.isFree);
   const entitlementsLoaded = useUserStore((s) => s.entitlementsLoaded);
+
+  // ⭐ FORCE RE-RENDER όταν αλλάζει το entitlement
+  useUserStore((s) => s.userTier);
 
   // Sync entitlements ONLY when app returns to foreground
   useEffect(() => {
@@ -75,12 +71,7 @@ export default function AppNavigator() {
   // ---------------------------------------------------
   // ⭐ ONBOARDING FLOW
   // ---------------------------------------------------
-
-  // PREMIUM USERS → ΠΟΤΕ onboarding
-  if (isPro || isPremiumAnnual || isPremiumMonthly) {
-    // skip onboarding entirely
-  } else {
-    // FREE USERS → onboarding only once
+  if (!(isPro || isPremiumAnnual || isPremiumMonthly)) {
     if (!hasSeenOnboarding) {
       return (
         <NavigationContainer>

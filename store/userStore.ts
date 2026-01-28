@@ -69,7 +69,7 @@ export const useUserStore = create<UserStore>((set) => ({
 }));
 
 // ---------------------------------------------------------
-// ⭐ RESTORE ENTITLEMENTS
+// ⭐ RESTORE ENTITLEMENTS (FIXED)
 // ---------------------------------------------------------
 export async function restoreEntitlements() {
   console.log("🔵 RESTORE ENTITLEMENTS START");
@@ -81,27 +81,42 @@ export async function restoreEntitlements() {
     console.log("🟢 Active entitlements:", info.entitlements.active);
     console.log("🟢 Active subs:", info.activeSubscriptions);
 
-    const hasPro = info.entitlements.active["pro"];
-    const hasPremiumMonthly = info.entitlements.active["premium_monthly"];
-    const hasPremiumAnnual = info.entitlements.active["premium_annual"];
+    const ent = info.entitlements.active || {};
 
-    if (hasPro) {
+    // ⭐ PRO (lifetime or subscription)
+    if (ent["Pro"]) {
       console.log("🏆 SET TIER → PRO");
       useUserStore.getState().setFromEntitlement("pro");
-    } else if (hasPremiumAnnual) {
-      console.log("🏆 SET TIER → PREMIUM ANNUAL");
-      useUserStore.getState().setFromEntitlement("premium_annual");
-    } else if (hasPremiumMonthly) {
-      console.log("🏆 SET TIER → PREMIUM MONTHLY");
-      useUserStore.getState().setFromEntitlement("premium_monthly");
-    } else {
+    }
+
+    // ⭐ PREMIUM (monthly or annual)
+    else if (ent["Premium"]) {
+      const productId =
+        ent["Premium"].productIdentifier?.toLowerCase() || "";
+
+      const isAnnual =
+        productId.includes("annual") ||
+        productId.includes("year") ||
+        productId.includes("yr");
+
+      console.log(
+        "🏆 SET TIER → PREMIUM",
+        isAnnual ? "ANNUAL" : "MONTHLY"
+      );
+
+      useUserStore
+        .getState()
+        .setFromEntitlement(isAnnual ? "premium_annual" : "premium_monthly");
+    }
+
+    // ⭐ FREE
+    else {
       console.log("🏆 SET TIER → FREE");
       useUserStore.getState().setFromEntitlement("free");
     }
 
     useUserStore.getState().setEntitlementsLoaded(true);
     console.log("🟣 ENTITLEMENTS LOADED = TRUE");
-
   } catch (err) {
     console.log("❌ Failed to restore entitlements:", err);
 

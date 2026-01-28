@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 
 import Purchases from "react-native-purchases";
-import { restoreEntitlements, useUserStore } from "./store/userStore";
+import { useUserStore } from "./store/userStore";
+import { syncEntitlements } from "./utils/syncEntitlements";
 
 import AppNavigator from "./navigation/AppNavigator";
 
@@ -13,12 +14,13 @@ console.log("CHANNEL:", Updates.channel);
 console.log("RUNTIME:", Updates.runtimeVersion);
 console.log("🔧 EXTRA:", Constants.expoConfig?.extra);
 
+// Global flag for RC readiness
 declare global {
   var __RC_READY__: boolean | undefined;
 }
 
 export default function App() {
-  // ⭐ HARD RESET store
+  // ⭐ HARD RESET store on every launch
   useEffect(() => {
     console.log("🧹 HARD RESET STORE");
     useUserStore.setState({
@@ -56,7 +58,7 @@ export default function App() {
     initRC();
   }, []);
 
-  // ⭐ Load entitlements
+  // ⭐ Load entitlements AFTER RC is ready
   useEffect(() => {
     async function loadEntitlements() {
       console.log("⏳ WAITING FOR RC READY...");
@@ -67,9 +69,10 @@ export default function App() {
 
       console.log("🟢 RC READY → LOADING ENTITLEMENTS");
 
+      // Small delay for Android stability
       await new Promise((res) => setTimeout(res, 200));
 
-      await restoreEntitlements();
+      await syncEntitlements();
 
       console.log("✅ ENTITLEMENTS LOADED");
     }
