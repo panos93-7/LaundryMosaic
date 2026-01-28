@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Purchases from "react-native-purchases";
 import { SafeAreaView } from "react-native-safe-area-context";
+import i18n from "../i18n";
 import { syncEntitlements } from "../utils/syncEntitlements";
 
 export default function PremiumFallbackScreen({ navigation }: any) {
@@ -32,10 +33,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
   async function handlePurchase(pkg: any) {
     try {
       await Purchases.purchasePackage(pkg);
-
-      // ⭐ Sync entitlements after purchase
       await syncEntitlements();
-
       navigation.replace("Home");
     } catch (e) {
       console.log("Purchase error:", e);
@@ -45,10 +43,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
   async function handleRestore() {
     try {
       await Purchases.restorePurchases();
-
-      // ⭐ Sync entitlements after restore
       await syncEntitlements();
-
       navigation.replace("Home");
     } catch (e) {
       console.log("Restore error:", e);
@@ -66,7 +61,9 @@ export default function PremiumFallbackScreen({ navigation }: any) {
         }}
       >
         <ActivityIndicator size="large" color="#fff" />
-        <Text style={{ color: "#fff", marginTop: 10 }}>Loading offer...</Text>
+        <Text style={{ color: "#fff", marginTop: 10 }}>
+          {String(i18n.t("premiumFallback.loading"))}
+        </Text>
       </SafeAreaView>
     );
   }
@@ -81,12 +78,13 @@ export default function PremiumFallbackScreen({ navigation }: any) {
           backgroundColor: "#0d0d0d",
         }}
       >
-        <Text style={{ color: "#fff" }}>No offerings found.</Text>
+        <Text style={{ color: "#fff" }}>
+          {String(i18n.t("premiumFallback.noOfferings"))}
+        </Text>
       </SafeAreaView>
     );
   }
 
-  // ⭐ ONLY Premium Annual
   const premiumAnnual = offerings?.availablePackages?.find(
     (p: any) => p.identifier === "premium_annual"
   );
@@ -94,6 +92,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0d0d0d" }}>
       <ScrollView contentContainerStyle={{ padding: 24 }}>
+
         {/* HEADER */}
         <Text
           style={{
@@ -104,7 +103,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
             marginBottom: 8,
           }}
         >
-          Smart Wash Premium
+          {String(i18n.t("premiumFallback.title"))}
         </Text>
 
         <Text
@@ -115,7 +114,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
             marginBottom: 32,
           }}
         >
-          A lighter plan with the essentials you need.
+          {String(i18n.t("premiumFallback.subtitle"))}
         </Text>
 
         {/* PREMIUM ANNUAL CARD */}
@@ -140,11 +139,11 @@ export default function PremiumFallbackScreen({ navigation }: any) {
                 marginBottom: 6,
               }}
             >
-              Premium Annual
+              {String(i18n.t("premiumFallback.annualTitle"))}
             </Text>
 
             <Text style={{ color: "#fff", opacity: 0.85, marginBottom: 16 }}>
-              Save more with our best yearly price.
+              {String(i18n.t("premiumFallback.annualSubtitle"))}
             </Text>
 
             <Text
@@ -156,7 +155,9 @@ export default function PremiumFallbackScreen({ navigation }: any) {
               }}
             >
               {premiumAnnual?.product?.priceString ?? "—"}
-              <Text style={{ fontSize: 16, opacity: 0.7 }}>/year</Text>
+              <Text style={{ fontSize: 16, opacity: 0.7 }}>
+                {String(i18n.t("premiumFallback.perYear"))}
+              </Text>
             </Text>
 
             <TouchableOpacity
@@ -175,7 +176,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
                   textAlign: "center",
                 }}
               >
-                Upgrade Now
+                {String(i18n.t("premiumFallback.upgradeNow"))}
               </Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -184,11 +185,11 @@ export default function PremiumFallbackScreen({ navigation }: any) {
         {/* BENEFITS */}
         <View style={{ marginBottom: 32 }}>
           {[
-            "Auto‑Add to Planner",
-            "Full Wash History",
-            "AI stain removal",
-            "Premium themes",
-            "Faster processing",
+            i18n.t("premiumFallback.benefits.smartScan"),
+            i18n.t("premiumFallback.benefits.stainDetection"),
+            i18n.t("premiumFallback.benefits.autoAdd"),
+            i18n.t("premiumFallback.benefits.history"),
+            i18n.t("premiumFallback.benefits.faster"),
           ].map((b, i) => (
             <Text
               key={i}
@@ -198,7 +199,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
                 marginBottom: 8,
               }}
             >
-              • {b}
+              • {String(b)}
             </Text>
           ))}
         </View>
@@ -214,7 +215,7 @@ export default function PremiumFallbackScreen({ navigation }: any) {
               fontSize: 16,
             }}
           >
-            Continue with Free version
+            {String(i18n.t("premiumFallback.continueFree"))}
           </Text>
         </TouchableOpacity>
 
@@ -227,9 +228,10 @@ export default function PremiumFallbackScreen({ navigation }: any) {
               fontSize: 14,
             }}
           >
-            Restore Purchases
+            {String(i18n.t("premiumFallback.restore"))}
           </Text>
         </TouchableOpacity>
+
       </ScrollView>
     </SafeAreaView>
   );

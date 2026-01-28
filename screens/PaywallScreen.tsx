@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Purchases from "react-native-purchases";
 import { SafeAreaView } from "react-native-safe-area-context";
+import i18n from "../i18n";
 import { syncEntitlements } from "../utils/syncEntitlements";
 
 export default function PaywallScreen({ navigation }: any) {
@@ -39,7 +40,9 @@ export default function PaywallScreen({ navigation }: any) {
         }}
       >
         <ActivityIndicator size="large" color="#fff" />
-        <Text style={{ color: "#fff", marginTop: 10 }}>Loading...</Text>
+        <Text style={{ color: "#fff", marginTop: 10 }}>
+          {String(i18n.t("paywall.loading"))}
+        </Text>
       </SafeAreaView>
     );
   }
@@ -54,12 +57,13 @@ export default function PaywallScreen({ navigation }: any) {
           backgroundColor: "#0d0d0d",
         }}
       >
-        <Text style={{ color: "#fff" }}>No offerings found.</Text>
+        <Text style={{ color: "#fff" }}>
+          {String(i18n.t("paywall.noOfferings"))}
+        </Text>
       </SafeAreaView>
     );
   }
 
-  // ⭐ PRO PACKAGES
   const proMonthly = offerings.availablePackages?.find(
     (p: any) => p.identifier === "pro_monthly"
   );
@@ -73,10 +77,7 @@ export default function PaywallScreen({ navigation }: any) {
   async function handlePurchase(pkg: any) {
     try {
       await Purchases.purchasePackage(pkg);
-
-      // ⭐ Sync entitlements after purchase
       await syncEntitlements();
-
       navigation.replace("Home");
     } catch (e) {
       console.log("Purchase error:", e);
@@ -86,10 +87,7 @@ export default function PaywallScreen({ navigation }: any) {
   async function handleRestore() {
     try {
       await Purchases.restorePurchases();
-
-      // ⭐ Sync entitlements after restore
       await syncEntitlements();
-
       navigation.replace("Home");
     } catch (e) {
       console.log("Restore error:", e);
@@ -99,6 +97,7 @@ export default function PaywallScreen({ navigation }: any) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0d0d0d" }}>
       <ScrollView contentContainerStyle={{ padding: 24 }}>
+
         {/* HEADER */}
         <Text
           style={{
@@ -109,7 +108,7 @@ export default function PaywallScreen({ navigation }: any) {
             marginBottom: 6,
           }}
         >
-          Unlock Laundry Pro+
+          {String(i18n.t("paywall.headerTitle"))}
         </Text>
 
         <Text
@@ -120,7 +119,7 @@ export default function PaywallScreen({ navigation }: any) {
             marginBottom: 28,
           }}
         >
-          Get unlimited AI features, batch scanning, wardrobe & more.
+          {String(i18n.t("paywall.headerSubtitle"))}
         </Text>
 
         {/* PRO MONTHLY */}
@@ -137,7 +136,7 @@ export default function PaywallScreen({ navigation }: any) {
             }}
           >
             <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-              Pro Monthly
+              {String(i18n.t("paywall.monthly"))}
             </Text>
             <Text style={{ color: "#bbb", marginTop: 4, fontSize: 16 }}>
               {proMonthly.product.priceString}
@@ -159,7 +158,7 @@ export default function PaywallScreen({ navigation }: any) {
             }}
           >
             <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-              Pro Annual (Best Value)
+              {String(i18n.t("paywall.annual"))}
             </Text>
             <Text style={{ color: "#bbb", marginTop: 4, fontSize: 16 }}>
               {proAnnual.product.priceString}
@@ -181,7 +180,7 @@ export default function PaywallScreen({ navigation }: any) {
             }}
           >
             <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-              Pro Lifetime Access
+              {String(i18n.t("paywall.lifetime"))}
             </Text>
             <Text style={{ color: "#bbb", marginTop: 4, fontSize: 16 }}>
               {proLifetime.product.priceString}
@@ -207,7 +206,7 @@ export default function PaywallScreen({ navigation }: any) {
                 textAlign: "center",
               }}
             >
-              Upgrade to Pro+
+              {String(i18n.t("paywall.upgradeButton"))}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -222,7 +221,7 @@ export default function PaywallScreen({ navigation }: any) {
               marginBottom: 20,
             }}
           >
-            Continue with Free version
+            {String(i18n.t("paywall.continueFree"))}
           </Text>
         </TouchableOpacity>
 
@@ -235,9 +234,10 @@ export default function PaywallScreen({ navigation }: any) {
               fontSize: 14,
             }}
           >
-            Restore Purchases
+            {String(i18n.t("paywall.restore"))}
           </Text>
         </TouchableOpacity>
+
       </ScrollView>
     </SafeAreaView>
   );

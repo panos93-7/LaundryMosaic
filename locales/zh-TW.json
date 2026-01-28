@@ -218,5 +218,108 @@
 
   "editGarment": "編輯衣物",
   "deleteGarment": "刪除衣物"
+ },
+ "history": {
+  "title": "洗衣紀錄",
+  "close": "關閉",
+
+  "emptyTitle": "目前沒有洗衣紀錄。",
+
+  "typeLabel": "洗衣",
+
+  "premiumRedirect": "正在跳轉…"
+ },
+ "calendar": {
+  "back": "返回",
+  "weekdays": ["一", "二", "三", "四", "五", "六", "日"]
+ },
+ "addWash": {
+  "addTitle": "新增洗衣",
+  "editTitle": "編輯洗衣",
+  "close": "關閉",
+
+  "labelTitle": "標題",
+  "labelTime": "時間",
+  "labelType": "洗衣類型",
+
+  "placeholderTitle": "例如：白色衣物",
+  "placeholderTime": "例如：10:30",
+
+  "washTypes": {
+    "whites": "白色衣物",
+    "colors": "彩色衣物",
+    "delicates": "精緻衣物",
+    "quick": "快速洗衣"
+  },
+
+  "errorMissingTitle": "缺少標題",
+  "errorMissingTitleMsg": "請輸入洗衣標題。",
+
+  "errorMissingTime": "缺少時間",
+  "errorMissingTimeMsg": "請輸入時間。",
+
+  "errorMissingType": "缺少類型",
+  "errorMissingTypeMsg": "請選擇洗衣類型。",
+
+  "errorInvalidDate": "無效日期",
+  "errorInvalidDateMsg": "無法在過去的日期安排洗衣。",
+
+  "saveChanges": "儲存變更",
+  "saveWash": "儲存洗衣"
+ },
+ "paywall": {
+  "loading": "載入中...",
+  "noOfferings": "找不到可用的方案。",
+
+  "headerTitle": "解鎖 Laundry Pro+",
+  "headerSubtitle": "無限 AI 功能、批次掃描、衣櫥等更多功能。",
+
+  "monthly": "Pro 月費方案",
+  "annual": "Pro 年費方案（最超值）",
+  "lifetime": "Pro 終身使用權",
+
+  "upgradeButton": "升級至 Pro+",
+  "continueFree": "繼續使用免費版本",
+  "restore": "恢復購買"
+ },
+ "premiumMonthly": {
+  "loading": "載入中...",
+  "noOfferings": "找不到可用的方案。",
+
+  "title": "高級版存取權",
+
+  "msgHistory": "歷史記錄是高級版功能。",
+  "msgAutoAdd": "自動加入 Planner 是高級版功能。",
+  "msgDefault": "解鎖高級版功能。",
+
+  "monthlyTitle": "高級版月費方案",
+  "monthlySubtitle": "立即解鎖所有高級版功能。",
+
+  "upgradeNow": "立即升級",
+  "continueFree": "繼續使用免費版",
+  "restore": "恢復購買"
+ },
+ "premiumFallback": {
+  "loading": "正在載入方案...",
+  "noOfferings": "找不到可用的方案。",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "更輕量但具備你需要的核心功能。",
+
+  "annualTitle": "高級版年費方案",
+  "annualSubtitle": "以我們最優惠的年費價格節省更多。",
+  "perYear": "/年",
+  "upgradeNow": "立即升級",
+
+  "benefits": {
+    "smartScan": "解鎖 AI Smart Scan",
+    "stainDetection": "AI 污漬偵測",
+    "autoAdd": "自動加入 Planner",
+    "history": "完整洗衣記錄",
+    "faster": "更快速的處理"
+  },
+
+  "continueFree": "繼續使用免費版",
+  "restore": "恢復購買"
  }
 }

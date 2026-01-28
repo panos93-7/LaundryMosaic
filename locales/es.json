@@ -215,5 +215,107 @@
 
   "editGarment": "Editar Prenda",
   "deleteGarment": "Eliminar Prenda"
+ },
+ "history": {
+  "title": "Historial de Lavados",
+  "close": "Cerrar",
+
+  "emptyTitle": "Aún no hay historial de lavados.",
+
+  "typeLabel": "lavado",
+
+  "premiumRedirect": "Redirigiendo…"
+ },"calendar": {
+  "back": "Volver",
+  "weekdays": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
+ },
+ "addWash": {
+  "addTitle": "Añadir Nuevo Lavado",
+  "editTitle": "Editar Lavado",
+  "close": "Cerrar",
+
+  "labelTitle": "Título",
+  "labelTime": "Hora",
+  "labelType": "Tipo de Lavado",
+
+  "placeholderTitle": "ej. Carga de Blancos",
+  "placeholderTime": "ej. 10:30",
+
+  "washTypes": {
+    "whites": "Blancos",
+    "colors": "Colores",
+    "delicates": "Delicados",
+    "quick": "Lavado Rápido"
+  },
+
+  "errorMissingTitle": "Falta el Título",
+  "errorMissingTitleMsg": "Por favor ingresa un título para el lavado.",
+
+  "errorMissingTime": "Falta la Hora",
+  "errorMissingTimeMsg": "Por favor ingresa una hora.",
+
+  "errorMissingType": "Falta el Tipo",
+  "errorMissingTypeMsg": "Por favor selecciona un tipo de lavado.",
+
+  "errorInvalidDate": "Fecha No Válida",
+  "errorInvalidDateMsg": "No puedes programar un lavado en el pasado.",
+
+  "saveChanges": "Guardar Cambios",
+  "saveWash": "Guardar Lavado"
+ },
+ "paywall": {
+  "loading": "Cargando...",
+  "noOfferings": "No se encontraron ofertas.",
+
+  "headerTitle": "Desbloquea Laundry Pro+",
+  "headerSubtitle": "Funciones de IA ilimitadas, escaneo por lotes, armario y más.",
+
+  "monthly": "Pro Mensual",
+  "annual": "Pro Anual (Mejor Valor)",
+  "lifetime": "Pro Acceso de por Vida",
+
+  "upgradeButton": "Actualizar a Pro+",
+  "continueFree": "Continuar con la versión gratuita",
+  "restore": "Restaurar Compras"
+ },
+ "premiumMonthly": {
+  "loading": "Cargando...",
+  "noOfferings": "No se encontraron ofertas.",
+
+  "title": "Acceso Premium",
+
+  "msgHistory": "El historial es una función Premium.",
+  "msgAutoAdd": "Auto‑Agregar al Planner es una función Premium.",
+  "msgDefault": "Desbloquea funciones Premium.",
+
+  "monthlyTitle": "Premium Mensual",
+  "monthlySubtitle": "Desbloquea todas las funciones premium al instante.",
+
+  "upgradeNow": "Actualizar Ahora",
+  "continueFree": "Continuar Gratis",
+  "restore": "Restaurar Compras"
+ },
+ "premiumFallback": {
+  "loading": "Cargando oferta...",
+  "noOfferings": "No se encontraron ofertas.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "Un plan más ligero con lo esencial que necesitas.",
+
+  "annualTitle": "Premium Anual",
+  "annualSubtitle": "Ahorra más con nuestro mejor precio anual.",
+  "perYear": "/año",
+  "upgradeNow": "Actualizar Ahora",
+
+  "benefits": {
+    "smartScan": "Desbloquear AI Smart Scan",
+    "stainDetection": "Detección de manchas con IA",
+    "autoAdd": "Auto‑Agregar al Planner",
+    "history": "Historial completo de lavados",
+    "faster": "Procesamiento más rápido"
+  },
+
+  "continueFree": "Continuar con la versión gratuita",
+  "restore": "Restaurar Compras"
  }
 }

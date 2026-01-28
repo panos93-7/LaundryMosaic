@@ -215,5 +215,108 @@
 
   "editGarment": "Επεξεργασία Ρούχου",
   "deleteGarment": "Διαγραφή Ρούχου"
+ },
+ "history": {
+  "title": "Ιστορικό Πλύσεων",
+  "close": "Κλείσιμο",
+
+  "emptyTitle": "Δεν υπάρχει ακόμη ιστορικό πλύσεων.",
+
+  "typeLabel": "πλύση",
+
+  "premiumRedirect": "Μεταφορά…"
+ },
+ "calendar": {
+  "back": "Πίσω",
+  "weekdays": ["Δευ", "Τρι", "Τετ", "Πεμ", "Παρ", "Σαβ", "Κυρ"]
+ },
+ "addWash": {
+  "addTitle": "Προσθήκη Νέας Πλύσης",
+  "editTitle": "Επεξεργασία Πλύσης",
+  "close": "Κλείσιμο",
+
+  "labelTitle": "Τίτλος",
+  "labelTime": "Ώρα",
+  "labelType": "Τύπος Πλύσης",
+
+  "placeholderTitle": "π.χ. Λευκά",
+  "placeholderTime": "π.χ. 10:30",
+
+  "washTypes": {
+    "whites": "Λευκά",
+    "colors": "Χρωματιστά",
+    "delicates": "Ευαίσθητα",
+    "quick": "Γρήγορη Πλύση"
+  },
+
+  "errorMissingTitle": "Λείπει ο Τίτλος",
+  "errorMissingTitleMsg": "Παρακαλώ εισάγετε έναν τίτλο για την πλύση.",
+
+  "errorMissingTime": "Λείπει η Ώρα",
+  "errorMissingTimeMsg": "Παρακαλώ εισάγετε ώρα.",
+
+  "errorMissingType": "Λείπει ο Τύπος",
+  "errorMissingTypeMsg": "Παρακαλώ επιλέξτε τύπο πλύσης.",
+
+  "errorInvalidDate": "Μη Έγκυρη Ημερομηνία",
+  "errorInvalidDateMsg": "Δεν μπορείτε να προγραμματίσετε πλύση στο παρελθόν.",
+
+  "saveChanges": "Αποθήκευση Αλλαγών",
+  "saveWash": "Αποθήκευση Πλύσης"
+ },
+ "paywall": {
+  "loading": "Φόρτωση...",
+  "noOfferings": "Δεν βρέθηκαν διαθέσιμες προσφορές.",
+
+  "headerTitle": "Ξεκλείδωσε το Laundry Pro+",
+  "headerSubtitle": "Απεριόριστες AI λειτουργίες, Batch scanning, Ντουλάπα & πολλά άλλα.",
+
+  "monthly": "Pro Μηνιαίο",
+  "annual": "Pro Ετήσιο (Καλύτερη Τιμή)",
+  "lifetime": "Pro Πρόσβαση Εφ’ Όρου Ζωής",
+
+  "upgradeButton": "Αναβάθμιση σε Pro+",
+  "continueFree": "Συνέχεια με τη δωρεάν έκδοση",
+  "restore": "Επαναφορά Αγορών"
+ },
+ "premiumMonthly": {
+  "loading": "Φόρτωση...",
+  "noOfferings": "Δεν βρέθηκαν διαθέσιμες προσφορές.",
+
+  "title": "Premium Πρόσβαση",
+
+  "msgHistory": "Το Ιστορικό είναι Premium λειτουργία.",
+  "msgAutoAdd": "Η Αυτόματη Προσθήκη στο Planner είναι Premium λειτουργία.",
+  "msgDefault": "Ξεκλείδωσε Premium λειτουργίες.",
+
+  "monthlyTitle": "Premium Μηνιαίο",
+  "monthlySubtitle": "Ξεκλείδωσε όλες τις premium λειτουργίες άμεσα.",
+
+  "upgradeNow": "Αναβάθμιση Τώρα",
+  "continueFree": "Συνέχεια Δωρεάν",
+  "restore": "Επαναφορά Αγορών"
+ },
+ "premiumFallback": {
+  "loading": "Φόρτωση προσφοράς...",
+  "noOfferings": "Δεν βρέθηκαν διαθέσιμες προσφορές.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "Ένα ελαφρύτερο πλάνο με όσα χρειάζεσαι.",
+
+  "annualTitle": "Premium Ετήσιο",
+  "annualSubtitle": "Εξοικονόμησε περισσότερα με την καλύτερη ετήσια τιμή μας.",
+  "perYear": "/έτος",
+  "upgradeNow": "Αναβάθμιση Τώρα",
+
+  "benefits": {
+    "smartScan": "Ξεκλείδωσε το AI Smart Scan",
+    "stainDetection": "AI ανίχνευση λεκέδων",
+    "autoAdd": "Αυτόματη Προσθήκη στο Planner",
+    "history": "Πλήρες Ιστορικό Πλύσεων",
+    "faster": "Ταχύτερη επεξεργασία"
+  },
+
+  "continueFree": "Συνέχεια με τη δωρεάν έκδοση",
+  "restore": "Επαναφορά Αγορών"
  }
 }

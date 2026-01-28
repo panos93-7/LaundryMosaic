@@ -215,5 +215,108 @@
 
   "editGarment": "Modifier le Vêtement",
   "deleteGarment": "Supprimer le Vêtement"
+ },
+ "history": {
+  "title": "Historique de Lavage",
+  "close": "Fermer",
+
+  "emptyTitle": "Aucun historique de lavage pour le moment.",
+
+  "typeLabel": "lavage",
+
+  "premiumRedirect": "Redirection…"
+ },
+ "calendar": {
+  "back": "Retour",
+  "weekdays": ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
+ },
+ "addWash": {
+  "addTitle": "Ajouter un Lavage",
+  "editTitle": "Modifier le Lavage",
+  "close": "Fermer",
+
+  "labelTitle": "Titre",
+  "labelTime": "Heure",
+  "labelType": "Type de Lavage",
+
+  "placeholderTitle": "ex. Blancs",
+  "placeholderTime": "ex. 10:30",
+
+  "washTypes": {
+    "whites": "Blancs",
+    "colors": "Couleurs",
+    "delicates": "Délicats",
+    "quick": "Lavage Rapide"
+  },
+
+  "errorMissingTitle": "Titre Manquant",
+  "errorMissingTitleMsg": "Veuillez entrer un titre pour le lavage.",
+
+  "errorMissingTime": "Heure Manquante",
+  "errorMissingTimeMsg": "Veuillez entrer une heure.",
+
+  "errorMissingType": "Type Manquant",
+  "errorMissingTypeMsg": "Veuillez sélectionner un type de lavage.",
+
+  "errorInvalidDate": "Date Invalide",
+  "errorInvalidDateMsg": "Vous ne pouvez pas programmer un lavage dans le passé.",
+
+  "saveChanges": "Enregistrer les Modifications",
+  "saveWash": "Enregistrer le Lavage"
+ },
+ "paywall": {
+  "loading": "Chargement...",
+  "noOfferings": "Aucune offre trouvée.",
+
+  "headerTitle": "Débloquez Laundry Pro+",
+  "headerSubtitle": "Fonctionnalités IA illimitées, scan par lots, garde‑robe et plus.",
+
+  "monthly": "Pro Mensuel",
+  "annual": "Pro Annuel (Meilleure Offre)",
+  "lifetime": "Pro Accès à Vie",
+
+  "upgradeButton": "Passer à Pro+",
+  "continueFree": "Continuer avec la version gratuite",
+  "restore": "Restaurer les achats"
+ },
+ "premiumMonthly": {
+  "loading": "Chargement...",
+  "noOfferings": "Aucune offre trouvée.",
+
+  "title": "Accès Premium",
+
+  "msgHistory": "L’historique est une fonctionnalité Premium.",
+  "msgAutoAdd": "L’ajout automatique au Planner est une fonctionnalité Premium.",
+  "msgDefault": "Débloquez les fonctionnalités Premium.",
+
+  "monthlyTitle": "Premium Mensuel",
+  "monthlySubtitle": "Débloquez toutes les fonctionnalités premium instantanément.",
+
+  "upgradeNow": "Mettre à Niveau",
+  "continueFree": "Continuer Gratuitement",
+  "restore": "Restaurer les Achats"
+ },
+ "premiumFallback": {
+  "loading": "Chargement de l’offre...",
+  "noOfferings": "Aucune offre trouvée.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "Une formule plus légère avec l’essentiel dont vous avez besoin.",
+
+  "annualTitle": "Premium Annuel",
+  "annualSubtitle": "Économisez davantage avec notre meilleur prix annuel.",
+  "perYear": "/an",
+  "upgradeNow": "Mettre à Niveau",
+
+  "benefits": {
+    "smartScan": "Débloquer l’AI Smart Scan",
+    "stainDetection": "Détection de taches par IA",
+    "autoAdd": "Ajout automatique au Planner",
+    "history": "Historique complet des lavages",
+    "faster": "Traitement plus rapide"
+  },
+
+  "continueFree": "Continuer avec la version gratuite",
+  "restore": "Restaurer les achats"
  }
 }

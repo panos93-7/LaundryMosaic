@@ -11,13 +11,19 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import i18n from "../i18n";
 
 export default function AddWashModal({ onClose, onSave, initialData, selectedDay }: any) {
   const [title, setTitle] = useState(initialData?.title || "");
   const [time, setTime] = useState(initialData?.time || "");
   const [type, setType] = useState(initialData?.type || "");
 
-  const washTypes = ["Whites", "Colors", "Delicates", "Quick Wash"];
+  const washTypes = [
+    { key: "whites", label: i18n.t("addWash.washTypes.whites") },
+    { key: "colors", label: i18n.t("addWash.washTypes.colors") },
+    { key: "delicates", label: i18n.t("addWash.washTypes.delicates") },
+    { key: "quick", label: i18n.t("addWash.washTypes.quick") },
+  ];
 
   useEffect(() => {
     if (initialData) {
@@ -39,22 +45,34 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
 
   function handleSave() {
     if (!title.trim()) {
-      Alert.alert("Missing Title", "Please enter a title for the wash.");
+      Alert.alert(
+        String(i18n.t("addWash.errorMissingTitle")),
+        String(i18n.t("addWash.errorMissingTitleMsg"))
+      );
       return;
     }
 
     if (!time.trim()) {
-      Alert.alert("Missing Time", "Please enter a time.");
+      Alert.alert(
+        String(i18n.t("addWash.errorMissingTime")),
+        String(i18n.t("addWash.errorMissingTimeMsg"))
+      );
       return;
     }
 
     if (!type.trim()) {
-      Alert.alert("Missing Type", "Please select a wash type.");
+      Alert.alert(
+        String(i18n.t("addWash.errorMissingType")),
+        String(i18n.t("addWash.errorMissingTypeMsg"))
+      );
       return;
     }
 
     if (isPastDate()) {
-      Alert.alert("Invalid Date", "You cannot schedule a wash in the past.");
+      Alert.alert(
+        String(i18n.t("addWash.errorInvalidDate")),
+        String(i18n.t("addWash.errorInvalidDateMsg"))
+      );
       return;
     }
 
@@ -68,30 +86,37 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView contentContainerStyle={{ padding: 24 }}>
-          
+
           {/* HEADER */}
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               marginBottom: 24,
+              alignItems: "center",
             }}
           >
-            <Text style={{ color: "#fff", fontSize: 28, fontWeight: "700" }}>
-              {initialData ? "Edit Wash" : "Add New Wash"}
+            <Text style={{ color: "#fff", fontSize: 28, fontWeight: "700", flexShrink: 1 }}>
+              {initialData
+                ? String(i18n.t("addWash.editTitle"))
+                : String(i18n.t("addWash.addTitle"))}
             </Text>
 
             <TouchableOpacity onPress={onClose}>
-              <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
+              <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+                {String(i18n.t("addWash.close"))}
+              </Text>
             </TouchableOpacity>
           </View>
 
           {/* TITLE */}
-          <Text style={{ color: "#bbb", marginBottom: 6 }}>Title</Text>
+          <Text style={{ color: "#bbb", marginBottom: 6 }}>
+            {String(i18n.t("addWash.labelTitle"))}
+          </Text>
           <TextInput
             value={title}
             onChangeText={setTitle}
-            placeholder="e.g. Whites Load"
+            placeholder={String(i18n.t("addWash.placeholderTitle"))}
             placeholderTextColor="#666"
             style={{
               backgroundColor: "#141414",
@@ -105,11 +130,13 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
           />
 
           {/* TIME */}
-          <Text style={{ color: "#bbb", marginBottom: 6 }}>Time</Text>
+          <Text style={{ color: "#bbb", marginBottom: 6 }}>
+            {String(i18n.t("addWash.labelTime"))}
+          </Text>
           <TextInput
             value={time}
             onChangeText={setTime}
-            placeholder="e.g. 10:30"
+            placeholder={String(i18n.t("addWash.placeholderTime"))}
             placeholderTextColor="#666"
             style={{
               backgroundColor: "#141414",
@@ -123,7 +150,9 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
           />
 
           {/* WASH TYPE */}
-          <Text style={{ color: "#bbb", marginBottom: 12 }}>Wash Type</Text>
+          <Text style={{ color: "#bbb", marginBottom: 12 }}>
+            {String(i18n.t("addWash.labelType"))}
+          </Text>
 
           <View
             style={{
@@ -135,18 +164,18 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
           >
             {washTypes.map((t) => (
               <TouchableOpacity
-                key={t}
-                onPress={() => setType(t)}
+                key={t.key}
+                onPress={() => setType(t.label)}
                 style={{
                   paddingVertical: 10,
                   paddingHorizontal: 16,
                   borderRadius: 12,
-                  backgroundColor: type === t ? "#2575fc" : "#111",
+                  backgroundColor: type === t.label ? "#2575fc" : "#111",
                   borderWidth: 1,
-                  borderColor: type === t ? "#2575fc" : "#222",
+                  borderColor: type === t.label ? "#2575fc" : "#222",
                 }}
               >
-                <Text style={{ color: "#fff", fontWeight: "600" }}>{t}</Text>
+                <Text style={{ color: "#fff", fontWeight: "600" }}>{t.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -172,7 +201,9 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
                   textAlign: "center",
                 }}
               >
-                {initialData ? "Save Changes" : "Save Wash"}
+                {initialData
+                  ? String(i18n.t("addWash.saveChanges"))
+                  : String(i18n.t("addWash.saveWash"))}
               </Text>
             </LinearGradient>
           </TouchableOpacity>

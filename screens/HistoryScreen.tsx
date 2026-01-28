@@ -2,15 +2,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import i18n from "../i18n";
 import { useUserStore } from "../store/userStore";
 
 export default function HistoryScreen({ navigation }: any) {
   const isPremium = useUserStore(
-  (s) => s.isPremiumMonthly || s.isPremiumAnnual || s.isPro
-);
+    (s) => s.isPremiumMonthly || s.isPremiumAnnual || s.isPro
+  );
+
   const [history, setHistory] = useState<any[]>([]);
 
-  // ⭐ Premium gate — redirect BEFORE loading UI
+  // Premium gate
   useEffect(() => {
     if (!isPremium) {
       navigation.replace("PremiumMonthlyPaywall", { source: "history" });
@@ -19,37 +21,39 @@ export default function HistoryScreen({ navigation }: any) {
 
   if (!isPremium) return null;
 
-  // Load all washes from storage
-useEffect(() => {
-  if (!isPremium) return;   // STOP if not premium
+  // Load wash history
+  useEffect(() => {
+    if (!isPremium) return;
 
-  async function load() {
-    try {
-      const saved = await AsyncStorage.getItem("PLANS");
-      if (saved) {
-        const parsed = JSON.parse(saved);
+    async function load() {
+      try {
+        const saved = await AsyncStorage.getItem("PLANS");
 
-        const sorted = parsed.sort((a: any, b: any) => {
-          const da = new Date(a.year, a.month, a.day).getTime();
-          const db = new Date(b.year, b.month, b.day).getTime();
-          return db - da;
-        });
+        if (saved) {
+          const parsed = JSON.parse(saved);
 
-        setHistory(sorted);
-      } else {
-        setHistory([]); // ⭐ ensure empty state is shown correctly
+          const sorted = parsed.sort((a: any, b: any) => {
+            const da = new Date(a.year, a.month, a.day).getTime();
+            const db = new Date(b.year, b.month, b.day).getTime();
+            return db - da;
+          });
+
+          setHistory(sorted);
+        } else {
+          setHistory([]);
+        }
+      } catch (err) {
+        console.log("Failed to load history", err);
       }
-    } catch (err) {
-      console.log("Failed to load history", err);
     }
-  }
 
-  load();
-}, [isPremium]);
+    load();
+  }, [isPremium]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0d0d0d" }}>
       <View style={{ flex: 1, padding: 24 }}>
+
         {/* HEADER */}
         <View
           style={{
@@ -59,12 +63,23 @@ useEffect(() => {
             marginBottom: 20,
           }}
         >
-          <Text style={{ color: "#fff", fontSize: 32, fontWeight: "800" }}>
-            Wash History
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 32,
+              fontWeight: "800",
+              flexShrink: 1,
+              marginRight: 10,
+            }}
+            numberOfLines={2}
+          >
+            {String(i18n.t("history.title"))}
           </Text>
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#4f9cff", fontSize: 16 }}>Close</Text>
+            <Text style={{ color: "#4f9cff", fontSize: 16 }}>
+              {String(i18n.t("history.close"))}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -82,7 +97,7 @@ useEffect(() => {
             }}
           >
             <Text style={{ color: "#ccc", fontSize: 16 }}>
-              No wash history yet.
+              {String(i18n.t("history.emptyTitle"))}
             </Text>
           </View>
         )}
@@ -118,7 +133,7 @@ useEffect(() => {
                 <Text style={{ color: "#bbb" }}>{item.time}</Text>
 
                 <Text style={{ color: "#888", marginTop: 6 }}>
-                  {item.type} wash
+                  {item.type} {String(i18n.t("history.typeLabel"))}
                 </Text>
 
                 <Text

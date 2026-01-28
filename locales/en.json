@@ -217,5 +217,108 @@
 
   "editGarment": "Edit Garment",
   "deleteGarment": "Delete Garment"
+ },
+ "history": {
+  "title": "Wash History",
+  "close": "Close",
+
+  "emptyTitle": "No wash history yet.",
+
+  "typeLabel": "wash",
+
+  "premiumRedirect": "Redirecting…"
+ },
+ "calendar": {
+  "back": "Back",
+  "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+ },
+ "addWash": {
+  "addTitle": "Add New Wash",
+  "editTitle": "Edit Wash",
+  "close": "Close",
+
+  "labelTitle": "Title",
+  "labelTime": "Time",
+  "labelType": "Wash Type",
+
+  "placeholderTitle": "e.g. Whites Load",
+  "placeholderTime": "e.g. 10:30",
+
+  "washTypes": {
+    "whites": "Whites",
+    "colors": "Colors",
+    "delicates": "Delicates",
+    "quick": "Quick Wash"
+  },
+
+  "errorMissingTitle": "Missing Title",
+  "errorMissingTitleMsg": "Please enter a title for the wash.",
+
+  "errorMissingTime": "Missing Time",
+  "errorMissingTimeMsg": "Please enter a time.",
+
+  "errorMissingType": "Missing Type",
+  "errorMissingTypeMsg": "Please select a wash type.",
+
+  "errorInvalidDate": "Invalid Date",
+  "errorInvalidDateMsg": "You cannot schedule a wash in the past.",
+
+  "saveChanges": "Save Changes",
+  "saveWash": "Save Wash"
+ },
+ "paywall": {
+  "loading": "Loading...",
+  "noOfferings": "No offerings found.",
+
+  "headerTitle": "Unlock Laundry Pro+",
+  "headerSubtitle": "Get unlimited AI features, Batch scanning, Wardrobe & more.",
+
+  "monthly": "Pro Monthly",
+  "annual": "Pro Annual (Best Value)",
+  "lifetime": "Pro Lifetime Access",
+
+  "upgradeButton": "Upgrade to Pro+",
+  "continueFree": "Continue with Free version",
+  "restore": "Restore Purchases"
+ },
+ "premiumMonthly": {
+  "loading": "Loading...",
+  "noOfferings": "No offerings found.",
+
+  "title": "Premium Access",
+
+  "msgHistory": "History is a Premium feature.",
+  "msgAutoAdd": "Auto‑Add to Planner is a Premium feature.",
+  "msgDefault": "Unlock Premium features.",
+
+  "monthlyTitle": "Premium Monthly",
+  "monthlySubtitle": "Unlock all premium features instantly.",
+
+  "upgradeNow": "Upgrade Now",
+  "continueFree": "Continue Free",
+  "restore": "Restore Purchases"
+ },
+ "premiumFallback": {
+  "loading": "Loading offer...",
+  "noOfferings": "No offerings found.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "A lighter plan with the essentials you need.",
+
+  "annualTitle": "Premium Annual",
+  "annualSubtitle": "Save more with our best yearly price.",
+  "perYear": "/year",
+  "upgradeNow": "Upgrade Now",
+
+  "benefits": {
+    "smartScan": "Unlock AI Smart Scan",
+    "stainDetection": "AI stain detection",
+    "autoAdd": "Auto‑Add to Planner",
+    "history": "Full Wash History",
+    "faster": "Faster processing"
+  },
+
+  "continueFree": "Continue with Free version",
+  "restore": "Restore Purchases"
  }
 }

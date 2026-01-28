@@ -215,5 +215,108 @@
 
   "editGarment": "Kleidungsstück Bearbeiten",
   "deleteGarment": "Kleidungsstück Löschen"
+ },
+ "history": {
+  "title": "Waschhistorie",
+  "close": "Schließen",
+
+  "emptyTitle": "Noch keine Waschgänge vorhanden.",
+
+  "typeLabel": "Wäsche",
+
+  "premiumRedirect": "Weiterleiten…"
+ },
+ "calendar": {
+  "back": "Zurück",
+  "weekdays": ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+ },
+ "addWash": {
+  "addTitle": "Neuen Waschgang Hinzufügen",
+  "editTitle": "Waschgang Bearbeiten",
+  "close": "Schließen",
+
+  "labelTitle": "Titel",
+  "labelTime": "Zeit",
+  "labelType": "Waschtyp",
+
+  "placeholderTitle": "z. B. Weißwäsche",
+  "placeholderTime": "z. B. 10:30",
+
+  "washTypes": {
+    "whites": "Weißwäsche",
+    "colors": "Buntwäsche",
+    "delicates": "Feinwäsche",
+    "quick": "Schnellwäsche"
+  },
+
+  "errorMissingTitle": "Titel Fehlt",
+  "errorMissingTitleMsg": "Bitte gib einen Titel für den Waschgang ein.",
+
+  "errorMissingTime": "Zeit Fehlt",
+  "errorMissingTimeMsg": "Bitte gib eine Zeit ein.",
+
+  "errorMissingType": "Typ Fehlt",
+  "errorMissingTypeMsg": "Bitte wähle einen Waschtyp aus.",
+
+  "errorInvalidDate": "Ungültiges Datum",
+  "errorInvalidDateMsg": "Du kannst keinen Waschgang in der Vergangenheit planen.",
+
+  "saveChanges": "Änderungen Speichern",
+  "saveWash": "Waschgang Speichern"
+ },
+ "paywall": {
+  "loading": "Laden...",
+  "noOfferings": "Keine Angebote gefunden.",
+
+  "headerTitle": "Laundry Pro+ freischalten",
+  "headerSubtitle": "Unbegrenzte KI‑Funktionen, Batch‑Scan, Kleiderschrank & mehr.",
+
+  "monthly": "Pro Monatlich",
+  "annual": "Pro Jährlich (Bester Wert)",
+  "lifetime": "Pro Lebenslanger Zugriff",
+
+  "upgradeButton": "Upgrade auf Pro+",
+  "continueFree": "Mit der kostenlosen Version fortfahren",
+  "restore": "Käufe wiederherstellen"
+ },
+ "premiumMonthly": {
+  "loading": "Laden...",
+  "noOfferings": "Keine Angebote gefunden.",
+
+  "title": "Premium Zugriff",
+
+  "msgHistory": "Der Verlauf ist eine Premium‑Funktion.",
+  "msgAutoAdd": "Auto‑Hinzufügen zum Planner ist eine Premium‑Funktion.",
+  "msgDefault": "Premium‑Funktionen freischalten.",
+
+  "monthlyTitle": "Premium Monatlich",
+  "monthlySubtitle": "Schalte alle Premium‑Funktionen sofort frei.",
+
+  "upgradeNow": "Jetzt Upgrade",
+  "continueFree": "Kostenlos Fortfahren",
+  "restore": "Käufe Wiederherstellen"
+ },
+ "premiumFallback": {
+  "loading": "Angebot wird geladen...",
+  "noOfferings": "Keine Angebote gefunden.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "Ein leichterer Plan mit allem, was du brauchst.",
+
+  "annualTitle": "Premium Jährlich",
+  "annualSubtitle": "Spare mehr mit unserem besten Jahrespreis.",
+  "perYear": "/Jahr",
+  "upgradeNow": "Jetzt Upgrade",
+
+  "benefits": {
+    "smartScan": "AI Smart Scan freischalten",
+    "stainDetection": "KI‑Fleckenerkennung",
+    "autoAdd": "Automatisches Hinzufügen zum Planner",
+    "history": "Vollständige Waschhistorie",
+    "faster": "Schnellere Verarbeitung"
+  },
+
+  "continueFree": "Kostenlos fortfahren",
+  "restore": "Käufe wiederherstellen"
  }
 }

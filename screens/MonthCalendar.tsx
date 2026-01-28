@@ -10,11 +10,11 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import i18n from "../i18n";
 
 export default function MonthCalendar({ navigation, route }: any) {
   const washes = route.params?.washes || [];
 
-  // Start from selected day
   const initial = route.params?.selectedDay
     ? new Date(
         route.params.selectedDay.year,
@@ -24,7 +24,7 @@ export default function MonthCalendar({ navigation, route }: any) {
     : new Date();
 
   const [currentDate, setCurrentDate] = useState(initial);
-
+  const weekdays = i18n.t("calendar.weekdays", { returnObjects: true }) as string[];
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const headerAnim = useRef(new Animated.Value(0)).current;
@@ -155,7 +155,9 @@ export default function MonthCalendar({ navigation, route }: any) {
           }}
         >
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#fff", fontSize: 22 }}>←</Text>
+            <Text style={{ color: "#fff", fontSize: 22 }}>
+              {String(i18n.t("calendar.back"))}
+            </Text>
           </TouchableOpacity>
 
           <Text
@@ -165,29 +167,31 @@ export default function MonthCalendar({ navigation, route }: any) {
               fontWeight: "700",
             }}
           >
-            {currentDate.toLocaleString("en-US", { month: "long" })} {year}
+            {currentDate.toLocaleString(i18n.locale, { month: "long" })} {year}
           </Text>
 
           <View style={{ width: 22 }} />
         </Animated.View>
 
-        {/* WEEKDAY LABELS */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 12,
-          }}
-        >
-          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-            <Text
-              key={d}
-              style={{ color: "#bbb", width: 40, textAlign: "center" }}
-            >
-              {d}
-            </Text>
-          ))}
-        </View>
+{/* WEEKDAY LABELS */}
+<View
+  style={{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  }}
+>
+  {(i18n.t("calendar.weekdays", { returnObjects: true }) as unknown as string[]).map(
+    (d: string) => (
+      <Text
+        key={d}
+        style={{ color: "#bbb", width: 40, textAlign: "center" }}
+      >
+        {d}
+      </Text>
+    )
+  )}
+</View>
 
         {/* CALENDAR GRID */}
         <ScrollView showsVerticalScrollIndicator={false}>

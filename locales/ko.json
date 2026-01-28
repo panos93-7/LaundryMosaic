@@ -218,5 +218,108 @@
 
   "editGarment": "의류 편집",
   "deleteGarment": "의류 삭제"
+ },
+ "history": {
+  "title": "세탁 기록",
+  "close": "닫기",
+
+  "emptyTitle": "아직 세탁 기록이 없습니다.",
+
+  "typeLabel": "세탁",
+
+  "premiumRedirect": "이동 중…"
+ },
+ "calendar": {
+  "back": "뒤로",
+  "weekdays": ["월", "화", "수", "목", "금", "토", "일"]
+ },
+ "addWash": {
+  "addTitle": "새 세탁 추가",
+  "editTitle": "세탁 수정",
+  "close": "닫기",
+
+  "labelTitle": "제목",
+  "labelTime": "시간",
+  "labelType": "세탁 종류",
+
+  "placeholderTitle": "예: 흰색 세탁",
+  "placeholderTime": "예: 10:30",
+
+  "washTypes": {
+    "whites": "흰색",
+    "colors": "색깔",
+    "delicates": "섬세함",
+    "quick": "빠른 세탁"
+  },
+
+  "errorMissingTitle": "제목 없음",
+  "errorMissingTitleMsg": "세탁 제목을 입력하세요.",
+
+  "errorMissingTime": "시간 없음",
+  "errorMissingTimeMsg": "시간을 입력하세요.",
+
+  "errorMissingType": "종류 없음",
+  "errorMissingTypeMsg": "세탁 종류를 선택하세요.",
+
+  "errorInvalidDate": "잘못된 날짜",
+  "errorInvalidDateMsg": "과거 날짜에는 세탁을 예약할 수 없습니다.",
+
+  "saveChanges": "변경 사항 저장",
+  "saveWash": "세탁 저장"
+},
+"paywall": {
+  "loading": "로딩 중...",
+  "noOfferings": "제공되는 상품이 없습니다.",
+
+  "headerTitle": "Laundry Pro+ 잠금 해제",
+  "headerSubtitle": "무제한 AI 기능, 배치 스캔, 옷장 등.",
+
+  "monthly": "Pro 월간",
+  "annual": "Pro 연간 (최고 가치)",
+  "lifetime": "Pro 평생 이용",
+
+  "upgradeButton": "Pro+로 업그레이드",
+  "continueFree": "무료 버전으로 계속하기",
+  "restore": "구매 복원"
+ },
+ "premiumMonthly": {
+  "loading": "로딩 중...",
+  "noOfferings": "제공되는 상품이 없습니다.",
+
+  "title": "프리미엄 액세스",
+
+  "msgHistory": "히스토리는 프리미엄 기능입니다.",
+  "msgAutoAdd": "플래너 자동 추가는 프리미엄 기능입니다.",
+  "msgDefault": "프리미엄 기능을 잠금 해제하세요.",
+
+  "monthlyTitle": "프리미엄 월간",
+  "monthlySubtitle": "모든 프리미엄 기능을 즉시 잠금 해제.",
+
+  "upgradeNow": "지금 업그레이드",
+  "continueFree": "무료로 계속하기",
+  "restore": "구매 복원"
+ },
+ "premiumFallback": {
+  "loading": "제안을 불러오는 중...",
+  "noOfferings": "사용 가능한 상품이 없습니다.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "필요한 핵심 기능만 담은 가벼운 플랜.",
+
+  "annualTitle": "프리미엄 연간",
+  "annualSubtitle": "가장 좋은 연간 가격으로 더 많이 절약하세요.",
+  "perYear": "/년",
+  "upgradeNow": "지금 업그레이드",
+
+  "benefits": {
+    "smartScan": "AI Smart Scan 잠금 해제",
+    "stainDetection": "AI 얼룩 감지",
+    "autoAdd": "플래너 자동 추가",
+    "history": "전체 세탁 기록",
+    "faster": "더 빠른 처리"
+  },
+
+  "continueFree": "무료로 계속하기",
+  "restore": "구매 복원"
  }
 }

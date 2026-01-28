@@ -215,5 +215,108 @@
 
   "editGarment": "Редактировать вещь",
   "deleteGarment": "Удалить вещь"
+ },
+ "history": {
+  "title": "История Стирок",
+  "close": "Закрыть",
+
+  "emptyTitle": "История стирок пока пуста.",
+
+  "typeLabel": "стирка",
+
+  "premiumRedirect": "Перенаправление…"
+ },
+ "calendar": {
+  "back": "Назад",
+  "weekdays": ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+ },
+ "addWash": {
+  "addTitle": "Добавить Стирку",
+  "editTitle": "Редактировать Стирку",
+  "close": "Закрыть",
+
+  "labelTitle": "Название",
+  "labelTime": "Время",
+  "labelType": "Тип Стирки",
+
+  "placeholderTitle": "например, Белое",
+  "placeholderTime": "например, 10:30",
+
+  "washTypes": {
+    "whites": "Белое",
+    "colors": "Цветное",
+    "delicates": "Деликатное",
+    "quick": "Быстрая Стирка"
+  },
+
+  "errorMissingTitle": "Нет Названия",
+  "errorMissingTitleMsg": "Введите название стирки.",
+
+  "errorMissingTime": "Нет Времени",
+  "errorMissingTimeMsg": "Введите время.",
+
+  "errorMissingType": "Нет Типа",
+  "errorMissingTypeMsg": "Выберите тип стирки.",
+
+  "errorInvalidDate": "Неверная Дата",
+  "errorInvalidDateMsg": "Нельзя запланировать стирку в прошлом.",
+
+  "saveChanges": "Сохранить Изменения",
+  "saveWash": "Сохранить Стирку"
+ },
+ "paywall": {
+  "loading": "Загрузка...",
+  "noOfferings": "Предложения не найдены.",
+
+  "headerTitle": "Разблокируйте Laundry Pro+",
+  "headerSubtitle": "Безлимитные функции ИИ, пакетное сканирование, гардероб и многое другое.",
+
+  "monthly": "Pro Ежемесячно",
+  "annual": "Pro Ежегодно (Лучшая цена)",
+  "lifetime": "Pro Доступ Навсегда",
+
+  "upgradeButton": "Обновить до Pro+",
+  "continueFree": "Продолжить с бесплатной версией",
+  "restore": "Восстановить покупки"
+ },
+ "premiumMonthly": {
+  "loading": "Загрузка...",
+  "noOfferings": "Предложения не найдены.",
+
+  "title": "Премиум Доступ",
+
+  "msgHistory": "История — это премиум‑функция.",
+  "msgAutoAdd": "Авто‑добавление в планировщик — премиум‑функция.",
+  "msgDefault": "Разблокируйте премиум‑функции.",
+
+  "monthlyTitle": "Premium Ежемесячно",
+  "monthlySubtitle": "Мгновенно разблокируйте все премиум‑функции.",
+
+  "upgradeNow": "Обновить Сейчас",
+  "continueFree": "Продолжить Бесплатно",
+  "restore": "Восстановить Покупки"
+ },
+ "premiumFallback": {
+  "loading": "Загрузка предложения...",
+  "noOfferings": "Предложения не найдены.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "Более лёгкий план с необходимыми функциями.",
+
+  "annualTitle": "Premium Ежегодно",
+  "annualSubtitle": "Экономьте больше с нашей лучшей годовой ценой.",
+  "perYear": "/год",
+  "upgradeNow": "Обновить Сейчас",
+
+  "benefits": {
+    "smartScan": "Разблокировать AI Smart Scan",
+    "stainDetection": "AI‑обнаружение пятен",
+    "autoAdd": "Авто‑добавление в планировщик",
+    "history": "Полная история стирок",
+    "faster": "Более быстрая обработка"
+  },
+
+  "continueFree": "Продолжить бесплатно",
+  "restore": "Восстановить покупки"
  }
 }

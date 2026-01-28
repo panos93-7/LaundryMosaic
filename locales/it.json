@@ -215,5 +215,108 @@
 
   "editGarment": "Modifica Indumento",
   "deleteGarment": "Elimina Indumento"
+ },
+ "history": {
+  "title": "Cronologia dei Lavaggi",
+  "close": "Chiudi",
+
+  "emptyTitle": "Nessuna cronologia di lavaggi disponibile.",
+
+  "typeLabel": "lavaggio",
+
+  "premiumRedirect": "Reindirizzamento…"
+ },
+ "calendar": {
+  "back": "Indietro",
+  "weekdays": ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"]
+ },
+ "addWash": {
+  "addTitle": "Aggiungi Nuovo Lavaggio",
+  "editTitle": "Modifica Lavaggio",
+  "close": "Chiudi",
+
+  "labelTitle": "Titolo",
+  "labelTime": "Ora",
+  "labelType": "Tipo di Lavaggio",
+
+  "placeholderTitle": "es. Bianchi",
+  "placeholderTime": "es. 10:30",
+
+  "washTypes": {
+    "whites": "Bianchi",
+    "colors": "Colorati",
+    "delicates": "Delicati",
+    "quick": "Lavaggio Rapido"
+  },
+
+  "errorMissingTitle": "Titolo Mancante",
+  "errorMissingTitleMsg": "Inserisci un titolo per il lavaggio.",
+
+  "errorMissingTime": "Ora Mancante",
+  "errorMissingTimeMsg": "Inserisci un'ora.",
+
+  "errorMissingType": "Tipo Mancante",
+  "errorMissingTypeMsg": "Seleziona un tipo di lavaggio.",
+
+  "errorInvalidDate": "Data Non Valida",
+  "errorInvalidDateMsg": "Non puoi programmare un lavaggio nel passato.",
+
+  "saveChanges": "Salva Modifiche",
+  "saveWash": "Salva Lavaggio"
+ },
+ "paywall": {
+  "loading": "Caricamento...",
+  "noOfferings": "Nessuna offerta trovata.",
+
+  "headerTitle": "Sblocca Laundry Pro+",
+  "headerSubtitle": "Funzioni IA illimitate, scansione batch, guardaroba e altro.",
+
+  "monthly": "Pro Mensile",
+  "annual": "Pro Annuale (Miglior Valore)",
+  "lifetime": "Pro Accesso a Vita",
+
+  "upgradeButton": "Passa a Pro+",
+  "continueFree": "Continua con la versione gratuita",
+  "restore": "Ripristina Acquisti"
+ },
+ "premiumMonthly": {
+  "loading": "Caricamento...",
+  "noOfferings": "Nessuna offerta trovata.",
+
+  "title": "Accesso Premium",
+
+  "msgHistory": "La cronologia è una funzione Premium.",
+  "msgAutoAdd": "L’aggiunta automatica al Planner è una funzione Premium.",
+  "msgDefault": "Sblocca le funzioni Premium.",
+
+  "monthlyTitle": "Premium Mensile",
+  "monthlySubtitle": "Sblocca tutte le funzioni premium all’istante.",
+
+  "upgradeNow": "Aggiorna Ora",
+  "continueFree": "Continua Gratis",
+  "restore": "Ripristina Acquisti"
+ },
+ "premiumFallback": {
+  "loading": "Caricamento offerta...",
+  "noOfferings": "Nessuna offerta trovata.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "Un piano più leggero con l’essenziale di cui hai bisogno.",
+
+  "annualTitle": "Premium Annuale",
+  "annualSubtitle": "Risparmia di più con il nostro miglior prezzo annuale.",
+  "perYear": "/anno",
+  "upgradeNow": "Aggiorna Ora",
+
+  "benefits": {
+    "smartScan": "Sblocca AI Smart Scan",
+    "stainDetection": "Rilevamento macchie con IA",
+    "autoAdd": "Aggiunta Automatica al Planner",
+    "history": "Cronologia completa dei lavaggi",
+    "faster": "Elaborazione più veloce"
+  },
+
+  "continueFree": "Continua Gratis",
+  "restore": "Ripristina Acquisti"
  }
 }

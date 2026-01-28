@@ -215,5 +215,108 @@
 
   "editGarment": "Giysiyi Düzenle",
   "deleteGarment": "Giysiyi Sil"
+ },
+ "history": {
+  "title": "Yıkama Geçmişi",
+  "close": "Kapat",
+
+  "emptyTitle": "Henüz yıkama geçmişi yok.",
+
+  "typeLabel": "yıkama",
+
+  "premiumRedirect": "Yönlendiriliyor…"
+ },
+ "calendar": {
+  "back": "Geri",
+  "weekdays": ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"]
+ },
+ "addWash": {
+  "addTitle": "Yeni Yıkama Ekle",
+  "editTitle": "Yıkamayı Düzenle",
+  "close": "Kapat",
+
+  "labelTitle": "Başlık",
+  "labelTime": "Saat",
+  "labelType": "Yıkama Türü",
+
+  "placeholderTitle": "örn. Beyazlar",
+  "placeholderTime": "örn. 10:30",
+
+  "washTypes": {
+    "whites": "Beyazlar",
+    "colors": "Renkliler",
+    "delicates": "Hassaslar",
+    "quick": "Hızlı Yıkama"
+  },
+
+  "errorMissingTitle": "Başlık Eksik",
+  "errorMissingTitleMsg": "Lütfen yıkama için bir başlık girin.",
+
+  "errorMissingTime": "Saat Eksik",
+  "errorMissingTimeMsg": "Lütfen bir saat girin.",
+
+  "errorMissingType": "Tür Eksik",
+  "errorMissingTypeMsg": "Lütfen bir yıkama türü seçin.",
+
+  "errorInvalidDate": "Geçersiz Tarih",
+  "errorInvalidDateMsg": "Geçmiş bir tarihe yıkama ekleyemezsiniz.",
+
+  "saveChanges": "Değişiklikleri Kaydet",
+  "saveWash": "Yıkamayı Kaydet"
+ },
+ "paywall": {
+  "loading": "Yükleniyor...",
+  "noOfferings": "Herhangi bir teklif bulunamadı.",
+
+  "headerTitle": "Laundry Pro+ Kilidini Aç",
+  "headerSubtitle": "Sınırsız yapay zeka özellikleri, toplu tarama, gardırop ve daha fazlası.",
+
+  "monthly": "Pro Aylık",
+  "annual": "Pro Yıllık (En İyi Değer)",
+  "lifetime": "Pro Ömür Boyu Erişim",
+
+  "upgradeButton": "Pro+’a Yükselt",
+  "continueFree": "Ücretsiz sürümle devam et",
+  "restore": "Satın Alımları Geri Yükle"
+ },
+ "premiumMonthly": {
+  "loading": "Yükleniyor...",
+  "noOfferings": "Herhangi bir teklif bulunamadı.",
+
+  "title": "Premium Erişim",
+
+  "msgHistory": "Geçmiş Premium bir özelliktir.",
+  "msgAutoAdd": "Planlayıcıya Otomatik Ekleme Premium bir özelliktir.",
+  "msgDefault": "Premium özelliklerin kilidini aç.",
+
+  "monthlyTitle": "Premium Aylık",
+  "monthlySubtitle": "Tüm premium özellikleri anında aç.",
+
+  "upgradeNow": "Şimdi Yükselt",
+  "continueFree": "Ücretsiz Devam Et",
+  "restore": "Satın Alımları Geri Yükle"
+ },
+ "premiumFallback": {
+  "loading": "Teklif yükleniyor...",
+  "noOfferings": "Herhangi bir teklif bulunamadı.",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "İhtiyacınız olan temel özelliklerle daha hafif bir plan.",
+
+  "annualTitle": "Premium Yıllık",
+  "annualSubtitle": "En iyi yıllık fiyatımızla daha fazla tasarruf edin.",
+  "perYear": "/yıl",
+  "upgradeNow": "Şimdi Yükselt",
+
+  "benefits": {
+    "smartScan": "AI Smart Scan’in kilidini aç",
+    "stainDetection": "Yapay zeka leke tespiti",
+    "autoAdd": "Planlayıcıya Otomatik Ekleme",
+    "history": "Tam Yıkama Geçmişi",
+    "faster": "Daha hızlı işlem"
+  },
+
+  "continueFree": "Ücretsiz devam et",
+  "restore": "Satın alımları geri yükle"
  }
 }

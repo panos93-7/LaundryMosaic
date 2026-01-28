@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Purchases from "react-native-purchases";
 import { SafeAreaView } from "react-native-safe-area-context";
+import i18n from "../i18n";
 import { syncEntitlements } from "../utils/syncEntitlements";
 
 export default function PremiumMonthlyPaywall({ navigation, route }: any) {
@@ -41,7 +42,9 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
         }}
       >
         <ActivityIndicator size="large" color="#fff" />
-        <Text style={{ color: "#fff", marginTop: 10 }}>Loading...</Text>
+        <Text style={{ color: "#fff", marginTop: 10 }}>
+          {String(i18n.t("premiumMonthly.loading"))}
+        </Text>
       </SafeAreaView>
     );
   }
@@ -56,12 +59,13 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
           backgroundColor: "#0d0d0d",
         }}
       >
-        <Text style={{ color: "#fff" }}>No offerings found.</Text>
+        <Text style={{ color: "#fff" }}>
+          {String(i18n.t("premiumMonthly.noOfferings"))}
+        </Text>
       </SafeAreaView>
     );
   }
 
-  // ⭐ ΜΟΝΟ Premium Monthly (2.49€)
   const premiumMonthly = offerings.availablePackages?.find(
     (p: any) => p.identifier === "premium_monthly"
   );
@@ -69,10 +73,7 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
   async function handlePurchase() {
     try {
       await Purchases.purchasePackage(premiumMonthly);
-
-      // ⭐ Sync entitlements after purchase
       await syncEntitlements();
-
       navigation.goBack();
     } catch (e) {
       console.log("Purchase error:", e);
@@ -82,10 +83,7 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
   async function handleRestore() {
     try {
       await Purchases.restorePurchases();
-
-      // ⭐ Sync entitlements after restore
       await syncEntitlements();
-
       navigation.goBack();
     } catch (e) {
       console.log("Restore error:", e);
@@ -94,14 +92,16 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
 
   const message =
     source === "history"
-      ? "History is a Premium feature."
+      ? String(i18n.t("premiumMonthly.msgHistory"))
       : source === "autoAdd"
-      ? "Auto‑Add to Planner is a Premium feature."
-      : "Unlock Premium features.";
+      ? String(i18n.t("premiumMonthly.msgAutoAdd"))
+      : String(i18n.t("premiumMonthly.msgDefault"));
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0d0d0d" }}>
       <ScrollView contentContainerStyle={{ padding: 24 }}>
+
+        {/* HEADER */}
         <Text
           style={{
             fontSize: 32,
@@ -111,7 +111,7 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
             marginBottom: 8,
           }}
         >
-          Premium Access
+          {String(i18n.t("premiumMonthly.title"))}
         </Text>
 
         <Text
@@ -142,11 +142,11 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
               marginBottom: 6,
             }}
           >
-            Premium Monthly
+            {String(i18n.t("premiumMonthly.monthlyTitle"))}
           </Text>
 
           <Text style={{ color: "#fff", opacity: 0.85, marginBottom: 16 }}>
-            Unlock all premium features instantly.
+            {String(i18n.t("premiumMonthly.monthlySubtitle"))}
           </Text>
 
           <Text
@@ -176,7 +176,7 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
                 textAlign: "center",
               }}
             >
-              Upgrade Now
+              {String(i18n.t("premiumMonthly.upgradeNow"))}
             </Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -192,7 +192,7 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
               fontSize: 16,
             }}
           >
-            Continue Free
+            {String(i18n.t("premiumMonthly.continueFree"))}
           </Text>
         </TouchableOpacity>
 
@@ -205,9 +205,10 @@ export default function PremiumMonthlyPaywall({ navigation, route }: any) {
               fontSize: 14,
             }}
           >
-            Restore Purchases
+            {String(i18n.t("premiumMonthly.restore"))}
           </Text>
         </TouchableOpacity>
+
       </ScrollView>
     </SafeAreaView>
   );

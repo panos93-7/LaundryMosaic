@@ -218,5 +218,108 @@
 
   "editGarment": "衣類を編集",
   "deleteGarment": "衣類を削除"
+ },
+ "history": {
+  "title": "洗濯履歴",
+  "close": "閉じる",
+
+  "emptyTitle": "まだ洗濯履歴がありません。",
+
+  "typeLabel": "洗濯",
+
+  "premiumRedirect": "リダイレクト中…"
+ },
+ "calendar": {
+  "back": "戻る",
+  "weekdays": ["月", "火", "水", "木", "金", "土", "日"]
+ },
+ "addWash": {
+  "addTitle": "新しい洗濯を追加",
+  "editTitle": "洗濯を編集",
+  "close": "閉じる",
+
+  "labelTitle": "タイトル",
+  "labelTime": "時間",
+  "labelType": "洗濯タイプ",
+
+  "placeholderTitle": "例: 白物",
+  "placeholderTime": "例: 10:30",
+
+  "washTypes": {
+    "whites": "白物",
+    "colors": "色物",
+    "delicates": "デリケート",
+    "quick": "クイック洗濯"
+  },
+
+  "errorMissingTitle": "タイトルがありません",
+  "errorMissingTitleMsg": "洗濯のタイトルを入力してください。",
+
+  "errorMissingTime": "時間がありません",
+  "errorMissingTimeMsg": "時間を入力してください。",
+
+  "errorMissingType": "タイプがありません",
+  "errorMissingTypeMsg": "洗濯タイプを選択してください。",
+
+  "errorInvalidDate": "無効な日付",
+  "errorInvalidDateMsg": "過去に洗濯を予定することはできません。",
+
+  "saveChanges": "変更を保存",
+  "saveWash": "洗濯を保存"
+ },
+ "paywall": {
+  "loading": "読み込み中...",
+  "noOfferings": "利用可能なオファーがありません。",
+
+  "headerTitle": "Laundry Pro+ をアンロック",
+  "headerSubtitle": "無制限のAI機能、バッチスキャン、ワードローブなど。",
+
+  "monthly": "Pro 月額",
+  "annual": "Pro 年額（最もお得）",
+  "lifetime": "Pro 生涯アクセス",
+
+  "upgradeButton": "Pro+ にアップグレード",
+  "continueFree": "無料版を続ける",
+  "restore": "購入を復元"
+ },
+ "premiumMonthly": {
+  "loading": "読み込み中...",
+  "noOfferings": "利用可能なオファーがありません。",
+
+  "title": "プレミアムアクセス",
+
+  "msgHistory": "履歴はプレミアム機能です。",
+  "msgAutoAdd": "Planner への自動追加はプレミアム機能です。",
+  "msgDefault": "プレミアム機能をアンロック。",
+
+  "monthlyTitle": "プレミアム月額",
+  "monthlySubtitle": "すべてのプレミアム機能を即時アンロック。",
+
+  "upgradeNow": "今すぐアップグレード",
+  "continueFree": "無料で続ける",
+  "restore": "購入を復元"
+ },
+ "premiumFallback": {
+  "loading": "オファーを読み込み中...",
+  "noOfferings": "利用可能なオファーがありません。",
+
+  "title": "Smart Wash Premium",
+  "subtitle": "必要な機能を備えた軽量プラン。",
+
+  "annualTitle": "プレミアム年額",
+  "annualSubtitle": "最もお得な年間価格でさらに節約。",
+  "perYear": "/年",
+  "upgradeNow": "今すぐアップグレード",
+
+  "benefits": {
+    "smartScan": "AI Smart Scan をアンロック",
+    "stainDetection": "AI シミ検出",
+    "autoAdd": "Planner への自動追加",
+    "history": "洗濯履歴の全機能",
+    "faster": "高速処理"
+  },
+
+  "continueFree": "無料版を続ける",
+  "restore": "購入を復元"
  }
 }
