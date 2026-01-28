@@ -51,13 +51,8 @@ export default function AppNavigator() {
   // ⭐ FORCE RE-RENDER όταν αλλάζει το entitlement
   useUserStore((s) => s.userTier);
 
-  // ⭐ MINIMUM SPLASH DURATION (για να παίξει το animation)
-  const [minSplashDone, setMinSplashDone] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setMinSplashDone(true), 600); // 600ms
-    return () => clearTimeout(t);
-  }, []);
+  // ⭐ FADE-OUT SPLASH COMPLETION
+  const [splashDone, setSplashDone] = useState(false);
 
   // ⭐ RUN ON STARTUP
   useEffect(() => {
@@ -75,10 +70,10 @@ export default function AppNavigator() {
   }, []);
 
   // ---------------------------------------------------
-  // ⭐ WAIT UNTIL ENTITLEMENTS + MIN SPLASH ARE DONE
+  // ⭐ WAIT UNTIL ENTITLEMENTS + SPLASH FADE-OUT ARE DONE
   // ---------------------------------------------------
-  if (!entitlementsLoaded || !minSplashDone) {
-    return <CustomSplash />;
+  if (!entitlementsLoaded || !splashDone) {
+    return <CustomSplash onFinish={() => setSplashDone(true)} />;
   }
 
   // ---------------------------------------------------

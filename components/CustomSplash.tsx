@@ -1,15 +1,23 @@
 import React, { useEffect, useRef } from "react";
-import { ActivityIndicator, Animated, Easing, View } from "react-native";
+import { ActivityIndicator, Animated, Easing } from "react-native";
 
-export function CustomSplash() {
+type CustomSplashProps = {
+  onFinish?: () => void;
+};
+
+export function CustomSplash({ onFinish }: CustomSplashProps) {
+  // Fade-out wrapper
+  const containerOpacity = useRef(new Animated.Value(1)).current;
+
+  // Your existing animations
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const taglineOpacity = useRef(new Animated.Value(0)).current;
   const loaderOpacity = useRef(new Animated.Value(0)).current;
   const microcopyOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    // Run your existing sequence
     Animated.sequence([
-      // Logo fade-in
       Animated.timing(logoOpacity, {
         toValue: 1,
         duration: 600,
@@ -17,7 +25,6 @@ export function CustomSplash() {
         useNativeDriver: true,
       }),
 
-      // Tagline fade-in
       Animated.timing(taglineOpacity, {
         toValue: 1,
         duration: 500,
@@ -25,7 +32,6 @@ export function CustomSplash() {
         useNativeDriver: true,
       }),
 
-      // Loader fade-in
       Animated.timing(loaderOpacity, {
         toValue: 1,
         duration: 400,
@@ -33,20 +39,30 @@ export function CustomSplash() {
         useNativeDriver: true,
       }),
 
-      // Microcopy fade-in
       Animated.timing(microcopyOpacity, {
         toValue: 1,
         duration: 500,
         easing: Easing.out(Easing.ease),
         useNativeDriver: true,
       }),
-    ]).start();
+    ]).start(() => {
+      // After your animation finishes → fade out
+      Animated.timing(containerOpacity, {
+        toValue: 0,
+        duration: 600,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start(() => {
+        onFinish?.(); // Notify AppNavigator
+      });
+    });
   }, []);
 
   return (
-    <View
+    <Animated.View
       style={{
         flex: 1,
+        opacity: containerOpacity,
         backgroundColor: "#0f0c29",
         justifyContent: "center",
         alignItems: "center",
@@ -63,7 +79,7 @@ export function CustomSplash() {
           letterSpacing: 0.5,
         }}
       >
-        FabricCare Pro
+        LaundryMosaic
       </Animated.Text>
 
       <Animated.Text
@@ -92,6 +108,6 @@ export function CustomSplash() {
       >
         Your premium experience is loading…
       </Animated.Text>
-    </View>
+    </Animated.View>
   );
 }
