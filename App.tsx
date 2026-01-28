@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { CustomSplash } from "./components/CustomSplash";
+import React, { useEffect } from "react";
 
 import Purchases from "react-native-purchases";
 import { markPurchasesConfigured, syncEntitlements } from "./utils/syncEntitlements";
@@ -22,8 +21,6 @@ console.log("RUNTIME:", Updates.runtimeVersion);
 console.log("🔧 EXTRA:", Constants.expoConfig?.extra);
 
 export default function App() {
-  const [loadingEntitlements, setLoadingEntitlements] = useState(true);
-
   // ⭐ RevenueCat init — ΜΟΝΟ ΜΙΑ ΦΟΡΑ
   useEffect(() => {
     async function initRC() {
@@ -34,7 +31,6 @@ export default function App() {
           apiKey: "goog_tdDNBytofaDfyxtxrUhZcyCXdPX",
         });
 
-        // Σταθεροποιεί aliasing για testers
         await Purchases.logIn("tester_panos");
 
         markPurchasesConfigured();
@@ -46,15 +42,11 @@ export default function App() {
     initRC();
   }, []);
 
-  // ⭐ Load entitlements
+  // ⭐ Load entitlements (χωρίς local loading state)
   useEffect(() => {
     async function loadEntitlements() {
-      try {
-        await new Promise((res) => setTimeout(res, 300)); // μικρό delay για Android
-        await syncEntitlements();
-      } finally {
-        setLoadingEntitlements(false);
-      }
+      await new Promise((res) => setTimeout(res, 300)); // μικρό delay για Android
+      await syncEntitlements();
     }
     loadEntitlements();
   }, []);
@@ -100,10 +92,6 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // ⭐ Cinematic splash
-  if (loadingEntitlements) {
-    return <CustomSplash />;
-  }
-
+  // ⭐ Το AppNavigator χειρίζεται το cinematic splash
   return <AppNavigator />;
 }

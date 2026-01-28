@@ -1,9 +1,9 @@
-console.log("🔥 USING THIS AppNavigator FILE");
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { AppState } from "react-native";
 
+import { CustomSplash } from "../components/CustomSplash";
 import { useUserStore } from "../store/userStore";
 import { syncEntitlements } from "../utils/syncEntitlements";
 
@@ -62,7 +62,7 @@ export default function AppNavigator() {
   // ⭐ WAIT UNTIL ENTITLEMENTS ARE LOADED
   // ---------------------------------------------------
   if (!entitlementsLoaded) {
-    return null; // αφήνουμε το cinematic splash να παίζει
+    return <CustomSplash />;
   }
 
   // ---------------------------------------------------
