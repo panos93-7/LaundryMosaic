@@ -46,15 +46,17 @@ export function CustomSplash({ onFinish }: CustomSplashProps) {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      // After your animation finishes → fade out
-      Animated.timing(containerOpacity, {
-        toValue: 0,
-        duration: 600,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }).start(() => {
-        onFinish?.(); // Notify AppNavigator
-      });
+      // ⭐ EXTRA 2 SECONDS BEFORE FADE OUT
+      setTimeout(() => {
+        Animated.timing(containerOpacity, {
+          toValue: 0,
+          duration: 600,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: true,
+        }).start(() => {
+          onFinish?.(); // Notify AppNavigator
+        });
+      }, 2000); // ← 2 seconds extra
     });
   }, []);
 
@@ -91,7 +93,7 @@ export function CustomSplash({ onFinish }: CustomSplashProps) {
           textAlign: "center",
         }}
       >
-        Optimizing AI fabric intelligence…
+        Optimizing AI intelligence…
       </Animated.Text>
 
       <Animated.View style={{ opacity: loaderOpacity }}>
