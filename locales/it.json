@@ -179,5 +179,41 @@
   "careInstructions": "Istruzioni di Cura",
   "noCareInstructions": "Nessuna istruzione di cura disponibile.",
   "regenerate": "Rigenera con IA"
+ },
+ "wardrobe": {
+  "title": "Guardaroba Intelligente",
+  "close": "Chiudi",
+  "analyzing": "Analisi del capo…",
+  "emptyTitle": "Il tuo guardaroba è vuoto",
+  "emptySubtitle": "Aggiungi capi per organizzare il tuo guardaroba e ricevere consigli basati sull’IA.",
+  "addButton": "Aggiungi capo"
+ },
+ "garmentDetails": {
+  "back": "Indietro",
+  "noImage": "Nessuna immagine",
+
+  "type": "Tipo",
+  "color": "Colore",
+  "fabric": "Tessuto",
+  "pattern": "Motivo",
+  "category": "Categoria",
+
+  "unknown": "Sconosciuto",
+  "none": "Nessuno",
+  "uncategorized": "Non categorizzato",
+
+  "stainsDetected": "Macchie rilevate:",
+
+  "careInstructions": "Istruzioni di Cura",
+  "recommendedTemp": "Temperatura Consigliata",
+  "spinSpeed": "Velocità di Centrifuga",
+
+  "recommendedWashProgram": "Programma di Lavaggio Consigliato",
+  "program": "Programma",
+  "temp": "Temperatura",
+  "spin": "Centrifuga",
+
+  "editGarment": "Modifica Indumento",
+  "deleteGarment": "Elimina Indumento"
  }
 }

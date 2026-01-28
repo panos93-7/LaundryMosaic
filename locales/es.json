@@ -179,5 +179,41 @@
   "careInstructions": "Instrucciones de Cuidado",
   "noCareInstructions": "No hay instrucciones de cuidado disponibles.",
   "regenerate": "Regenerar con IA"
+ },
+ "wardrobe": {
+  "title": "Armario Inteligente",
+  "close": "Cerrar",
+  "analyzing": "Analizando prenda…",
+  "emptyTitle": "Tu armario está vacío",
+  "emptySubtitle": "Añade prendas para empezar a organizar tu armario y recibir recomendaciones con IA.",
+  "addButton": "Añadir Prenda"
+ },
+ "garmentDetails": {
+  "back": "Volver",
+  "noImage": "Sin imagen",
+
+  "type": "Tipo",
+  "color": "Color",
+  "fabric": "Tejido",
+  "pattern": "Patrón",
+  "category": "Categoría",
+
+  "unknown": "Desconocido",
+  "none": "Ninguno",
+  "uncategorized": "Sin categoría",
+
+  "stainsDetected": "Manchas detectadas:",
+
+  "careInstructions": "Instrucciones de Cuidado",
+  "recommendedTemp": "Temperatura Recomendada",
+  "spinSpeed": "Velocidad de Centrifugado",
+
+  "recommendedWashProgram": "Programa de Lavado Recomendado",
+  "program": "Programa",
+  "temp": "Temperatura",
+  "spin": "Centrifugado",
+
+  "editGarment": "Editar Prenda",
+  "deleteGarment": "Eliminar Prenda"
  }
 }

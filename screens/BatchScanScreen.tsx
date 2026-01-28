@@ -81,11 +81,11 @@ export default function BatchScanScreen() {
       const fabrics = Object.keys(grouped);
       const conflicts: string[] = [];
 
-      if (fabrics.includes("wool") && fabrics.some(f => f !== "wool")) {
+      if (fabrics.includes("wool") && fabrics.some((f) => f !== "wool")) {
         conflicts.push(i18n.t("batchScan.conflict_wool"));
       }
 
-      if (fabrics.includes("delicate") && fabrics.some(f => f !== "delicate")) {
+      if (fabrics.includes("delicate") && fabrics.some((f) => f !== "delicate")) {
         conflicts.push(i18n.t("batchScan.conflict_delicate"));
       }
 
@@ -103,7 +103,7 @@ export default function BatchScanScreen() {
         suggestions.push(i18n.t("batchScan.suggest_synthetics"));
       }
 
-      if (items.some(i => i.stains?.length > 0)) {
+      if (items.some((i) => i.stains?.length > 0)) {
         suggestions.push(i18n.t("batchScan.suggest_stains"));
       }
 
@@ -128,26 +128,40 @@ export default function BatchScanScreen() {
     setPhoto(null);
     setResult(null);
     openCamera();
-  };  return (
+  };
+
+  return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
     >
       <SafeAreaView style={{ flex: 1 }}>
+
         {/* HEADER */}
         <View
           style={{
             padding: 20,
             flexDirection: "row",
             justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Text style={{ color: "#fff", fontSize: 28, fontWeight: "700" }}>
-            {i18n.t("batchScan.title")}
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 28,
+              fontWeight: "700",
+              flexShrink: 1,
+              marginRight: 10,
+            }}
+            numberOfLines={2}
+          >
+            {String(i18n.t("batchScan.title"))}
           </Text>
+
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
-              {i18n.t("batchScan.close")}
+              {String(i18n.t("batchScan.close"))}
             </Text>
           </TouchableOpacity>
         </View>

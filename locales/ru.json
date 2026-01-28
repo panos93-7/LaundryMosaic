@@ -179,5 +179,41 @@
   "careInstructions": "Инструкции по уходу",
   "noCareInstructions": "Нет доступных инструкций по уходу.",
   "regenerate": "Сгенерировать заново с ИИ"
+ },
+ "wardrobe": {
+  "title": "Умный Гардероб",
+  "close": "Закрыть",
+  "analyzing": "Анализ одежды…",
+  "emptyTitle": "Ваш гардероб пуст",
+  "emptySubtitle": "Добавьте одежду, чтобы организовать гардероб и получать рекомендации образов с помощью ИИ.",
+  "addButton": "Добавить одежду"
+ },
+ "garmentDetails": {
+  "back": "Назад",
+  "noImage": "Нет изображения",
+
+  "type": "Тип",
+  "color": "Цвет",
+  "fabric": "Ткань",
+  "pattern": "Узор",
+  "category": "Категория",
+
+  "unknown": "Неизвестно",
+  "none": "Нет",
+  "uncategorized": "Без категории",
+
+  "stainsDetected": "Обнаружены пятна:",
+
+  "careInstructions": "Инструкции по уходу",
+  "recommendedTemp": "Рекомендуемая температура",
+  "spinSpeed": "Скорость отжима",
+
+  "recommendedWashProgram": "Рекомендуемая программа стирки",
+  "program": "Программа",
+  "temp": "Температура",
+  "spin": "Отжим",
+
+  "editGarment": "Редактировать вещь",
+  "deleteGarment": "Удалить вещь"
  }
 }

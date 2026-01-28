@@ -182,5 +182,41 @@
   "careInstructions": "保養方式",
   "noCareInstructions": "目前沒有可用的保養方式。",
   "regenerate": "使用 AI 重新生成"
+ },
+ "wardrobe": {
+  "title": "智慧衣櫥",
+  "close": "關閉",
+  "analyzing": "正在分析衣物…",
+  "emptyTitle": "你的衣櫥是空的",
+  "emptySubtitle": "新增衣物即可開始整理衣櫥，並獲得 AI 穿搭建議。",
+  "addButton": "新增衣物"
+ },
+ "garmentDetails": {
+  "back": "返回",
+  "noImage": "無圖片",
+
+  "type": "種類",
+  "color": "顏色",
+  "fabric": "布料",
+  "pattern": "圖案",
+  "category": "分類",
+
+  "unknown": "未知",
+  "none": "無",
+  "uncategorized": "未分類",
+
+  "stainsDetected": "偵測到污漬：",
+
+  "careInstructions": "保養方式",
+  "recommendedTemp": "建議溫度",
+  "spinSpeed": "脫水速度",
+
+  "recommendedWashProgram": "建議洗衣行程",
+  "program": "行程",
+  "temp": "溫度",
+  "spin": "脫水",
+
+  "editGarment": "編輯衣物",
+  "deleteGarment": "刪除衣物"
  }
 }

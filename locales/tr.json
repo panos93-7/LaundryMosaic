@@ -179,5 +179,41 @@
   "careInstructions": "Bakım Talimatları",
   "noCareInstructions": "Herhangi bir bakım talimatı bulunmuyor.",
   "regenerate": "Yapay Zekâ ile Yeniden Oluştur"
+ },
+ "wardrobe": {
+  "title": "Akıllı Gardırop",
+  "close": "Kapat",
+  "analyzing": "Kıyafet analiz ediliyor…",
+  "emptyTitle": "Gardırobun boş",
+  "emptySubtitle": "Gardırobunu düzenlemek ve yapay zekâ destekli kombin önerileri almak için kıyafet ekle.",
+  "addButton": "Kıyafet Ekle"
+ },
+ "garmentDetails": {
+  "back": "Geri",
+  "noImage": "Görüntü yok",
+
+  "type": "Tür",
+  "color": "Renk",
+  "fabric": "Kumaş",
+  "pattern": "Desen",
+  "category": "Kategori",
+
+  "unknown": "Bilinmiyor",
+  "none": "Yok",
+  "uncategorized": "Kategori yok",
+
+  "stainsDetected": "Lekeler tespit edildi:",
+
+  "careInstructions": "Bakım Talimatları",
+  "recommendedTemp": "Önerilen Sıcaklık",
+  "spinSpeed": "Sıkma Hızı",
+
+  "recommendedWashProgram": "Önerilen Yıkama Programı",
+  "program": "Program",
+  "temp": "Sıcaklık",
+  "spin": "Sıkma",
+
+  "editGarment": "Giysiyi Düzenle",
+  "deleteGarment": "Giysiyi Sil"
  }
 }

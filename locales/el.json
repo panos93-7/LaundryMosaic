@@ -179,5 +179,41 @@
   "careInstructions": "Οδηγίες Φροντίδας",
   "noCareInstructions": "Δεν υπάρχουν διαθέσιμες οδηγίες φροντίδας.",
   "regenerate": "Αναδημιουργία με AI"
+ },
+ "wardrobe": {
+  "title": "Έξυπνη Ντουλάπα",
+  "close": "Κλείσιμο",
+  "analyzing": "Ανάλυση ρούχου…",
+  "emptyTitle": "Η ντουλάπα σου είναι άδεια",
+  "emptySubtitle": "Πρόσθεσε ρούχα για να οργανώσεις τη ντουλάπα σου και να λάβεις προτάσεις εμφάνισης με AI.",
+  "addButton": "Προσθήκη Ρούχου"
+ },
+ "garmentDetails": {
+  "back": "Πίσω",
+  "noImage": "Χωρίς εικόνα",
+
+  "type": "Τύπος",
+  "color": "Χρώμα",
+  "fabric": "Ύφασμα",
+  "pattern": "Σχέδιο",
+  "category": "Κατηγορία",
+
+  "unknown": "Άγνωστο",
+  "none": "Κανένα",
+  "uncategorized": "Χωρίς κατηγορία",
+
+  "stainsDetected": "Εντοπίστηκαν λεκέδες:",
+
+  "careInstructions": "Οδηγίες Φροντίδας",
+  "recommendedTemp": "Προτεινόμενη Θερμοκρασία",
+  "spinSpeed": "Ταχύτητα Στυψίματος",
+
+  "recommendedWashProgram": "Προτεινόμενο Πρόγραμμα Πλυσίματος",
+  "program": "Πρόγραμμα",
+  "temp": "Θερμοκρασία",
+  "spin": "Στύψιμο",
+
+  "editGarment": "Επεξεργασία Ρούχου",
+  "deleteGarment": "Διαγραφή Ρούχου"
  }
 }

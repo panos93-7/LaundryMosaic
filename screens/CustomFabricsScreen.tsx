@@ -178,15 +178,17 @@ export default function CustomFabricsScreen() {
         >
           <View>
             <Text
-              style={{
-                color: "#fff",
-                fontSize: 28,
-                fontWeight: "700",
-              }}
-            >
-              {String(i18n.t("customFabrics.title"))}
-            </Text>
-
+  style={{
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "700",
+    flexShrink: 1,
+    marginRight: 10,
+  }}
+  numberOfLines={2}
+>
+  {String(i18n.t("customFabrics.title"))}
+</Text>
             {statusMessage !== "" && (
               <Text
                 style={{

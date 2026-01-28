@@ -182,5 +182,41 @@
   "careInstructions": "관리 방법",
   "noCareInstructions": "등록된 관리 방법이 없습니다.",
   "regenerate": "AI로 다시 생성"
+ },
+ "wardrobe": {
+  "title": "스마트 옷장",
+  "close": "닫기",
+  "analyzing": "의류 분석 중…",
+  "emptyTitle": "옷장이 비어 있습니다",
+  "emptySubtitle": "옷을 추가해 옷장을 정리하고 AI 기반 코디 추천을 받아보세요.",
+  "addButton": "의류 추가"
+ },
+ "garmentDetails": {
+  "back": "뒤로",
+  "noImage": "이미지 없음",
+
+  "type": "종류",
+  "color": "색상",
+  "fabric": "소재",
+  "pattern": "패턴",
+  "category": "카테고리",
+
+  "unknown": "알 수 없음",
+  "none": "없음",
+  "uncategorized": "분류되지 않음",
+
+  "stainsDetected": "얼룩 감지됨:",
+
+  "careInstructions": "관리 방법",
+  "recommendedTemp": "권장 온도",
+  "spinSpeed": "탈수 속도",
+
+  "recommendedWashProgram": "권장 세탁 프로그램",
+  "program": "프로그램",
+  "temp": "온도",
+  "spin": "탈수",
+
+  "editGarment": "의류 편집",
+  "deleteGarment": "의류 삭제"
  }
 }

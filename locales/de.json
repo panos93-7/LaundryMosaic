@@ -179,5 +179,41 @@
   "careInstructions": "Pflegehinweise",
   "noCareInstructions": "Keine Pflegehinweise verfügbar.",
   "regenerate": "Mit KI neu generieren"
+ },
+ "wardrobe": {
+  "title": "Intelligenter Kleiderschrank",
+  "close": "Schließen",
+  "analyzing": "Kleidung wird analysiert…",
+  "emptyTitle": "Dein Kleiderschrank ist leer",
+  "emptySubtitle": "Füge Kleidung hinzu, um deinen Kleiderschrank zu organisieren und KI‑gestützte Outfit‑Empfehlungen zu erhalten.",
+  "addButton": "Kleidung hinzufügen"
+ },
+ "garmentDetails": {
+  "back": "Zurück",
+  "noImage": "Kein Bild",
+
+  "type": "Typ",
+  "color": "Farbe",
+  "fabric": "Stoff",
+  "pattern": "Muster",
+  "category": "Kategorie",
+
+  "unknown": "Unbekannt",
+  "none": "Keins",
+  "uncategorized": "Nicht kategorisiert",
+
+  "stainsDetected": "Flecken erkannt:",
+
+  "careInstructions": "Pflegehinweise",
+  "recommendedTemp": "Empfohlene Temperatur",
+  "spinSpeed": "Schleudergeschwindigkeit",
+
+  "recommendedWashProgram": "Empfohlenes Waschprogramm",
+  "program": "Programm",
+  "temp": "Temperatur",
+  "spin": "Schleudern",
+
+  "editGarment": "Kleidungsstück Bearbeiten",
+  "deleteGarment": "Kleidungsstück Löschen"
  }
 }

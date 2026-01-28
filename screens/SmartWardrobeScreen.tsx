@@ -6,9 +6,9 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { GarmentCard } from "../components/GarmentCard";
+import i18n from "../i18n";
 import { useWardrobeStore } from "../store/wardrobeStore";
 import { analyzeGarmentPro } from "../utils/aiGarmentAnalyzerPro";
-
 
 export default function WardrobeScreen() {
   const navigation = useNavigation<any>();
@@ -21,7 +21,6 @@ export default function WardrobeScreen() {
 
   const [analyzing, setAnalyzing] = useState(false);
 
-  // Load wardrobe on mount
   useEffect(() => {
     hydrate();
   }, []);
@@ -44,22 +43,22 @@ export default function WardrobeScreen() {
       const ai = await analyzeGarmentPro(base64);
 
       await addGarment({
-  id: Date.now(),
-  name: ai.name,
-  type: ai.type,
-  category: ai.category,
-  fabric: ai.fabric,
-  color: ai.color,
-  pattern: ai.pattern,
-  stains: ai.stains,
-  recommended: ai.recommended,
-  care: {
-    instructions: `${ai.recommended.temp}°C • ${ai.recommended.spin} rpm`,
-    temp: ai.recommended.temp,
-    spin: ai.recommended.spin,
-  },
-  image: uri,
-});
+        id: Date.now(),
+        name: ai.name,
+        type: ai.type,
+        category: ai.category,
+        fabric: ai.fabric,
+        color: ai.color,
+        pattern: ai.pattern,
+        stains: ai.stains,
+        recommended: ai.recommended,
+        care: {
+          instructions: `${ai.recommended.temp}°C • ${ai.recommended.spin} rpm`,
+          temp: ai.recommended.temp,
+          spin: ai.recommended.spin,
+        },
+        image: uri,
+      });
     } catch (err) {
       console.log("AI error:", err);
     }
@@ -84,17 +83,22 @@ export default function WardrobeScreen() {
           }}
         >
           <Text
-            style={{
-              color: "#fff",
-              fontSize: 28,
-              fontWeight: "700",
-            }}
-          >
-            Smart Wardrobe
-          </Text>
+  style={{
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "700",
+    flexShrink: 1,
+    marginRight: 10,
+  }}
+  numberOfLines={2}
+>
+  {String(i18n.t("wardrobe.title"))}
+</Text>
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>Close</Text>
+            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+              {String(i18n.t("wardrobe.close"))}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -102,109 +106,110 @@ export default function WardrobeScreen() {
         {analyzing && (
           <View style={{ marginBottom: 20 }}>
             <Text style={{ color: "#fff", fontSize: 18 }}>
-              Analyzing garment…
+              {String(i18n.t("wardrobe.analyzing"))}
             </Text>
           </View>
         )}
 
-{/* EMPTY STATE */}
-{garments.length === 0 && !analyzing && (
-  <View
-    style={{
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: 20,
-    }}
-  >
-    <Text
-      style={{
-        color: "rgba(255,255,255,0.9)",
-        fontSize: 20,
-        fontWeight: "600",
-        textAlign: "center",
-        marginBottom: 10,
-      }}
-    >
-      Your wardrobe is empty
-    </Text>
+        {/* EMPTY STATE */}
+        {garments.length === 0 && !analyzing && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 20,
+            }}
+          >
+            <Text
+              style={{
+                color: "rgba(255,255,255,0.9)",
+                fontSize: 20,
+                fontWeight: "600",
+                textAlign: "center",
+                marginBottom: 10,
+              }}
+            >
+              {String(i18n.t("wardrobe.emptyTitle"))}
+            </Text>
 
-    <Text
-      style={{
-        color: "rgba(255,255,255,0.6)",
-        fontSize: 16,
-        textAlign: "center",
-        lineHeight: 22,
-        marginBottom: 30,
-      }}
-    >
-      Add garments to start organizing your wardrobe and get AI-powered
-      outfit recommendations.
-    </Text>
+            <Text
+              style={{
+                color: "rgba(255,255,255,0.6)",
+                fontSize: 16,
+                textAlign: "center",
+                lineHeight: 22,
+                marginBottom: 30,
+              }}
+            >
+              {String(i18n.t("wardrobe.emptySubtitle"))}
+            </Text>
 
-    {/* ADD BUTTON BELOW TEXT */}
-    <TouchableOpacity
-      onPress={handleAddGarment}
-      style={{
-        backgroundColor: "#2575fc",
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-        justifyContent: "center",
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOpacity: 0.3,
-        shadowRadius: 12,
-        elevation: 6,
-        marginTop: 10, // small breathing space
-      }}
-    >
-      <Text style={{ color: "#fff", fontSize: 34, fontWeight: "700" }}>+</Text>
-    </TouchableOpacity>
-  </View>
-)}
+            {/* ADD BUTTON */}
+            <TouchableOpacity
+              onPress={handleAddGarment}
+              style={{
+                backgroundColor: "#2575fc",
+                width: 70,
+                height: 70,
+                borderRadius: 35,
+                justifyContent: "center",
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOpacity: 0.3,
+                shadowRadius: 12,
+                elevation: 6,
+                marginTop: 10,
+              }}
+            >
+              <Text style={{ color: "#fff", fontSize: 34, fontWeight: "700" }}>
+                +
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
-{/* GRID VIEW */}
-{garments.length > 0 && (
-  <>
-    <FlatList
-      data={garments}
-      numColumns={2}
-      keyExtractor={(item) => item.id.toString()}
-      columnWrapperStyle={{ justifyContent: "space-between" }}
-      renderItem={({ item }) => (
-        <GarmentCard
-          item={item}
-          onPress={() =>
-            navigation.navigate("GarmentDetails", {
-              garment: item,
-              onSave: updateGarment,
-              onDelete: deleteGarment,
-            })
-          }
-        />
-      )}
-    />
+        {/* GRID VIEW */}
+        {garments.length > 0 && (
+          <>
+            <FlatList
+              data={garments}
+              numColumns={2}
+              keyExtractor={(item) => item.id.toString()}
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              renderItem={({ item }) => (
+                <GarmentCard
+                  item={item}
+                  onPress={() =>
+                    navigation.navigate("GarmentDetails", {
+                      garment: item,
+                      onSave: updateGarment,
+                      onDelete: deleteGarment,
+                    })
+                  }
+                />
+              )}
+            />
 
-    {/* FLOATING BUTTON BOTTOM RIGHT */}
-    <TouchableOpacity
-      onPress={handleAddGarment}
-      style={{
-        position: "absolute",
-        bottom: 30,
-        right: 30,
-        backgroundColor: "#2575fc",
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text style={{ color: "#fff", fontSize: 30 }}>+</Text>
-    </TouchableOpacity>
-  </>
-)}
+            {/* FLOATING BUTTON */}
+            <TouchableOpacity
+              onPress={handleAddGarment}
+              style={{
+                position: "absolute",
+                bottom: 30,
+                right: 30,
+                backgroundColor: "#2575fc",
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "#fff", fontSize: 30 }}>+</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </SafeAreaView>
     </LinearGradient>
   );

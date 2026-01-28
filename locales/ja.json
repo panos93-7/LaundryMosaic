@@ -182,5 +182,41 @@
   "careInstructions": "お手入れ方法",
   "noCareInstructions": "利用可能なお手入れ方法はありません。",
   "regenerate": "AIで再生成"
+ },
+ "wardrobe": {
+  "title": "スマートワードローブ",
+  "close": "閉じる",
+  "analyzing": "衣類を分析中…",
+  "emptyTitle": "ワードローブは空です",
+  "emptySubtitle": "衣類を追加して整理を始め、AIによるコーディネート提案を受け取りましょう。",
+  "addButton": "衣類を追加"
+ },
+ "garmentDetails": {
+  "back": "戻る",
+  "noImage": "画像なし",
+
+  "type": "種類",
+  "color": "色",
+  "fabric": "素材",
+  "pattern": "柄",
+  "category": "カテゴリ",
+
+  "unknown": "不明",
+  "none": "なし",
+  "uncategorized": "未分類",
+
+  "stainsDetected": "汚れを検出:",
+
+  "careInstructions": "お手入れ方法",
+  "recommendedTemp": "推奨温度",
+  "spinSpeed": "脱水速度",
+
+  "recommendedWashProgram": "推奨洗濯プログラム",
+  "program": "プログラム",
+  "temp": "温度",
+  "spin": "脱水",
+
+  "editGarment": "衣類を編集",
+  "deleteGarment": "衣類を削除"
  }
 }

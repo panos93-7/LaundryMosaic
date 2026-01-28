@@ -179,5 +179,41 @@
   "careInstructions": "Instructions d’Entretien",
   "noCareInstructions": "Aucune instruction d’entretien disponible.",
   "regenerate": "Régénérer avec l’IA"
+ },
+ "wardrobe": {
+  "title": "Garde‑robe Intelligente",
+  "close": "Fermer",
+  "analyzing": "Analyse du vêtement…",
+  "emptyTitle": "Votre garde‑robe est vide",
+  "emptySubtitle": "Ajoutez des vêtements pour organiser votre garde‑robe et recevoir des recommandations basées sur l’IA.",
+  "addButton": "Ajouter un vêtement"
+ },
+ "garmentDetails": {
+  "back": "Retour",
+  "noImage": "Pas d’image",
+
+  "type": "Type",
+  "color": "Couleur",
+  "fabric": "Tissu",
+  "pattern": "Motif",
+  "category": "Catégorie",
+
+  "unknown": "Inconnu",
+  "none": "Aucun",
+  "uncategorized": "Non catégorisé",
+
+  "stainsDetected": "Taches détectées :",
+
+  "careInstructions": "Instructions d’Entretien",
+  "recommendedTemp": "Température Recommandée",
+  "spinSpeed": "Vitesse d’Essorage",
+
+  "recommendedWashProgram": "Programme de Lavage Recommandé",
+  "program": "Programme",
+  "temp": "Température",
+  "spin": "Essorage",
+
+  "editGarment": "Modifier le Vêtement",
+  "deleteGarment": "Supprimer le Vêtement"
  }
 }

@@ -91,17 +91,18 @@ export default function EditGarmentScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* TITLE */}
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 28,
-              fontWeight: "700",
-              marginBottom: 20,
-            }}
-          >
-            {String(i18n.t("editGarment.title"))}
-          </Text>
+         <Text
+  style={{
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "700",
+    flexShrink: 1,
+    marginRight: 10,
+  }}
+  numberOfLines={2}
+>
+  {String(i18n.t("editGarment.title"))}
+</Text>
 
           {/* IMAGE PICKER */}
           <TouchableOpacity onPress={pickImage}>

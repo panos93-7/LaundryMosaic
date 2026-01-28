@@ -179,5 +179,43 @@
   "careInstructions": "Care Instructions",
   "noCareInstructions": "No care instructions available.",
   "regenerate": "Regenerate with AI"
+ },
+ "wardrobe": {
+  "title": "Smart Wardrobe",
+  "close": "Close",
+  "analyzing": "Analyzing garment…",
+
+  "emptyTitle": "Your wardrobe is empty",
+  "emptySubtitle": "Add garments to start organizing your wardrobe and get AI-powered outfit recommendations.",
+
+  "addButton": "Add Garment"
+ },
+ "garmentDetails": {
+  "back": "Back",
+  "noImage": "No image",
+
+  "type": "Type",
+  "color": "Color",
+  "fabric": "Fabric",
+  "pattern": "Pattern",
+  "category": "Category",
+
+  "unknown": "Unknown",
+  "none": "None",
+  "uncategorized": "Uncategorized",
+
+  "stainsDetected": "Stains detected:",
+
+  "careInstructions": "Care Instructions",
+  "recommendedTemp": "Recommended Temp",
+  "spinSpeed": "Spin Speed",
+
+  "recommendedWashProgram": "Recommended Wash Program",
+  "program": "Program",
+  "temp": "Temp",
+  "spin": "Spin",
+
+  "editGarment": "Edit Garment",
+  "deleteGarment": "Delete Garment"
  }
 }

@@ -169,15 +169,18 @@ return (
             alignItems: "center",
           }}
         >
-          <Text
-            style={{
-              fontSize: 28,
-              fontWeight: "800",
-              color: "#fff",
-            }}
-          >
-            {i18n.t("smartScan.title")}
-          </Text>
+<Text
+  style={{
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "700",
+    flexShrink: 1,
+    marginRight: 10,
+  }}
+  numberOfLines={2}
+>
+  {String(i18n.t("smartScan.title"))}
+</Text>
 
           <TouchableOpacity onPress={() => navigation.navigate("Home")}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
