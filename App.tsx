@@ -20,6 +20,11 @@ console.log("CHANNEL:", Updates.channel);
 console.log("RUNTIME:", Updates.runtimeVersion);
 console.log("🔧 EXTRA:", Constants.expoConfig?.extra);
 
+// ⭐ Declare global flag so TS stops complaining
+declare global {
+  var __RC_CONFIGURED__: boolean | undefined;
+}
+
 export default function App() {
   // ⭐ RevenueCat init — ΜΟΝΟ ΜΙΑ ΦΟΡΑ
   useEffect(() => {
@@ -34,6 +39,9 @@ export default function App() {
         await Purchases.logIn("tester_panos");
 
         markPurchasesConfigured();
+
+        // ⭐ VERY IMPORTANT — σηματοδοτεί ότι το RC είναι έτοιμο
+        globalThis.__RC_CONFIGURED__ = true;
       } catch (err) {
         console.log("RevenueCat init error:", err);
       }
@@ -42,12 +50,20 @@ export default function App() {
     initRC();
   }, []);
 
-  // ⭐ Load entitlements (χωρίς local loading state)
+  // ⭐ Load entitlements ΜΟΝΟ όταν το RC είναι έτοιμο
   useEffect(() => {
     async function loadEntitlements() {
-      await new Promise((res) => setTimeout(res, 300)); // μικρό delay για Android
+      // wait until RC is configured
+      while (!globalThis.__RC_CONFIGURED__) {
+        await new Promise((res) => setTimeout(res, 50));
+      }
+
+      // μικρό delay για Android
+      await new Promise((res) => setTimeout(res, 200));
+
       await syncEntitlements();
     }
+
     loadEntitlements();
   }, []);
 
