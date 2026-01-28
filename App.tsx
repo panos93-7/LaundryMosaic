@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import Purchases from "react-native-purchases";
-import { markPurchasesConfigured, syncEntitlements } from "./utils/syncEntitlements";
+import { syncEntitlements } from "./utils/syncEntitlements";
 
 import { Events } from "./analytics/events";
 import AppNavigator from "./navigation/AppNavigator";
@@ -22,7 +22,7 @@ console.log("🔧 EXTRA:", Constants.expoConfig?.extra);
 
 // ⭐ Declare global flag so TS stops complaining
 declare global {
-  var __RC_CONFIGURED__: boolean | undefined;
+  var __RC_READY__: boolean | undefined;
 }
 
 export default function App() {
@@ -38,10 +38,8 @@ export default function App() {
 
         await Purchases.logIn("tester_panos");
 
-        markPurchasesConfigured();
-
         // ⭐ VERY IMPORTANT — σηματοδοτεί ότι το RC είναι έτοιμο
-        globalThis.__RC_CONFIGURED__ = true;
+        globalThis.__RC_READY__ = true;
       } catch (err) {
         console.log("RevenueCat init error:", err);
       }
@@ -54,7 +52,7 @@ export default function App() {
   useEffect(() => {
     async function loadEntitlements() {
       // wait until RC is configured
-      while (!globalThis.__RC_CONFIGURED__) {
+      while (!globalThis.__RC_READY__) {
         await new Promise((res) => setTimeout(res, 50));
       }
 
