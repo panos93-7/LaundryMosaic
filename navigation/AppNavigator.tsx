@@ -1,3 +1,10 @@
+console.log("🔥 NAV FIRST RENDER", {
+  entitlementsLoaded: useUserStore.getState().entitlementsLoaded,
+  userTier: useUserStore.getState().userTier,
+  isFree: useUserStore.getState().isFree,
+  isPro: useUserStore.getState().isPro,
+  hasSeenOnboarding: useUserStore.getState().hasSeenOnboarding,
+});
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";

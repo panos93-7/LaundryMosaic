@@ -72,32 +72,42 @@ export const useUserStore = create<UserStore>((set) => ({
 // ⭐ RESTORE ENTITLEMENTS
 // ---------------------------------------------------------
 export async function restoreEntitlements() {
+  console.log("🔵 RESTORE ENTITLEMENTS START");
+
   try {
     const info = await Purchases.getCustomerInfo();
+
+    console.log("🟢 CustomerInfo:", info);
+    console.log("🟢 Active entitlements:", info.entitlements.active);
+    console.log("🟢 Active subs:", info.activeSubscriptions);
 
     const hasPro = info.entitlements.active["pro"];
     const hasPremiumMonthly = info.entitlements.active["premium_monthly"];
     const hasPremiumAnnual = info.entitlements.active["premium_annual"];
 
     if (hasPro) {
+      console.log("🏆 SET TIER → PRO");
       useUserStore.getState().setFromEntitlement("pro");
     } else if (hasPremiumAnnual) {
+      console.log("🏆 SET TIER → PREMIUM ANNUAL");
       useUserStore.getState().setFromEntitlement("premium_annual");
     } else if (hasPremiumMonthly) {
+      console.log("🏆 SET TIER → PREMIUM MONTHLY");
       useUserStore.getState().setFromEntitlement("premium_monthly");
     } else {
+      console.log("🏆 SET TIER → FREE");
       useUserStore.getState().setFromEntitlement("free");
     }
 
-    // ⭐ ΜΟΝΟ ΕΔΩ — αφού έχουμε βάλει entitlement
     useUserStore.getState().setEntitlementsLoaded(true);
+    console.log("🟣 ENTITLEMENTS LOADED = TRUE");
 
   } catch (err) {
     console.log("❌ Failed to restore entitlements:", err);
 
     useUserStore.getState().setFromEntitlement("free");
-
-    // ⭐ ΑΚΟΜΑ ΚΑΙ ΣΤΟ ERROR → ΜΕΤΑ το setFromEntitlement
     useUserStore.getState().setEntitlementsLoaded(true);
+
+    console.log("🟣 ENTITLEMENTS LOADED = TRUE (ERROR)");
   }
 }
