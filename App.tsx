@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { CustomSplash } from "./components/CustomSplash";
+
+import Purchases from "react-native-purchases";
+import { markPurchasesConfigured, syncEntitlements } from "./utils/syncEntitlements";
 
 import { Events } from "./analytics/events";
 import AppNavigator from "./navigation/AppNavigator";
@@ -9,38 +13,44 @@ import {
   initInstallDate,
 } from "./utils/PaywallLogic";
 
-import Purchases from "react-native-purchases";
-import { markPurchasesConfigured, syncEntitlements } from "./utils/syncEntitlements";
-
 import Constants from "expo-constants";
 import * as Updates from "expo-updates";
-
-import { CustomSplash } from "./components/CustomSplash";
 
 // Debug logs
 console.log("CHANNEL:", Updates.channel);
 console.log("RUNTIME:", Updates.runtimeVersion);
-console.log("🔑 EXPO KEY:", Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY);
 console.log("🔧 EXTRA:", Constants.expoConfig?.extra);
-console.log("📦 FULL CONFIG:", Constants.expoConfig);
-
-// RevenueCat init
-try {
-  Purchases.configure({
-    apiKey: "goog_tdDNBytofaDfyxtxrUhZcyCXdPX",
-  });
-  markPurchasesConfigured();
-} catch (err) {
-  console.log("RevenueCat init error:", err);
-}
 
 export default function App() {
   const [loadingEntitlements, setLoadingEntitlements] = useState(true);
 
-  // ⭐ Load entitlements BEFORE showing the app
+  // ⭐ RevenueCat init — ΜΟΝΟ ΜΙΑ ΦΟΡΑ
+  useEffect(() => {
+    async function initRC() {
+      try {
+        Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
+
+        Purchases.configure({
+          apiKey: "goog_tdDNBytofaDfyxtxrUhZcyCXdPX",
+        });
+
+        // Σταθεροποιεί aliasing για testers
+        await Purchases.logIn("tester_panos");
+
+        markPurchasesConfigured();
+      } catch (err) {
+        console.log("RevenueCat init error:", err);
+      }
+    }
+
+    initRC();
+  }, []);
+
+  // ⭐ Load entitlements
   useEffect(() => {
     async function loadEntitlements() {
       try {
+        await new Promise((res) => setTimeout(res, 300)); // μικρό delay για Android
         await syncEntitlements();
       } finally {
         setLoadingEntitlements(false);
@@ -49,7 +59,7 @@ export default function App() {
     loadEntitlements();
   }, []);
 
-  // ⭐ Session tracking + analytics
+  // ⭐ Analytics + session tracking
   useEffect(() => {
     const run = async () => {
       try {
@@ -69,7 +79,7 @@ export default function App() {
     run();
   }, []);
 
-  // ⭐ OTA update check — runs in background AFTER app loads
+  // ⭐ OTA updates (background)
   useEffect(() => {
     const timer = setTimeout(() => {
       async function checkForOTA() {
@@ -85,12 +95,12 @@ export default function App() {
       }
 
       checkForOTA();
-    }, 3000); // Run 3 seconds after app loads
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // ⭐ NEW: Cinematic Splash while loading entitlements
+  // ⭐ Cinematic splash
   if (loadingEntitlements) {
     return <CustomSplash />;
   }
