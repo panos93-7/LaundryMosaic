@@ -39,16 +39,15 @@ import FabricDetailsScreen from "../screens/FabricDetailsScreen";
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  const {
-    hasSeenOnboarding,
-    isPro,
-    isPremiumAnnual,
-    isPremiumMonthly,
-    isFree,
-    entitlementsLoaded,
-  } = useUserStore();
+  // ⭐ SELECTORS (ΟΧΙ snapshot)
+  const hasSeenOnboarding = useUserStore((s) => s.hasSeenOnboarding);
+  const isPro = useUserStore((s) => s.isPro);
+  const isPremiumAnnual = useUserStore((s) => s.isPremiumAnnual);
+  const isPremiumMonthly = useUserStore((s) => s.isPremiumMonthly);
+  const isFree = useUserStore((s) => s.isFree);
+  const entitlementsLoaded = useUserStore((s) => s.entitlementsLoaded);
 
-  // ❗ Sync entitlements ONLY when app returns to foreground
+  // Sync entitlements ONLY when app returns to foreground
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
       if (state === "active") {
