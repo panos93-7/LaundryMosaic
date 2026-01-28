@@ -22,6 +22,7 @@ export async function syncEntitlements() {
 
     if (!info) {
       useUserStore.getState().setFromEntitlement("free");
+      useUserStore.getState().setEntitlementsLoaded(true);
       return;
     }
 
@@ -30,6 +31,7 @@ export async function syncEntitlements() {
 
     if (ent["Pro"]) {
       useUserStore.getState().setFromEntitlement("pro");
+      useUserStore.getState().setEntitlementsLoaded(true);
       return;
     }
 
@@ -44,15 +46,18 @@ export async function syncEntitlements() {
         useUserStore.getState().setFromEntitlement("premium_monthly");
       }
 
+      useUserStore.getState().setEntitlementsLoaded(true);
       return;
     }
 
+    // FREE
     useUserStore.getState().setFromEntitlement("free");
+    useUserStore.getState().setEntitlementsLoaded(true);
+
   } catch (e) {
     console.log("🔴 syncEntitlements ERROR:", e);
+
     useUserStore.getState().setFromEntitlement("free");
-  } finally {
-    console.log("🟣 syncEntitlements FINISHED → setting entitlementsLoaded = true");
     useUserStore.getState().setEntitlementsLoaded(true);
   }
 }
