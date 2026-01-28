@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import Purchases from "react-native-purchases";
-import { syncEntitlements } from "./utils/syncEntitlements";
+import { restoreEntitlements, useUserStore } from "./store/userStore";
 
 import { Events } from "./analytics/events";
 import AppNavigator from "./navigation/AppNavigator";
@@ -26,6 +26,19 @@ declare global {
 }
 
 export default function App() {
+  // ⭐ HARD RESET του Zustand store σε κάθε launch
+  useEffect(() => {
+    useUserStore.setState({
+      entitlementsLoaded: false,
+      userTier: "free",
+      isFree: true,
+      isPremiumMonthly: false,
+      isPremiumAnnual: false,
+      isPro: false,
+      hasSeenOnboarding: false,
+    });
+  }, []);
+
   // ⭐ RevenueCat init — ΜΟΝΟ ΜΙΑ ΦΟΡΑ
   useEffect(() => {
     async function initRC() {
@@ -59,7 +72,7 @@ export default function App() {
       // μικρό delay για Android
       await new Promise((res) => setTimeout(res, 200));
 
-      await syncEntitlements();
+      await restoreEntitlements();
     }
 
     loadEntitlements();
