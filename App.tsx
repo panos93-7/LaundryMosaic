@@ -1,90 +1,99 @@
-import React, { useEffect, useRef } from "react";
-import { ActivityIndicator, Animated, Easing, View } from "react-native";
+import React, { useEffect, useState } from "react";
 
-export function CustomSplash() {
-  const logoOpacity = useRef(new Animated.Value(0)).current;
-  const taglineOpacity = useRef(new Animated.Value(0)).current;
-  const loaderOpacity = useRef(new Animated.Value(0)).current;
-  const microcopyOpacity = useRef(new Animated.Value(0)).current;
+import { Events } from "./analytics/events";
+import AppNavigator from "./navigation/AppNavigator";
+import {
+  getDaysSinceInstall,
+  getSessionNumber,
+  incrementSessions,
+  initInstallDate,
+} from "./utils/PaywallLogic";
 
+import Purchases from "react-native-purchases";
+import { markPurchasesConfigured, syncEntitlements } from "./utils/syncEntitlements";
+
+import Constants from "expo-constants";
+import * as Updates from "expo-updates";
+
+import { CustomSplash } from "./components/CustomSplash";
+
+// Debug logs
+console.log("CHANNEL:", Updates.channel);
+console.log("RUNTIME:", Updates.runtimeVersion);
+console.log("🔑 EXPO KEY:", Constants.expoConfig?.extra?.EXPO_PUBLIC_GEMINI_API_KEY);
+console.log("🔧 EXTRA:", Constants.expoConfig?.extra);
+console.log("📦 FULL CONFIG:", Constants.expoConfig);
+
+// RevenueCat init
+try {
+  Purchases.configure({
+    apiKey: "goog_tdDNBytofaDfyxtxrUhZcyCXdPX",
+  });
+  markPurchasesConfigured();
+} catch (err) {
+  console.log("RevenueCat init error:", err);
+}
+
+export default function App() {
+  const [loadingEntitlements, setLoadingEntitlements] = useState(true);
+
+  // ⭐ Load entitlements BEFORE showing the app
   useEffect(() => {
-    Animated.sequence([
-      Animated.timing(logoOpacity, {
-        toValue: 1,
-        duration: 600,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(taglineOpacity, {
-        toValue: 1,
-        duration: 500,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(loaderOpacity, {
-        toValue: 1,
-        duration: 400,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(microcopyOpacity, {
-        toValue: 1,
-        duration: 500,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-    ]).start();
+    async function loadEntitlements() {
+      try {
+        await syncEntitlements();
+      } finally {
+        setLoadingEntitlements(false);
+      }
+    }
+    loadEntitlements();
   }, []);
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#0f0c29",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 20,
-      }}
-    >
-      <Animated.Text
-        style={{
-          opacity: logoOpacity,
-          color: "#fff",
-          fontSize: 34,
-          fontWeight: "700",
-          marginBottom: 10,
-          letterSpacing: 0.5,
-        }}
-      >
-        FabricCare Pro
-      </Animated.Text>
+  // ⭐ Session tracking + analytics
+  useEffect(() => {
+    const run = async () => {
+      try {
+        await initInstallDate();
+        await incrementSessions();
 
-      <Animated.Text
-        style={{
-          opacity: taglineOpacity,
-          color: "#ffffffaa",
-          fontSize: 16,
-          marginBottom: 30,
-          textAlign: "center",
-        }}
-      >
-        Optimizing AI fabric intelligence…
-      </Animated.Text>
+        const sessionNumber = await getSessionNumber();
+        const daysSinceInstall = await getDaysSinceInstall();
 
-      <Animated.View style={{ opacity: loaderOpacity }}>
-        <ActivityIndicator size="large" color="#fff" />
-      </Animated.View>
+        Events.appOpened();
+        Events.sessionStart(sessionNumber, daysSinceInstall);
+      } catch (err) {
+        console.log("Session tracking error:", err);
+      }
+    };
 
-      <Animated.Text
-        style={{
-          opacity: microcopyOpacity,
-          color: "#ffffff66",
-          marginTop: 20,
-          fontSize: 14,
-        }}
-      >
-        Your premium experience is loading…
-      </Animated.Text>
-    </View>
-  );
+    run();
+  }, []);
+
+  // ⭐ OTA update check — runs in background AFTER app loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      async function checkForOTA() {
+        try {
+          const update = await Updates.checkForUpdateAsync();
+          if (update.isAvailable) {
+            await Updates.fetchUpdateAsync();
+            await Updates.reloadAsync();
+          }
+        } catch (err) {
+          console.log("OTA check failed:", err);
+        }
+      }
+
+      checkForOTA();
+    }, 3000); // Run 3 seconds after app loads
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // ⭐ NEW: Cinematic Splash while loading entitlements
+  if (loadingEntitlements) {
+    return <CustomSplash />;
+  }
+
+  return <AppNavigator />;
 }
