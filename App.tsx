@@ -46,8 +46,6 @@ export default function App() {
           apiKey: "goog_tdDNBytofaDfyxtxrUhZcyCXdPX",
         });
 
-        await Purchases.logIn("tester_panos");
-
         console.log("🟢 RC READY");
         globalThis.__RC_READY__ = true;
       } catch (err) {
