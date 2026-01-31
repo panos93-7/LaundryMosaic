@@ -323,5 +323,6 @@
   "restore": "Restaurar Compras"
  },
   "stainTitle": "Remova manchas com segurança usando IA",
-  "stainSubtitle": "Desbloqueie instruções passo a passo feitas para os seus tecidos."
+  "stainSubtitle": "Desbloqueie instruções passo a passo feitas para os seus tecidos.",
+  "stainsDetected": "Manchas detectadas"
 }

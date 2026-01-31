@@ -323,5 +323,6 @@
   "restore": "恢復購買"
  },
   "stainTitle": "使用 AI 安全去除污漬",
-  "stainSubtitle": "解鎖依照您的布料量身打造的逐步去漬指南。"
+  "stainSubtitle": "解鎖依照您的布料量身打造的逐步去漬指南。",
+  "stainsDetected": "已偵測到污漬"
 }

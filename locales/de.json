@@ -320,5 +320,6 @@
   "restore": "Käufe wiederherstellen"
   },
   "stainTitle": "Flecken sicher entfernen mit KI",
-  "stainSubtitle": "Schalte Schritt-für-Schritt-Anleitungen frei, abgestimmt auf deine Stoffe."
+  "stainSubtitle": "Schalte Schritt-für-Schritt-Anleitungen frei, abgestimmt auf deine Stoffe.",
+  "stainsDetected": "Flecken erkannt"
 }

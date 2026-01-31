@@ -320,5 +320,6 @@
   "restore": "Restaurer les achats"
   },
   "stainTitle": "Retirez les taches en toute sécurité avec l’IA",
-  "stainSubtitle": "Débloquez des instructions détaillées adaptées à vos tissus."
+  "stainSubtitle": "Débloquez des instructions détaillées adaptées à vos tissus.",
+  "stainsDetected": "Taches détectées"
 }

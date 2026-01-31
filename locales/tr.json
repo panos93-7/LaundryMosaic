@@ -320,5 +320,6 @@
   "restore": "Satın alımları geri yükle"
   },
   "stainTitle": "Lekeleri yapay zeka ile güvenle çıkar",
-  "stainSubtitle": "Kumaşlarına özel adım adım leke çıkarma talimatlarını aç."
+  "stainSubtitle": "Kumaşlarına özel adım adım leke çıkarma talimatlarını aç.",
+  "stainsDetected": "Lekeler tespit edildi"
 }

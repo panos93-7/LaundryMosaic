@@ -319,5 +319,6 @@
   "restore": "Restaurar Compras"
   },
   "stainTitle": "Elimina manchas de forma segura con IA",
-  "stainSubtitle": "Desbloquea instrucciones paso a paso adaptadas a tus tejidos."
+  "stainSubtitle": "Desbloquea instrucciones paso a paso adaptadas a tus tejidos.",
+  "stainsDetected": "Manchas detectadas"
 }

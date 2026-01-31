@@ -322,5 +322,6 @@
   "restore": "Restore Purchases"
   },
   "stainTitle": "Remove stains safely with AI",
-  "stainSubtitle": "Unlock step-by-step stain removal instructions tailored to your fabrics."
+  "stainSubtitle": "Unlock step-by-step stain removal instructions tailored to your fabrics.",
+  "stainsDetected": "Stains detected"
 }
