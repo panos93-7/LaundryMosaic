@@ -10,11 +10,6 @@ export default function OnboardingPaywallRedirect({ navigation }: any) {
     navigation.navigate("Paywall");
   }
 
-  function skip() {
-    setHasSeenOnboarding(true);
-    navigation.navigate("Home");
-  }
-
   return (
     <LinearGradient
       colors={["#0d0d0d", "#1a1a1a"]}
@@ -49,7 +44,6 @@ export default function OnboardingPaywallRedirect({ navigation }: any) {
           backgroundColor: "#fff",
           paddingVertical: 14,
           borderRadius: 14,
-          marginBottom: 20,
         }}
       >
         <Text
@@ -61,18 +55,6 @@ export default function OnboardingPaywallRedirect({ navigation }: any) {
           }}
         >
           Continue
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={skip}>
-        <Text
-          style={{
-            textAlign: "center",
-            color: "#aaa",
-            textDecorationLine: "underline",
-          }}
-        >
-          Skip for now
         </Text>
       </TouchableOpacity>
     </LinearGradient>
