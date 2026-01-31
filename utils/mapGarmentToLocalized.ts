@@ -117,12 +117,44 @@ function mapFrequency(value: string = "") {
 }
 
 function mapRisk(value: string = "") {
-  const v = value.toLowerCase();
+  const v = value.toLowerCase().trim();
 
-  if (v.includes("low")) return "low";
-  if (v.includes("medium") || v.includes("moderate")) return "medium";
-  if (v.includes("high")) return "high";
+  // direct matches
+  if (v === "low" || v.includes("low")) return "low";
+  if (v === "medium" || v.includes("medium") || v.includes("moderate")) return "medium";
+  if (v === "high" || v.includes("high")) return "high";
 
+  // synonyms → low
+  if (
+    v.includes("minimal") ||
+    v.includes("negligible") ||
+    v.includes("slight") ||
+    v.includes("minor")
+  ) {
+    return "low";
+  }
+
+  // synonyms → medium
+  if (
+    v.includes("elevated") ||
+    v.includes("moderate") ||
+    v.includes("average")
+  ) {
+    return "medium";
+  }
+
+  // synonyms → high
+  if (
+    v.includes("severe") ||
+    v.includes("significant") ||
+    v.includes("major") ||
+    v.includes("critical") ||
+    v.includes("very high")
+  ) {
+    return "high";
+  }
+
+  // fallback
   return "medium";
 }
 
