@@ -342,6 +342,14 @@
   "chocolate": "chocolate",
   "grass": "relva"
  },
+ "care": {
+  "wash": "Lavagem",
+  "bleach": "Lixívia",
+  "dry": "Secagem",
+  "iron": "Passar a ferro",
+  "dryclean": "Lavagem a seco",
+  "warnings": "Avisos"
+},
  "careValues": {
   "wash": {
     "machineCold": "Lavar na máquina a frio (30°C)",

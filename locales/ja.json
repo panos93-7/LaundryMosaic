@@ -342,6 +342,14 @@
   "chocolate": "チョコレート",
   "grass": "草"
  },
+ "care": {
+  "wash": "洗濯",
+  "bleach": "漂白",
+  "dry": "乾燥",
+  "iron": "アイロン",
+  "dryclean": "ドライクリーニング",
+  "warnings": "注意事項"
+},
  "careValues": {
   "wash": {
     "machineCold": "冷水で洗濯機洗い (30°C)",

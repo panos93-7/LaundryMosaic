@@ -339,6 +339,14 @@
   "chocolate": "çikolata",
   "grass": "çimen"
  },
+ "care": {
+  "wash": "Yıkama",
+  "bleach": "Ağartma",
+  "dry": "Kurutma",
+  "iron": "Ütüleme",
+  "dryclean": "Kuru temizleme",
+  "warnings": "Uyarılar"
+},
  "careValues": {
   "wash": {
     "machineCold": "Makinede soğuk yıkama (30°C)",

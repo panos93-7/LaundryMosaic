@@ -339,6 +339,14 @@
   "chocolate": "chocolat",
   "grass": "herbe"
  },
+ "care": {
+  "wash": "Lavage",
+  "bleach": "Blanchiment",
+  "dry": "Séchage",
+  "iron": "Repassage",
+  "dryclean": "Nettoyage à sec",
+  "warnings": "Avertissements"
+},
  "careValues": {
   "wash": {
     "machineCold": "Lavage en machine à froid (30°C)",

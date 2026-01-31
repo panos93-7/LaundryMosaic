@@ -342,6 +342,14 @@
   "chocolate": "chocolate",
   "grass": "grama"
  },
+ "care": {
+  "wash": "Lavagem",
+  "bleach": "Alvejante",
+  "dry": "Secagem",
+  "iron": "Passar",
+  "dryclean": "Lavagem a seco",
+  "warnings": "Avisos"
+},
  "careValues": {
   "wash": {
     "machineCold": "Lavar na máquina com água fria (30°C)",

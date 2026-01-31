@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { localizeGarment } from "../utils/mapGarmentToLocalized";
 
 import { GarmentCard } from "../components/GarmentCard";
 import i18n from "../i18n";
@@ -39,50 +40,53 @@ export default function WardrobeScreen() {
 
     setAnalyzing(true);
 
-    try {
-      const ai = await analyzeGarmentPro(base64);
+try {
+  const ai = await analyzeGarmentPro(base64);
 
-      await addGarment({
-        id: Date.now(),
-        name: ai.name,
-        type: ai.type,
-        category: ai.category,
-        fabric: ai.fabric,
-        color: ai.color,
-        pattern: ai.pattern,
-        stains: ai.stains,
+  // 🔥 LOCALIZE AI OUTPUT
+  const localized = localizeGarment(ai);
 
-        recommended: {
-          program: ai.recommended.program,
-          temp: ai.recommended.temp,
-          spin: ai.recommended.spin,
-          detergent: ai.recommended.detergent,
-          notes: ai.recommended.notes,
-        },
+  await addGarment({
+    id: Date.now(),
+    name: localized.name,
+    type: localized.type,
+    category: localized.category,
+    fabric: localized.fabric,
+    color: localized.color,
+    pattern: localized.pattern,
+    stains: localized.stains,
 
-        care: {
-          wash: ai.care.wash,
-          bleach: ai.care.bleach,
-          dry: ai.care.dry,
-          iron: ai.care.iron,
-          dryclean: ai.care.dryclean,
-          warnings: ai.care.warnings,
-        },
+    recommended: {
+      program: localized.recommended.program,
+      temp: localized.recommended.temp,
+      spin: localized.recommended.spin,
+      detergent: localized.recommended.detergent,
+      notes: localized.recommended.notes,
+    },
 
-        risks: {
-          shrinkage: ai.risks.shrinkage,
-          colorBleeding: ai.risks.colorBleeding,
-          delicacy: ai.risks.delicacy,
-        },
+    care: {
+      wash: localized.care.wash,
+      bleach: localized.care.bleach,
+      dry: localized.care.dry,
+      iron: localized.care.iron,
+      dryclean: localized.care.dryclean,
+      warnings: localized.care.warnings,
+    },
 
-        washFrequency: ai.washFrequency,
-        careSymbols: ai.careSymbols,
+    risks: {
+      shrinkage: localized.risks.shrinkage,
+      colorBleeding: localized.risks.colorBleeding,
+      delicacy: localized.risks.delicacy,
+    },
 
-        image: uri,
-      });
-    } catch (err) {
-      console.log("AI error:", err);
-    }
+    washFrequency: localized.washFrequency,
+    careSymbols: localized.careSymbols,
+
+    image: uri,
+  });
+} catch (err) {
+  console.log("AI error:", err);
+}
 
     setAnalyzing(false);
   };

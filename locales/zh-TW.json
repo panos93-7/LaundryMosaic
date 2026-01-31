@@ -342,6 +342,14 @@
   "chocolate": "巧克力",
   "grass": "草漬"
  },
+ "care": {
+  "wash": "清洗",
+  "bleach": "漂白",
+  "dry": "烘乾 / 晾乾",
+  "iron": "熨燙",
+  "dryclean": "乾洗",
+  "warnings": "注意事項"
+},
  "careValues": {
   "wash": {
     "machineCold": "冷水機洗 (30°C)",

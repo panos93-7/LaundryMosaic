@@ -342,6 +342,14 @@
   "chocolate": "chocolate",
   "grass": "grass"
  },
+ "care": {
+  "wash": "Wash",
+  "bleach": "Bleach",
+  "dry": "Dry",
+  "iron": "Iron",
+  "dryclean": "Dry Clean",
+  "warnings": "Warnings"
+},
  "careValues": {
   "wash": {
     "machineCold": "Machine wash cold (30°C)",

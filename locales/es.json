@@ -337,6 +337,14 @@
   "chocolate": "chocolate",
   "grass": "césped"
  },
+ "care": {
+  "wash": "Lavado",
+  "bleach": "Blanqueador",
+  "dry": "Secado",
+  "iron": "Plancha",
+  "dryclean": "Lavado en seco",
+  "warnings": "Advertencias"
+},
  "careValues": {
   "wash": {
     "machineCold": "Lavado a máquina en frío (30°C)",

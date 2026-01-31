@@ -339,6 +339,14 @@
   "chocolate": "cioccolato",
   "grass": "erba"
  },
+ "care": {
+  "wash": "Lavaggio",
+  "bleach": "Candeggio",
+  "dry": "Asciugatura",
+  "iron": "Stiratura",
+  "dryclean": "Lavaggio a secco",
+  "warnings": "Avvertenze"
+},
  "careValues": {
   "wash": {
     "machineCold": "Lavaggio in lavatrice a freddo (30°C)",

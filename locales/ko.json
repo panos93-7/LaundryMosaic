@@ -342,6 +342,14 @@
   "chocolate": "초콜릿",
   "grass": "잔디"
  },
+ "care": {
+  "wash": "세탁",
+  "bleach": "표백",
+  "dry": "건조",
+  "iron": "다림질",
+  "dryclean": "드라이클리닝",
+  "warnings": "주의사항"
+},
  "careValues": {
   "wash": {
     "machineCold": "찬물 세탁 (30°C)",
