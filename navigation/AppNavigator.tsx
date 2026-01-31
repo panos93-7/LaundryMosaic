@@ -220,32 +220,36 @@ export default function AppNavigator() {
     );
   }
 
-  // ---------------------------------------------------
-  // FREE USERS
-  // ---------------------------------------------------
-  return (
-    <NavigationContainer ref={navRef} key={"free"}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Planner" component={PlannerScreen} />
-        <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
+// ---------------------------------------------------
+// FREE USERS
+// ---------------------------------------------------
+return (
+  <NavigationContainer ref={navRef} key={"free"}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-        <Stack.Screen name="History" component={PremiumMonthlyPaywall} />
-        <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
+      {/* ⭐ ΠΡΩΤΟ SCREEN → PAYWALL */}
+      <Stack.Screen name="Paywall" component={PaywallScreen} />
 
-        <Stack.Screen name="BatchScan" component={PaywallScreen} />
-        <Stack.Screen name="Wardrobe" component={PaywallScreen} />
-        <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
-        <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
-        <Stack.Screen name="EditGarment" component={PaywallScreen} />
+      {/* Μετά όλα τα υπόλοιπα */}
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Planner" component={PlannerScreen} />
+      <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
 
-        <Stack.Screen name="FabricDetails" component={PaywallScreen} />
+      <Stack.Screen name="History" component={PremiumMonthlyPaywall} />
+      <Stack.Screen name="SmartScan" component={PremiumFallbackScreen} />
 
-        {/* Paywall routes */}
-        <Stack.Screen name="Paywall" component={PaywallScreen} />
-        <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />
-        <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+      <Stack.Screen name="BatchScan" component={PaywallScreen} />
+      <Stack.Screen name="Wardrobe" component={PaywallScreen} />
+      <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
+      <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
+      <Stack.Screen name="EditGarment" component={PaywallScreen} />
+
+      <Stack.Screen name="FabricDetails" component={PaywallScreen} />
+
+      {/* Paywall routes */}
+      <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />
+      <Stack.Screen name="PremiumFallback" component={PremiumFallbackScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
+ );
 }
