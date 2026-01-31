@@ -322,5 +322,18 @@
 
   "continueFree": "Ücretsiz devam et",
   "restore": "Satın alımları geri yükle"
-  }
+  },
+  "stainValues": {
+  "wine": "şarap",
+  "oil_grease": "yağ / gres",
+  "sauce_tomato": "sos / domates",
+  "coffee_tea": "kahve / çay",
+  "blood": "kan",
+  "ink_marker": "mürekkep / marker",
+  "sweat_yellowing": "ter / sararma",
+  "dirt_mud": "kir / çamur",
+  "makeup_foundation": "makyaj / fondöten",
+  "chocolate": "çikolata",
+  "grass": "çimen"
+ }
 }

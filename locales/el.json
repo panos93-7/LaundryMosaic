@@ -321,5 +321,18 @@
   },
   "continueFree": "Συνέχεια με τη δωρεάν έκδοση",
   "restore": "Επαναφορά Αγορών"
-  }
+  },
+  "stainValues": {
+  "wine": "κρασί",
+  "oil_grease": "λάδι / λίπος",
+  "sauce_tomato": "σάλτσα / ντομάτα",
+  "coffee_tea": "καφές / τσάι",
+  "blood": "αίμα",
+  "ink_marker": "μελάνι / μαρκαδόρος",
+  "sweat_yellowing": "ιδρώτας / κιτρίνισμα",
+  "dirt_mud": "χώμα / λάσπη",
+  "makeup_foundation": "μακιγιάζ / foundation",
+  "chocolate": "σοκολάτα",
+  "grass": "γρασίδι"
+ }
 }

@@ -325,5 +325,18 @@
 
   "continueFree": "무료로 계속하기",
   "restore": "구매 복원"
+ },
+ "stainValues": {
+  "wine": "와인",
+  "oil_grease": "기름 / 그리스",
+  "sauce_tomato": "소스 / 토마토",
+  "coffee_tea": "커피 / 차",
+  "blood": "혈액",
+  "ink_marker": "잉크 / 마커",
+  "sweat_yellowing": "땀 / 누렇게 변색",
+  "dirt_mud": "흙 / 진흙",
+  "makeup_foundation": "메이크업 / 파운데이션",
+  "chocolate": "초콜릿",
+  "grass": "잔디"
  }
 }

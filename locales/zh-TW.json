@@ -325,5 +325,18 @@
 
   "continueFree": "繼續使用免費版",
   "restore": "恢復購買"
+ },
+ "stainValues": {
+  "wine": "紅酒",
+  "oil_grease": "油脂",
+  "sauce_tomato": "醬汁 / 番茄",
+  "coffee_tea": "咖啡 / 茶",
+  "blood": "血漬",
+  "ink_marker": "墨水 / 麥克筆",
+  "sweat_yellowing": "汗漬 / 發黃",
+  "dirt_mud": "灰塵 / 泥巴",
+  "makeup_foundation": "化妝品 / 粉底",
+  "chocolate": "巧克力",
+  "grass": "草漬"
  }
 }

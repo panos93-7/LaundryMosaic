@@ -325,5 +325,18 @@
 
   "continueFree": "無料版を続ける",
   "restore": "購入を復元"
-  }
+  },
+  "stainValues": {
+  "wine": "ワイン",
+  "oil_grease": "油 / グリース",
+  "sauce_tomato": "ソース / トマト",
+  "coffee_tea": "コーヒー / お茶",
+  "blood": "血液",
+  "ink_marker": "インク / マーカー",
+  "sweat_yellowing": "汗 / 黄ばみ",
+  "dirt_mud": "土 / 泥",
+  "makeup_foundation": "メイク / ファンデーション",
+  "chocolate": "チョコレート",
+  "grass": "草"
+ }
 }

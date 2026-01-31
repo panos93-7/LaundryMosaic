@@ -320,5 +320,18 @@
 
   "continueFree": "Continuar con la versión gratuita",
   "restore": "Restaurar Compras"
-  }
+  },
+  "stainValues": {
+  "wine": "vino",
+  "oil_grease": "aceite / grasa",
+  "sauce_tomato": "salsa / tomate",
+  "coffee_tea": "café / té",
+  "blood": "sangre",
+  "ink_marker": "tinta / marcador",
+  "sweat_yellowing": "sudor / amarilleo",
+  "dirt_mud": "tierra / barro",
+  "makeup_foundation": "maquillaje / base",
+  "chocolate": "chocolate",
+  "grass": "césped"
+ }
 }

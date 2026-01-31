@@ -324,5 +324,18 @@
 
   "continueFree": "Continue with Free version",
   "restore": "Restore Purchases"
-  }
+  },
+  "stainValues": {
+  "wine": "wine",
+  "oil_grease": "oil / grease",
+  "sauce_tomato": "sauce / tomato",
+  "coffee_tea": "coffee / tea",
+  "blood": "blood",
+  "ink_marker": "ink / marker",
+  "sweat_yellowing": "sweat / yellowing",
+  "dirt_mud": "dirt / mud",
+  "makeup_foundation": "makeup / foundation",
+  "chocolate": "chocolate",
+  "grass": "grass"
+ }
 }

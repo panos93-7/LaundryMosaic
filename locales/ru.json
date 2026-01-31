@@ -322,5 +322,18 @@
 
   "continueFree": "Продолжить бесплатно",
   "restore": "Восстановить покупки"
-  }
+  },
+  "stainValues": {
+  "wine": "вино",
+  "oil_grease": "масло / жир",
+  "sauce_tomato": "соус / томат",
+  "coffee_tea": "кофе / чай",
+  "blood": "кровь",
+  "ink_marker": "чернила / маркер",
+  "sweat_yellowing": "пот / пожелтение",
+  "dirt_mud": "грязь / грязевая смесь",
+  "makeup_foundation": "макияж / тональный крем",
+  "chocolate": "шоколад",
+  "grass": "трава"
+ }
 }
