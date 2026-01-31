@@ -32,6 +32,8 @@ export default function SmartScanScreen({ navigation }: any) {
   const isPremiumAnnual = useUserStore((s) => s.isPremiumAnnual);
   const isPro = useUserStore((s) => s.isPro);
   const userTier = useUserStore((s) => s.userTier);
+  const canSeeStainTips = userTier === "pro";
+
 
   // 🔥 Block hardware back
   useFocusEffect(() => {
@@ -417,7 +419,7 @@ return (
       🧴 {i18n.t("smartScan.stainsDetected")}: {result.stains.join(", ")}
     </Text>
 
-    {isPro ? (
+    {canSeeStainTips ? (
       /* ⭐ PRO → βλέπει stain removal tips */
       <View>
         {result.stainTips.map((tip: any, i: number) => (
@@ -457,7 +459,7 @@ return (
         ))}
       </View>
     ) : (
-      /* ⭐ Annual → βλέπει detection αλλά όχι tips */
+      /* ⭐ Annual / Monthly → βλέπουν detection αλλά όχι tips */
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Paywall", { source: "stainTips" })

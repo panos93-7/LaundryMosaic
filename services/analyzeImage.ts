@@ -39,8 +39,8 @@ Analyze ALL garments visible in the image and return ONLY valid JSON.
 
 For each garment, detect:
 
-- fabric type (cotton, synthetics, wool, delicate)
-- color (white, colored, dark)
+- fabric type: must be exactly one of ["cotton", "synthetics", "wool", "delicate"]
+- color: must be exactly one of ["white", "colored", "dark"]
 - stains: detect ANY visible stains such as:
   - wine
   - oil / grease
@@ -53,6 +53,7 @@ For each garment, detect:
   - makeup / foundation
   - chocolate
   - grass
+
 If no stains are visible, return an empty array.
 
 Return JSON in this exact format:
@@ -60,8 +61,8 @@ Return JSON in this exact format:
 {
   "items": [
     {
-      "fabric": "cotton | synthetics | wool | delicate",
-      "color": "white | colored | dark",
+      "fabric": "cotton",
+      "color": "white",
       "stains": ["wine", "oil"],
       "recommended": {
         "temp": 40,
@@ -74,6 +75,8 @@ Return JSON in this exact format:
 
 Rules:
 - Detect ALL garments in the image (not just one).
+- "fabric" must be exactly one of: "cotton", "synthetics", "wool", "delicate".
+- "color" must be exactly one of: "white", "colored", "dark".
 - Stain names must be lowercase.
 - If uncertain, make the best guess.
 - Do NOT include any text outside the JSON.
