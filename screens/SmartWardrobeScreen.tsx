@@ -4,13 +4,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { localizeGarment } from "../utils/mapGarmentToLocalized";
-
 import { GarmentCard } from "../components/GarmentCard";
 import i18n from "../i18n";
 import { useWardrobeStore } from "../store/wardrobeStore";
+import { translateGarmentProfile } from "../utils/AI/translateGarment";
+import { translationCache } from "../utils/AI/translationCache";
 import { analyzeGarmentPro } from "../utils/aiGarmentAnalyzerPro";
-import type { AIGarment } from "../utils/mapGarmentToLocalized";
+
 
 export default function WardrobeScreen() {
   const navigation = useNavigation<any>();
@@ -43,49 +43,22 @@ export default function WardrobeScreen() {
 
 try {
   const ai = await analyzeGarmentPro(base64);
+  const locale = (i18n as any).language;
+  const finalProfile =
+    locale === "en"
+      ? ai
+      : await translateGarmentProfile(
+          ai,
+          locale,
+          Date.now().toString(),
+          translationCache
+        );
 
-// Typed localized garment
-const localized: AIGarment = localizeGarment(ai);
-
-await addGarment({
-  id: Date.now(),
-  name: localized.name,
-  type: localized.type,
-  category: localized.category,
-  fabric: localized.fabric,
-  color: localized.color,
-  pattern: localized.pattern,
-  stains: localized.stains,
-
-  recommended: {
-    program: localized.recommended.program,
-    temp: localized.recommended.temp,
-    spin: localized.recommended.spin,
-    detergent: localized.recommended.detergent,
-    notes: localized.recommended.notes,
-  },
-
-  care: {
-    wash: localized.care.wash,
-    bleach: localized.care.bleach,
-    dry: localized.care.dry,
-    iron: localized.care.iron,
-    dryclean: localized.care.dryclean,
-    warnings: localized.care.warnings,
-  },
-
-  risks: {
-    shrinkage: localized.risks.shrinkage,
-    colorBleeding: localized.risks.colorBleeding,
-    delicacy: localized.risks.delicacy,
-  },
-
-  washFrequency: localized.washFrequency,
-  careSymbols: localized.careSymbols,
-
-  image: uri,
-});
-
+  await addGarment({
+    id: Date.now(),
+    ...finalProfile,
+    image: uri,
+  });
 
 } catch (err) {
   console.log("AI error:", err);

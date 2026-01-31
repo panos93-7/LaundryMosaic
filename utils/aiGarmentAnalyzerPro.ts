@@ -25,113 +25,42 @@ Analyze the garment in the image and return ONLY valid JSON.
 Do NOT include explanations, markdown, or extra text.
 
 IMPORTANT:
-Return ONLY predefined KEYS for every field.
-NEVER return natural language text.
-NEVER translate anything into Greek or any other language.
-The UI will handle translations for 13 languages.
+- All responses must be in clear, natural English.
+- Use natural language for all fields (not keys).
+- Do NOT translate anything into Greek or any other language.
+- The UI will handle translations into other languages.
 
-Use ONLY the following allowed keys:
-
-TYPES:
-- top, bottom, dress, outerwear, underwear, accessory, unknown
-
-CATEGORIES:
-- t_shirt, shirt, jeans, trousers, shorts, skirt, hoodie, sweater, jacket, coat, underwear, socks, other
-
-FABRICS:
-- cotton, wool, polyester, nylon, denim, linen, silk, viscose, acrylic, blend, unknown
-
-COLORS:
-- white, black, gray, blue, red, green, yellow, brown, beige, pink, multicolor, unknown
-
-PATTERNS:
-- solid, striped, checked, dotted, graphic, textured, unknown
-
-STAINS:
-- wine, oil_grease, sauce_tomato, coffee_tea, blood, ink_marker,
-  sweat_yellowing, dirt_mud, makeup_foundation, chocolate, grass, none
-
-RECOMMENDED PROGRAM:
-program:
-- cotton_colors, cotton_intensive, synthetics, synthetics_color,
-  dark_care, dark_synthetic, wool_hand, delicates
-
-temp:
-- temp_20, temp_30, temp_40, temp_60
-
-spin:
-- spin_400, spin_600, spin_800, spin_1000
-
-detergent:
-- liquid, powder, delicate, wool, color_safe
-
-notes:
-- use_fabric_shaver
-- wash_inside_out
-- heavy_pilling
-- color_fade_risk
-- shrink_risk
-- none
-
-CARE:
-wash:
-- machineCold, machineWarm, machineHot, handWash, doNotWash
-
-bleach:
-- noBleach, nonChlorine
-
-dry:
-- tumbleLow, noTumble, lineDry, flatDry
-
-iron:
-- noIron, low, medium, high
-
-dryclean:
-- noDryclean, drycleanOnly
-
-warnings:
-- wash_with_similar_colors
-- turn_inside_out
-- avoid_high_heat
-- may_shrink
-- delicate_item
-- color_bleeding_risk
-
-RISKS:
-- low, medium, high
-
-WASH FREQUENCY:
-- after1wear, after2to3wears, afterHeavyUse
-
-CARE SYMBOLS:
-- wash_30, no_bleach, tumble_low, iron_low, no_dryclean
-
-Return JSON in this exact structure:
+Extract a complete garment profile with the following structure:
 
 {
-  "name": "t_shirt | jeans | hoodie | ...",
-  "type": "top | bottom | ...",
-  "category": "t_shirt | jeans | ...",
-  "fabric": "cotton | wool | ...",
-  "color": "white | black | ...",
-  "pattern": "solid | striped | ...",
-  "stains": ["wine", "dirt_mud", ...],
+  "name": "...",
+  "type": "...",
+  "category": "...",
+  "fabric": "...",
+  "color": "...",
+  "pattern": "...",
+  "stains": ["..."],
 
   "recommended": {
-    "program": "cotton_colors | delicates | ...",
-    "temp": "temp_30 | temp_40 | ...",
-    "spin": "spin_800 | spin_1000 | ...",
-    "detergent": "liquid | delicate | ...",
-    "notes": ["use_fabric_shaver", "wash_inside_out"]
+    "program": "...",
+    "temp": 30,
+    "spin": 800,
+    "detergent": "liquid | powder | delicate | wool | color-safe",
+    "notes": ["...", "..."]
   },
 
   "care": {
-    "wash": "machineCold | handWash | ...",
-    "bleach": "noBleach | nonChlorine",
-    "dry": "tumbleLow | noTumble | lineDry | flatDry",
-    "iron": "noIron | low | medium | high",
-    "dryclean": "noDryclean | drycleanOnly",
-    "warnings": ["wash_with_similar_colors", "avoid_high_heat"]
+    "wash": "Machine wash cold (30°C) | Hand wash | Do not wash",
+    "bleach": "Do not bleach | Non-chlorine bleach only",
+    "dry": "Tumble dry low | Do not tumble dry | Line dry | Dry flat",
+    "iron": "Do not iron | Iron low | Iron medium | Iron high",
+    "dryclean": "Do not dry clean | Dry clean only",
+    "warnings": [
+      "May shrink",
+      "Wash with similar colors",
+      "Turn inside out",
+      "Avoid high heat"
+    ]
   },
 
   "risks": {
@@ -140,18 +69,22 @@ Return JSON in this exact structure:
     "delicacy": "low | medium | high"
   },
 
-  "washFrequency": "after1wear | after2to3wears | afterHeavyUse",
+  "washFrequency": "after 1 wear | after 2–3 wears | after heavy use",
 
   "careSymbols": [
-    "wash_30",
-    "no_bleach",
-    "tumble_low",
-    "iron_low",
-    "no_dryclean"
+    "wash 30",
+    "no bleach",
+    "tumble low",
+    "iron low",
+    "no dryclean"
   ]
 }
 
-Return ONLY the JSON object.
+Rules:
+- All fields must be filled.
+- Use short, clear English phrases.
+- If uncertain, make the best reasonable guess based on the garment.
+- Return ONLY the JSON object.
 `
         }),
       }
