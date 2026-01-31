@@ -9,11 +9,17 @@ import {
 import Purchases from "react-native-purchases";
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
+import { useUserStore } from "../store/userStore"; // ⭐ ADDED
 import { syncEntitlements } from "../utils/syncEntitlements";
 
 export default function PaywallScreen({ navigation }: any) {
   const [offerings, setOfferings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  // ⭐ Zustand selectors
+  const isFree = useUserStore((s) => s.isFree);
+  const isPremiumAnnual = useUserStore((s) => s.isPremiumAnnual);
+  const isPremiumMonthly = useUserStore((s) => s.isPremiumMonthly);
 
   useEffect(() => {
     async function load() {
@@ -91,6 +97,15 @@ export default function PaywallScreen({ navigation }: any) {
       navigation.replace("Home");
     } catch (e) {
       console.log("Restore error:", e);
+    }
+  }
+
+  // ⭐ Correct Continue Free logic
+  function handleContinueFree() {
+    if (isPremiumAnnual || isPremiumMonthly) {
+      navigation.replace("Home"); // ⭐ Premium user → Home
+    } else {
+      navigation.replace("PremiumFallback"); // ⭐ Free user → Fallback
     }
   }
 
@@ -212,7 +227,7 @@ export default function PaywallScreen({ navigation }: any) {
         </TouchableOpacity>
 
         {/* CONTINUE FREE */}
-        <TouchableOpacity onPress={() => navigation.replace("PremiumFallback")}>
+        <TouchableOpacity onPress={handleContinueFree}>
           <Text
             style={{
               textAlign: "center",
