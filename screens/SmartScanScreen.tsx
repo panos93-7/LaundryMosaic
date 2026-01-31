@@ -403,57 +403,80 @@ return (
                     </View>
                   )}
 
-                  {/* STAIN TIPS */}
-                  {result.stainTips?.length > 0 && (
-                    <View style={{ marginTop: 25 }}>
-                      <Text
-                        style={{
-                          color: "#fff",
-                          fontSize: 18,
-                          fontWeight: "700",
-                          marginBottom: 10,
-                        }}
-                      >
-                        🧴 {i18n.t("smartScan.stainTips")}
-                      </Text>
+{/* STAIN SECTION */}
+{result.stains?.length > 0 && (
+  <View style={{ marginTop: 25 }}>
+    <Text
+      style={{
+        color: "#fff",
+        fontSize: 18,
+        fontWeight: "700",
+        marginBottom: 10,
+      }}
+    >
+      🧴 {i18n.t("smartScan.stainsDetected")}: {result.stains.join(", ")}
+    </Text>
 
-                      {result.stainTips.map((tip: any, i: number) => (
-                        <View
-                          key={i}
-                          style={{
-                            backgroundColor: "rgba(255,255,255,0.08)",
-                            padding: 14,
-                            borderRadius: 12,
-                            marginBottom: 12,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              color: "#fff",
-                              fontSize: 16,
-                              fontWeight: "600",
-                              marginBottom: 6,
-                            }}
-                          >
-                            {tip.stain}
-                          </Text>
+    {isPro ? (
+      /* ⭐ PRO → βλέπει stain removal tips */
+      <View>
+        {result.stainTips.map((tip: any, i: number) => (
+          <View
+            key={i}
+            style={{
+              backgroundColor: "rgba(255,255,255,0.08)",
+              padding: 14,
+              borderRadius: 12,
+              marginBottom: 12,
+            }}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 16,
+                fontWeight: "600",
+                marginBottom: 6,
+              }}
+            >
+              {tip.stain}
+            </Text>
 
-                          {tip.steps.map((step: string, idx: number) => (
-                            <Text
-                              key={idx}
-                              style={{
-                                color: "rgba(255,255,255,0.85)",
-                                marginBottom: 4,
-                                fontSize: 14,
-                              }}
-                            >
-                              {idx + 1}. {step}
-                            </Text>
-                          ))}
-                        </View>
-                      ))}
-                    </View>
-                  )}
+            {tip.steps.map((step: string, idx: number) => (
+              <Text
+                key={idx}
+                style={{
+                  color: "rgba(255,255,255,0.85)",
+                  marginBottom: 4,
+                  fontSize: 14,
+                }}
+              >
+                {idx + 1}. {step}
+              </Text>
+            ))}
+          </View>
+        ))}
+      </View>
+    ) : (
+      /* ⭐ Annual → βλέπει detection αλλά όχι tips */
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Paywall", { source: "stainTips" })
+        }
+        style={{ marginTop: 10 }}
+      >
+        <Text
+          style={{
+            color: "#ff8c00",
+            fontSize: 16,
+            textDecorationLine: "underline",
+          }}
+        >
+          {i18n.t("smartScan.unlockStainCare")}
+        </Text>
+      </TouchableOpacity>
+    )}
+  </View>
+)}
 
                   {/* TAKE ANOTHER PHOTO */}
                   <TouchableOpacity

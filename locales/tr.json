@@ -318,5 +318,7 @@
 
   "continueFree": "Ücretsiz devam et",
   "restore": "Satın alımları geri yükle"
- }
+  },
+  "stainTitle": "Lekeleri yapay zeka ile güvenle çıkar",
+  "stainSubtitle": "Kumaşlarına özel adım adım leke çıkarma talimatlarını aç."
 }

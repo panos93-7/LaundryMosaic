@@ -13,6 +13,7 @@ import { useUserStore } from "../store/userStore"; // ⭐ ADDED
 import { syncEntitlements } from "../utils/syncEntitlements";
 
 export default function PaywallScreen({ navigation }: any) {
+  const { source } = navigation.getState().routes[navigation.getState().index].params ?? {};
   const [offerings, setOfferings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -114,28 +115,32 @@ export default function PaywallScreen({ navigation }: any) {
       <ScrollView contentContainerStyle={{ padding: 24 }}>
 
         {/* HEADER */}
-        <Text
-          style={{
-            fontSize: 34,
-            fontWeight: "800",
-            color: "#fff",
-            textAlign: "center",
-            marginBottom: 6,
-          }}
-        >
-          {String(i18n.t("paywall.headerTitle"))}
-        </Text>
+<Text
+  style={{
+    fontSize: 34,
+    fontWeight: "800",
+    color: "#fff",
+    textAlign: "center",
+    marginBottom: 6,
+  }}
+>
+  {source === "stainTips"
+    ? i18n.t("paywall.stainTitle")
+    : i18n.t("paywall.headerTitle")}
+</Text>
 
-        <Text
-          style={{
-            fontSize: 16,
-            color: "#ccc",
-            textAlign: "center",
-            marginBottom: 28,
-          }}
-        >
-          {String(i18n.t("paywall.headerSubtitle"))}
-        </Text>
+<Text
+  style={{
+    fontSize: 16,
+    color: "#ccc",
+    textAlign: "center",
+    marginBottom: 28,
+  }}
+>
+  {source === "stainTips"
+    ? i18n.t("paywall.stainSubtitle")
+    : i18n.t("paywall.headerSubtitle")}
+</Text>
 
         {/* PRO MONTHLY */}
         {proMonthly && (
