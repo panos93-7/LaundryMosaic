@@ -69,7 +69,9 @@
 
     "plannerDefaultTitle": "洗濯アイテム",
     "plannerDefaultType": "一般",
-    "plannerAnyTime": "いつでも"
+    "plannerAnyTime": "いつでも",
+    "stainsDetected": "シミを検出しました",
+    "unlockStainCare": "シミ抜きガイドをアンロック"
   },
 
   "batchScan": {
@@ -280,7 +282,9 @@
 
   "upgradeButton": "Pro+ にアップグレード",
   "continueFree": "無料版を続ける",
-  "restore": "購入を復元"
+  "restore": "購入を復元",
+  "stainTitle": "AIで安全にシミを除去",
+  "stainSubtitle": "生地に合わせたステップ別のシミ抜き手順をアンロックしましょう。"
  },
  "premiumMonthly": {
   "loading": "読み込み中...",
@@ -321,8 +325,5 @@
 
   "continueFree": "無料版を続ける",
   "restore": "購入を復元"
-  },
-  "stainTitle": "AIで安全にシミを落とす",
-  "stainSubtitle": "生地に合わせたステップごとのシミ抜き手順をアンロックしましょう。",
-  "stainsDetected": "シミを検出しました"
+  }
 }

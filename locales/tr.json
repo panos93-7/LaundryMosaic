@@ -69,7 +69,9 @@
 
     "plannerDefaultTitle": "Giysi",
     "plannerDefaultType": "Genel",
-    "plannerAnyTime": "Herhangi bir zaman"
+    "plannerAnyTime": "Herhangi bir zaman",
+    "stainsDetected": "Lekeler tespit edildi",
+    "unlockStainCare": "Leke çıkarma ipuçlarını aç"
   },
 
   "batchScan": {
@@ -277,7 +279,9 @@
 
   "upgradeButton": "Pro+’a Yükselt",
   "continueFree": "Ücretsiz sürümle devam et",
-  "restore": "Satın Alımları Geri Yükle"
+  "restore": "Satın Alımları Geri Yükle",
+  "stainTitle": "Lekeleri yapay zeka ile güvenle çıkar",
+  "stainSubtitle": "Kumaşlarına özel adım adım leke çıkarma talimatlarını aç."
  },
  "premiumMonthly": {
   "loading": "Yükleniyor...",
@@ -318,8 +322,5 @@
 
   "continueFree": "Ücretsiz devam et",
   "restore": "Satın alımları geri yükle"
-  },
-  "stainTitle": "Lekeleri yapay zeka ile güvenle çıkar",
-  "stainSubtitle": "Kumaşlarına özel adım adım leke çıkarma talimatlarını aç.",
-  "stainsDetected": "Lekeler tespit edildi"
+  }
 }

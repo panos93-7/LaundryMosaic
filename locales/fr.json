@@ -69,7 +69,9 @@
 
     "plannerDefaultTitle": "Vêtement",
     "plannerDefaultType": "Général",
-    "plannerAnyTime": "N'importe quand"
+    "plannerAnyTime": "N'importe quand",
+    "stainsDetected": "Taches détectées",
+    "unlockStainCare": "Débloquer les conseils de détachage"
   },
 
   "batchScan": {
@@ -277,7 +279,9 @@
 
   "upgradeButton": "Passer à Pro+",
   "continueFree": "Continuer avec la version gratuite",
-  "restore": "Restaurer les achats"
+  "restore": "Restaurer les achats",
+  "stainTitle": "Enlevez les taches en toute sécurité avec l’IA",
+  "stainSubtitle": "Débloquez des instructions détaillées de détachage adaptées à vos tissus."
  },
  "premiumMonthly": {
   "loading": "Chargement...",
@@ -318,8 +322,5 @@
 
   "continueFree": "Continuer avec la version gratuite",
   "restore": "Restaurer les achats"
-  },
-  "stainTitle": "Retirez les taches en toute sécurité avec l’IA",
-  "stainSubtitle": "Débloquez des instructions détaillées adaptées à vos tissus.",
-  "stainsDetected": "Taches détectées"
+  }
 }

@@ -69,7 +69,9 @@
 
     "plannerDefaultTitle": "洗衣項目",
     "plannerDefaultType": "一般",
-    "plannerAnyTime": "任何時間"
+    "plannerAnyTime": "任何時間",
+    "stainsDetected": "偵測到污漬",
+    "unlockStainCare": "解鎖去漬指南"
   },
 
   "batchScan": {
@@ -280,7 +282,9 @@
 
   "upgradeButton": "升級至 Pro+",
   "continueFree": "繼續使用免費版本",
-  "restore": "恢復購買"
+  "restore": "恢復購買",
+  "stainTitle": "使用 AI 安全去除污漬",
+  "stainSubtitle": "解鎖依照您的布料量身打造的逐步去漬教學。"
  },
  "premiumMonthly": {
   "loading": "載入中...",
@@ -321,8 +325,5 @@
 
   "continueFree": "繼續使用免費版",
   "restore": "恢復購買"
- },
-  "stainTitle": "使用 AI 安全去除污漬",
-  "stainSubtitle": "解鎖依照您的布料量身打造的逐步去漬指南。",
-  "stainsDetected": "已偵測到污漬"
+ }
 }

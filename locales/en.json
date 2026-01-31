@@ -69,7 +69,9 @@
 
     "plannerDefaultTitle": "Laundry Item",
     "plannerDefaultType": "General",
-    "plannerAnyTime": "Any time"
+    "plannerAnyTime": "Any time",
+    "stainsDetected": "Stains detected",
+    "unlockStainCare": "Unlock stain removal tips"
   },
 
   "batchScan": {
@@ -279,7 +281,9 @@
 
   "upgradeButton": "Upgrade to Pro+",
   "continueFree": "Continue with Free version",
-  "restore": "Restore Purchases"
+  "restore": "Restore Purchases",
+  "stainTitle": "Remove stains safely with AI",
+  "stainSubtitle": "Unlock step-by-step stain removal instructions tailored to your fabrics."
  },
  "premiumMonthly": {
   "loading": "Loading...",
@@ -320,8 +324,5 @@
 
   "continueFree": "Continue with Free version",
   "restore": "Restore Purchases"
-  },
-  "stainTitle": "Remove stains safely with AI",
-  "stainSubtitle": "Unlock step-by-step stain removal instructions tailored to your fabrics.",
-  "stainsDetected": "Stains detected"
+  }
 }

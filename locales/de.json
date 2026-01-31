@@ -69,7 +69,9 @@
 
     "plannerDefaultTitle": "Wäsche",
     "plannerDefaultType": "Allgemein",
-    "plannerAnyTime": "Jederzeit"
+    "plannerAnyTime": "Jederzeit",
+    "stainsDetected": "Flecken erkannt",
+    "unlockStainCare": "Tipps zur Fleckenentfernung freischalten"
   },
 
   "batchScan": {
@@ -277,7 +279,9 @@
 
   "upgradeButton": "Upgrade auf Pro+",
   "continueFree": "Mit der kostenlosen Version fortfahren",
-  "restore": "Käufe wiederherstellen"
+  "restore": "Käufe wiederherstellen",
+  "stainTitle": "Flecken sicher mit KI entfernen",
+  "stainSubtitle": "Schalte Schritt-für-Schritt-Anleitungen zur Fleckenentfernung frei, abgestimmt auf deine Stoffe."
  },
  "premiumMonthly": {
   "loading": "Laden...",
@@ -318,8 +322,5 @@
 
   "continueFree": "Kostenlos fortfahren",
   "restore": "Käufe wiederherstellen"
-  },
-  "stainTitle": "Flecken sicher entfernen mit KI",
-  "stainSubtitle": "Schalte Schritt-für-Schritt-Anleitungen frei, abgestimmt auf deine Stoffe.",
-  "stainsDetected": "Flecken erkannt"
+  }
 }

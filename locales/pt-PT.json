@@ -69,7 +69,9 @@
 
     "plannerDefaultTitle": "Item de Lavagem",
     "plannerDefaultType": "Geral",
-    "plannerAnyTime": "A qualquer momento"
+    "plannerAnyTime": "A qualquer momento",
+    "stainsDetected": "Manchas detetadas",
+    "unlockStainCare": "Desbloquear dicas de remoção de manchas"
   },
 
   "batchScan": {
@@ -280,9 +282,11 @@
 
   "upgradeButton": "Atualizar para Pro+",
   "continueFree": "Continuar com a versão gratuita",
-  "restore": "Restaurar Compras"
- },
- "premiumMonthly": {
+  "restore": "Restaurar Compras",
+  "stainTitle": "Remova manchas com segurança usando IA",
+  "stainSubtitle": "Desbloqueie instruções passo a passo adaptadas aos seus tecidos."
+  },
+  "premiumMonthly": {
   "loading": "A carregar...",
   "noOfferings": "Nenhuma oferta encontrada.",
 
@@ -321,8 +325,5 @@
 
   "continueFree": "Continuar com a versão gratuita",
   "restore": "Restaurar Compras"
- },
-  "stainTitle": "Remova manchas com segurança usando IA",
-  "stainSubtitle": "Desbloqueie instruções passo a passo adaptadas aos seus tecidos.",
-  "stainsDetected": "Manchas detetadas"
+ }
 }

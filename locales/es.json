@@ -69,9 +69,10 @@
 
     "plannerDefaultTitle": "Prenda",
     "plannerDefaultType": "General",
-    "plannerAnyTime": "En cualquier momento"
+    "plannerAnyTime": "En cualquier momento",
+    "stainsDetected": "Manchas detectadas",
+    "unlockStainCare": "Desbloquear consejos para quitar manchas"
   },
-
   "batchScan": {
     "title": "Escaneo por Lotes",
     "close": "Cerrar",
@@ -276,7 +277,9 @@
 
   "upgradeButton": "Actualizar a Pro+",
   "continueFree": "Continuar con la versión gratuita",
-  "restore": "Restaurar Compras"
+  "restore": "Restaurar Compras",
+  "stainTitle": "Elimina manchas de forma segura con IA",
+  "stainSubtitle": "Desbloquea instrucciones paso a paso adaptadas a tus tejidos."
  },
  "premiumMonthly": {
   "loading": "Cargando...",
@@ -317,8 +320,5 @@
 
   "continueFree": "Continuar con la versión gratuita",
   "restore": "Restaurar Compras"
-  },
-  "stainTitle": "Elimina manchas de forma segura con IA",
-  "stainSubtitle": "Desbloquea instrucciones paso a paso adaptadas a tus tejidos.",
-  "stainsDetected": "Manchas detectadas"
+  }
 }
