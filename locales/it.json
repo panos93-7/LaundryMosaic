@@ -216,7 +216,13 @@
   "spin": "Centrifuga",
 
   "editGarment": "Modifica Indumento",
-  "deleteGarment": "Elimina Indumento"
+  "deleteGarment": "Elimina Indumento",
+
+  "detergent": "Detergente",
+  "notes": "Note",
+  "risks": "Rischi",
+  "washFrequency": "Frequenza di lavaggio",
+  "careSymbols": "Simboli di cura"
  },
  "history": {
   "title": "Cronologia dei Lavaggi",
@@ -318,10 +324,7 @@
     "autoAdd": "Aggiunta Automatica al Planner",
     "history": "Cronologia completa dei lavaggi",
     "faster": "Elaborazione più veloce"
-  },
-
-  "continueFree": "Continua Gratis",
-  "restore": "Ripristina Acquisti"
+}
   },
   "stainValues": {
   "wine": "vino",
@@ -335,5 +338,49 @@
   "makeup_foundation": "trucco / fondotinta",
   "chocolate": "cioccolato",
   "grass": "erba"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "Lavaggio in lavatrice a freddo (30°C)",
+    "handWash": "Lavaggio a mano",
+    "doNotWash": "Non lavare"
+  },
+  "bleach": {
+    "noBleach": "Non usare candeggina",
+    "nonChlorine": "Solo candeggina senza cloro"
+  },
+  "dry": {
+    "tumbleLow": "Asciugatrice a bassa temperatura",
+    "noTumble": "Non usare asciugatrice",
+    "lineDry": "Asciugare appeso",
+    "flatDry": "Asciugare in piano"
+  },
+  "iron": {
+    "noIron": "Non stirare",
+    "low": "Stirare a bassa temperatura",
+    "medium": "Stirare a temperatura media",
+    "high": "Stirare ad alta temperatura"
+  },
+  "dryclean": {
+    "noDryclean": "Non lavare a secco",
+    "drycleanOnly": "Solo lavaggio a secco"
+  }
+ },
+ "riskValues": {
+  "low": "Basso",
+  "medium": "Medio",
+  "high": "Alto"
+ },
+ "frequency": {
+  "after1wear": "Dopo 1 utilizzo",
+  "after2to3wears": "Dopo 2–3 utilizzi",
+  "afterHeavyUse": "Dopo uso intenso"
+ },
+ "careSymbols": {
+  "wash_30": "Lavare a 30°C",
+  "no_bleach": "Non candeggiare",
+  "tumble_low": "Asciugatrice a bassa temperatura",
+  "iron_low": "Stirare a bassa temperatura",
+  "no_dryclean": "Non lavare a secco"
  }
 }

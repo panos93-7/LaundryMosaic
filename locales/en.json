@@ -217,6 +217,13 @@
   "temp": "Temp",
   "spin": "Spin",
 
+  "detergent": "Detergent",
+  "notes": "Notes",
+
+  "risks": "Risks",
+  "washFrequency": "Wash Frequency",
+  "careSymbols": "Care Symbols",
+
   "editGarment": "Edit Garment",
   "deleteGarment": "Delete Garment"
  },
@@ -320,10 +327,7 @@
     "autoAdd": "Auto‑Add to Planner",
     "history": "Full Wash History",
     "faster": "Faster processing"
-  },
-
-  "continueFree": "Continue with Free version",
-  "restore": "Restore Purchases"
+}
   },
   "stainValues": {
   "wine": "wine",
@@ -337,5 +341,49 @@
   "makeup_foundation": "makeup / foundation",
   "chocolate": "chocolate",
   "grass": "grass"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "Machine wash cold (30°C)",
+    "handWash": "Hand wash",
+    "doNotWash": "Do not wash"
+  },
+  "bleach": {
+    "noBleach": "Do not bleach",
+    "nonChlorine": "Non-chlorine bleach only"
+  },
+  "dry": {
+    "tumbleLow": "Tumble dry low",
+    "noTumble": "Do not tumble dry",
+    "lineDry": "Line dry",
+    "flatDry": "Dry flat"
+  },
+  "iron": {
+    "noIron": "Do not iron",
+    "low": "Iron at low temperature",
+    "medium": "Iron at medium temperature",
+    "high": "Iron at high temperature"
+  },
+  "dryclean": {
+    "noDryclean": "Do not dry clean",
+    "drycleanOnly": "Dry clean only"
+  }
+ },
+ "riskValues": {
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High"
+ },
+ "frequency": {
+  "after1wear": "After 1 wear",
+  "after2to3wears": "After 2–3 wears",
+  "afterHeavyUse": "After heavy use"
+ },
+ "careSymbols": {
+  "wash_30": "Wash at 30°C",
+  "no_bleach": "Do not bleach",
+  "tumble_low": "Tumble dry low",
+  "iron_low": "Iron low",
+  "no_dryclean": "Do not dry clean"
  }
 }

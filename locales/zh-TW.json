@@ -219,7 +219,13 @@
   "spin": "脫水",
 
   "editGarment": "編輯衣物",
-  "deleteGarment": "刪除衣物"
+  "deleteGarment": "刪除衣物",
+  "detergent": "洗衣精",
+  "notes": "備註",
+  "risks": "風險",
+  "washFrequency": "清洗頻率",
+  "careSymbols": "洗滌符號"
+
  },
  "history": {
   "title": "洗衣紀錄",
@@ -321,10 +327,7 @@
     "autoAdd": "自動加入 Planner",
     "history": "完整洗衣記錄",
     "faster": "更快速的處理"
-  },
-
-  "continueFree": "繼續使用免費版",
-  "restore": "恢復購買"
+}
  },
  "stainValues": {
   "wine": "紅酒",
@@ -338,5 +341,49 @@
   "makeup_foundation": "化妝品 / 粉底",
   "chocolate": "巧克力",
   "grass": "草漬"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "冷水機洗 (30°C)",
+    "handWash": "手洗",
+    "doNotWash": "不可水洗"
+  },
+  "bleach": {
+    "noBleach": "不可漂白",
+    "nonChlorine": "僅可使用無氯漂白劑"
+  },
+  "dry": {
+    "tumbleLow": "低溫烘乾",
+    "noTumble": "不可烘乾",
+    "lineDry": "懸掛晾乾",
+    "flatDry": "平放晾乾"
+  },
+  "iron": {
+    "noIron": "不可熨燙",
+    "low": "低溫熨燙",
+    "medium": "中溫熨燙",
+    "high": "高溫熨燙"
+  },
+  "dryclean": {
+    "noDryclean": "不可乾洗",
+    "drycleanOnly": "僅可乾洗"
+  }
+ },
+ "riskValues": {
+  "low": "低",
+  "medium": "中",
+  "high": "高"
+ },
+ "frequency": {
+  "after1wear": "穿著 1 次後",
+  "after2to3wears": "穿著 2–3 次後",
+  "afterHeavyUse": "大量使用後"
+ },
+"careSymbols": {
+  "wash_30": "30°C 清洗",
+  "no_bleach": "不可漂白",
+  "tumble_low": "低溫烘乾",
+  "iron_low": "低溫熨燙",
+  "no_dryclean": "不可乾洗"
  }
 }

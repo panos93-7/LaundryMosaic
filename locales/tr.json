@@ -216,7 +216,13 @@
   "spin": "Sıkma",
 
   "editGarment": "Giysiyi Düzenle",
-  "deleteGarment": "Giysiyi Sil"
+  "deleteGarment": "Giysiyi Sil",
+  
+  "detergent": "Deterjan",
+  "notes": "Notlar",
+  "risks": "Riskler",
+  "washFrequency": "Yıkama sıklığı",
+  "careSymbols": "Bakım sembolleri"
  },
  "history": {
   "title": "Yıkama Geçmişi",
@@ -318,10 +324,7 @@
     "autoAdd": "Planlayıcıya Otomatik Ekleme",
     "history": "Tam Yıkama Geçmişi",
     "faster": "Daha hızlı işlem"
-  },
-
-  "continueFree": "Ücretsiz devam et",
-  "restore": "Satın alımları geri yükle"
+}
   },
   "stainValues": {
   "wine": "şarap",
@@ -335,5 +338,49 @@
   "makeup_foundation": "makyaj / fondöten",
   "chocolate": "çikolata",
   "grass": "çimen"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "Makinede soğuk yıkama (30°C)",
+    "handWash": "Elde yıkama",
+    "doNotWash": "Yıkanmaz"
+  },
+  "bleach": {
+    "noBleach": "Ağartıcı kullanmayın",
+    "nonChlorine": "Sadece klorsuz ağartıcı"
+  },
+  "dry": {
+    "tumbleLow": "Düşük ısıda kurutma",
+    "noTumble": "Kurutma makinesi kullanmayın",
+    "lineDry": "Asarak kurutun",
+    "flatDry": "Düz zeminde kurutun"
+  },
+  "iron": {
+    "noIron": "Ütülemeyin",
+    "low": "Düşük ısıda ütü",
+    "medium": "Orta ısıda ütü",
+    "high": "Yüksek ısıda ütü"
+  },
+  "dryclean": {
+    "noDryclean": "Kuru temizleme yapılmaz",
+    "drycleanOnly": "Sadece kuru temizleme"
+  }
+ },
+ "riskValues": {
+  "low": "Düşük",
+  "medium": "Orta",
+  "high": "Yüksek"
+ },
+ "frequency": {
+  "after1wear": "1 kullanımdan sonra",
+  "after2to3wears": "2–3 kullanımdan sonra",
+  "afterHeavyUse": "Yoğun kullanımdan sonra"
+ },
+ "careSymbols": {
+  "wash_30": "30°C'de yıkayın",
+  "no_bleach": "Ağartıcı kullanmayın",
+  "tumble_low": "Düşük ısıda kurutun",
+  "iron_low": "Düşük ısıda ütüleyin",
+  "no_dryclean": "Kuru temizleme yok"
  }
 }

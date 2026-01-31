@@ -216,7 +216,13 @@
   "spin": "Essorage",
 
   "editGarment": "Modifier le Vêtement",
-  "deleteGarment": "Supprimer le Vêtement"
+  "deleteGarment": "Supprimer le Vêtement",
+
+  "detergent": "Détergent",
+  "notes": "Notes",
+  "risks": "Risques",
+  "washFrequency": "Fréquence de lavage",
+  "careSymbols": "Symboles d’entretien"
  },
  "history": {
   "title": "Historique de Lavage",
@@ -318,10 +324,7 @@
     "autoAdd": "Ajout automatique au Planner",
     "history": "Historique complet des lavages",
     "faster": "Traitement plus rapide"
-  },
-
-  "continueFree": "Continuer avec la version gratuite",
-  "restore": "Restaurer les achats"
+}
   },
   "stainValues": {
   "wine": "vin",
@@ -335,5 +338,49 @@
   "makeup_foundation": "maquillage / fond de teint",
   "chocolate": "chocolat",
   "grass": "herbe"
- }
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "Lavage en machine à froid (30°C)",
+    "handWash": "Lavage à la main",
+    "doNotWash": "Ne pas laver"
+  },
+  "bleach": {
+    "noBleach": "Ne pas utiliser d’eau de Javel",
+    "nonChlorine": "Eau de Javel sans chlore uniquement"
+  },
+  "dry": {
+    "tumbleLow": "Séchage en machine à basse température",
+    "noTumble": "Ne pas sécher en machine",
+    "lineDry": "Séchage sur fil",
+    "flatDry": "Séchage à plat"
+  },
+  "iron": {
+    "noIron": "Ne pas repasser",
+    "low": "Repassage à basse température",
+    "medium": "Repassage à température moyenne",
+    "high": "Repassage à haute température"
+  },
+  "dryclean": {
+    "noDryclean": "Ne pas nettoyer à sec",
+    "drycleanOnly": "Nettoyage à sec uniquement"
+  }
+ },
+ "riskValues": {
+  "low": "Faible",
+  "medium": "Moyen",
+  "high": "Élevé"
+ },
+ "frequency": {
+  "after1wear": "Après 1 utilisation",
+  "after2to3wears": "Après 2–3 utilisations",
+  "afterHeavyUse": "Après une utilisation intensive"
+ },
+ "careSymbols": {
+  "wash_30": "Laver à 30°C",
+  "no_bleach": "Ne pas utiliser d’eau de Javel",
+  "tumble_low": "Séchage à basse température",
+  "iron_low": "Repassage à basse température",
+  "no_dryclean": "Ne pas nettoyer à sec"
+} 
 }

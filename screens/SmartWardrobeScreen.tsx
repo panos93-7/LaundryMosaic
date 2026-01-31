@@ -51,12 +51,33 @@ export default function WardrobeScreen() {
         color: ai.color,
         pattern: ai.pattern,
         stains: ai.stains,
-        recommended: ai.recommended,
-        care: {
-          instructions: `${ai.recommended.temp}°C • ${ai.recommended.spin} rpm`,
+
+        recommended: {
+          program: ai.recommended.program,
           temp: ai.recommended.temp,
           spin: ai.recommended.spin,
+          detergent: ai.recommended.detergent,
+          notes: ai.recommended.notes,
         },
+
+        care: {
+          wash: ai.care.wash,
+          bleach: ai.care.bleach,
+          dry: ai.care.dry,
+          iron: ai.care.iron,
+          dryclean: ai.care.dryclean,
+          warnings: ai.care.warnings,
+        },
+
+        risks: {
+          shrinkage: ai.risks.shrinkage,
+          colorBleeding: ai.risks.colorBleeding,
+          delicacy: ai.risks.delicacy,
+        },
+
+        washFrequency: ai.washFrequency,
+        careSymbols: ai.careSymbols,
+
         image: uri,
       });
     } catch (err) {
@@ -83,17 +104,17 @@ export default function WardrobeScreen() {
           }}
         >
           <Text
-  style={{
-    color: "#fff",
-    fontSize: 28,
-    fontWeight: "700",
-    flexShrink: 1,
-    marginRight: 10,
-  }}
-  numberOfLines={2}
->
-  {String(i18n.t("wardrobe.title"))}
-</Text>
+            style={{
+              color: "#fff",
+              fontSize: 28,
+              fontWeight: "700",
+              flexShrink: 1,
+              marginRight: 10,
+            }}
+            numberOfLines={2}
+          >
+            {String(i18n.t("wardrobe.title"))}
+          </Text>
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>

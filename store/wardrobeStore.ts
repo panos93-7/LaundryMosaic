@@ -9,33 +9,48 @@ export type RecommendedWash = {
   program: string;
   temp: number;
   spin: number;
+  detergent: string;
+  notes: string[];
 };
 
-export type CareInfo = {
-  instructions: string;
-  temp: number;
-  spin: number;
+export type CareInstructions = {
+  wash: string;
+  bleach: string;
+  dry: string;
+  iron: string;
+  dryclean: string;
+  warnings: string[];
+};
+
+export type RiskProfile = {
+  shrinkage: string;
+  colorBleeding: string;
+  delicacy: string;
 };
 
 export type Garment = {
   id: number;
   name: string;
   type: string;
+  category?: string;
+
   color?: string;
   fabric?: string;
   pattern?: string;
-  image?: string | null;
 
-  // PRO AI fields
   stains?: string[];
-  care?: CareInfo;
-  recommended?: RecommendedWash;
-  category?: string;
 
-  // Future-proof fields
-  // fiberComposition?: string;
-  // texture?: string;
-  // weave?: string;
+  recommended?: RecommendedWash;
+
+  care?: CareInstructions;
+
+  risks?: RiskProfile;
+
+  washFrequency?: string;
+
+  careSymbols?: string[];
+
+  image?: string | null;
 };
 
 /* --------------------------------------------- */

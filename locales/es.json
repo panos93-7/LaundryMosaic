@@ -215,7 +215,13 @@
   "spin": "Centrifugado",
 
   "editGarment": "Editar Prenda",
-  "deleteGarment": "Eliminar Prenda"
+  "deleteGarment": "Eliminar Prenda",
+
+  "detergent": "Detergente",
+  "notes": "Notas",
+  "risks": "Riesgos",
+  "washFrequency": "Frecuencia de lavado",
+  "careSymbols": "Símbolos de cuidado"
  },
  "history": {
   "title": "Historial de Lavados",
@@ -316,10 +322,7 @@
     "autoAdd": "Auto‑Agregar al Planner",
     "history": "Historial completo de lavados",
     "faster": "Procesamiento más rápido"
-  },
-
-  "continueFree": "Continuar con la versión gratuita",
-  "restore": "Restaurar Compras"
+}
   },
   "stainValues": {
   "wine": "vino",
@@ -333,5 +336,49 @@
   "makeup_foundation": "maquillaje / base",
   "chocolate": "chocolate",
   "grass": "césped"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "Lavado a máquina en frío (30°C)",
+    "handWash": "Lavar a mano",
+    "doNotWash": "No lavar"
+  },
+  "bleach": {
+    "noBleach": "No usar blanqueador",
+    "nonChlorine": "Solo blanqueador sin cloro"
+  },
+  "dry": {
+    "tumbleLow": "Secadora a baja temperatura",
+    "noTumble": "No usar secadora",
+    "lineDry": "Secar colgado",
+    "flatDry": "Secar en plano"
+  },
+  "iron": {
+    "noIron": "No planchar",
+    "low": "Planchar a baja temperatura",
+    "medium": "Planchar a temperatura media",
+    "high": "Planchar a alta temperatura"
+  },
+  "dryclean": {
+    "noDryclean": "No lavar en seco",
+    "drycleanOnly": "Solo limpieza en seco"
+  }
+ },
+ "riskValues": {
+  "low": "Bajo",
+  "medium": "Medio",
+  "high": "Alto"
+ },
+ "frequency": {
+  "after1wear": "Después de 1 uso",
+  "after2to3wears": "Después de 2–3 usos",
+  "afterHeavyUse": "Después de uso intenso"
+ },
+ "careSymbols": {
+  "wash_30": "Lavar a 30°C",
+  "no_bleach": "No usar blanqueador",
+  "tumble_low": "Secadora a baja temperatura",
+  "iron_low": "Planchar a baja temperatura",
+  "no_dryclean": "No lavar en seco"
  }
 }

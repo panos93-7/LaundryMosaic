@@ -216,7 +216,13 @@
   "spin": "Schleudern",
 
   "editGarment": "Kleidungsstück Bearbeiten",
-  "deleteGarment": "Kleidungsstück Löschen"
+  "deleteGarment": "Kleidungsstück Löschen",
+
+  "detergent": "Waschmittel",
+  "notes": "Hinweise",
+  "risks": "Risiken",
+  "washFrequency": "Waschhäufigkeit",
+  "careSymbols": "Pflegesymbole"
  },
  "history": {
   "title": "Waschhistorie",
@@ -318,10 +324,7 @@
     "autoAdd": "Automatisches Hinzufügen zum Planner",
     "history": "Vollständige Waschhistorie",
     "faster": "Schnellere Verarbeitung"
-  },
-
-  "continueFree": "Kostenlos fortfahren",
-  "restore": "Käufe wiederherstellen"
+}
   },
   "stainValues": {
   "wine": "Wein",
@@ -335,5 +338,49 @@
   "makeup_foundation": "Make-up / Foundation",
   "chocolate": "Schokolade",
   "grass": "Gras"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "Kaltwäsche (30°C)",
+    "handWash": "Handwäsche",
+    "doNotWash": "Nicht waschen"
+  },
+  "bleach": {
+    "noBleach": "Nicht bleichen",
+    "nonChlorine": "Nur chlorfreies Bleichmittel"
+  },
+  "dry": {
+    "tumbleLow": "Schonend trocknen (niedrig)",
+    "noTumble": "Nicht im Trockner trocknen",
+    "lineDry": "Auf der Leine trocknen",
+    "flatDry": "Flach trocknen"
+  },
+  "iron": {
+    "noIron": "Nicht bügeln",
+    "low": "Bügeln bei niedriger Temperatur",
+    "medium": "Bügeln bei mittlerer Temperatur",
+    "high": "Bügeln bei hoher Temperatur"
+  },
+  "dryclean": {
+    "noDryclean": "Nicht chemisch reinigen",
+    "drycleanOnly": "Nur chemische Reinigung"
+  }
+ },
+ "riskValues": {
+  "low": "Niedrig",
+  "medium": "Mittel",
+  "high": "Hoch"
+ },
+ "frequency": {
+  "after1wear": "Nach 1 Mal Tragen",
+  "after2to3wears": "Nach 2–3 Mal Tragen",
+  "afterHeavyUse": "Nach starker Nutzung"
+ },
+ "careSymbols": {
+  "wash_30": "Bei 30°C waschen",
+  "no_bleach": "Nicht bleichen",
+  "tumble_low": "Schonend trocknen (niedrig)",
+  "iron_low": "Bei niedriger Temperatur bügeln",
+  "no_dryclean": "Nicht chemisch reinigen"
  }
 }

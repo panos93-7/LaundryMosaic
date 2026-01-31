@@ -219,7 +219,13 @@
   "spin": "탈수",
 
   "editGarment": "의류 편집",
-  "deleteGarment": "의류 삭제"
+  "deleteGarment": "의류 삭제",
+  
+  "detergent": "세제",
+  "notes": "주의사항",
+  "risks": "위험도",
+  "washFrequency": "세탁 주기",
+  "careSymbols": "케어 심볼"
  },
  "history": {
   "title": "세탁 기록",
@@ -321,10 +327,7 @@
     "autoAdd": "플래너 자동 추가",
     "history": "전체 세탁 기록",
     "faster": "더 빠른 처리"
-  },
-
-  "continueFree": "무료로 계속하기",
-  "restore": "구매 복원"
+}
  },
  "stainValues": {
   "wine": "와인",
@@ -338,5 +341,49 @@
   "makeup_foundation": "메이크업 / 파운데이션",
   "chocolate": "초콜릿",
   "grass": "잔디"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "찬물 세탁 (30°C)",
+    "handWash": "손세탁",
+    "doNotWash": "세탁 불가"
+  },
+  "bleach": {
+    "noBleach": "표백제 사용 금지",
+    "nonChlorine": "염소 무첨가 표백제만"
+  },
+  "dry": {
+    "tumbleLow": "저온 건조",
+    "noTumble": "건조기 사용 금지",
+    "lineDry": "걸어서 건조",
+    "flatDry": "평평하게 건조"
+  },
+  "iron": {
+    "noIron": "다림질 금지",
+    "low": "저온 다림질",
+    "medium": "중온 다림질",
+    "high": "고온 다림질"
+  },
+  "dryclean": {
+    "noDryclean": "드라이클리닝 금지",
+    "drycleanOnly": "드라이클리닝 전용"
+  }
+ },
+ "riskValues": {
+  "low": "낮음",
+  "medium": "중간",
+  "high": "높음"
+ },
+ "frequency": {
+  "after1wear": "1회 착용 후",
+  "after2to3wears": "2–3회 착용 후",
+  "afterHeavyUse": "강한 사용 후"
+ },
+ "careSymbols": {
+  "wash_30": "30°C에서 세탁",
+  "no_bleach": "표백 금지",
+  "tumble_low": "저온 건조",
+  "iron_low": "저온 다림질",
+  "no_dryclean": "드라이클리닝 금지"
  }
 }

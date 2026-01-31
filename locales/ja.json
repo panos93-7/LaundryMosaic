@@ -219,7 +219,13 @@
   "spin": "脱水",
 
   "editGarment": "衣類を編集",
-  "deleteGarment": "衣類を削除"
+  "deleteGarment": "衣類を削除",
+  
+  "detergent": "洗剤",
+  "notes": "注意事項",
+  "risks": "リスク",
+  "washFrequency": "洗濯頻度",
+  "careSymbols": "ケアシンボル"
  },
  "history": {
   "title": "洗濯履歴",
@@ -321,10 +327,7 @@
     "autoAdd": "Planner への自動追加",
     "history": "洗濯履歴の全機能",
     "faster": "高速処理"
-  },
-
-  "continueFree": "無料版を続ける",
-  "restore": "購入を復元"
+}
   },
   "stainValues": {
   "wine": "ワイン",
@@ -338,5 +341,49 @@
   "makeup_foundation": "メイク / ファンデーション",
   "chocolate": "チョコレート",
   "grass": "草"
+ },
+ "careValues": {
+  "wash": {
+    "machineCold": "冷水で洗濯機洗い (30°C)",
+    "handWash": "手洗い",
+    "doNotWash": "洗濯不可"
+  },
+  "bleach": {
+    "noBleach": "漂白不可",
+    "nonChlorine": "酸素系漂白剤のみ可"
+  },
+  "dry": {
+    "tumbleLow": "低温タンブル乾燥",
+    "noTumble": "タンブル乾燥不可",
+    "lineDry": "つり干し",
+    "flatDry": "平干し"
+  },
+  "iron": {
+    "noIron": "アイロン不可",
+    "low": "低温アイロン",
+    "medium": "中温アイロン",
+    "high": "高温アイロン"
+  },
+  "dryclean": {
+    "noDryclean": "ドライクリーニング不可",
+    "drycleanOnly": "ドライクリーニングのみ"
+  }
+ },
+ "riskValues": {
+  "low": "低い",
+  "medium": "中程度",
+  "high": "高い"
+ },
+ "frequency": {
+  "after1wear": "1回着用後",
+  "after2to3wears": "2〜3回着用後",
+  "afterHeavyUse": "激しい使用後"
+ },
+ "careSymbols": {
+  "wash_30": "30°Cで洗濯",
+  "no_bleach": "漂白不可",
+  "tumble_low": "低温タンブル乾燥",
+  "iron_low": "低温アイロン",
+  "no_dryclean": "ドライクリーニング不可"
  }
 }

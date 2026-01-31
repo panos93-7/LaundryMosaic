@@ -20,20 +20,11 @@ export async function analyzeGarmentPro(base64: string) {
           imageBase64: processedBase64,
           mimeType,
           prompt: `
-You are an expert fashion and laundry assistant. Analyze the garment in the image and return ONLY valid JSON.
+You are an expert fashion, textile, and laundry-care assistant.
+Analyze the garment in the image and return ONLY valid JSON.
+Do NOT include explanations, markdown, or extra text.
 
-Extract the following fields:
-
-- name
-- type
-- category
-- fabric
-- color
-- pattern
-- stains: array
-- recommended: { temp, spin, program }
-
-Return ONLY valid JSON in this exact format:
+Extract a complete garment profile with the following structure:
 
 {
   "name": "...",
@@ -43,12 +34,52 @@ Return ONLY valid JSON in this exact format:
   "color": "...",
   "pattern": "...",
   "stains": ["..."],
+
   "recommended": {
+    "program": "...",
     "temp": 30,
     "spin": 800,
-    "program": "Quick Wash"
-  }
+    "detergent": "liquid | powder | delicate | wool | color-safe",
+    "notes": ["...", "..."]
+  },
+
+  "care": {
+    "wash": "Machine wash cold (30°C) | Hand wash | Do not wash",
+    "bleach": "Do not bleach | Non-chlorine bleach only",
+    "dry": "Tumble dry low | Do not tumble dry | Line dry | Dry flat",
+    "iron": "Do not iron | Iron low | Iron medium | Iron high",
+    "dryclean": "Do not dry clean | Dry clean only",
+    "warnings": [
+      "May shrink",
+      "Wash with similar colors",
+      "Turn inside out",
+      "Avoid high heat"
+    ]
+  },
+
+  "risks": {
+    "shrinkage": "low | medium | high",
+    "colorBleeding": "low | medium | high",
+    "delicacy": "low | medium | high"
+  },
+
+  "washFrequency": "after 1 wear | after 2–3 wears | after heavy use",
+
+  "careSymbols": [
+    "wash_30",
+    "no_bleach",
+    "tumble_low",
+    "iron_low",
+    "no_dryclean"
+  ]
 }
+
+Rules:
+- All fields must be filled.
+- Use short, clear English phrases.
+- Use only the allowed values where specified.
+- If uncertain, make the best reasonable guess based on the garment.
+- Return ONLY the JSON object.
 `
         }),
       }
