@@ -7,10 +7,10 @@ import { create } from "zustand";
 
 export type RecommendedWash = {
   program: string;
-  temp: number;
-  spin: number;
+  temp: string;
+  spin: string;
   detergent: string;
-  notes: string[];
+  notes: string;
 };
 
 export type CareInstructions = {

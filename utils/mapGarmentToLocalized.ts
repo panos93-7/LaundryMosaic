@@ -1,13 +1,13 @@
 import i18n from "../i18n";
 
-interface AIGarment {
-  name?: string;
-  type?: string;
-  category?: string;
-  fabric?: string;
-  color?: string;
-  pattern?: string;
-  stains?: string[];
+export interface AIGarment {
+  name: string;
+  type: string;
+  category: string;
+  fabric: string;
+  color: string;
+  pattern: string;
+  stains: string[];
 
   recommended: {
     program: string;
@@ -36,10 +36,7 @@ interface AIGarment {
   careSymbols: string[];
 }
 
-/**
- * Convert raw AI garment fields into localized i18n strings.
- */
-export function localizeGarment(ai: AIGarment) {
+export function localizeGarment(ai: AIGarment): AIGarment {
   return {
     ...ai,
 
@@ -50,27 +47,29 @@ export function localizeGarment(ai: AIGarment) {
       iron: i18n.t(`careValues.iron.${mapIron(ai.care.iron)}`),
       dryclean: i18n.t(`careValues.dryclean.${mapDryclean(ai.care.dryclean)}`),
 
-      warnings: ai.care.warnings?.map((w: string) =>
-        i18n.t(`careWarnings.${normalizeKey(w)}`, { defaultValue: w })
-      ) ?? [],
+      warnings:
+        ai.care.warnings?.map((w: string) =>
+          i18n.t(`careWarnings.${normalizeKey(w)}`, { defaultValue: w })
+        ) ?? [],
     },
 
     risks: {
-      shrinkage: i18n.t(`riskValues.${ai.risks.shrinkage}`),
-      colorBleeding: i18n.t(`riskValues.${ai.risks.colorBleeding}`),
-      delicacy: i18n.t(`riskValues.${ai.risks.delicacy}`),
+      shrinkage: i18n.t(`riskValues.${mapRisk(ai.risks.shrinkage)}`),
+      colorBleeding: i18n.t(`riskValues.${mapRisk(ai.risks.colorBleeding)}`),
+      delicacy: i18n.t(`riskValues.${mapRisk(ai.risks.delicacy)}`),
     },
 
     washFrequency: i18n.t(`frequency.${mapFrequency(ai.washFrequency)}`),
 
-    careSymbols: ai.careSymbols?.map((sym: string) =>
-      i18n.t(`careSymbols.${sym}`, { defaultValue: sym })
-    ) ?? [],
+    careSymbols:
+      ai.careSymbols?.map((sym: string) =>
+        i18n.t(`careSymbols.${sym}`, { defaultValue: sym })
+      ) ?? [],
   };
 }
 
 /* -------------------------------------------------- */
-/* MAPPING HELPERS (AI → i18n keys)                   */
+/* MAPPING HELPERS                                    */
 /* -------------------------------------------------- */
 
 function mapWash(value: string = "") {
@@ -115,6 +114,16 @@ function mapFrequency(value: string = "") {
   if (v.includes("1")) return "after1wear";
   if (v.includes("2") || v.includes("3")) return "after2to3wears";
   return "afterHeavyUse";
+}
+
+function mapRisk(value: string = "") {
+  const v = value.toLowerCase();
+
+  if (v.includes("low")) return "low";
+  if (v.includes("medium") || v.includes("moderate")) return "medium";
+  if (v.includes("high")) return "high";
+
+  return "medium";
 }
 
 function normalizeKey(str: string = "") {
