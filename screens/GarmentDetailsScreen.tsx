@@ -180,96 +180,95 @@ export default function GarmentDetailsScreen() {
             </View>
           )}
 
-          {/* CARE INSTRUCTIONS */}
-          {profile.care && (
-            <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-                {String(i18n.t("garmentDetails.careInstructions"))}
-              </Text>
+{/* CARE INSTRUCTIONS */}
+{profile.care && (
+  <View style={{ marginTop: 30 }}>
+    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+      {String(i18n.t("garmentDetails.careInstructions"))}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("care.wash"))}: {profile.care.wash}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.care.wash}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("care.bleach"))}: {profile.care.bleach}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.care.bleach}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("care.dry"))}: {profile.care.dry}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.care.dry}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("care.iron"))}: {profile.care.iron}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.care.iron}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("care.dryclean"))}: {profile.care.dryclean}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.care.dryclean}
+    </Text>
 
-              {profile.care.warnings?.length > 0 && (
-                <View style={{ marginTop: 10 }}>
-                  <Text style={{ color: "#fff", fontWeight: "600" }}>
-                    {String(i18n.t("care.warnings"))}:
-                  </Text>
-                  {profile.care.warnings.map((w: string, i: number) => (
-                    <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
-                      • {w}
-                    </Text>
-                  ))}
-                </View>
-              )}
-            </View>
-          )}
+    {profile.care.warnings?.length > 0 && (
+      <View style={{ marginTop: 10 }}>
+        <Text style={{ color: "#fff", fontWeight: "600" }}>
+          {String(i18n.t("care.warnings"))}:
+        </Text>
+        {profile.care.warnings.map((w: string, i: number) => (
+          <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
+            • {w}
+          </Text>
+        ))}
+      </View>
+    )}
+  </View>
+)}
 
           {/* RISKS */}
-          {profile.risks && (
-            <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-                {String(i18n.t("garmentDetails.risks"))}
-              </Text>
+{profile.risks && (
+  <View style={{ marginTop: 30 }}>
+    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+      {String(i18n.t("garmentDetails.risks"))}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("risks.shrinkage"))}: {profile.risks.shrinkage}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.risks.shrinkage}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("risks.colorBleeding"))}: {profile.risks.colorBleeding}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.risks.colorBleeding}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("risks.delicacy"))}: {profile.risks.delicacy}
-              </Text>
-            </View>
-          )}
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.risks.delicacy}
+    </Text>
+  </View>
+)}
+ {/* WASH FREQUENCY */}
+{profile.washFrequency && (
+  <View style={{ marginTop: 30 }}>
+    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+      {String(i18n.t("garmentDetails.washFrequency"))}
+    </Text>
 
-          {/* WASH FREQUENCY */}
-          {profile.washFrequency && (
-            <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-                {String(i18n.t("garmentDetails.washFrequency"))}
-              </Text>
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {profile.washFrequency}
+    </Text>
+  </View>
+)}
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>
-                {profile.washFrequency}
-              </Text>
-            </View>
-          )}
+{/* CARE SYMBOLS */}
+{profile.careSymbols?.length > 0 && (
+  <View style={{ marginTop: 30 }}>
+    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+      {String(i18n.t("garmentDetails.careSymbols"))}
+    </Text>
 
-          {/* CARE SYMBOLS */}
-          {profile.careSymbols?.length > 0 && (
-            <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-                {String(i18n.t("garmentDetails.careSymbols"))}
-              </Text>
-
-              {profile.careSymbols.map((sym: string, i: number) => (
-                <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
-                  • {sym}
-                </Text>
-              ))}
-            </View>
-          )}
+    {profile.careSymbols.map((sym: string, i: number) => (
+      <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
+        • {sym}
+      </Text>
+    ))}
+  </View>
+)}
 
           {/* EDIT BUTTON */}
           <TouchableOpacity
