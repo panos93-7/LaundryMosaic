@@ -229,7 +229,8 @@
 
   "editGarment": "Edit Garment",
   "deleteGarment": "Delete Garment",
-  "warnings": "Warnings"
+  "warnings": "Warnings",
+  "translating": "Translating"
  },
  "history": {
   "title": "Wash History",

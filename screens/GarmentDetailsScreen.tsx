@@ -117,7 +117,7 @@ export default function GarmentDetailsScreen() {
           }}
         >
           <LottieView
-            source={require("../assets/loading.json")}
+            source={require("../translating.json")}
             autoPlay
             loop
             style={{ width: 160, height: 160 }}
