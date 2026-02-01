@@ -13,21 +13,43 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
+import { useWardrobeStore } from "../store/wardrobeStore";
 
 export default function EditGarmentScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
-  const { garment, onSave, onDelete } = route.params;
+  // We receive ONLY the ID
+  const { id } = route.params;
 
-  const [name, setName] = useState(garment.name);
-  const [type, setType] = useState(garment.type);
-  const [color, setColor] = useState(garment.color ?? "");
-  const [category, setCategory] = useState(garment.category ?? "");
-  const [fabric, setFabric] = useState(garment.fabric ?? "");
-  const [pattern, setPattern] = useState(garment.pattern ?? "");
-  const [image, setImage] = useState<string | null>(garment.image);
+  // Pull garment from store
+  const garment = useWardrobeStore((s) =>
+    s.garments.find((g) => g.id === id)
+  );
 
+  const updateGarment = useWardrobeStore((s) => s.updateGarment);
+  const deleteGarment = useWardrobeStore((s) => s.deleteGarment);
+
+  // If garment is missing (deleted or corrupted)
+  if (!garment) {
+    return (
+      <LinearGradient
+        colors={["#0f0c29", "#302b63", "#24243e"]}
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
+        <Text style={{ color: "#fff" }}>Garment not found.</Text>
+      </LinearGradient>
+    );
+  }
+
+  // Editable fields come from garment.profile
+  const [name, setName] = useState(garment.profile.name);
+  const [type, setType] = useState(garment.profile.type);
+  const [color, setColor] = useState(garment.profile.color ?? "");
+  const [category, setCategory] = useState(garment.profile.category ?? "");
+  const [fabric, setFabric] = useState(garment.profile.fabric ?? "");
+  const [pattern, setPattern] = useState(garment.profile.pattern ?? "");
+  const [image, setImage] = useState<string | null>(garment?.image ?? null);
   const pickImage = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -40,18 +62,19 @@ export default function EditGarmentScreen() {
   };
 
   const handleSave = () => {
-    const updated = {
-      ...garment,
-      name,
-      type,
-      color,
-      category,
-      fabric,
-      pattern,
-      image,
-    };
+    updateGarment({
+      id: garment.id,
+      profile: {
+        ...garment.profile,
+        name,
+        type,
+        color,
+        category,
+        fabric,
+        pattern,
+      },
+    });
 
-    onSave(updated);
     navigation.goBack();
   };
 
@@ -65,7 +88,7 @@ export default function EditGarmentScreen() {
           text: String(i18n.t("editGarment.delete")),
           style: "destructive",
           onPress: () => {
-            onDelete(garment.id);
+            deleteGarment(garment.id);
             navigation.goBack();
           },
         },
@@ -91,18 +114,18 @@ export default function EditGarmentScreen() {
             </Text>
           </TouchableOpacity>
 
-         <Text
-  style={{
-    color: "#fff",
-    fontSize: 28,
-    fontWeight: "700",
-    flexShrink: 1,
-    marginRight: 10,
-  }}
-  numberOfLines={2}
->
-  {String(i18n.t("editGarment.title"))}
-</Text>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 28,
+              fontWeight: "700",
+              flexShrink: 1,
+              marginRight: 10,
+            }}
+            numberOfLines={2}
+          >
+            {String(i18n.t("editGarment.title"))}
+          </Text>
 
           {/* IMAGE PICKER */}
           <TouchableOpacity onPress={pickImage}>
