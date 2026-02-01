@@ -1,27 +1,57 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
 
 import { useWardrobeStore } from "../store/wardrobeStore";
+import { translateGarmentProfile } from "../utils/AI/translateGarment";
+import { translationCache } from "../utils/AI/translationCache";
+
+
 
 export default function GarmentDetailsScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
-  // We receive ONLY the ID
   const { id } = route.params;
 
-  // Pull garment reactively from the store
   const garment = useWardrobeStore((s) =>
     s.garments.find((g) => g.id === id)
   );
 
+  const updateGarment = useWardrobeStore((s) => s.updateGarment);
   const deleteGarment = useWardrobeStore((s) => s.deleteGarment);
 
-  // If garment is missing (deleted), show fallback
+  const locale = (i18n as any).language;
+
+  // 🔥 AI TRANSLATION EFFECT — THIS FIXES EVERYTHING
+  useEffect(() => {
+    async function run() {
+      if (!garment) return;
+
+      // English → use original
+      if (locale === "en") {
+        updateGarment({ id: garment.id, profile: garment.original });
+        return;
+      }
+
+      // Translate using AI
+      const translated = await translateGarmentProfile(
+        garment.original,
+        locale,
+        garment.id.toString(),
+        translationCache
+      );
+
+      // Save translated profile to store
+      updateGarment({ id: garment.id, profile: translated });
+    }
+
+    run();
+  }, [locale, garment?.id]);
+
   if (!garment) {
     return (
       <LinearGradient
@@ -33,7 +63,6 @@ export default function GarmentDetailsScreen() {
     );
   }
 
-  // Always use the translated profile from the store
   const profile = garment.profile;
 
   const handleDelete = () => {
@@ -190,7 +219,7 @@ export default function GarmentDetailsScreen() {
               {profile.care.warnings?.length > 0 && (
                 <View style={{ marginTop: 10 }}>
                   <Text style={{ color: "#fff", fontWeight: "600" }}>
-                    {String(i18n.t("care.warnings"))}:
+                    {String(i18n.t("garmentDetails.warnings"))}:
                   </Text>
                   {profile.care.warnings.map((w: string, i: number) => (
                     <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
@@ -274,6 +303,28 @@ export default function GarmentDetailsScreen() {
               }}
             >
               {String(i18n.t("garmentDetails.editGarment"))}
+            </Text>
+          </TouchableOpacity>
+
+          {/* DELETE BUTTON */}
+          <TouchableOpacity
+            onPress={handleDelete}
+            style={{
+              backgroundColor: "#ff6b6b",
+              padding: 14,
+              borderRadius: 12,
+              marginTop: 14,
+            }}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                textAlign: "center",
+                fontSize: 18,
+                fontWeight: "600",
+              }}
+            >
+              {String(i18n.t("garmentDetails.deleteGarment"))}
             </Text>
           </TouchableOpacity>
 
