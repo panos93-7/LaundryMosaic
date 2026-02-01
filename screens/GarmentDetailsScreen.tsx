@@ -28,36 +28,49 @@ export default function GarmentDetailsScreen() {
 
   // ⭐ STABLE AI TRANSLATION EFFECT — NO LOOPS
   useEffect(() => {
-    if (!garment) return;
+  console.log("🔥 EFFECT TRIGGERED");
+  console.log("locale =", locale);
+  console.log("garment.profile.__locale =", garment?.profile?.__locale);
 
-    async function run() {
-      if (locale === "en") {
-        updateGarment({
-          id: garment.id,
-          profile: { ...garment.original, __locale: "en" }
-        });
-        return;
-      }
+  if (!garment) {
+    console.log("❌ garment is undefined");
+    return;
+  }
 
-      if (garment.profile?.__locale === locale) {
-        return;
-      }
-
-      const translated = await translateGarmentProfile(
-        garment.original,
-        locale,
-        garment.id.toString(),
-        translationCache
-      );
-
+  async function run() {
+    if (locale === "en") {
+      console.log("⛔ STOP: locale is EN, using original");
       updateGarment({
         id: garment.id,
-        profile: { ...translated, __locale: locale }
+        profile: { ...garment.original, __locale: "en" }
       });
+      return;
     }
 
-    run();
-  }, [locale, garment?.id]);
+    if (garment.profile?.__locale === locale) {
+      console.log("⛔ STOP: already translated for this locale");
+      return;
+    }
+
+    console.log("🚀 Translating now...");
+
+    const translated = await translateGarmentProfile(
+      garment.original,
+      locale,
+      garment.id.toString(),
+      translationCache
+    );
+
+    console.log("✅ AI returned:", translated);
+
+    updateGarment({
+      id: garment.id,
+      profile: { ...translated, __locale: locale }
+    });
+  }
+
+  run();
+}, [locale, garment?.id]);
 
   if (!garment) {
     return (
