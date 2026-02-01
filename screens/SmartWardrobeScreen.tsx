@@ -23,7 +23,7 @@ export default function WardrobeScreen() {
   const hydrate = useWardrobeStore((s) => s.hydrate);
 
   const [analyzing, setAnalyzing] = useState(false);
-  const locale = (i18n as any).language;
+  const locale = i18n.locale;
   useEffect(() => {
     hydrate();
   }, []);
