@@ -1,54 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
+import { GarmentProfile } from "../utils/AI/translateGarment";
 
 /* --------------------------------------------- */
 /* TYPES                                         */
 /* --------------------------------------------- */
 
-export type RecommendedWash = {
-  program: string;
-  temp: string;
-  spin: string;
-  detergent: string;
-  notes: string;
-};
-
-export type CareInstructions = {
-  wash: string;
-  bleach: string;
-  dry: string;
-  iron: string;
-  dryclean: string;
-  warnings: string[];
-};
-
-export type RiskProfile = {
-  shrinkage: string;
-  colorBleeding: string;
-  delicacy: string;
-};
-
 export type Garment = {
   id: number;
-  name: string;
-  type: string;
-  category?: string;
 
-  color?: string;
-  fabric?: string;
-  pattern?: string;
+  // 🔥 ALWAYS natural English (AI output)
+  original: GarmentProfile;
 
-  stains?: string[];
-
-  recommended?: RecommendedWash;
-
-  care?: CareInstructions;
-
-  risks?: RiskProfile;
-
-  washFrequency?: string;
-
-  careSymbols?: string[];
+  // 🔥 Translated or EN depending on locale
+  profile: GarmentProfile;
 
   image?: string | null;
 };

@@ -11,7 +11,6 @@ import { translateGarmentProfile } from "../utils/AI/translateGarment";
 import { translationCache } from "../utils/AI/translationCache";
 import { analyzeGarmentPro } from "../utils/aiGarmentAnalyzerPro";
 
-
 export default function WardrobeScreen() {
   const navigation = useNavigation<any>();
 
@@ -41,28 +40,34 @@ export default function WardrobeScreen() {
 
     setAnalyzing(true);
 
-try {
-  const ai = await analyzeGarmentPro(base64);
-  const locale = (i18n as any).language;
-  const finalProfile =
-    locale === "en"
-      ? ai
-      : await translateGarmentProfile(
-          ai,
-          locale,
-          Date.now().toString(),
-          translationCache
-        );
+    try {
+      // 1. Analyze image → ALWAYS natural English
+      const ai = await analyzeGarmentPro(base64);
 
-  await addGarment({
-    id: Date.now(),
-    ...finalProfile,
-    image: uri,
-  });
+      // 2. Detect current locale
+      const locale = (i18n as any).language;
 
-} catch (err) {
-  console.log("AI error:", err);
-}
+      // 3. Translate ONLY if not English
+      const finalProfile =
+        locale === "en"
+          ? ai
+          : await translateGarmentProfile(
+              ai,
+              locale,
+              Date.now().toString(),
+              translationCache
+            );
+
+      // 4. Store BOTH original + translated profile
+      await addGarment({
+        id: Date.now(),
+        original: ai,          // always EN
+        profile: finalProfile, // translated or EN
+        image: uri,
+      });
+    } catch (err) {
+      console.log("AI error:", err);
+    }
 
     setAnalyzing(false);
   };
@@ -73,7 +78,6 @@ try {
       style={{ flex: 1 }}
     >
       <SafeAreaView style={{ flex: 1, padding: 20 }}>
-
         {/* HEADER */}
         <View
           style={{

@@ -14,19 +14,23 @@ export default function GarmentDetailsScreen() {
 
   const { garment, onSave, onDelete } = route.params;
 
-  const [profile, setProfile] = useState(garment);
+  // 🔥 ALWAYS start with the stored translated profile
+  const [profile, setProfile] = useState(garment.profile);
+
   const locale = (i18n as any).language;
 
   // 🔥 Auto-translate on language change
   useEffect(() => {
     async function load() {
       if (locale === "en") {
-        setProfile(garment);
+        // Show original EN
+        setProfile(garment.original);
         return;
       }
 
+      // Translate ALWAYS from original EN
       const translated = await translateGarmentProfile(
-        garment,
+        garment.original,
         locale,
         garment.id.toString(),
         translationCache
@@ -74,9 +78,9 @@ export default function GarmentDetailsScreen() {
           </Text>
 
           {/* IMAGE */}
-          {profile.image ? (
+          {garment.image ? (
             <Image
-              source={{ uri: profile.image }}
+              source={{ uri: garment.image }}
               style={{
                 width: "100%",
                 height: 260,
@@ -108,23 +112,23 @@ export default function GarmentDetailsScreen() {
           </Text>
 
           <Text style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}>
-            {String(i18n.t("garmentDetails.color"))}: {profile.color ?? String(i18n.t("garmentDetails.unknown"))}
+            {String(i18n.t("garmentDetails.color"))}: {profile.color}
           </Text>
 
           <Text style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}>
-            {String(i18n.t("garmentDetails.fabric"))}: {profile.fabric ?? String(i18n.t("garmentDetails.unknown"))}
+            {String(i18n.t("garmentDetails.fabric"))}: {profile.fabric}
           </Text>
 
           <Text style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}>
-            {String(i18n.t("garmentDetails.pattern"))}: {profile.pattern ?? String(i18n.t("garmentDetails.none"))}
+            {String(i18n.t("garmentDetails.pattern"))}: {profile.pattern}
           </Text>
 
           <Text style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}>
-            {String(i18n.t("garmentDetails.category"))}: {profile.category ?? String(i18n.t("garmentDetails.uncategorized"))}
+            {String(i18n.t("garmentDetails.category"))}: {profile.category}
           </Text>
 
           {/* STAINS */}
-          {profile.stains && profile.stains.length > 0 && (
+          {profile.stains?.length > 0 && (
             <View style={{ marginTop: 20 }}>
               <Text style={{ color: "#ff9f9f", fontSize: 18, fontWeight: "600" }}>
                 {String(i18n.t("garmentDetails.stainsDetected"))}
@@ -253,7 +257,7 @@ export default function GarmentDetailsScreen() {
           )}
 
           {/* CARE SYMBOLS */}
-          {profile.careSymbols && profile.careSymbols.length > 0 && (
+          {profile.careSymbols?.length > 0 && (
             <View style={{ marginTop: 30 }}>
               <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
                 {String(i18n.t("garmentDetails.careSymbols"))}
@@ -271,7 +275,7 @@ export default function GarmentDetailsScreen() {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("EditGarment", {
-                garment: profile,
+                garment,
                 onSave,
                 onDelete,
               })
@@ -292,28 +296,6 @@ export default function GarmentDetailsScreen() {
               }}
             >
               {String(i18n.t("garmentDetails.editGarment"))}
-            </Text>
-          </TouchableOpacity>
-
-          {/* DELETE BUTTON */}
-          <TouchableOpacity
-            onPress={handleDelete}
-            style={{
-              backgroundColor: "#ff6b6b",
-              padding: 14,
-              borderRadius: 12,
-              marginTop: 14,
-            }}
-          >
-            <Text
-              style={{
-                color: "#fff",
-                textAlign: "center",
-                fontSize: 18,
-                fontWeight: "600",
-              }}
-            >
-              {String(i18n.t("garmentDetails.deleteGarment"))}
             </Text>
           </TouchableOpacity>
 
