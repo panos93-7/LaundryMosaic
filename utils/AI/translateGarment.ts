@@ -28,6 +28,9 @@ export type GarmentProfile = {
   };
   washFrequency: string;
   careSymbols: string[];
+
+  // ⭐ THIS FIXES THE __locale ERROR
+  [key: string]: any;
 };
 
 export type Locale = string;

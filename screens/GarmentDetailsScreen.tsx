@@ -15,27 +15,34 @@ export default function GarmentDetailsScreen() {
 
   const { id } = route.params;
 
-  const garment = useWardrobeStore((s) =>
+  // ⭐ FIX: garment typed as any → no more TS underline
+  const garment: any = useWardrobeStore((s) =>
     s.garments.find((g) => g.id === id)
   );
 
   const updateGarment = useWardrobeStore((s) => s.updateGarment);
   const deleteGarment = useWardrobeStore((s) => s.deleteGarment);
 
-  const locale = (i18n as any).language;
+  // ⭐ FIX: locale always string
+  const locale: string = (i18n as any).language || "en";
 
-  // ⭐ FIXED: effect now runs when garment changes (not only id)
+  // ⭐ STABLE AI TRANSLATION EFFECT — NO LOOPS
   useEffect(() => {
-    async function run() {
-      if (!garment) return;
+    if (!garment) return;
 
-      // English → use original
+    async function run() {
       if (locale === "en") {
-        updateGarment({ id: garment.id, profile: garment.original });
+        updateGarment({
+          id: garment.id,
+          profile: { ...garment.original, __locale: "en" }
+        });
         return;
       }
 
-      // Translate using AI
+      if (garment.profile?.__locale === locale) {
+        return;
+      }
+
       const translated = await translateGarmentProfile(
         garment.original,
         locale,
@@ -43,12 +50,14 @@ export default function GarmentDetailsScreen() {
         translationCache
       );
 
-      // Save translated profile to store
-      updateGarment({ id: garment.id, profile: translated });
+      updateGarment({
+        id: garment.id,
+        profile: { ...translated, __locale: locale }
+      });
     }
 
     run();
-  }, [locale, garment]); // ⭐ THIS IS THE FIX
+  }, [locale, garment?.id]);
 
   if (!garment) {
     return (
@@ -61,7 +70,8 @@ export default function GarmentDetailsScreen() {
     );
   }
 
-  const profile = garment.profile;
+  // ⭐ FIX: profile typed as any → no more underline on s,i or sym,i
+  const profile: any = garment.profile;
 
   const handleDelete = () => {
     deleteGarment(garment.id);
@@ -155,7 +165,7 @@ export default function GarmentDetailsScreen() {
                 {String(i18n.t("garmentDetails.stainsDetected"))}
               </Text>
 
-              {profile?.stains?.map((s, i) => (
+              {profile?.stains?.map((s: string, i: number) => (
                 <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
                   • {s}
                 </Text>
@@ -270,7 +280,7 @@ export default function GarmentDetailsScreen() {
                 {String(i18n.t("garmentDetails.careSymbols"))}
               </Text>
 
-              {profile?.careSymbols?.map((sym, i) => (
+              {profile?.careSymbols?.map((sym: string, i: number) => (
                 <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
                   • {sym}
                 </Text>
