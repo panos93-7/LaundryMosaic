@@ -29,7 +29,7 @@ export type GarmentProfile = {
   washFrequency: string;
   careSymbols: string[];
 
-  // ⭐ THIS FIXES THE __locale ERROR
+  // ⭐ Allow __locale and any future metadata
   [key: string]: any;
 };
 
@@ -46,16 +46,20 @@ export async function translateGarmentProfile(
   garmentId: string,
   cache: TranslationCache
 ): Promise<GarmentProfile> {
+
+  // ⭐ If target is English → return original immediately
   if (!targetLocale || targetLocale === "en") {
-    return original;
+    return { ...original, __locale: "en" };
   }
 
   try {
-    // 1. Check cache
+    // ⭐ 1. Check persistent cache
     const cached = await cache.get(garmentId, targetLocale);
-    if (cached) return cached;
+    if (cached) {
+      return { ...cached, __locale: targetLocale };
+    }
 
-    // 2. Call translation worker
+    // ⭐ 2. Call translation worker
     const response = await fetch("https://gemini-proxy.panos-ai.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -73,10 +77,10 @@ Return ONLY valid JSON — no markdown, no code fences, no prose.
 
 IMPORTANT RULES:
 - Translate all descriptive fields naturally (name, type, fabric, color, pattern, stains, care, recommended, risks, washFrequency, careSymbols).
-- For risks (shrinkage, colorBleeding, delicacy), translate the meaning, NOT the literal English word. Use natural equivalents in the target language.
-- If a value is already numeric (e.g., 30, 800), keep it numeric.
-- If a value contains units (e.g., "30°C", "800 rpm"), keep the units.
-- If a value is an array of strings, translate each string.
+- For risks (shrinkage, colorBleeding, delicacy), translate the meaning, NOT the literal English word.
+- Keep numeric values numeric.
+- Preserve units (e.g., "30°C", "800 rpm").
+- Translate each string inside arrays.
 
 JSON to translate:
 ${JSON.stringify(original)}
@@ -94,10 +98,10 @@ ${JSON.stringify(original)}
     let rawText =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    // Remove markdown fences
+    // ⭐ Remove markdown fences
     rawText = rawText.replace(/```json/g, "").replace(/```/g, "");
 
-    // Extract JSON substring
+    // ⭐ Extract JSON substring
     const firstBrace = rawText.indexOf("{");
     const lastBrace = rawText.lastIndexOf("}");
 
@@ -117,7 +121,10 @@ ${JSON.stringify(original)}
       return original;
     }
 
-    // 3. Cache translated result
+    // ⭐ Add locale metadata
+    translated.__locale = targetLocale;
+
+    // ⭐ 3. Save to persistent cache
     try {
       await cache.set(garmentId, targetLocale, translated);
     } catch (e) {
@@ -125,6 +132,7 @@ ${JSON.stringify(original)}
     }
 
     return translated;
+
   } catch (err) {
     console.log("❌ translateGarmentProfile error:", err);
     return original;

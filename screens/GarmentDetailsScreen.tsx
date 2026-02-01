@@ -1,8 +1,10 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect } from "react";
+import LottieView from "lottie-react-native";
+import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import i18n from "../i18n";
 import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
@@ -12,10 +14,8 @@ import { translationCache } from "../utils/AI/translationCache";
 export default function GarmentDetailsScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-
   const { id } = route.params;
 
-  // ⭐ FIX: garment typed as any → no more TS underline
   const garment: any = useWardrobeStore((s) =>
     s.garments.find((g) => g.id === id)
   );
@@ -23,54 +23,63 @@ export default function GarmentDetailsScreen() {
   const updateGarment = useWardrobeStore((s) => s.updateGarment);
   const deleteGarment = useWardrobeStore((s) => s.deleteGarment);
 
-  // ⭐ FIX: locale always string
   const locale = useLanguageStore((s) => s.language);
 
-  // ⭐ STABLE AI TRANSLATION EFFECT — NO LOOPS
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  // ⭐ LAZY TRANSLATION EFFECT
   useEffect(() => {
-  console.log("🔥 EFFECT TRIGGERED");
-  console.log("locale =", locale);
-  console.log("garment.profile.__locale =", garment?.profile?.__locale);
+    if (!garment) return;
 
-  if (!garment) {
-    console.log("❌ garment is undefined");
-    return;
-  }
+    console.log("🔥 EFFECT TRIGGERED");
+    console.log("locale =", locale);
+    console.log("garment.profile.__locale =", garment?.profile?.__locale);
 
-  async function run() {
+    // 1. English → always original
     if (locale === "en") {
       console.log("⛔ STOP: locale is EN, using original");
       updateGarment({
         id: garment.id,
-        profile: { ...garment.original, __locale: "en" }
+        profile: { ...garment.original, __locale: "en" },
       });
       return;
     }
 
+    // 2. Already translated → stop
     if (garment.profile?.__locale === locale) {
       console.log("⛔ STOP: already translated for this locale");
       return;
     }
 
-    console.log("🚀 Translating now...");
+    // 3. Prevent double calls
+    if (isTranslating) {
+      console.log("⛔ STOP: already translating");
+      return;
+    }
 
-    const translated = await translateGarmentProfile(
-      garment.original,
-      locale,
-      garment.id.toString(),
-      translationCache
-    );
+    async function run() {
+      setIsTranslating(true);
+      console.log("🚀 Translating now...");
 
-    console.log("✅ AI returned:", translated);
+      const translated = await translateGarmentProfile(
+        garment.original,
+        locale,
+        garment.id.toString(),
+        translationCache
+      );
 
-    updateGarment({
-      id: garment.id,
-      profile: { ...translated, __locale: locale }
-    });
-  }
+      console.log("✅ AI returned:", translated);
 
-  run();
-}, [locale, garment?.id]);
+      updateGarment({
+        id: garment.id,
+        profile: { ...translated, __locale: locale },
+      });
+
+      setIsTranslating(false);
+    }
+
+    run();
+  }, [locale, garment?.id]);
 
   if (!garment) {
     return (
@@ -83,7 +92,6 @@ export default function GarmentDetailsScreen() {
     );
   }
 
-  // ⭐ FIX: profile typed as any → no more underline on s,i or sym,i
   const profile: any = garment.profile;
 
   const handleDelete = () => {
@@ -92,16 +100,39 @@ export default function GarmentDetailsScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={["#0f0c29", "#302b63", "#24243e"]}
-      style={{ flex: 1 }}
-    >
+    <LinearGradient colors={["#0f0c29", "#302b63", "#24243e"]} style={{ flex: 1 }}>
+      {/* ⭐ LOTTIE OVERLAY */}
+      {isTranslating && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0,0,0,0.6)",
+            zIndex: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <LottieView
+            source={require("../assets/loading.json")}
+            autoPlay
+            loop
+            style={{ width: 160, height: 160 }}
+          />
+          <Text style={{ color: "#fff", marginTop: 10, fontSize: 18 }}>
+            {String(i18n.t("garmentDetails.translating"))}…
+          </Text>
+        </View>
+      )}
+
       <ScrollView
         contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
         <SafeAreaView>
-
           {/* BACK */}
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
@@ -113,7 +144,7 @@ export default function GarmentDetailsScreen() {
           <Text
             style={{
               color: "#fff",
-              fontSize: 28,
+              fontSize: 30,
               fontWeight: "700",
               marginBottom: 20,
             }}
@@ -173,12 +204,19 @@ export default function GarmentDetailsScreen() {
 
           {/* STAINS */}
           {(profile?.stains?.length ?? 0) > 0 && (
-            <View style={{ marginTop: 20 }}>
-              <Text style={{ color: "#ff9f9f", fontSize: 18, fontWeight: "600" }}>
+            <View style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  color: "#ff9f9f",
+                  fontSize: 22,
+                  fontWeight: "700",
+                  marginBottom: 6,
+                }}
+              >
                 {String(i18n.t("garmentDetails.stainsDetected"))}
               </Text>
 
-              {profile?.stains?.map((s: string, i: number) => (
+              {profile.stains.map((s: string, i: number) => (
                 <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
                   • {s}
                 </Text>
@@ -189,31 +227,50 @@ export default function GarmentDetailsScreen() {
           {/* RECOMMENDED PROGRAM */}
           {profile?.recommended && (
             <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 22,
+                  fontWeight: "700",
+                  marginBottom: 6,
+                }}
+              >
                 {String(i18n.t("garmentDetails.recommendedWashProgram"))}
               </Text>
 
               <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("garmentDetails.program"))}: {profile.recommended.program}
+                {String(i18n.t("garmentDetails.program"))}:{" "}
+                {profile.recommended.program}
               </Text>
 
               <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("garmentDetails.temp"))}: {profile.recommended.temp}°C
+                {String(i18n.t("garmentDetails.temp"))}:{" "}
+                {profile.recommended.temp}°C
               </Text>
 
               <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("garmentDetails.spin"))}: {profile.recommended.spin} rpm
+                {String(i18n.t("garmentDetails.spin"))}:{" "}
+                {profile.recommended.spin} rpm
               </Text>
 
               <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("garmentDetails.detergent"))}: {profile.recommended.detergent}
+                {String(i18n.t("garmentDetails.detergent"))}:{" "}
+                {profile.recommended.detergent}
               </Text>
 
               {profile.recommended.notes?.length > 0 && (
                 <View style={{ marginTop: 10 }}>
-                  <Text style={{ color: "#fff", fontWeight: "600" }}>
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontWeight: "700",
+                      fontSize: 18,
+                      marginBottom: 4,
+                    }}
+                  >
                     {String(i18n.t("garmentDetails.notes"))}:
                   </Text>
+
                   {profile.recommended.notes.map((n: string, i: number) => (
                     <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
                       • {n}
@@ -227,21 +284,46 @@ export default function GarmentDetailsScreen() {
           {/* CARE INSTRUCTIONS */}
           {profile?.care && (
             <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 22,
+                  fontWeight: "700",
+                  marginBottom: 6,
+                }}
+              >
                 {String(i18n.t("garmentDetails.careInstructions"))}
               </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.care.wash}</Text>
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.care.bleach}</Text>
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.care.dry}</Text>
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.care.iron}</Text>
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.care.dryclean}</Text>
+              <Text style={{ color: "#fff", marginTop: 6 }}>
+                {profile.care.wash}
+              </Text>
+              <Text style={{ color: "#fff", marginTop: 6 }}>
+                {profile.care.bleach}
+              </Text>
+              <Text style={{ color: "#fff", marginTop: 6 }}>
+                {profile.care.dry}
+              </Text>
+              <Text style={{ color: "#fff", marginTop: 6 }}>
+                {profile.care.iron}
+              </Text>
+              <Text style={{ color: "#fff", marginTop: 6 }}>
+                {profile.care.dryclean}
+              </Text>
 
               {profile.care.warnings?.length > 0 && (
                 <View style={{ marginTop: 10 }}>
-                  <Text style={{ color: "#fff", fontWeight: "600" }}>
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontWeight: "700",
+                      fontSize: 18,
+                      marginBottom: 4,
+                    }}
+                  >
                     {String(i18n.t("garmentDetails.warnings"))}:
                   </Text>
+
                   {profile.care.warnings.map((w: string, i: number) => (
                     <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
                       • {w}
@@ -255,20 +337,30 @@ export default function GarmentDetailsScreen() {
           {/* RISKS */}
           {profile?.risks && (
             <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 22,
+                  fontWeight: "700",
+                  marginBottom: 6,
+                }}
+              >
                 {String(i18n.t("garmentDetails.risks"))}
               </Text>
 
               <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("garmentDetails.riskShrinkage"))}: {profile.risks.shrinkage}
+                {String(i18n.t("garmentDetails.riskShrinkage"))}:{" "}
+                {profile.risks.shrinkage}
               </Text>
 
               <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("garmentDetails.riskColorBleeding"))}: {profile.risks.colorBleeding}
+                {String(i18n.t("garmentDetails.riskColorBleeding"))}:{" "}
+                {profile.risks.colorBleeding}
               </Text>
 
               <Text style={{ color: "#fff", marginTop: 6 }}>
-                {String(i18n.t("garmentDetails.riskDelicacy"))}: {profile.risks.delicacy}
+                {String(i18n.t("garmentDetails.riskDelicacy"))}:{" "}
+                {profile.risks.delicacy}
               </Text>
             </View>
           )}
@@ -276,7 +368,14 @@ export default function GarmentDetailsScreen() {
           {/* WASH FREQUENCY */}
           {profile?.washFrequency && (
             <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 22,
+                  fontWeight: "700",
+                  marginBottom: 6,
+                }}
+              >
                 {String(i18n.t("garmentDetails.washFrequency"))}
               </Text>
 
@@ -289,11 +388,18 @@ export default function GarmentDetailsScreen() {
           {/* CARE SYMBOLS */}
           {(profile?.careSymbols?.length ?? 0) > 0 && (
             <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 22,
+                  fontWeight: "700",
+                  marginBottom: 6,
+                }}
+              >
                 {String(i18n.t("garmentDetails.careSymbols"))}
               </Text>
 
-              {profile?.careSymbols?.map((sym: string, i: number) => (
+              {profile.careSymbols.map((sym: string, i: number) => (
                 <Text key={i} style={{ color: "#fff", marginTop: 4 }}>
                   • {sym}
                 </Text>
@@ -348,7 +454,6 @@ export default function GarmentDetailsScreen() {
               {String(i18n.t("garmentDetails.deleteGarment"))}
             </Text>
           </TouchableOpacity>
-
         </SafeAreaView>
       </ScrollView>
     </LinearGradient>
