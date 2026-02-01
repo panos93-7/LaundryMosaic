@@ -30,50 +30,50 @@ export type GarmentProfile = {
   careSymbols: string[];
 };
 
-export type Locale = string; // π.χ. "en", "el", "es", ...
+export type Locale = string;
 
-// Απλό interface για cache – εσύ το υλοποιείς όπως θες (AsyncStorage, SQLite, Zustand κλπ)
 export interface TranslationCache {
   get(garmentId: string, locale: Locale): Promise<GarmentProfile | null>;
   set(garmentId: string, locale: Locale, value: GarmentProfile): Promise<void>;
 }
 
-/**
- * Μεταφράζει ένα GarmentProfile σε targetLocale, με caching.
- * - Αν locale === "en" → επιστρέφει το original
- * - Αν υπάρχει cache → επιστρέφει cache
- * - Αλλιώς → καλεί Gemini proxy, μεταφράζει, κάνει cache, επιστρέφει
- */
 export async function translateGarmentProfile(
   original: GarmentProfile,
   targetLocale: Locale,
   garmentId: string,
   cache: TranslationCache
 ): Promise<GarmentProfile> {
-  // Base language: English → δεν χρειάζεται μετάφραση
   if (!targetLocale || targetLocale === "en") {
     return original;
   }
 
   try {
-    // 1. Δες αν υπάρχει ήδη cache
+    // 1. Check cache
     const cached = await cache.get(garmentId, targetLocale);
-    if (cached) {
-      return cached;
-    }
+    if (cached) return cached;
 
-    // 2. Κάλεσε τον ίδιο Cloudflare Worker για μετάφραση
+    // 2. Call translation worker
     const response = await fetch("https://gemini-proxy.panos-ai.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         prompt: `
-You are a professional translator.
-Translate the following JSON values into ${targetLocale}.
-Keep the JSON structure IDENTICAL.
-Translate ONLY the string values.
-Do NOT change keys, numbers, or array structure.
-Return ONLY valid JSON.
+You are a professional translator specializing in clothing, laundry care, and textile terminology.
+
+TASK:
+Translate ONLY the string values of the following JSON into the target language: ${targetLocale}.
+Keep the JSON structure 100% IDENTICAL.
+Do NOT add, remove, rename, or reorder keys.
+Do NOT change numbers, units, arrays, or formatting.
+Do NOT add explanations, comments, or extra text.
+Return ONLY valid JSON — no markdown, no code fences, no prose.
+
+IMPORTANT RULES:
+- Translate all descriptive fields naturally (name, type, fabric, color, pattern, stains, care, recommended, risks, washFrequency, careSymbols).
+- For risks (shrinkage, colorBleeding, delicacy), translate the meaning, NOT the literal English word. Use natural equivalents in the target language.
+- If a value is already numeric (e.g., 30, 800), keep it numeric.
+- If a value contains units (e.g., "30°C", "800 rpm"), keep the units.
+- If a value is an array of strings, translate each string.
 
 JSON to translate:
 ${JSON.stringify(original)}
@@ -91,21 +91,30 @@ ${JSON.stringify(original)}
     let rawText =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    const cleanedJson = rawText
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
+    // Remove markdown fences
+    rawText = rawText.replace(/```json/g, "").replace(/```/g, "");
+
+    // Extract JSON substring
+    const firstBrace = rawText.indexOf("{");
+    const lastBrace = rawText.lastIndexOf("}");
+
+    if (firstBrace === -1 || lastBrace === -1) {
+      console.log("❌ No JSON found in translation:", rawText);
+      return original;
+    }
+
+    const jsonString = rawText.substring(firstBrace, lastBrace + 1);
 
     let translated: GarmentProfile;
 
     try {
-      translated = JSON.parse(cleanedJson);
+      translated = JSON.parse(jsonString);
     } catch (e) {
-      console.log("❌ Failed to parse translated JSON:", cleanedJson);
+      console.log("❌ Failed to parse translated JSON:", jsonString);
       return original;
     }
 
-    // 3. Cache το αποτέλεσμα για αυτό το garment + locale
+    // 3. Cache translated result
     try {
       await cache.set(garmentId, targetLocale, translated);
     } catch (e) {

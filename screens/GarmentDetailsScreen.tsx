@@ -229,18 +229,26 @@ export default function GarmentDetailsScreen() {
             </View>
           )}
 
-          {/* RISKS */}
-          {profile?.risks && (
-            <View style={{ marginTop: 30 }}>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
-                {String(i18n.t("garmentDetails.risks"))}
-              </Text>
+{/* RISKS */}
+{profile?.risks && (
+  <View style={{ marginTop: 30 }}>
+    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "700" }}>
+      {String(i18n.t("garmentDetails.risks"))}
+    </Text>
 
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.risks.shrinkage}</Text>
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.risks.colorBleeding}</Text>
-              <Text style={{ color: "#fff", marginTop: 6 }}>{profile.risks.delicacy}</Text>
-            </View>
-          )}
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {String(i18n.t("garmentDetails.riskShrinkage"))}: {profile.risks.shrinkage}
+    </Text>
+
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {String(i18n.t("garmentDetails.riskColorBleeding"))}: {profile.risks.colorBleeding}
+    </Text>
+
+    <Text style={{ color: "#fff", marginTop: 6 }}>
+      {String(i18n.t("garmentDetails.riskDelicacy"))}: {profile.risks.delicacy}
+    </Text>
+  </View>
+)}
 
           {/* WASH FREQUENCY */}
           {profile?.washFrequency && (
