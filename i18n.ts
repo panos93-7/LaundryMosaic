@@ -30,9 +30,9 @@ i18n.translations = {
   ru,
   ja,
   ko,
-  zhTW,
-  ptPT,
-  ptBR
+  "zh-TW": zhTW,
+  "pt-PT": ptPT,
+  "pt-BR": ptBR
 };
 
 // @ts-ignore
