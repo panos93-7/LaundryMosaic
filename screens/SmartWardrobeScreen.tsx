@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
+import LottieView from "lottie-react-native";
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,6 +11,7 @@ import { useWardrobeStore } from "../store/wardrobeStore";
 import { translateGarmentProfile } from "../utils/AI/translateGarment";
 import { translationCache } from "../utils/AI/translationCache";
 import { analyzeGarmentPro } from "../utils/aiGarmentAnalyzerPro";
+
 
 export default function WardrobeScreen() {
   const navigation = useNavigation<any>();
@@ -109,13 +111,61 @@ export default function WardrobeScreen() {
 
         {/* AI LOADING */}
         {analyzing && (
-          <View style={{ marginBottom: 20 }}>
-            <Text style={{ color: "#fff", fontSize: 18 }}>
-              {String(i18n.t("wardrobe.analyzing"))}
-            </Text>
-          </View>
-        )}
+  <View
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0,0,0,0.65)",
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 30,
+      zIndex: 999,
+    }}
+  >
+    <View
+      style={{
+        backgroundColor: "rgba(15,12,41,0.9)",
+        borderRadius: 20,
+        paddingVertical: 24,
+        paddingHorizontal: 20,
+        alignItems: "center",
+        width: "80%",
+      }}
+    >
+      <LottieView
+        source={require("../wardrobe-analyzing.json")}
+        autoPlay
+        loop
+        style={{ width: 120, height: 120, marginBottom: 10 }}
+      />
 
+      <Text
+        style={{
+          color: "#fff",
+          fontSize: 18,
+          fontWeight: "600",
+          textAlign: "center",
+          marginBottom: 4,
+        }}
+      >
+        {String(i18n.t("wardrobe.analyzing"))}
+      </Text>
+
+      <Text
+        style={{
+          color: "rgba(255,255,255,0.7)",
+          fontSize: 14,
+          textAlign: "center",
+        }}
+      >
+        {String(i18n.t("wardrobe.analyzingSubtitle"))}
+      </Text>
+    </View>
+  </View>
+)}
         {/* EMPTY STATE */}
         {garments.length === 0 && !analyzing && (
           <View

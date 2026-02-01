@@ -185,7 +185,8 @@
  "wardrobe": {
   "title": "Intelligenter Kleiderschrank",
   "close": "Schließen",
-  "analyzing": "Kleidung wird analysiert…",
+  "analyzing": "Kleidungsstück wird analysiert…",
+  "analyzingSubtitle": "Die KI analysiert dein Kleidungsstück",
   "emptyTitle": "Dein Kleiderschrank ist leer",
   "emptySubtitle": "Füge Kleidung hinzu, um deinen Kleiderschrank zu organisieren und KI‑gestützte Outfit‑Empfehlungen zu erhalten.",
   "addButton": "Kleidung hinzufügen"

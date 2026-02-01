@@ -185,6 +185,7 @@
   "title": "Armario Inteligente",
   "close": "Cerrar",
   "analyzing": "Analizando prenda…",
+  "analyzingSubtitle": "La IA está analizando tu prenda",
   "emptyTitle": "Tu armario está vacío",
   "emptySubtitle": "Añade prendas para empezar a organizar tu armario y recibir recomendaciones con IA.",
   "addButton": "Añadir Prenda"

@@ -189,6 +189,7 @@
   "title": "스마트 옷장",
   "close": "닫기",
   "analyzing": "의류 분석 중…",
+  "analyzingSubtitle": "AI가 의류를 분석하고 있습니다",
   "emptyTitle": "옷장이 비어 있습니다",
   "emptySubtitle": "옷을 추가해 옷장을 정리하고 AI 기반 코디 추천을 받아보세요.",
   "addButton": "의류 추가"

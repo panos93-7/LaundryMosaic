@@ -189,6 +189,7 @@
   "title": "スマートワードローブ",
   "close": "閉じる",
   "analyzing": "衣類を分析中…",
+  "analyzingSubtitle": "AI が衣類を分析しています",
   "emptyTitle": "ワードローブは空です",
   "emptySubtitle": "衣類を追加して整理を始め、AIによるコーディネート提案を受け取りましょう。",
   "addButton": "衣類を追加"

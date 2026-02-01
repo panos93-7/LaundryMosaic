@@ -186,6 +186,7 @@
   "title": "Guardaroba Intelligente",
   "close": "Chiudi",
   "analyzing": "Analisi del capo…",
+  "analyzingSubtitle": "L’AI sta analizzando il tuo capo",
   "emptyTitle": "Il tuo guardaroba è vuoto",
   "emptySubtitle": "Aggiungi capi per organizzare il tuo guardaroba e ricevere consigli basati sull’IA.",
   "addButton": "Aggiungi capo"

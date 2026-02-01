@@ -186,9 +186,10 @@
   "regenerate": "Regenerar com IA"
  },
  "wardrobe": {
-  "title": "Roupeiro Inteligente",
+  "title": "Guarda‑roupa Inteligente",
   "close": "Fechar",
   "analyzing": "A analisar peça…",
+  "analyzingSubtitle": "A IA está a analisar a sua peça",
   "emptyTitle": "O seu roupeiro está vazio",
   "emptySubtitle": "Adicione peças para organizar o seu roupeiro e receber sugestões de looks com IA.",
   "addButton": "Adicionar Peça"

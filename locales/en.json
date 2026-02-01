@@ -186,10 +186,9 @@
   "title": "Smart Wardrobe",
   "close": "Close",
   "analyzing": "Analyzing garment…",
-
+  "analyzingSubtitle": "AI is analyzing your garment",
   "emptyTitle": "Your wardrobe is empty",
   "emptySubtitle": "Add garments to start organizing your wardrobe and get AI-powered outfit recommendations.",
-
   "addButton": "Add Garment"
  },
  "garmentDetails": {

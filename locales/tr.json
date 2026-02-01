@@ -185,7 +185,8 @@
  "wardrobe": {
   "title": "Akıllı Gardırop",
   "close": "Kapat",
-  "analyzing": "Kıyafet analiz ediliyor…",
+  "analyzing": "Giysi analiz ediliyor…",
+  "analyzingSubtitle": "Yapay zeka giysinizi analiz ediyor",
   "emptyTitle": "Gardırobun boş",
   "emptySubtitle": "Gardırobunu düzenlemek ve yapay zekâ destekli kombin önerileri almak için kıyafet ekle.",
   "addButton": "Kıyafet Ekle"

@@ -188,7 +188,8 @@
  "wardrobe": {
   "title": "智慧衣櫥",
   "close": "關閉",
-  "analyzing": "正在分析衣物…",
+  "analyzing": "正在分析服飾…",
+  "analyzingSubtitle": "AI 正在分析您的服飾",
   "emptyTitle": "你的衣櫥是空的",
   "emptySubtitle": "新增衣物即可開始整理衣櫥，並獲得 AI 穿搭建議。",
   "addButton": "新增衣物"

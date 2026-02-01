@@ -186,6 +186,7 @@
   "title": "Garde‑robe Intelligente",
   "close": "Fermer",
   "analyzing": "Analyse du vêtement…",
+  "analyzingSubtitle": "L’IA analyse votre vêtement",
   "emptyTitle": "Votre garde‑robe est vide",
   "emptySubtitle": "Ajoutez des vêtements pour organiser votre garde‑robe et recevoir des recommandations basées sur l’IA.",
   "addButton": "Ajouter un vêtement"

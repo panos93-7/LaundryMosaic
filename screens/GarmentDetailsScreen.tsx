@@ -299,6 +299,28 @@ export default function GarmentDetailsScreen() {
             </Text>
           </TouchableOpacity>
 
+          {/* DELETE BUTTON */}
+          <TouchableOpacity
+            onPress={handleDelete}
+            style={{
+              backgroundColor: "#ff6b6b",
+              padding: 14,
+              borderRadius: 12,
+              marginTop: 14,
+            }}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                textAlign: "center",
+                fontSize: 18,
+                fontWeight: "600",
+              }}
+            >
+              {String(i18n.t("garmentDetails.deleteGarment"))}
+            </Text>
+          </TouchableOpacity>
+
         </SafeAreaView>
       </ScrollView>
     </LinearGradient>
