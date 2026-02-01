@@ -234,15 +234,13 @@ export default function WardrobeScreen() {
               columnWrapperStyle={{ justifyContent: "space-between" }}
               renderItem={({ item }) => (
                 <GarmentCard
-                  item={item}
-                  onPress={() =>
-                    navigation.navigate("GarmentDetails", {
-                      garment: item,
-                      onSave: updateGarment,
-                      onDelete: deleteGarment,
-                    })
-                  }
-                />
+  item={item}
+  onPress={() =>
+    navigation.navigate("GarmentDetails", {
+      id: item.id,
+    })
+  }
+/>
               )}
             />
 
