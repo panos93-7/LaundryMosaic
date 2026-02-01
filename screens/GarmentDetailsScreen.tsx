@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
-
+import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
 import { translateGarmentProfile } from "../utils/AI/translateGarment";
 import { translationCache } from "../utils/AI/translationCache";
@@ -24,7 +24,7 @@ export default function GarmentDetailsScreen() {
   const deleteGarment = useWardrobeStore((s) => s.deleteGarment);
 
   // ⭐ FIX: locale always string
-  const locale: string = (i18n as any).language || "en";
+  const locale = useLanguageStore((s) => s.language);
 
   // ⭐ STABLE AI TRANSLATION EFFECT — NO LOOPS
   useEffect(() => {
