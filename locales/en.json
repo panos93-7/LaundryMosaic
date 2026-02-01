@@ -228,7 +228,8 @@
   "riskDelicacy": "Delicacy",
 
   "editGarment": "Edit Garment",
-  "deleteGarment": "Delete Garment"
+  "deleteGarment": "Delete Garment",
+  "warnings": "Warnings"
  },
  "history": {
   "title": "Wash History",

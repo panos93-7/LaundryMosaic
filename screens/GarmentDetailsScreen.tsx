@@ -9,8 +9,6 @@ import { useWardrobeStore } from "../store/wardrobeStore";
 import { translateGarmentProfile } from "../utils/AI/translateGarment";
 import { translationCache } from "../utils/AI/translationCache";
 
-
-
 export default function GarmentDetailsScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
@@ -26,7 +24,7 @@ export default function GarmentDetailsScreen() {
 
   const locale = (i18n as any).language;
 
-  // 🔥 AI TRANSLATION EFFECT — THIS FIXES EVERYTHING
+  // ⭐ FIXED: effect now runs when garment changes (not only id)
   useEffect(() => {
     async function run() {
       if (!garment) return;
@@ -50,7 +48,7 @@ export default function GarmentDetailsScreen() {
     }
 
     run();
-  }, [locale, garment?.id]);
+  }, [locale, garment]); // ⭐ THIS IS THE FIX
 
   if (!garment) {
     return (
