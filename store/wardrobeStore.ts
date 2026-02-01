@@ -27,7 +27,7 @@ type WardrobeState = {
 
   hydrate: () => Promise<void>;
   addGarment: (g: Garment) => Promise<void>;
-  updateGarment: (g: Garment) => Promise<void>;
+  updateGarment: (g: { id: number; profile: GarmentProfile }) => Promise<void>;
   deleteGarment: (id: number) => Promise<void>;
 };
 
@@ -63,11 +63,16 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
     }
   },
 
-  /* UPDATE GARMENT (MERGE, NOT REPLACE) */
+  /* UPDATE GARMENT — ONLY UPDATE PROFILE (SAFE) */
   updateGarment: async (g) => {
     try {
       const updated = get().garments.map((item) =>
-        item.id === g.id ? { ...item, ...g } : item
+        item.id === g.id
+          ? {
+              ...item,
+              profile: g.profile, // 🔥 ONLY replace profile
+            }
+          : item
       );
 
       set({ garments: updated });
