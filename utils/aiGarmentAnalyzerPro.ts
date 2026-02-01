@@ -64,19 +64,19 @@ Extract a complete garment profile with the following structure:
   },
 
   "risks": {
-    "shrinkage": "low | medium | high",
-    "colorBleeding": "low | medium | high",
-    "delicacy": "low | medium | high"
+    "shrinkage": "Low | Medium | High",
+    "colorBleeding": "Low | Medium | High",
+    "delicacy": "Low | Medium | High"
   },
 
   "washFrequency": "after 1 wear | after 2–3 wears | after heavy use",
 
   "careSymbols": [
-    "wash 30",
-    "no bleach",
-    "tumble low",
-    "iron low",
-    "no dryclean"
+    "Wash 30",
+    "No bleach",
+    "Tumble low",
+    "Iron low",
+    "No dryclean"
   ]
 }
 

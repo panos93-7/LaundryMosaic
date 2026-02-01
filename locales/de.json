@@ -207,11 +207,11 @@
 
   "stainsDetected": "Flecken erkannt:",
 
-  "careInstructions": "Pflegehinweise",
+  "careInstructions": "Pflegehinweise:",
   "recommendedTemp": "Empfohlene Temperatur",
   "spinSpeed": "Schleudergeschwindigkeit",
 
-  "recommendedWashProgram": "Empfohlenes Waschprogramm",
+  "recommendedWashProgram": "Empfohlenes Waschprogramm:",
   "program": "Programm",
   "temp": "Temperatur",
   "spin": "Schleudern",
@@ -227,9 +227,9 @@
 
   "detergent": "Waschmittel",
   "notes": "Hinweise",
-  "risks": "Risiken",
-  "washFrequency": "Waschhäufigkeit",
-  "careSymbols": "Pflegesymbole"
+  "risks": "Risiken:",
+  "washFrequency": "Waschhäufigkeit:",
+  "careSymbols": "Pflegesymbole:"
  },
  "history": {
   "title": "Waschhistorie",

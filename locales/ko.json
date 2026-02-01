@@ -210,11 +210,11 @@
 
   "stainsDetected": "얼룩 감지됨:",
 
-  "careInstructions": "관리 방법",
+  "careInstructions": "관리 방법:",
   "recommendedTemp": "권장 온도",
   "spinSpeed": "탈수 속도",
 
-  "recommendedWashProgram": "권장 세탁 프로그램",
+  "recommendedWashProgram": "권장 세탁 프로그램:",
   "program": "프로그램",
   "temp": "온도",
   "spin": "탈수",
@@ -230,9 +230,9 @@
   
   "detergent": "세제",
   "notes": "주의사항",
-  "risks": "위험도",
-  "washFrequency": "세탁 주기",
-  "careSymbols": "케어 심볼"
+  "risks": "위험도:",
+  "washFrequency": "세탁 주기:",
+  "careSymbols": "케어 심볼:"
  },
  "history": {
   "title": "세탁 기록",

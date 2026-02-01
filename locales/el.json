@@ -207,11 +207,11 @@
 
   "stainsDetected": "Εντοπίστηκαν λεκέδες:",
 
-  "careInstructions": "Οδηγίες Φροντίδας",
+  "careInstructions": "Οδηγίες Φροντίδας:",
   "recommendedTemp": "Προτεινόμενη Θερμοκρασία",
   "spinSpeed": "Ταχύτητα Στυψίματος",
 
-  "recommendedWashProgram": "Προτεινόμενο Πρόγραμμα Πλυσίματος",
+  "recommendedWashProgram": "Προτεινόμενο Πρόγραμμα Πλυσίματος:",
   "program": "Πρόγραμμα",
   "temp": "Θερμοκρασία",
   "spin": "Στύψιμο",
@@ -224,9 +224,9 @@
   "deleteGarment": "Διαγραφή Ρούχου",
   "detergent": "Απορρυπαντικό",
   "notes": "Σημειώσεις",
-  "risks": "Κίνδυνοι",
-  "washFrequency": "Συχνότητα πλυσίματος",
-  "careSymbols": "Σύμβολα φροντίδας",
+  "risks": "Κίνδυνοι:",
+  "washFrequency": "Συχνότητα πλυσίματος:",
+  "careSymbols": "Σύμβολα φροντίδας:",
   "warnings": "Προειδοποιήσεις",
   "translating": "Μετάφραση"
  },

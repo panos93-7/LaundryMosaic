@@ -210,11 +210,11 @@
 
   "stainsDetected": "Manchas detetadas:",
 
-  "careInstructions": "Instruções de Cuidado",
+  "careInstructions": "Instruções de Cuidado:",
   "recommendedTemp": "Temperatura Recomendada",
   "spinSpeed": "Velocidade de Centrifugação",
 
-  "recommendedWashProgram": "Programa de Lavagem Recomendado",
+  "recommendedWashProgram": "Programa de Lavagem Recomendado:",
   "program": "Programa",
   "temp": "Temperatura",
   "spin": "Centrifugação",
@@ -230,9 +230,9 @@
   
   "detergent": "Detergente",
   "notes": "Notas",
-  "risks": "Riscos",
-  "washFrequency": "Frequência de lavagem",
-  "careSymbols": "Símbolos de cuidado"
+  "risks": "Riscos:",
+  "washFrequency": "Frequência de lavagem:",
+  "careSymbols": "Símbolos de cuidado:"
  },
  "history": {
   "title": "Histórico de Lavagens",

@@ -207,11 +207,11 @@
 
   "stainsDetected": "Обнаружены пятна:",
 
-  "careInstructions": "Инструкции по уходу",
+  "careInstructions": "Инструкции по уходу:",
   "recommendedTemp": "Рекомендуемая температура",
   "spinSpeed": "Скорость отжима",
 
-  "recommendedWashProgram": "Рекомендуемая программа стирки",
+  "recommendedWashProgram": "Рекомендуемая программа стирки:",
   "program": "Программа",
   "temp": "Температура",
   "spin": "Отжим",
@@ -227,9 +227,9 @@
   
   "detergent": "Моющее средство",
   "notes": "Заметки",
-  "risks": "Риски",
-  "washFrequency": "Частота стирки",
-  "careSymbols": "Знаки ухода"
+  "risks": "Риски:",
+  "washFrequency": "Частота стирки:",
+  "careSymbols": "Знаки ухода:"
 
  },
  "history": {

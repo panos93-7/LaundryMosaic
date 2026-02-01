@@ -207,11 +207,11 @@
 
   "stainsDetected": "Stains detected:",
 
-  "careInstructions": "Care Instructions",
+  "careInstructions": "Care Instructions:",
   "recommendedTemp": "Recommended Temp",
   "spinSpeed": "Spin Speed",
 
-  "recommendedWashProgram": "Recommended Wash Program",
+  "recommendedWashProgram": "Recommended Wash Program:",
   "program": "Program",
   "temp": "Temp",
   "spin": "Spin",
@@ -219,9 +219,9 @@
   "detergent": "Detergent",
   "notes": "Notes",
 
-  "risks": "Risks",
-  "washFrequency": "Wash Frequency",
-  "careSymbols": "Care Symbols",
+  "risks": "Risks:",
+  "washFrequency": "Wash Frequency:",
+  "careSymbols": "Care Symbols:",
 
   "riskShrinkage": "Shrinkage",
   "riskColorBleeding": "Color bleeding",

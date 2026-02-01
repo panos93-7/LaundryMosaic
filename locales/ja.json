@@ -210,11 +210,11 @@
 
   "stainsDetected": "汚れを検出:",
 
-  "careInstructions": "お手入れ方法",
+  "careInstructions": "お手入れ方法:",
   "recommendedTemp": "推奨温度",
   "spinSpeed": "脱水速度",
 
-  "recommendedWashProgram": "推奨洗濯プログラム",
+  "recommendedWashProgram": "推奨洗濯プログラム:",
   "program": "プログラム",
   "temp": "温度",
   "spin": "脱水",
@@ -230,9 +230,9 @@
   
   "detergent": "洗剤",
   "notes": "注意事項",
-  "risks": "リスク",
-  "washFrequency": "洗濯頻度",
-  "careSymbols": "ケアシンボル"
+  "risks": "リスク:",
+  "washFrequency": "洗濯頻度:",
+  "careSymbols": "ケアシンボル:"
  },
  "history": {
   "title": "洗濯履歴",

@@ -207,11 +207,11 @@
 
   "stainsDetected": "Taches détectées :",
 
-  "careInstructions": "Instructions d’Entretien",
+  "careInstructions": "Instructions d’Entretien:",
   "recommendedTemp": "Température Recommandée",
   "spinSpeed": "Vitesse d’Essorage",
 
-  "recommendedWashProgram": "Programme de Lavage Recommandé",
+  "recommendedWashProgram": "Programme de Lavage Recommandé:",
   "program": "Programme",
   "temp": "Température",
   "spin": "Essorage",
@@ -227,9 +227,9 @@
 
   "detergent": "Détergent",
   "notes": "Notes",
-  "risks": "Risques",
-  "washFrequency": "Fréquence de lavage",
-  "careSymbols": "Symboles d’entretien"
+  "risks": "Risques:",
+  "washFrequency": "Fréquence de lavage:",
+  "careSymbols": "Symboles d’entretien:"
  },
  "history": {
   "title": "Historique de Lavage",

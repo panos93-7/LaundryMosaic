@@ -207,11 +207,11 @@
 
   "stainsDetected": "Lekeler tespit edildi:",
 
-  "careInstructions": "Bakım Talimatları",
+  "careInstructions": "Bakım Talimatları:",
   "recommendedTemp": "Önerilen Sıcaklık",
   "spinSpeed": "Sıkma Hızı",
 
-  "recommendedWashProgram": "Önerilen Yıkama Programı",
+  "recommendedWashProgram": "Önerilen Yıkama Programı:",
   "program": "Program",
   "temp": "Sıcaklık",
   "spin": "Sıkma",
@@ -227,9 +227,9 @@
   
   "detergent": "Deterjan",
   "notes": "Notlar",
-  "risks": "Riskler",
-  "washFrequency": "Yıkama sıklığı",
-  "careSymbols": "Bakım sembolleri"
+  "risks": "Riskler:",
+  "washFrequency": "Yıkama sıklığı:",
+  "careSymbols": "Bakım sembolleri:"
  },
  "history": {
   "title": "Yıkama Geçmişi",

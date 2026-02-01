@@ -210,11 +210,11 @@
 
   "stainsDetected": "偵測到污漬：",
 
-  "careInstructions": "保養方式",
+  "careInstructions": "保養方式:",
   "recommendedTemp": "建議溫度",
   "spinSpeed": "脫水速度",
 
-  "recommendedWashProgram": "建議洗衣行程",
+  "recommendedWashProgram": "建議洗衣行程:",
   "program": "行程",
   "temp": "溫度",
   "spin": "脫水",
@@ -227,9 +227,9 @@
   "deleteGarment": "刪除衣物",
   "detergent": "洗衣精",
   "notes": "備註",
-  "risks": "風險",
-  "washFrequency": "清洗頻率",
-  "careSymbols": "洗滌符號",
+  "risks": "風險:",
+  "washFrequency": "清洗頻率:",
+  "careSymbols": "洗滌符號:",
   "warnings": "注意事項",
   "translating": "翻譯中"
 
