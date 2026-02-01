@@ -34,12 +34,14 @@ export function GarmentCard({ item, onPress }: any) {
         )}
       </View>
 
+      {/* TITLE — ALWAYS TRANSLATED */}
       <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
-        {item.name}
+        {item.profile?.name ?? item.original?.name}
       </Text>
 
+      {/* SUBTITLE — ALWAYS TRANSLATED */}
       <Text style={{ color: "#aaa", fontSize: 13, marginTop: 2 }}>
-        {item.type}
+        {item.profile?.type ?? item.original?.type}
       </Text>
     </TouchableOpacity>
   );

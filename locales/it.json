@@ -216,6 +216,10 @@
   "temp": "Temperatura",
   "spin": "Centrifuga",
 
+  "riskShrinkage": "Restrizione",
+  "riskColorBleeding": "Scolorimento",
+  "riskDelicacy": "Delicatezza",
+
   "editGarment": "Modifica Indumento",
   "deleteGarment": "Elimina Indumento",
 

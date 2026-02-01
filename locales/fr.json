@@ -216,6 +216,10 @@
   "temp": "Température",
   "spin": "Essorage",
 
+  "riskShrinkage": "Rétrécissement",
+  "riskColorBleeding": "Dégorgement des couleurs",
+  "riskDelicacy": "Délicatesse",
+
   "editGarment": "Modifier le Vêtement",
   "deleteGarment": "Supprimer le Vêtement",
 

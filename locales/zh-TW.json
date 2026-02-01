@@ -219,6 +219,10 @@
   "temp": "溫度",
   "spin": "脫水",
 
+  "riskShrinkage": "縮水",
+  "riskColorBleeding": "掉色",
+  "riskDelicacy": "易損性",
+
   "editGarment": "編輯衣物",
   "deleteGarment": "刪除衣物",
   "detergent": "洗衣精",

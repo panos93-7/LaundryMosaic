@@ -216,6 +216,10 @@
   "temp": "Температура",
   "spin": "Отжим",
 
+  "riskShrinkage": "Усадка",
+  "riskColorBleeding": "Линька цвета",
+  "riskDelicacy": "Деликатность",
+
   "editGarment": "Редактировать вещь",
   "deleteGarment": "Удалить вещь",
   

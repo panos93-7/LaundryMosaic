@@ -219,6 +219,10 @@
   "temp": "温度",
   "spin": "脱水",
 
+  "riskShrinkage": "縮み",
+  "riskColorBleeding": "色落ち",
+  "riskDelicacy": "デリケートさ",
+
   "editGarment": "衣類を編集",
   "deleteGarment": "衣類を削除",
   

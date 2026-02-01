@@ -23,10 +23,40 @@ export default function WardrobeScreen() {
   const hydrate = useWardrobeStore((s) => s.hydrate);
 
   const [analyzing, setAnalyzing] = useState(false);
-
+  const locale = (i18n as any).language;
   useEffect(() => {
     hydrate();
   }, []);
+useEffect(() => {
+  async function translateAll() {
+    if (garments.length === 0) return;
+
+    const translatedProfiles = await Promise.all(
+      garments.map(async (g) => {
+        const translated =
+          locale === "en"
+            ? g.original
+            : await translateGarmentProfile(
+                g.original,
+                locale,
+                g.id.toString(),
+                translationCache
+              );
+
+        return {
+          ...g,
+          profile: translated,
+        };
+      })
+    );
+
+    for (const updated of translatedProfiles) {
+      updateGarment(updated);
+    }
+  }
+
+  translateAll();
+}, [locale]);
 
   const handleAddGarment = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({

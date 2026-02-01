@@ -219,6 +219,10 @@
   "temp": "온도",
   "spin": "탈수",
 
+  "riskShrinkage": "수축",
+  "riskColorBleeding": "물빠짐",
+  "riskDelicacy": "섬세함",
+
   "editGarment": "의류 편집",
   "deleteGarment": "의류 삭제",
   

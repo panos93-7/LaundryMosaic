@@ -216,6 +216,10 @@
   "temp": "Temperatur",
   "spin": "Schleudern",
 
+  "riskShrinkage": "Einlaufen",
+  "riskColorBleeding": "Ausbluten der Farbe",
+  "riskDelicacy": "Empfindlichkeit",
+
   "editGarment": "Kleidungsstück Bearbeiten",
   "deleteGarment": "Kleidungsstück Löschen",
 

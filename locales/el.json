@@ -216,6 +216,10 @@
   "temp": "Θερμοκρασία",
   "spin": "Στύψιμο",
 
+  "riskShrinkage": "Συρρίκνωση",
+  "riskColorBleeding": "Ξεβάψιμο",
+  "riskDelicacy": "Ευαισθησία",
+
   "editGarment": "Επεξεργασία Ρούχου",
   "deleteGarment": "Διαγραφή Ρούχου",
   "detergent": "Απορρυπαντικό",

@@ -216,6 +216,10 @@
   "temp": "Sıcaklık",
   "spin": "Sıkma",
 
+  "riskShrinkage": "Çekme",
+  "riskColorBleeding": "Renk akması",
+  "riskDelicacy": "Hassasiyet",
+
   "editGarment": "Giysiyi Düzenle",
   "deleteGarment": "Giysiyi Sil",
   

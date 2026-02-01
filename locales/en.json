@@ -223,6 +223,10 @@
   "washFrequency": "Wash Frequency",
   "careSymbols": "Care Symbols",
 
+  "riskShrinkage": "Shrinkage",
+  "riskColorBleeding": "Color bleeding",
+  "riskDelicacy": "Delicacy",
+
   "editGarment": "Edit Garment",
   "deleteGarment": "Delete Garment"
  },

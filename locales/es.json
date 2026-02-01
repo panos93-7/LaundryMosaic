@@ -215,6 +215,10 @@
   "temp": "Temperatura",
   "spin": "Centrifugado",
 
+  "riskShrinkage": "Encogimiento",
+  "riskColorBleeding": "Pérdida de color",
+  "riskDelicacy": "Delicadeza",
+
   "editGarment": "Editar Prenda",
   "deleteGarment": "Eliminar Prenda",
 
