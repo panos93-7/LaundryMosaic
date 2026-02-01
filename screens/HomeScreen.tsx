@@ -17,7 +17,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FeatureGrid } from "../components/FeatureGrid";
 import { darkTheme, lightTheme } from "../constants/theme";
 import i18n from "../i18n";
+import { useLanguageStore } from "../store/languageStore";
 import { useScanStore } from "../store/scanStore";
+
 
 /* ---------------------------------------------------------
    STYLES
@@ -220,6 +222,7 @@ export default function HomeScreen({ navigation }: any) {
   ];
 
   const [language, setLanguage] = useState(i18n.locale);
+  const setGlobalLanguage = useLanguageStore((s) => s.setLanguage);
 
   /* Load theme */
   useEffect(() => {
@@ -260,8 +263,9 @@ export default function HomeScreen({ navigation }: any) {
   };
 
   const handleLanguageChange = (value: string) => {
-    setLanguage(value);
-    i18n.locale = value;
+  setLanguage(value);
+  i18n.locale = value;
+  setGlobalLanguage(value); // ⭐ ενημερώνει ΟΛΟ το app
   };
 
   const handleStart = () => {

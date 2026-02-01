@@ -7,11 +7,11 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GarmentCard } from "../components/GarmentCard";
 import i18n from "../i18n";
+import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
 import { translateGarmentProfile } from "../utils/AI/translateGarment";
 import { translationCache } from "../utils/AI/translationCache";
 import { analyzeGarmentPro } from "../utils/aiGarmentAnalyzerPro";
-
 
 export default function WardrobeScreen() {
   const navigation = useNavigation<any>();
@@ -23,7 +23,8 @@ export default function WardrobeScreen() {
   const hydrate = useWardrobeStore((s) => s.hydrate);
 
   const [analyzing, setAnalyzing] = useState(false);
-  const locale = i18n.locale;
+  const locale = useLanguageStore((s) => s.language);
+
   useEffect(() => {
     hydrate();
   }, []);
