@@ -483,41 +483,54 @@ export default function SmartScanScreen({ navigation }: any) {
       transform: [{ scale: pulseAnim }],
     }}
   >
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("Paywall", { source: "stainTips" })
-      }
-      activeOpacity={0.9}
+<TouchableOpacity
+  onPress={() =>
+    navigation.navigate("Paywall", { source: "stainTips" })
+  }
+  activeOpacity={0.9}
+  style={{
+    width: "100%",
+    backgroundColor: "#F5C15C",
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  <View style={{ alignItems: "center" }}>
+    <Text
       style={{
-        width: "100%",
-        backgroundColor: "#F5C15C",
-        paddingVertical: 14,
-        borderRadius: 12,
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row",
-        gap: 8,
+        color: "#000",
+        fontSize: 17,
+        fontWeight: "700",
       }}
     >
-      {/* PRO capsule */}
-      <View
-        style={{
-          backgroundColor: "#000",
-          paddingHorizontal: 8,
-          paddingVertical: 3,
-          borderRadius: 6,
-        }}
-      >
-        <Text
-          style={{
-            color: "#F5C15C",
-            fontSize: 13,
-            fontWeight: "800",
-          }}
-        >
-          PRO
-        </Text>
-      </View>
+      Ξεκλείδωσε οδηγίες αφαίρεσης
+    </Text>
+
+    <Text
+      style={{
+        color: "#000",
+        fontSize: 17,
+        fontWeight: "700",
+        marginTop: -2,
+      }}
+    >
+      λεκέδων
+    </Text>
+
+    <Text
+      style={{
+        color: "#000",
+        fontSize: 13,
+        fontWeight: "800",
+        marginTop: 4,
+        opacity: 0.8,
+      }}
+    >
+      PRO
+    </Text>
+  </View>
 
       {/* CTA text */}
       <Text
