@@ -491,7 +491,7 @@ export default function SmartScanScreen({ navigation }: any) {
   activeOpacity={0.9}
   style={{
     width: "100%",
-    backgroundColor: "#3A5BFF",   // ⭐ metallic blue
+    backgroundColor: "#2E3FEF",   // ⭐ metallic blue
     paddingVertical: 18,
     borderRadius: 14,
     alignItems: "center",
@@ -506,7 +506,7 @@ export default function SmartScanScreen({ navigation }: any) {
     {/* Line 1 */}
     <Text
       style={{
-        color: "#FFD86B",          // ⭐ vibrant gold
+        color: "#FFCC4D",         
         fontSize: 17,
         fontWeight: "700",
       }}
@@ -517,7 +517,7 @@ export default function SmartScanScreen({ navigation }: any) {
     {/* Line 2 */}
     <Text
       style={{
-        color: "#FFD86B",
+        color: "#FFCC4D",
         fontSize: 17,
         fontWeight: "700",
         marginTop: -2,
@@ -529,7 +529,7 @@ export default function SmartScanScreen({ navigation }: any) {
     {/* PRO */}
     <Text
       style={{
-        color: "#FFD86B",
+        color: "#FFCC4D",
         fontSize: 16,              // ⭐ πιο μεγάλο
         fontWeight: "900",         // ⭐ πιο premium
         marginTop: 4,
