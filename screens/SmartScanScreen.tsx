@@ -491,7 +491,7 @@ export default function SmartScanScreen({ navigation }: any) {
   activeOpacity={0.9}
   style={{
     width: "100%",
-    backgroundColor: "#3F3F46",   // ⭐ πιο ανοιχτό, δεν φαίνεται μαύρο
+    backgroundColor: "#4A4A55",   // premium cool grey
     paddingVertical: 18,
     borderRadius: 14,
     alignItems: "center",
@@ -502,9 +502,10 @@ export default function SmartScanScreen({ navigation }: any) {
   }}
 >
   <View style={{ alignItems: "center" }}>
+    {/* Line 1 */}
     <Text
       style={{
-        color: "#F5C15C",
+        color: "#FFD37A",          // ⭐ πιο gold
         fontSize: 17,
         fontWeight: "700",
       }}
@@ -512,9 +513,10 @@ export default function SmartScanScreen({ navigation }: any) {
       {i18n.t("smartScan.unlockStainCare").split(" ").slice(0, 3).join(" ")}
     </Text>
 
+    {/* Line 2 */}
     <Text
       style={{
-        color: "#F5C15C",
+        color: "#FFD37A",
         fontSize: 17,
         fontWeight: "700",
         marginTop: -2,
@@ -523,13 +525,14 @@ export default function SmartScanScreen({ navigation }: any) {
       {i18n.t("smartScan.unlockStainCare").split(" ").slice(3).join(" ")}
     </Text>
 
+    {/* PRO */}
     <Text
       style={{
-        color: "#F5C15C",
-        fontSize: 13,
-        fontWeight: "800",
+        color: "#FFD37A",
+        fontSize: 15,              // ⭐ λίγο μεγαλύτερο
+        fontWeight: "900",         // ⭐ πιο premium
         marginTop: 4,
-        opacity: 0.9,
+        opacity: 0.95,
       }}
     >
       PRO
