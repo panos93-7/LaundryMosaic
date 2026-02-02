@@ -505,7 +505,7 @@ export default function SmartScanScreen({ navigation }: any) {
         fontWeight: "700",
       }}
     >
-      Ξεκλείδωσε οδηγίες αφαίρεσης
+      Unlock stain removal
     </Text>
 
     <Text
@@ -516,7 +516,7 @@ export default function SmartScanScreen({ navigation }: any) {
         marginTop: -2,
       }}
     >
-      λεκέδων
+      tips
     </Text>
 
     <Text
