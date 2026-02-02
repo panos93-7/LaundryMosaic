@@ -475,64 +475,69 @@ export default function SmartScanScreen({ navigation }: any) {
                             </View>
                           ))}
                         </View>
-                      ) : (
-                        // ⭐ Annual / Monthly → βλέπουν detection αλλά όχι tips
-                        <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
-                          <Animated.View
-                            style={{
-                              width: "100%",
-                              transform: [{ scale: pulseAnim }],
-                            }}
-                          >
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("Paywall", { source: "stainTips" })
-                              }
-                              activeOpacity={0.85}
-                              style={{
-                                width: "100%",
-                                backgroundColor: "#FFB300",
-                                paddingVertical: 14,
-                                borderRadius: 12,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                shadowColor: "#000",
-                                shadowOpacity: 0.15,
-                                shadowRadius: 6,
-                                shadowOffset: { width: 0, height: 3 },
-                                elevation: 4,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  color: "#000",
-                                  fontSize: 18,
-                                  fontWeight: "600",
-                                }}
-                              >
-                                {i18n.t("smartScan.unlockStainCare")}
-                              </Text>
-                            </TouchableOpacity>
-                          </Animated.View>
+) : (
+  <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
+    <Animated.View
+      style={{
+        width: "100%",
+        transform: [{ scale: pulseAnim }],
+      }}
+    >
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Paywall", { source: "stainTips" })
+        }
+        activeOpacity={0.88}
+        style={{
+          width: "100%",
+          backgroundColor: "#FFB300",
+          paddingVertical: 16,
+          borderRadius: 14,
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "row",
+          gap: 10,
+          shadowColor: "#FFB300",
+          shadowOpacity: 0.35,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 4 },
+          elevation: 6,
+        }}
+      >
+        {/* PRO capsule */}
+        <View
+          style={{
+            backgroundColor: "#000",
+            paddingHorizontal: 10,
+            paddingVertical: 4,
+            borderRadius: 8,
+          }}
+        >
+          <Text
+            style={{
+              color: "#FFB300",
+              fontSize: 14,
+              fontWeight: "800",
+            }}
+          >
+            PRO
+          </Text>
+        </View>
 
-                          {/* PRO BADGE */}
-                          <Text
-                            style={{
-                              marginTop: 6,
-                              fontSize: 12,
-                              fontWeight: "700",
-                              color: "#FFB300",
-                              backgroundColor: "#000",
-                              paddingHorizontal: 10,
-                              paddingVertical: 3,
-                              borderRadius: 6,
-                              overflow: "hidden",
-                            }}
-                          >
-                            PRO
-                          </Text>
-                        </View>
-                      )}
+        {/* CTA text */}
+        <Text
+          style={{
+            color: "#000",
+            fontSize: 18,
+            fontWeight: "700",
+          }}
+        >
+          {i18n.t("smartScan.unlockStainCare")}
+        </Text>
+      </TouchableOpacity>
+    </Animated.View>
+  </View>
+)}
                     </View>
                   )}
 
