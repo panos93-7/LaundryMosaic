@@ -491,7 +491,7 @@ export default function SmartScanScreen({ navigation }: any) {
   activeOpacity={0.9}
   style={{
     width: "100%",
-    backgroundColor: "#2E3FEF",   // ⭐ metallic blue
+    backgroundColor: "#1E2A45",   // ⭐ metallic blue
     paddingVertical: 18,
     borderRadius: 14,
     alignItems: "center",
