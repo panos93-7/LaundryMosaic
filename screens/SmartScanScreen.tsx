@@ -491,21 +491,20 @@ export default function SmartScanScreen({ navigation }: any) {
   activeOpacity={0.9}
   style={{
     width: "100%",
-    backgroundColor: "#1A1A1A",   // ⭐ charcoal, ταιριάζει με το UI
+    backgroundColor: "#262626",   // ⭐ warm dark grey (όχι μαύρο)
     paddingVertical: 18,
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
 
-    // subtle outline για premium look
     borderWidth: 1.5,
-    borderColor: "rgba(255,255,255,0.08)",
+    borderColor: "rgba(255,255,255,0.06)", // subtle premium outline
   }}
 >
   <View style={{ alignItems: "center" }}>
     <Text
       style={{
-        color: "#F5C15C",          // ⭐ gold text
+        color: "#F5C15C",          // gold
         fontSize: 17,
         fontWeight: "700",
       }}
