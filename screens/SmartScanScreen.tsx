@@ -436,115 +436,109 @@ export default function SmartScanScreen({ navigation }: any) {
                       </Text>
 
 {/* PRO / NON-PRO SECTION */}
-                      {canSeeStainTips ? (
-                        // ⭐ PRO → βλέπει stain removal tips
-                        <View>
-                          {result.stainTips.map((tip: any, i: number) => (
-                            <View
-                              key={i}
-                              style={{
-                                backgroundColor: "rgba(255,255,255,0.08)",
-                                padding: 14,
-                                borderRadius: 12,
-                                marginBottom: 12,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  color: "#fff",
-                                  fontSize: 16,
-                                  fontWeight: "600",
-                                  marginBottom: 6,
-                                }}
-                              >
-                                {tip.stain}
-                              </Text>
-
-                              {tip.steps.map((step: string, idx: number) => (
-                                <Text
-                                  key={idx}
-                                  style={{
-                                    color: "rgba(255,255,255,0.85)",
-                                    marginBottom: 4,
-                                    fontSize: 14,
-                                  }}
-                                >
-                                  {idx + 1}. {step}
-                                </Text>
-                              ))}
-                            </View>
-                          ))}
-                        </View>
-) : (
-<View style={{ width: "100%", alignItems: "center", marginTop: 26 }}>
-  <Animated.View
-    style={{
-      width: "100%",
-      transform: [{ scale: pulseAnim }],
-    }}
-  >
-<TouchableOpacity
-  onPress={() =>
-    navigation.navigate("Paywall", { source: "stainTips" })
-  }
-  activeOpacity={0.9}
-  style={{
-    width: "100%",
-    backgroundColor: "#F5C15C",
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: "center",
-    justifyContent: "center",
-  }}
->
-  <View style={{ alignItems: "center" }}>
-    <Text
-      style={{
-        color: "#000",
-        fontSize: 17,
-        fontWeight: "700",
-      }}
-    >
-      Unlock stain removal
-    </Text>
-
-    <Text
-      style={{
-        color: "#000",
-        fontSize: 17,
-        fontWeight: "700",
-        marginTop: -2,
-      }}
-    >
-      tips
-    </Text>
-
-    <Text
-      style={{
-        color: "#000",
-        fontSize: 13,
-        fontWeight: "800",
-        marginTop: 4,
-        opacity: 0.8,
-      }}
-    >
-      PRO
-    </Text>
-  </View>
-
-      {/* CTA text */}
-      <Text
+{canSeeStainTips ? (
+  // ⭐ PRO → βλέπει stain removal tips
+  <View>
+    {result.stainTips.map((tip: any, i: number) => (
+      <View
+        key={i}
         style={{
-          color: "#000",
-          fontSize: 17,
-          fontWeight: "700",
+          backgroundColor: "rgba(255,255,255,0.08)",
+          padding: 14,
+          borderRadius: 12,
+          marginBottom: 12,
         }}
       >
-        {i18n.t("smartScan.unlockStainCare")}
-      </Text>
-    </TouchableOpacity>
-  </Animated.View>
-</View>
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 16,
+            fontWeight: "600",
+            marginBottom: 6,
+          }}
+        >
+          {tip.stain}
+        </Text>
+
+        {tip.steps.map((step: string, idx: number) => (
+          <Text
+            key={idx}
+            style={{
+              color: "rgba(255,255,255,0.85)",
+              marginBottom: 4,
+              fontSize: 14,
+            }}
+          >
+            {idx + 1}. {step}
+          </Text>
+        ))}
+      </View>
+    ))}
+  </View>
+) : (
+  // ⭐ NON-PRO → CTA
+  <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
+    <Animated.View
+      style={{
+        width: "100%",
+        transform: [{ scale: pulseAnim }],
+      }}
+    >
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Paywall", { source: "stainTips" })
+        }
+        activeOpacity={0.88}
+        style={{
+          width: "100%",
+          backgroundColor: "#FFB300",
+          paddingVertical: 16,
+          borderRadius: 14,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {/* Vertical CTA */}
+        <View style={{ alignItems: "center" }}>
+          {/* Line 1 */}
+          <Text
+            style={{
+              color: "#000",
+              fontSize: 17,
+              fontWeight: "700",
+            }}
+          >
+            {i18n.t("smartScan.unlockStainCare").split(" ").slice(0, 3).join(" ")}
+          </Text>
+
+          {/* Line 2 */}
+          <Text
+            style={{
+              color: "#000",
+              fontSize: 17,
+              fontWeight: "700",
+              marginTop: -2,
+            }}
+          >
+            {i18n.t("smartScan.unlockStainCare").split(" ").slice(3).join(" ")}
+          </Text>
+
+          {/* PRO */}
+          <Text
+            style={{
+              color: "#000",
+              fontSize: 13,
+              fontWeight: "800",
+              marginTop: 4,
+              opacity: 0.8,
+            }}
+          >
+            PRO
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
+  </View>
 )}
                     </View>
                   )}
