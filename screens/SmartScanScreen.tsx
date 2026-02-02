@@ -491,7 +491,7 @@ export default function SmartScanScreen({ navigation }: any) {
   activeOpacity={0.9}
   style={{
     width: "100%",
-    backgroundColor: "#4A4A4A",   // ⭐ πιο ανοιχτό, δεν φαίνεται μαύρο
+    backgroundColor: "#3F3F46",   // ⭐ πιο ανοιχτό, δεν φαίνεται μαύρο
     paddingVertical: 18,
     borderRadius: 14,
     alignItems: "center",
