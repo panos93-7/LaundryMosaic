@@ -484,59 +484,59 @@ export default function SmartScanScreen({ navigation }: any) {
         transform: [{ scale: pulseAnim }],
       }}
     >
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Paywall", { source: "stainTips" })
-        }
-        activeOpacity={0.88}
-        style={{
-          width: "100%",
-          backgroundColor: "#FFB300",
-          paddingVertical: 16,
-          borderRadius: 14,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {/* Vertical CTA */}
-        <View style={{ alignItems: "center" }}>
-          {/* Line 1 */}
-          <Text
-            style={{
-              color: "#000",
-              fontSize: 17,
-              fontWeight: "700",
-            }}
-          >
-            {i18n.t("smartScan.unlockStainCare").split(" ").slice(0, 3).join(" ")}
-          </Text>
+<TouchableOpacity
+  onPress={() =>
+    navigation.navigate("Paywall", { source: "stainTips" })
+  }
+  activeOpacity={0.9}
+  style={{
+    width: "100%",
+    backgroundColor: "#1A1A1A",   // ⭐ charcoal, ταιριάζει με το UI
+    paddingVertical: 18,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
 
-          {/* Line 2 */}
-          <Text
-            style={{
-              color: "#000",
-              fontSize: 17,
-              fontWeight: "700",
-              marginTop: -2,
-            }}
-          >
-            {i18n.t("smartScan.unlockStainCare").split(" ").slice(3).join(" ")}
-          </Text>
+    // subtle outline για premium look
+    borderWidth: 1.5,
+    borderColor: "rgba(255,255,255,0.08)",
+  }}
+>
+  <View style={{ alignItems: "center" }}>
+    <Text
+      style={{
+        color: "#F5C15C",          // ⭐ gold text
+        fontSize: 17,
+        fontWeight: "700",
+      }}
+    >
+      {i18n.t("smartScan.unlockStainCare").split(" ").slice(0, 3).join(" ")}
+    </Text>
 
-          {/* PRO */}
-          <Text
-            style={{
-              color: "#000",
-              fontSize: 13,
-              fontWeight: "800",
-              marginTop: 4,
-              opacity: 0.8,
-            }}
-          >
-            PRO
-          </Text>
-        </View>
-      </TouchableOpacity>
+    <Text
+      style={{
+        color: "#F5C15C",
+        fontSize: 17,
+        fontWeight: "700",
+        marginTop: -2,
+      }}
+    >
+      {i18n.t("smartScan.unlockStainCare").split(" ").slice(3).join(" ")}
+    </Text>
+
+    <Text
+      style={{
+        color: "#F5C15C",
+        fontSize: 13,
+        fontWeight: "800",
+        marginTop: 4,
+        opacity: 0.9,
+      }}
+    >
+      PRO
+    </Text>
+  </View>
+</TouchableOpacity>
     </Animated.View>
   </View>
 )}
