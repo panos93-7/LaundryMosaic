@@ -45,7 +45,7 @@ Extract a complete garment profile with the following structure:
     "program": "...",
     "temp": 30,
     "spin": 800,
-    "detergent": "liquid | powder | delicate | wool | color-safe",
+    "detergent": "Liquid | Powder | Delicate | Wool | Color-safe",
     "notes": ["...", "..."]
   },
 
@@ -69,7 +69,7 @@ Extract a complete garment profile with the following structure:
     "delicacy": "Low | Medium | High"
   },
 
-  "washFrequency": "after 1 wear | after 2–3 wears | after heavy use",
+  "washFrequency": "After 1 wear | After 2–3 wears | After heavy use",
 
   "careSymbols": [
     "Wash 30",
