@@ -23,20 +23,18 @@ LANGUAGE RULES:
 - Translate ALL fields into ${userLanguage}.
 - Never answer in English unless userLanguage is "en".
 
+STRUCTURE RULES (CRITICAL):
+- You MUST return ALL fields exactly as shown.
+- You MUST NOT remove, rename, or omit ANY field.
+- You MUST NOT return undefined or null.
+- If you do not know a value, use a reasonable default.
+- recommended.temp MUST be a number.
+- recommended.spin MUST be a number.
+- recommended.program MUST be a short program name in ${userLanguage}.
+- careInstructions MUST be an array of 3–6 bullet points.
+
 TASK:
 Based ONLY on the fabric name "${fabricName}", return structured care information.
-
-Extract the following fields:
-
-- fabricType: normalized fabric type (translated)
-- weave: best guess (translated)
-- sensitivity: delicate / normal / durable (translated)
-- recommended: {
-    temp: number (°C),
-    spin: number (rpm),
-    program: short wash program name (translated)
-}
-- careInstructions: array of 3–6 short bullet points (translated)
 
 Return ONLY valid JSON in this exact format:
 
@@ -104,10 +102,20 @@ LANGUAGE RULES:
 - Always answer ONLY in the following language: "${userLanguage}".
 - Never answer in English unless userLanguage is "en".
 
+STRUCTURE RULES (CRITICAL):
+- You MUST return ALL fields exactly as shown.
+- You MUST NOT remove, rename, or omit ANY field.
+- You MUST NOT return undefined or null.
+- If you do not know a value, use a reasonable default.
+- recommended.temp MUST be a number.
+- recommended.spin MUST be a number.
+- recommended.program MUST be a short program name in ${userLanguage}.
+- careInstructions MUST be an array of 3–6 bullet points.
+
 TASK:
 The main AI failed. Generate a NEW structured JSON fallback for the fabric "${fabricName}".
 
-Return JSON with the following fields, ALL written in ${userLanguage}:
+Return ONLY valid JSON in this exact format:
 
 {
   "fabricType": "...",
@@ -120,11 +128,6 @@ Return JSON with the following fields, ALL written in ${userLanguage}:
   },
   "careInstructions": ["...", "..."]
 }
-
-Make sure:
-- All values are translated.
-- No field is undefined.
-- careInstructions has 3–6 bullet points.
 `
         }),
       }
