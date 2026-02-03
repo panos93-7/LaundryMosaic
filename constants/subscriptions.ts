@@ -1,4 +1,5 @@
 console.log("SUBSCRIPTIONS LOADED");
+
 type SubscriptionTier = {
   features: string[];
   [key: string]: any;
@@ -6,11 +7,14 @@ type SubscriptionTier = {
 
 export const SUBSCRIPTIONS: Record<"free" | "premium" | "pro", SubscriptionTier> = {
   free: {
-    languages: ["en", "el", "es", "fr", "de", "it", "ru", "tr"],
+    languages: ["en", "el", "es", "fr", "de", "it", "ru", "tr","ja", "ko", "pt-BR", "pt-PT", "zh-TW"],
     presetsLimit: 3,
     aiDailyLimit: 1,
     themes: ["light"],
-    features: ["basicPrograms"],
+    features: [
+      "basicPrograms"
+      // ❌ δεν βάζουμε aiLaundryAssistant εδώ
+    ],
   },
 
   premium: {
@@ -21,10 +25,10 @@ export const SUBSCRIPTIONS: Record<"free" | "premium" | "pro", SubscriptionTier>
     scanDetect: true,
     themes: ["light", "dark", "gradient", "glass"],
     features: [
-      "customFabrics",
+      "aiLaundryAssistant",   // ⭐ ΝΕΟ
       "customCycles",
       "offlineMode",
-      "noAds",
+      "noAds"
     ],
   },
 
@@ -41,6 +45,9 @@ export const SUBSCRIPTIONS: Record<"free" | "premium" | "pro", SubscriptionTier>
     smartNotifications: true,
     aiFabricSafety: true,
     themes: ["all"],
-    features: ["priorityAI"],
+    features: [
+      "aiLaundryAssistant",   // ⭐ ΝΕΟ
+      "priorityAI"
+    ],
   },
 } as const;

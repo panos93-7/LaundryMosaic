@@ -12,12 +12,9 @@ type Props = {
 
 export default function FeatureLock({ feature, children }: Props) {
   const navigation = useNavigation<any>();
-
-  // ✔ σωστό: παίρνουμε το Tier από το store
   const userTier = useUserStore((s) => s.userTier);
 
   async function handlePress() {
-    // ✔ cast για να μην υπογραμμίζει
     const available = isFeatureAvailable(feature, userTier);
 
     if (available) {

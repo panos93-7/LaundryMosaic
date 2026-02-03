@@ -95,8 +95,20 @@
   "aiSmartScan": "Escaneo Inteligente AI",
   "batchScan": "Escaneo por Lotes",
   "smartWardrobe": "Armario Inteligente",
-  "customFabrics": "Telas Personalizadas",
+  "aiLaundryAssistant": "Asistente de Lavandería AI",
   "planner": "Planificador"
+  },
+  "aiAssistant": {
+  "title": "Asistente de Lavandería AI",
+  "close": "Cerrar",
+  "placeholder": "Pregunta lo que quieras sobre cuidado de ropa…",
+  "suggestedTitle": "Prueba preguntando:",
+  "suggest1": "¿Cómo quito una mancha de aceite?",
+  "suggest2": "¿Cómo lavo zapatos de ante?",
+  "suggest3": "¿Cómo seco una manta de forro polar?",
+  "suggest4": "¿Qué programa uso para la ropa blanca?",
+  "noAnswer": "No encontré instrucciones de cuidado para eso.",
+  "error": "Algo salió mal. Inténtalo de nuevo."
  },
  "planner": {
   "title": "Planificador de Lavado",
@@ -111,40 +123,6 @@
   "cancel": "Cancelar",
   "delete": "Eliminar",
   "washSuffix": "lavado"
- },
- "customFabrics": {
-  "title": "Tejidos Personalizados",
-  "close": "Cerrar",
-
-  "emptyTitle": "Aún no hay tejidos personalizados",
-  "emptySubtitle": "Agrega tus propios tejidos o escanea nuevos con IA.",
-
-  "uploadFabric": "📤 Subir Tejido (IA)",
-  "addFabric": "＋ Agregar Tejido",
-
-  "noImage": "Sin imagen",
-
-  "editFabric": "Editar Tejido",
-  "addFabricModal": "Agregar Tejido",
-
-  "fabricName": "Nombre del tejido",
-  "descriptionOptional": "Descripción (opcional)",
-
-  "careInstructions": "Instrucciones de cuidado",
-  "noCareInstructions": "Aún no hay instrucciones de cuidado",
-
-  "generating": "Generando…",
-  "generateWithAI": "Generar con IA",
-
-  "save": "Guardar",
-  "delete": "Eliminar",
-  "cancel": "Cancelar",
-
-  "statusUploading": "Subiendo tejido...",
-  "statusAdding": "Agregando tejido...",
-  "statusUpdating": "Actualizando tejido...",
-
-  "unknownFabric": "Tejido desconocido"
  },
  "editGarment": {
   "back": "Volver",
@@ -166,20 +144,6 @@
   "alertMessage": "¿Seguro que deseas eliminar este artículo?",
   "cancel": "Cancelar",
   "delete": "Eliminar"
- },
- "fabricDetails": {
-  "back": "Volver",
-  "fabricType": "Tipo de Tejido",
-  "weave": "Tejido",
-  "sensitivity": "Sensibilidad",
-  "recommendedProgram": "Programa de Lavado Recomendado",
-  "program": "Programa",
-  "temp": "Temperatura",
-  "spin": "Centrifugado",
-  "description": "Descripción",
-  "careInstructions": "Instrucciones de Cuidado",
-  "noCareInstructions": "No hay instrucciones de cuidado disponibles.",
-  "regenerate": "Regenerar con IA"
  },
  "wardrobe": {
   "title": "Armario Inteligente",

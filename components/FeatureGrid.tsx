@@ -108,15 +108,15 @@ export function FeatureGrid({ isDarkMode, language }: any) {
 
         <View style={{ width: "48%" }}>
           <FeatureButton
-            title={i18n.t("features.customFabrics")}
-            icon="🧵"
-            badgeType="Pro"
-            isDarkMode={isDarkMode}
-            userTier={userTier}
-            onPress={() =>
-              handleFeaturePress("custom_fabrics", "CustomFabrics", true)
-            }
-          />
+  title={i18n.t("features.aiLaundryAssistant")}
+  icon="🤖"
+  badgeType="Pro"
+  isDarkMode={isDarkMode}
+  userTier={userTier}
+  onPress={() =>
+    handleFeaturePress("aiLaundryAssistant", "AILaundryAssistant", true)
+  }
+/>
         </View>
       </View>
     </View>

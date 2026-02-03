@@ -97,8 +97,20 @@
     "aiSmartScan": "AI 智能掃描",
     "batchScan": "批次掃描",
     "smartWardrobe": "智慧衣櫥",
-    "customFabrics": "自訂布料",
+    "aiLaundryAssistant": "AI 洗衣助理",
     "planner": "洗衣排程"
+    },
+  "aiAssistant": {
+  "title": "AI 洗衣助理",
+  "close": "關閉",
+  "placeholder": "詢問任何有關衣物清潔的問題…",
+  "suggestedTitle": "你可以試著問：",
+  "suggest1": "如何去除油漬？",
+  "suggest2": "麂皮鞋怎麼清洗？",
+  "suggest3": "搖粒絨毯怎麼晾乾？",
+  "suggest4": "白色衣物應該用哪種洗衣行程？",
+  "noAnswer": "找不到相關的清潔建議。",
+  "error": "發生錯誤，請再試一次。"
   },
 
   "planner": {
@@ -114,41 +126,6 @@
     "cancel": "取消",
     "delete": "刪除",
     "washSuffix": "次洗衣"
-  },
-
-  "customFabrics": {
-    "title": "自訂布料",
-    "close": "關閉",
-
-    "emptyTitle": "尚無自訂布料",
-    "emptySubtitle": "可自行新增布料，或使用 AI 掃描新的布料。",
-
-    "uploadFabric": "📤 上傳布料（AI）",
-    "addFabric": "＋ 新增布料",
-
-    "noImage": "無圖片",
-
-    "editFabric": "編輯布料",
-    "addFabricModal": "新增布料",
-
-    "fabricName": "布料名稱",
-    "descriptionOptional": "描述（選填）",
-
-    "careInstructions": "保養方式",
-    "noCareInstructions": "尚無保養方式",
-
-    "generating": "生成中…",
-    "generateWithAI": "使用 AI 生成",
-
-    "save": "儲存",
-    "delete": "刪除",
-    "cancel": "取消",
-
-    "statusUploading": "上傳布料中…",
-    "statusAdding": "新增布料中…",
-    "statusUpdating": "更新布料中…",
-
-    "unknownFabric": "未知布料"
   },
   "editGarment": {
   "back": "返回",
@@ -170,20 +147,6 @@
   "alertMessage": "確定要刪除此項目嗎？",
   "cancel": "取消",
   "delete": "刪除"
- },
- "fabricDetails": {
-  "back": "返回",
-  "fabricType": "布料種類",
-  "weave": "織法",
-  "sensitivity": "敏感度",
-  "recommendedProgram": "推薦洗衣行程",
-  "program": "行程",
-  "temp": "溫度",
-  "spin": "脫水",
-  "description": "描述",
-  "careInstructions": "保養方式",
-  "noCareInstructions": "目前沒有可用的保養方式。",
-  "regenerate": "使用 AI 重新生成"
  },
  "wardrobe": {
   "title": "智慧衣櫥",

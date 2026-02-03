@@ -97,8 +97,20 @@
     "aiSmartScan": "AIスマートスキャン",
     "batchScan": "バッチスキャン",
     "smartWardrobe": "スマートワードローブ",
-    "customFabrics": "カスタム素材",
+    "aiLaundryAssistant": "AIランドリーアシスタント",
     "planner": "プランナー"
+    },
+  "aiAssistant": {
+  "title": "AIランドリーアシスタント",
+  "close": "閉じる",
+  "placeholder": "洗濯ケアについて何でも聞いてください…",
+  "suggestedTitle": "質問例：",
+  "suggest1": "油汚れはどう落とす？",
+  "suggest2": "スエード靴はどう洗う？",
+  "suggest3": "フリース毛布はどう乾かす？",
+  "suggest4": "白物にはどの洗濯コース？",
+  "noAnswer": "ケア方法が見つかりませんでした。",
+  "error": "エラーが発生しました。もう一度お試しください。"
   },
 
   "planner": {
@@ -114,41 +126,6 @@
     "cancel": "キャンセル",
     "delete": "削除",
     "washSuffix": "洗濯"
-  },
-
-  "customFabrics": {
-    "title": "カスタム素材",
-    "close": "閉じる",
-
-    "emptyTitle": "カスタム素材はまだありません",
-    "emptySubtitle": "自分の素材を追加するか、AIで新しい素材をスキャンできます。",
-
-    "uploadFabric": "📤 素材をアップロード（AI）",
-    "addFabric": "＋ 素材を追加",
-
-    "noImage": "画像なし",
-
-    "editFabric": "素材を編集",
-    "addFabricModal": "素材を追加",
-
-    "fabricName": "素材名",
-    "descriptionOptional": "説明（任意）",
-
-    "careInstructions": "お手入れ方法",
-    "noCareInstructions": "お手入れ方法はまだありません",
-
-    "generating": "生成中…",
-    "generateWithAI": "AIで生成",
-
-    "save": "保存",
-    "delete": "削除",
-    "cancel": "キャンセル",
-
-    "statusUploading": "素材をアップロード中…",
-    "statusAdding": "素材を追加中…",
-    "statusUpdating": "素材を更新中…",
-
-    "unknownFabric": "不明な素材"
   },
   "editGarment": {
   "back": "戻る",
@@ -170,20 +147,6 @@
   "alertMessage": "このアイテムを削除してもよろしいですか？",
   "cancel": "キャンセル",
   "delete": "削除"
- },
- "fabricDetails": {
-  "back": "戻る",
-  "fabricType": "素材タイプ",
-  "weave": "織り方",
-  "sensitivity": "デリケート度",
-  "recommendedProgram": "おすすめ洗濯プログラム",
-  "program": "プログラム",
-  "temp": "温度",
-  "spin": "脱水",
-  "description": "説明",
-  "careInstructions": "お手入れ方法",
-  "noCareInstructions": "利用可能なお手入れ方法はありません。",
-  "regenerate": "AIで再生成"
  },
  "wardrobe": {
   "title": "スマートワードローブ",

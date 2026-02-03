@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import i18n from "../i18n";
 import { isFeatureAvailable } from "../utils/featureLock";
 import { withUpsell } from "../utils/withUpsell";
 import { PremiumLockIndicator } from "./PremiumLockIndicator";
@@ -13,11 +14,11 @@ type Props = {
 export default function CustomFabricsButton({ userTier }: Props) {
   const navigation = useNavigation<any>();
 
-  const locked = !isFeatureAvailable("customFabrics", userTier);
+  const locked = !isFeatureAvailable("aiLaundryAssistant", userTier);
 
   function handlePress() {
-    withUpsell("customFabrics", userTier, navigation, () => {
-      navigation.navigate("CustomFabrics");
+    withUpsell("aiLaundryAssistant", userTier, navigation, () => {
+      navigation.navigate("AILaundryAssistant");
     });
   }
 
@@ -31,7 +32,7 @@ export default function CustomFabricsButton({ userTier }: Props) {
     >
       <View style={styles.content}>
         {locked && <PremiumLockIndicator />}
-        <Text style={styles.text}>Custom Fabrics</Text>
+        <Text style={styles.text}>{i18n.t("features.aiLaundryAssistant")}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -39,13 +40,12 @@ export default function CustomFabricsButton({ userTier }: Props) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#e5e5ea", // matches your light theme
+    backgroundColor: "#e5e5ea",
     borderRadius: 16,
     paddingVertical: 18,
     paddingHorizontal: 20,
     marginBottom: 14,
 
-    // premium iOS shadow
     shadowColor: "#000",
     shadowOpacity: 0.08,
     shadowRadius: 8,

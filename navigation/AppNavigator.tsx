@@ -26,8 +26,8 @@ import PremiumFallbackScreen from "../screens/PremiumFallbackScreen";
 import PremiumMonthlyPaywall from "../screens/PremiumMonthlyPaywall";
 
 // PRO Screens
+import AILaundryAssistantScreen from "../screens/AILaundryAssistantScreen";
 import BatchScanScreen from "../screens/BatchScanScreen";
-import CustomFabricsScreen from "../screens/CustomFabricsScreen";
 import WardrobeScreen from "../screens/SmartWardrobeScreen";
 
 // Wardrobe Flow
@@ -35,7 +35,6 @@ import EditGarmentScreen from "../screens/EditGarmentScreen";
 import GarmentDetailsScreen from "../screens/GarmentDetailsScreen";
 
 // Fabric Details
-import FabricDetailsScreen from "../screens/FabricDetailsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,11 +52,10 @@ type AppRoutes = {
 
   BatchScan: undefined;
   Wardrobe: undefined;
-  CustomFabrics: undefined;
+  AILaundryAssistant: undefined;
 
   GarmentDetails: undefined;
   EditGarment: undefined;
-  FabricDetails: undefined;
 
   OnboardingWelcome: undefined;
   OnboardingValue: undefined;
@@ -131,12 +129,13 @@ export default function AppNavigator() {
 
           <Stack.Screen name="BatchScan" component={BatchScanScreen} />
           <Stack.Screen name="Wardrobe" component={WardrobeScreen} />
-          <Stack.Screen name="CustomFabrics" component={CustomFabricsScreen} />
+          <Stack.Screen name="AILaundryAssistant"component={AILaundryAssistantScreen}/>
+
+
 
           <Stack.Screen name="GarmentDetails" component={GarmentDetailsScreen} />
           <Stack.Screen name="EditGarment" component={EditGarmentScreen} />
 
-          <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
 
           {/* Paywall routes */}
           <Stack.Screen name="Paywall" component={PaywallScreen} />
@@ -166,11 +165,9 @@ export default function AppNavigator() {
           <Stack.Screen name="MonthCalendar" component={MonthCalendar} />
           <Stack.Screen name="History" component={HistoryScreen} />
 
-          <Stack.Screen name="FabricDetails" component={FabricDetailsScreen} />
-
           <Stack.Screen name="BatchScan" component={PaywallScreen} />
           <Stack.Screen name="Wardrobe" component={PaywallScreen} />
-          <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
+          <Stack.Screen name="AILaundryAssistant" component={PaywallScreen} />
           <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
           <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
@@ -205,11 +202,10 @@ export default function AppNavigator() {
 
           <Stack.Screen name="BatchScan" component={PaywallScreen} />
           <Stack.Screen name="Wardrobe" component={PaywallScreen} />
-          <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
+          <Stack.Screen name="AILaundryAssistant" component={PaywallScreen} />
           <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
           <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
-          <Stack.Screen name="FabricDetails" component={PaywallScreen} />
 
           {/* Paywall routes */}
           <Stack.Screen name="Paywall" component={PaywallScreen} />
@@ -240,11 +236,10 @@ return (
 
       <Stack.Screen name="BatchScan" component={PaywallScreen} />
       <Stack.Screen name="Wardrobe" component={PaywallScreen} />
-      <Stack.Screen name="CustomFabrics" component={PaywallScreen} />
+      <Stack.Screen name="AILaundryAssistant" component={PaywallScreen} />
       <Stack.Screen name="GarmentDetails" component={PaywallScreen} />
       <Stack.Screen name="EditGarment" component={PaywallScreen} />
 
-      <Stack.Screen name="FabricDetails" component={PaywallScreen} />
 
       {/* Paywall routes */}
       <Stack.Screen name="PremiumMonthlyPaywall" component={PremiumMonthlyPaywall} />

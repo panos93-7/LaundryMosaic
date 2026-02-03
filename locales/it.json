@@ -96,8 +96,20 @@
   "aiSmartScan": "Scansione Intelligente AI",
   "batchScan": "Scansione Multipla",
   "smartWardrobe": "Guardaroba Intelligente",
-  "customFabrics": "Tessuti Personalizzati",
+  "aiLaundryAssistant": "Assistente Lavanderia AI",
   "planner": "Pianificatore"
+  },
+  "aiAssistant": {
+  "title": "Assistente Lavanderia AI",
+  "close": "Chiudi",
+  "placeholder": "Chiedi qualsiasi cosa sulla cura dei capi…",
+  "suggestedTitle": "Prova a chiedere:",
+  "suggest1": "Come rimuovo una macchia d’olio?",
+  "suggest2": "Come lavo le scarpe in camoscio?",
+  "suggest3": "Come asciugo una coperta in pile?",
+  "suggest4": "Quale programma usare per i bianchi?",
+  "noAnswer": "Non ho trovato istruzioni di cura per questo.",
+  "error": "Qualcosa è andato storto. Riprova."
  },
  "planner": {
   "title": "Pianificatore di Lavaggio",
@@ -112,40 +124,6 @@
   "cancel": "Annulla",
   "delete": "Elimina",
   "washSuffix": "lavaggio"
- },
- "customFabrics": {
-  "title": "Tessuti Personalizzati",
-  "close": "Chiudi",
-
-  "emptyTitle": "Nessun tessuto personalizzato",
-  "emptySubtitle": "Aggiungi i tuoi tessuti o scansionane di nuovi con l’IA.",
-
-  "uploadFabric": "📤 Carica Tessuto (IA)",
-  "addFabric": "＋ Aggiungi Tessuto",
-
-  "noImage": "Nessuna immagine",
-
-  "editFabric": "Modifica Tessuto",
-  "addFabricModal": "Aggiungi Tessuto",
-
-  "fabricName": "Nome del tessuto",
-  "descriptionOptional": "Descrizione (opzionale)",
-
-  "careInstructions": "Istruzioni di cura",
-  "noCareInstructions": "Nessuna istruzione di cura",
-
-  "generating": "Generazione…",
-  "generateWithAI": "Genera con IA",
-
-  "save": "Salva",
-  "delete": "Elimina",
-  "cancel": "Annulla",
-
-  "statusUploading": "Caricamento tessuto...",
-  "statusAdding": "Aggiunta tessuto...",
-  "statusUpdating": "Aggiornamento tessuto...",
-
-  "unknownFabric": "Tessuto sconosciuto"
  },
  "editGarment": {
   "back": "Indietro",
@@ -167,20 +145,6 @@
   "alertMessage": "Sei sicuro di voler eliminare questo elemento?",
   "cancel": "Annulla",
   "delete": "Elimina"
- },
- "fabricDetails": {
-  "back": "Indietro",
-  "fabricType": "Tipo di Tessuto",
-  "weave": "Trama",
-  "sensitivity": "Sensibilità",
-  "recommendedProgram": "Programma di Lavaggio Consigliato",
-  "program": "Programma",
-  "temp": "Temperatura",
-  "spin": "Centrifuga",
-  "description": "Descrizione",
-  "careInstructions": "Istruzioni di Cura",
-  "noCareInstructions": "Nessuna istruzione di cura disponibile.",
-  "regenerate": "Rigenera con IA"
  },
  "wardrobe": {
   "title": "Guardaroba Intelligente",

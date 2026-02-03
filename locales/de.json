@@ -96,8 +96,20 @@
   "aiSmartScan": "AI Smart Scan",
   "batchScan": "Mehrfachscan",
   "smartWardrobe": "Intelligenter Kleiderschrank",
-  "customFabrics": "Benutzerdefinierte Stoffe",
+  "aiLaundryAssistant": "AI Wäsche-Assistent",
   "planner": "Planer"
+  },
+"aiAssistant": {
+  "title": "AI Wäsche-Assistent",
+  "close": "Schließen",
+  "placeholder": "Frag alles zur Wäschepflege…",
+  "suggestedTitle": "Versuche zu fragen:",
+  "suggest1": "Wie entferne ich einen Ölfleck?",
+  "suggest2": "Wie wasche ich Wildlederschuhe?",
+  "suggest3": "Wie trockne ich eine Fleece-Decke?",
+  "suggest4": "Welches Waschprogramm für weiße Kleidung?",
+  "noAnswer": "Ich konnte keine Pflegehinweise dafür finden.",
+  "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
  },
  "planner": {
   "title": "Waschplaner",
@@ -112,40 +124,6 @@
   "cancel": "Abbrechen",
   "delete": "Löschen",
   "washSuffix": "Waschgang"
- },
- "customFabrics": {
-  "title": "Benutzerdefinierte Stoffe",
-  "close": "Schließen",
-
-  "emptyTitle": "Noch keine benutzerdefinierten Stoffe",
-  "emptySubtitle": "Füge eigene Stoffe hinzu oder scanne neue mit KI.",
-
-  "uploadFabric": "📤 Stoff hochladen (KI)",
-  "addFabric": "＋ Stoff hinzufügen",
-
-  "noImage": "Kein Bild",
-
-  "editFabric": "Stoff bearbeiten",
-  "addFabricModal": "Stoff hinzufügen",
-
-  "fabricName": "Stoffname",
-  "descriptionOptional": "Beschreibung (optional)",
-
-  "careInstructions": "Pflegehinweise",
-  "noCareInstructions": "Noch keine Pflegehinweise",
-
-  "generating": "Wird generiert…",
-  "generateWithAI": "Mit KI generieren",
-
-  "save": "Speichern",
-  "delete": "Löschen",
-  "cancel": "Abbrechen",
-
-  "statusUploading": "Stoff wird hochgeladen...",
-  "statusAdding": "Stoff wird hinzugefügt...",
-  "statusUpdating": "Stoff wird aktualisiert...",
-
-  "unknownFabric": "Unbekannter Stoff"
  },
  "editGarment": {
   "back": "Zurück",
@@ -167,20 +145,6 @@
   "alertMessage": "Möchten Sie dieses Kleidungsstück wirklich löschen?",
   "cancel": "Abbrechen",
   "delete": "Löschen"
- },
- "fabricDetails": {
-  "back": "Zurück",
-  "fabricType": "Stoffart",
-  "weave": "Webart",
-  "sensitivity": "Empfindlichkeit",
-  "recommendedProgram": "Empfohlenes Waschprogramm",
-  "program": "Programm",
-  "temp": "Temperatur",
-  "spin": "Schleudern",
-  "description": "Beschreibung",
-  "careInstructions": "Pflegehinweise",
-  "noCareInstructions": "Keine Pflegehinweise verfügbar.",
-  "regenerate": "Mit KI neu generieren"
  },
  "wardrobe": {
   "title": "Intelligenter Kleiderschrank",

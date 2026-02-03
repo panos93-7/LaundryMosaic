@@ -92,13 +92,24 @@
     "suggest_stains": "Alguns itens têm manchas — considere pré-tratamento.",
     "suggest_mixed": "Carga mista detectada — use um programa suave."
   },
-
   "features": {
     "aiSmartScan": "Smart Scan com IA",
     "batchScan": "Scan em Lote",
     "smartWardrobe": "Guarda‑roupa Inteligente",
-    "customFabrics": "Tecidos Personalizados",
+    "aiLaundryAssistant": "Assistente de Lavanderia IA",
     "planner": "Planner"
+    },
+  "aiAssistant": {
+  "title": "Assistente de Lavanderia IA",
+  "close": "Fechar",
+  "placeholder": "Pergunte qualquer coisa sobre cuidados com roupas…",
+  "suggestedTitle": "Tente perguntar:",
+  "suggest1": "Como remover uma mancha de óleo?",
+  "suggest2": "Como lavar sapatos de camurça?",
+  "suggest3": "Como secar um cobertor de fleece?",
+  "suggest4": "Qual programa usar para roupas brancas?",
+  "noAnswer": "Não encontrei instruções de cuidado para isso.",
+  "error": "Algo deu errado. Tente novamente."
   },
 
   "planner": {
@@ -114,41 +125,6 @@
     "cancel": "Cancelar",
     "delete": "Excluir",
     "washSuffix": "lavagem"
-  },
-
-  "customFabrics": {
-    "title": "Tecidos Personalizados",
-    "close": "Fechar",
-
-    "emptyTitle": "Nenhum tecido personalizado ainda",
-    "emptySubtitle": "Adicione seus próprios tecidos ou escaneie novos com IA.",
-
-    "uploadFabric": "📤 Enviar Tecido (IA)",
-    "addFabric": "＋ Adicionar Tecido",
-
-    "noImage": "Sem imagem",
-
-    "editFabric": "Editar Tecido",
-    "addFabricModal": "Adicionar Tecido",
-
-    "fabricName": "Nome do tecido",
-    "descriptionOptional": "Descrição (opcional)",
-
-    "careInstructions": "Instruções de Cuidado",
-    "noCareInstructions": "Nenhuma instrução de cuidado ainda",
-
-    "generating": "Gerando…",
-    "generateWithAI": "Gerar com IA",
-
-    "save": "Salvar",
-    "delete": "Excluir",
-    "cancel": "Cancelar",
-
-    "statusUploading": "Enviando tecido...",
-    "statusAdding": "Adicionando tecido...",
-    "statusUpdating": "Atualizando tecido...",
-
-    "unknownFabric": "Tecido desconhecido"
   },
   "editGarment": {
   "back": "Voltar",
@@ -170,20 +146,6 @@
   "alertMessage": "Tem certeza de que deseja excluir este item?",
   "cancel": "Cancelar",
   "delete": "Excluir"
- },
- "fabricDetails": {
-  "back": "Voltar",
-  "fabricType": "Tipo de Tecido",
-  "weave": "Trama",
-  "sensitivity": "Sensibilidade",
-  "recommendedProgram": "Programa de Lavagem Recomendado",
-  "program": "Programa",
-  "temp": "Temperatura",
-  "spin": "Centrifugação",
-  "description": "Descrição",
-  "careInstructions": "Instruções de Cuidado",
-  "noCareInstructions": "Nenhuma instrução de cuidado disponível.",
-  "regenerate": "Regenerar com IA"
  },
  "wardrobe": {
   "title": "Guarda‑roupa Inteligente",

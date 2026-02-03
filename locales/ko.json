@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "AI 스마트 스캔",
     "close": "닫기",
-
     "takePhoto": "사진 촬영",
     "chooseFromGallery": "갤러리에서 선택",
-
     "errorTitle": "AI 분석 실패",
     "errorMessage": "이미지를 분석할 수 없습니다. 더 선명한 사진으로 다시 시도해 주세요.",
     "retry": "다시 스캔",
     "takeAnother": "다시 촬영",
-
     "fabric": "소재",
     "color": "색상",
     "stains": "오염",
@@ -64,16 +61,13 @@
     "recommendedProgram": "추천 프로그램",
     "careInstructions": "관리 방법",
     "stainTips": "오염 제거 팁",
-
     "addToPlanner": "플래너에 자동 추가",
-
     "plannerDefaultTitle": "세탁 항목",
     "plannerDefaultType": "일반",
     "plannerAnyTime": "언제든지",
     "stainsDetected": "얼룩이 감지되었습니다",
     "unlockStainCare": "얼룩 제거 팁 잠금 해제"
   },
-
   "batchScan": {
     "title": "일괄 스캔",
     "close": "닫기",
@@ -82,25 +76,33 @@
     "conflicts": "주의 사항",
     "suggestions": "추천",
     "scanAgain": "다시 스캔",
-
     "conflict_wool": "울 소재는 단독 세탁이 필요합니다.",
     "conflict_delicate": "섬세한 소재는 다른 옷과 함께 세탁하지 않는 것이 좋습니다.",
     "conflict_cotton_wool": "면과 울은 적정 온도가 달라 함께 세탁할 수 없습니다.",
-
     "suggest_cotton": "면 컬러 프로그램에 적합한 세탁물입니다.",
     "suggest_synthetics": "합성섬유가 많아 합성섬유 프로그램을 추천합니다.",
     "suggest_stains": "일부 항목에 오염이 있어 사전 처리(전처리)를 권장합니다.",
     "suggest_mixed": "혼합 소재가 감지되어 부드러운 혼합 세탁 프로그램을 추천합니다."
   },
-
   "features": {
     "aiSmartScan": "AI 스마트 스캔",
     "batchScan": "일괄 스캔",
     "smartWardrobe": "스마트 옷장",
-    "customFabrics": "사용자 정의 소재",
+    "aiLaundryAssistant": "AI 세탁 도우미",
     "planner": "플래너"
   },
-
+  "aiAssistant": {
+  "title": "AI 세탁 도우미",
+  "close": "닫기",
+  "placeholder": "세탁 관리에 대해 무엇이든 물어보세요…",
+  "suggestedTitle": "이렇게 물어보세요:",
+  "suggest1": "기름 얼룩은 어떻게 제거하나요?",
+  "suggest2": "스웨이드 신발은 어떻게 세탁하나요?",
+  "suggest3": "플리스 담요는 어떻게 말리나요?",
+  "suggest4": "흰옷에는 어떤 코스를 사용하나요?",
+  "noAnswer": "해당 케어 정보를 찾을 수 없습니다.",
+  "error": "문제가 발생했습니다. 다시 시도해주세요."
+  },
   "planner": {
     "title": "세탁 플래너",
     "viewHistory": "기록 보기",
@@ -115,75 +117,22 @@
     "delete": "삭제",
     "washSuffix": "세탁"
   },
-
-  "customFabrics": {
-    "title": "사용자 정의 소재",
-    "close": "닫기",
-
-    "emptyTitle": "등록된 사용자 정의 소재가 없습니다",
-    "emptySubtitle": "직접 소재를 추가하거나 AI로 새 소재를 스캔해 보세요.",
-
-    "uploadFabric": "📤 소재 업로드 (AI)",
-    "addFabric": "＋ 소재 추가",
-
-    "noImage": "이미지 없음",
-
-    "editFabric": "소재 편집",
-    "addFabricModal": "소재 추가",
-
-    "fabricName": "소재 이름",
-    "descriptionOptional": "설명 (선택 사항)",
-
-    "careInstructions": "관리 방법",
-    "noCareInstructions": "등록된 관리 방법이 없습니다",
-
-    "generating": "생성 중…",
-    "generateWithAI": "AI로 생성",
-
-    "save": "저장",
-    "delete": "삭제",
-    "cancel": "취소",
-
-    "statusUploading": "소재 업로드 중…",
-    "statusAdding": "소재 추가 중…",
-    "statusUpdating": "소재 업데이트 중…",
-
-    "unknownFabric": "알 수 없는 소재"
-  },
   "editGarment": {
   "back": "뒤로",
   "title": "의류 편집",
-
   "tapToAddImage": "이미지를 추가하려면 탭하세요",
-
   "name": "이름",
   "type": "종류",
   "color": "색상",
   "category": "카테고리",
   "fabric": "소재",
   "pattern": "패턴",
-
   "saveChanges": "변경 사항 저장",
   "deleteGarment": "의류 삭제",
-
   "alertTitle": "의류 삭제",
   "alertMessage": "이 항목을 삭제하시겠습니까?",
   "cancel": "취소",
   "delete": "삭제"
- },
- "fabricDetails": {
-  "back": "뒤로",
-  "fabricType": "소재 종류",
-  "weave": "직조 방식",
-  "sensitivity": "민감도",
-  "recommendedProgram": "추천 세탁 프로그램",
-  "program": "프로그램",
-  "temp": "온도",
-  "spin": "탈수",
-  "description": "설명",
-  "careInstructions": "관리 방법",
-  "noCareInstructions": "등록된 관리 방법이 없습니다.",
-  "regenerate": "AI로 다시 생성"
  },
  "wardrobe": {
   "title": "스마트 옷장",
@@ -197,37 +146,29 @@
  "garmentDetails": {
   "back": "뒤로",
   "noImage": "이미지 없음",
-
   "type": "종류",
   "color": "색상",
   "fabric": "소재",
   "pattern": "패턴",
   "category": "카테고리",
-
   "unknown": "알 수 없음",
   "none": "없음",
   "uncategorized": "분류되지 않음",
-
   "stainsDetected": "얼룩 감지됨:",
-
   "careInstructions": "관리 방법:",
   "recommendedTemp": "권장 온도",
   "spinSpeed": "탈수 속도",
-
   "recommendedWashProgram": "권장 세탁 프로그램:",
   "program": "프로그램",
   "temp": "온도",
   "spin": "탈수",
-
   "riskShrinkage": "수축",
   "riskColorBleeding": "물빠짐",
   "riskDelicacy": "섬세함",
-
   "editGarment": "의류 편집",
   "deleteGarment": "의류 삭제",
   "warnings": "주의사항",
   "translating": "번역 중",
-  
   "detergent": "세제",
   "notes": "주의사항",
   "risks": "위험도:",
@@ -237,11 +178,8 @@
  "history": {
   "title": "세탁 기록",
   "close": "닫기",
-
   "emptyTitle": "아직 세탁 기록이 없습니다.",
-
   "typeLabel": "세탁",
-
   "premiumRedirect": "이동 중…"
  },
  "calendar": {
@@ -252,14 +190,11 @@
   "addTitle": "새 세탁 추가",
   "editTitle": "세탁 수정",
   "close": "닫기",
-
   "labelTitle": "제목",
   "labelTime": "시간",
   "labelType": "세탁 종류",
-
   "placeholderTitle": "예: 흰색 세탁",
   "placeholderTime": "예: 10:30",
-
   "washTypes": {
     "whites": "흰색",
     "colors": "색깔",
@@ -269,30 +204,23 @@
 
   "errorMissingTitle": "제목 없음",
   "errorMissingTitleMsg": "세탁 제목을 입력하세요.",
-
   "errorMissingTime": "시간 없음",
   "errorMissingTimeMsg": "시간을 입력하세요.",
-
   "errorMissingType": "종류 없음",
   "errorMissingTypeMsg": "세탁 종류를 선택하세요.",
-
   "errorInvalidDate": "잘못된 날짜",
   "errorInvalidDateMsg": "과거 날짜에는 세탁을 예약할 수 없습니다.",
-
   "saveChanges": "변경 사항 저장",
   "saveWash": "세탁 저장"
 },
 "paywall": {
   "loading": "로딩 중...",
   "noOfferings": "제공되는 상품이 없습니다.",
-
   "headerTitle": "Laundry Pro+ 잠금 해제",
   "headerSubtitle": "무제한 AI 기능, 배치 스캔, 옷장 등.",
-
   "monthly": "Pro 월간",
   "annual": "Pro 연간 (최고 가치)",
   "lifetime": "Pro 평생 이용",
-
   "upgradeButton": "Pro+로 업그레이드",
   "continueFree": "무료 버전으로 계속하기",
   "restore": "구매 복원",
@@ -302,16 +230,12 @@
  "premiumMonthly": {
   "loading": "로딩 중...",
   "noOfferings": "제공되는 상품이 없습니다.",
-
   "title": "프리미엄 액세스",
-
   "msgHistory": "히스토리는 프리미엄 기능입니다.",
   "msgAutoAdd": "플래너 자동 추가는 프리미엄 기능입니다.",
   "msgDefault": "프리미엄 기능을 잠금 해제하세요.",
-
   "monthlyTitle": "프리미엄 월간",
   "monthlySubtitle": "모든 프리미엄 기능을 즉시 잠금 해제.",
-
   "upgradeNow": "지금 업그레이드",
   "continueFree": "무료로 계속하기",
   "restore": "구매 복원"
@@ -319,17 +243,14 @@
  "premiumFallback": {
   "loading": "제안을 불러오는 중...",
   "noOfferings": "사용 가능한 상품이 없습니다.",
-
   "title": "Smart Wash Premium",
   "subtitle": "필요한 핵심 기능만 담은 가벼운 플랜.",
-
   "annualTitle": "프리미엄 연간",
   "annualSubtitle": "가장 좋은 연간 가격으로 더 많이 절약하세요.",
   "perYear": "/년",
   "upgradeNow": "지금 업그레이드",
   "continueFree": "무료로 계속하기",
   "restore": "구매 복원",
-
   "benefits": {
     "smartScan": "AI Smart Scan 잠금 해제",
     "stainDetection": "AI 얼룩 감지",

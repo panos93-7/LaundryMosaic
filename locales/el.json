@@ -96,8 +96,20 @@
   "aiSmartScan": "Έξυπνη Σάρωση AI",
   "batchScan": "Μαζική Σάρωση",
   "smartWardrobe": "Έξυπνη Ντουλάπα",
-  "customFabrics": "Προσαρμοσμένα Υφάσματα",
+  "aiLaundryAssistant": "AI Laundry Assistant",
   "planner": "Σχεδιαστής"
+  },
+  "aiAssistant": {
+  "title": "AI Laundry Assistant",
+  "close": "Κλείσιμο",
+  "placeholder": "Ρώτησε οτιδήποτε για φροντίδα ρούχων…",
+  "suggestedTitle": "Δοκίμασε να ρωτήσεις:",
+  "suggest1": "Πώς αφαιρώ λεκέ από λάδι;",
+  "suggest2": "Πώς πλένω παπούτσια από σουέτ;",
+  "suggest3": "Πώς στεγνώνω κουβέρτα fleece;",
+  "suggest4": "Τι πρόγραμμα να βάλω για τα λευκά;",
+  "noAnswer": "Δεν βρήκα οδηγίες φροντίδας για αυτό.",
+  "error": "Κάτι πήγε στραβά. Προσπάθησε ξανά."
  },
  "planner": {
   "title": "Προγραμματιστής Πλύσης",
@@ -112,40 +124,6 @@
   "cancel": "Ακύρωση",
   "delete": "Διαγραφή",
   "washSuffix": "πλύση"
- },
- "customFabrics": {
-  "title": "Προσαρμοσμένα Υφάσματα",
-  "close": "Κλείσιμο",
-
-  "emptyTitle": "Δεν υπάρχουν προσαρμοσμένα υφάσματα",
-  "emptySubtitle": "Πρόσθεσε δικά σου υφάσματα ή σκάναρε νέα με AI.",
-
-  "uploadFabric": "📤 Μεταφόρτωση Υφάσματος (AI)",
-  "addFabric": "＋ Προσθήκη Υφάσματος",
-
-  "noImage": "Χωρίς εικόνα",
-
-  "editFabric": "Επεξεργασία Υφάσματος",
-  "addFabricModal": "Προσθήκη Υφάσματος",
-
-  "fabricName": "Όνομα υφάσματος",
-  "descriptionOptional": "Περιγραφή (προαιρετικό)",
-
-  "careInstructions": "Οδηγίες Φροντίδας",
-  "noCareInstructions": "Δεν υπάρχουν οδηγίες φροντίδας ακόμα",
-
-  "generating": "Δημιουργία…",
-  "generateWithAI": "Δημιουργία με AI",
-
-  "save": "Αποθήκευση",
-  "delete": "Διαγραφή",
-  "cancel": "Ακύρωση",
-
-  "statusUploading": "Μεταφόρτωση υφάσματος...",
-  "statusAdding": "Προσθήκη υφάσματος...",
-  "statusUpdating": "Ενημέρωση υφάσματος...",
-
-  "unknownFabric": "Άγνωστο ύφασμα"
  },
  "editGarment": {
   "back": "Πίσω",
@@ -167,20 +145,6 @@
   "alertMessage": "Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτό το αντικείμενο;",
   "cancel": "Ακύρωση",
   "delete": "Διαγραφή"
- },
- "fabricDetails": {
-  "back": "Πίσω",
-  "fabricType": "Τύπος Υφάσματος",
-  "weave": "Ύφανση",
-  "sensitivity": "Ευαισθησία",
-  "recommendedProgram": "Προτεινόμενο Πρόγραμμα Πλυσίματος",
-  "program": "Πρόγραμμα",
-  "temp": "Θερμοκρασία",
-  "spin": "Στύψιμο",
-  "description": "Περιγραφή",
-  "careInstructions": "Οδηγίες Φροντίδας",
-  "noCareInstructions": "Δεν υπάρχουν διαθέσιμες οδηγίες φροντίδας.",
-  "regenerate": "Αναδημιουργία με AI"
  },
  "wardrobe": {
   "title": "Έξυπνη Ντουλάπα",
