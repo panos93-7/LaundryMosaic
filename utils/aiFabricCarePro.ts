@@ -2,10 +2,10 @@ import i18n from "../i18n";
 
 /**
  * PRO Fabric Care Generator (via Cloudflare Worker)
- * Fully multilingual — including fallback.
+ * Fully multilingual — works for fabrics, clothes, shoes, and any item.
  */
 
-export async function generateCareInstructionsPro(fabricName: string) {
+export async function generateCareInstructionsPro(itemName: string) {
   const userLanguage = (i18n as any).language;
 
   try {
@@ -30,11 +30,22 @@ STRUCTURE RULES (CRITICAL):
 - If you do not know a value, use a reasonable default.
 - recommended.temp MUST be a number.
 - recommended.spin MUST be a number.
-- recommended.program MUST be a short program name in ${userLanguage}.
+- recommended.program MUST be a short wash program name in ${userLanguage}.
 - careInstructions MUST be an array of 3–6 bullet points.
 
 TASK:
-Based ONLY on the fabric name "${fabricName}", return structured care information.
+The user provided the item: "${itemName}"
+
+1. Identify the MOST LIKELY primary material (fabric) of this item.
+   Examples:
+   - “αθλητικά παπούτσια” → mesh / synthetic knit
+   - “μπουφάν” → polyester / nylon
+   - “κουβέρτα” → fleece / cotton / wool
+   - “τσάντα” → canvas / nylon
+   - “παντελόνι” → denim / cotton
+   - “πουκάμισο” → cotton / linen
+
+2. Based on the identified material, generate structured care instructions.
 
 Return ONLY valid JSON in this exact format:
 
@@ -55,7 +66,7 @@ Return ONLY valid JSON in this exact format:
     );
 
     if (!response.ok) {
-      return await multilingualFallback(fabricName, userLanguage);
+      return await multilingualFallback(itemName, userLanguage);
     }
 
     const data = await response.json();
@@ -73,13 +84,13 @@ Return ONLY valid JSON in this exact format:
     try {
       parsed = JSON.parse(cleanedJson);
     } catch {
-      return await multilingualFallback(fabricName, userLanguage);
+      return await multilingualFallback(itemName, userLanguage);
     }
 
     return parsed;
 
   } catch {
-    return await multilingualFallback(fabricName, userLanguage);
+    return await multilingualFallback(itemName, userLanguage);
   }
 }
 
@@ -87,7 +98,7 @@ Return ONLY valid JSON in this exact format:
 /* MULTILINGUAL FALLBACK */
 /* ----------------------------- */
 
-async function multilingualFallback(fabricName: string, userLanguage: string) {
+async function multilingualFallback(itemName: string, userLanguage: string) {
   try {
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
@@ -109,11 +120,14 @@ STRUCTURE RULES (CRITICAL):
 - If you do not know a value, use a reasonable default.
 - recommended.temp MUST be a number.
 - recommended.spin MUST be a number.
-- recommended.program MUST be a short program name in ${userLanguage}.
+- recommended.program MUST be a short wash program name in ${userLanguage}.
 - careInstructions MUST be an array of 3–6 bullet points.
 
 TASK:
-The main AI failed. Generate a NEW structured JSON fallback for the fabric "${fabricName}".
+The main AI failed. Generate a NEW structured JSON fallback for the item "${itemName}".
+
+1. Identify the MOST LIKELY primary material of this item.
+2. Generate care instructions based on that material.
 
 Return ONLY valid JSON in this exact format:
 

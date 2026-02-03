@@ -29,6 +29,9 @@ export default function OnboardingPersonalization({ navigation }: any) {
         <Text style={{ color: "#ccc", fontSize: 18 }}>
           • Do you want wardrobe organization?
         </Text>
+        <Text style={{ color: "#ccc", fontSize: 18 }}>
+          • Sit back and let AI make your life easier!
+        </Text>
       </View>
 
       <TouchableOpacity

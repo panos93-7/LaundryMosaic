@@ -21,13 +21,13 @@ export default function OnboardingValue({ navigation }: any) {
 
       <View style={{ marginBottom: 40 }}>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • AI stain detection
+          • AI smart scan & stain detection
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • Smart wardrobe organization
+          • Smart wardrobe to organize your items
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • Batch scanning & presets
+          • Batch scanning & AI laundry assistant
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18 }}>
           • Personalized laundry planner
