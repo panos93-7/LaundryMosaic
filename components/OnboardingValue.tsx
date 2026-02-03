@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity, View } from "react-native";
+import i18n from "../i18n";
 
 export default function OnboardingValue({ navigation }: any) {
   return (
@@ -16,21 +17,21 @@ export default function OnboardingValue({ navigation }: any) {
           marginBottom: 20,
         }}
       >
-        Powerful AI Features
+        {i18n.t("onboarding.valueTitle")}
       </Text>
 
       <View style={{ marginBottom: 40 }}>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • AI smart scan & stain detection
+          • {i18n.t("onboarding.valueFeature1")}
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • Smart wardrobe to organize your items
+          • {i18n.t("onboarding.valueFeature2")}
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • Batch scanning & AI laundry assistant
+          • {i18n.t("onboarding.valueFeature3")}
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18 }}>
-          • Personalized laundry planner
+          • {i18n.t("onboarding.valueFeature4")}
         </Text>
       </View>
 
@@ -50,7 +51,7 @@ export default function OnboardingValue({ navigation }: any) {
             color: "#000",
           }}
         >
-          Continue
+          {i18n.t("onboarding.continue")}
         </Text>
       </TouchableOpacity>
     </LinearGradient>

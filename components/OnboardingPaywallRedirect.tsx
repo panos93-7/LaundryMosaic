@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity } from "react-native";
+import i18n from "../i18n";
 import { useUserStore } from "../store/userStore";
 
 export default function OnboardingPaywallRedirect({ navigation }: any) {
@@ -24,7 +25,7 @@ export default function OnboardingPaywallRedirect({ navigation }: any) {
           marginBottom: 20,
         }}
       >
-        You're All Set
+        {i18n.t("onboarding.finishTitle")}
       </Text>
 
       <Text
@@ -35,7 +36,7 @@ export default function OnboardingPaywallRedirect({ navigation }: any) {
           marginBottom: 40,
         }}
       >
-        Unlock the full AI experience with Premium or Pro.
+        {i18n.t("onboarding.finishSubtitle")}
       </Text>
 
       <TouchableOpacity
@@ -54,7 +55,7 @@ export default function OnboardingPaywallRedirect({ navigation }: any) {
             color: "#000",
           }}
         >
-          Continue
+          {i18n.t("onboarding.continue")}
         </Text>
       </TouchableOpacity>
     </LinearGradient>

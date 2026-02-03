@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity, View } from "react-native";
+import i18n from "../i18n";
 
 export default function OnboardingPersonalization({ navigation }: any) {
   return (
@@ -16,21 +17,21 @@ export default function OnboardingPersonalization({ navigation }: any) {
           marginBottom: 20,
         }}
       >
-        Personalize Your Experience
+        {i18n.t("onboarding.personalizeTitle")}
       </Text>
 
       <View style={{ marginBottom: 40 }}>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • What do you wash most often?
+          • {i18n.t("onboarding.personalizeQ1")}
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
-          • Do you want AI stain detection?
+          • {i18n.t("onboarding.personalizeQ2")}
+        </Text>
+        <Text style={{ color: "#ccc", fontSize: 18, marginBottom: 12 }}>
+          • {i18n.t("onboarding.personalizeQ3")}
         </Text>
         <Text style={{ color: "#ccc", fontSize: 18 }}>
-          • Do you want wardrobe organization?
-        </Text>
-        <Text style={{ color: "#ccc", fontSize: 18 }}>
-          • Sit back and let AI make your life easier!
+          • {i18n.t("onboarding.personalizeQ4")}
         </Text>
       </View>
 
@@ -50,7 +51,7 @@ export default function OnboardingPersonalization({ navigation }: any) {
             color: "#000",
           }}
         >
-          Continue
+          {i18n.t("onboarding.continue")}
         </Text>
       </TouchableOpacity>
     </LinearGradient>

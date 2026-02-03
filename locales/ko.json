@@ -323,5 +323,25 @@
   "tumble_low": "저온 건조",
   "iron_low": "저온 다림질",
   "no_dryclean": "드라이클리닝 금지"
- }
+ },
+  "onboarding": {
+    "welcomeTitle": "LaundryMosaic에 오신 것을 환영합니다",
+    "welcomeSubtitle": "AI 기반 세탁 도우미",
+    "continue": "계속",
+
+    "valueTitle": "강력한 AI 기능",
+    "valueFeature1": "AI 스마트 스캔 및 얼룩 감지",
+    "valueFeature2": "아이템 정리를 위한 스마트 옷장",
+    "valueFeature3": "일괄 스캔 및 AI 세탁 도우미",
+    "valueFeature4": "맞춤형 세탁 플래너",
+
+    "personalizeTitle": "경험을 개인화하세요",
+    "personalizeQ1": "가장 자주 세탁하는 것은 무엇인가요?",
+    "personalizeQ2": "AI 얼룩 감지를 사용하시겠습니까?",
+    "personalizeQ3": "옷장 정리를 원하시나요?",
+    "personalizeQ4": "AI가 더 편하게 도와드릴게요!",
+
+    "finishTitle": "모든 준비 완료",
+    "finishSubtitle": "Premium 또는 Pro로 전체 AI 기능을 이용하세요."
+  }
 }

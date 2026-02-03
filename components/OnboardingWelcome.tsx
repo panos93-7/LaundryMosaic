@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity } from "react-native";
+import i18n from "../i18n";
 
 export default function OnboardingWelcome({ navigation }: any) {
   return (
@@ -16,7 +17,7 @@ export default function OnboardingWelcome({ navigation }: any) {
           marginBottom: 10,
         }}
       >
-        Welcome to LaundryMosaic
+        {i18n.t("onboarding.welcomeTitle")}
       </Text>
 
       <Text
@@ -27,7 +28,7 @@ export default function OnboardingWelcome({ navigation }: any) {
           marginBottom: 40,
         }}
       >
-        Your AI-powered laundry assistant
+        {i18n.t("onboarding.welcomeSubtitle")}
       </Text>
 
       <TouchableOpacity
@@ -46,7 +47,7 @@ export default function OnboardingWelcome({ navigation }: any) {
             color: "#000",
           }}
         >
-          Continue
+          {i18n.t("onboarding.continue")}
         </Text>
       </TouchableOpacity>
     </LinearGradient>

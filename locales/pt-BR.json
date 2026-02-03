@@ -364,5 +364,25 @@
   "tumble_low": "Secar em baixa temperatura",
   "iron_low": "Passar em baixa temperatura",
   "no_dryclean": "Não lavar a seco"
- }
+ },
+  "onboarding": {
+    "welcomeTitle": "Bem‑vindo ao LaundryMosaic",
+    "welcomeSubtitle": "Seu assistente de lavanderia com IA",
+    "continue": "Continuar",
+
+    "valueTitle": "Poderosos recursos de IA",
+    "valueFeature1": "Escaneamento inteligente e detecção de manchas",
+    "valueFeature2": "Guarda‑roupa inteligente para organizar suas peças",
+    "valueFeature3": "Escaneamento em lote e assistente de lavanderia com IA",
+    "valueFeature4": "Planejador de lavagem personalizado",
+
+    "personalizeTitle": "Personalize sua experiência",
+    "personalizeQ1": "O que você lava com mais frequência?",
+    "personalizeQ2": "Deseja detecção de manchas com IA?",
+    "personalizeQ3": "Deseja organização do guarda‑roupa?",
+    "personalizeQ4": "Relaxe e deixe a IA facilitar sua vida!",
+
+    "finishTitle": "Tudo pronto",
+    "finishSubtitle": "Desbloqueie toda a experiência de IA com Premium ou Pro."
+  }
 }

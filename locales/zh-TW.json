@@ -365,5 +365,25 @@
   "tumble_low": "低溫烘乾",
   "iron_low": "低溫熨燙",
   "no_dryclean": "不可乾洗"
- }
+ },
+  "onboarding": {
+    "welcomeTitle": "歡迎使用 LaundryMosaic",
+    "welcomeSubtitle": "您的 AI 智慧洗衣助理",
+    "continue": "繼續",
+
+    "valueTitle": "強大的 AI 功能",
+    "valueFeature1": "AI 智慧掃描與污漬偵測",
+    "valueFeature2": "智慧衣櫥，輕鬆整理您的衣物",
+    "valueFeature3": "批次掃描與 AI 洗衣助理",
+    "valueFeature4": "個人化洗衣規劃",
+
+    "personalizeTitle": "自訂您的使用體驗",
+    "personalizeQ1": "您最常清洗哪些衣物？",
+    "personalizeQ2": "需要 AI 污漬偵測嗎？",
+    "personalizeQ3": "需要衣櫥整理功能嗎？",
+    "personalizeQ4": "放輕鬆，讓 AI 讓生活更簡單！",
+
+    "finishTitle": "一切就緒",
+    "finishSubtitle": "升級 Premium 或 Pro，解鎖完整 AI 體驗。"
+  }
 }
