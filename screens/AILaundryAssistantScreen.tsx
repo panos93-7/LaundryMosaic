@@ -77,15 +77,19 @@ export default function AILaundryAssistantScreen() {
           }}
         >
           <Text
-            style={{
-              color: "#fff",
-              fontSize: 28,
-              fontWeight: "700",
-            }}
-          >
-            {String(i18n.t("aiAssistant.title"))}
-          </Text>
-
+  style={{
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "700",
+    flexShrink: 1,
+    maxWidth: "80%",
+  }}
+  numberOfLines={2}
+  adjustsFontSizeToFit
+  minimumFontScale={0.85}
+>
+  {String(i18n.t("aiAssistant.title"))}
+</Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
               {String(i18n.t("aiAssistant.close"))}
