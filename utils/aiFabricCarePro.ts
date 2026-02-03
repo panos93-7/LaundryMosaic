@@ -2,7 +2,7 @@ import i18n from "../i18n";
 
 /**
  * PRO Fabric Care Generator (via Cloudflare Worker)
- * Now fully multilingual — including fallback.
+ * Fully multilingual — including fallback.
  */
 
 export async function generateCareInstructionsPro(fabricName: string) {
@@ -57,7 +57,6 @@ Return ONLY valid JSON in this exact format:
     );
 
     if (!response.ok) {
-      console.log("❌ Worker error:", await response.text());
       return await multilingualFallback(fabricName, userLanguage);
     }
 
@@ -75,103 +74,22 @@ Return ONLY valid JSON in this exact format:
 
     try {
       parsed = JSON.parse(cleanedJson);
-    } catch (e) {
-      console.log("❌ Failed to parse JSON:", cleanedJson);
+    } catch {
       return await multilingualFallback(fabricName, userLanguage);
     }
 
-    return {
-      fabricType: parsed.fabricType ?? normalizeFabric(fabricName),
-      weave: parsed.weave ?? "Unknown",
-      sensitivity: parsed.sensitivity ?? guessSensitivity(fabricName),
-      recommended: {
-        temp: parsed.recommended?.temp ?? 30,
-        spin: parsed.recommended?.spin ?? 800,
-        program: parsed.recommended?.program ?? "Quick Wash",
-      },
-      careInstructions: Array.isArray(parsed.careInstructions)
-        ? parsed.careInstructions
-        : defaultCare(fabricName),
-    };
+    return parsed;
 
-  } catch (err) {
-    console.log("❌ generateCareInstructionsPro error:", err);
+  } catch {
     return await multilingualFallback(fabricName, userLanguage);
   }
-}
-
-/* ----------------------------- */
-/* HELPERS */
-/* ----------------------------- */
-
-function normalizeFabric(name: string) {
-  const n = name.toLowerCase();
-  if (n.includes("cotton")) return "cotton";
-  if (n.includes("wool")) return "wool";
-  if (n.includes("linen")) return "linen";
-  if (n.includes("silk")) return "silk";
-  if (n.includes("denim")) return "denim";
-  if (n.includes("poly")) return "polyester";
-  if (n.includes("nylon")) return "nylon";
-  if (n.includes("viscose")) return "viscose";
-  if (n.includes("acrylic")) return "acrylic";
-  return "blend";
-}
-
-function guessSensitivity(name: string) {
-  const n = name.toLowerCase();
-  if (n.includes("wool") || n.includes("silk") || n.includes("cashmere"))
-    return "delicate";
-  if (n.includes("denim") || n.includes("canvas")) return "durable";
-  return "normal";
-}
-
-function defaultCare(name: string) {
-  const sensitivity = guessSensitivity(name);
-
-  if (sensitivity === "delicate") {
-    return [
-      "Wash cold (20–30°C)",
-      "Use wool/silk detergent",
-      "Avoid high spin",
-      "Air dry flat",
-    ];
-  }
-
-  if (sensitivity === "durable") {
-    return [
-      "Wash at 40°C",
-      "Normal detergent",
-      "Medium spin",
-      "Tumble dry low",
-    ];
-  }
-
-  return [
-    "Wash at 30°C",
-    "Use mild detergent",
-    "Avoid high spin",
-    "Air dry",
-  ];
 }
 
 /* ----------------------------- */
 /* MULTILINGUAL FALLBACK */
 /* ----------------------------- */
 
-async function multilingualFallback(name: string, userLanguage: string) {
-  const fallback = {
-    fabricType: normalizeFabric(name),
-    weave: "Unknown",
-    sensitivity: guessSensitivity(name),
-    recommended: {
-      temp: 30,
-      spin: 800,
-      program: "Quick Wash",
-    },
-    careInstructions: defaultCare(name),
-  };
-
+async function multilingualFallback(fabricName: string, userLanguage: string) {
   try {
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
@@ -180,11 +98,33 @@ async function multilingualFallback(name: string, userLanguage: string) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: `
-Translate the following JSON values into ${userLanguage}.
-Do NOT change the structure. Do NOT add or remove fields.
-Return ONLY valid JSON.
+You are a textile and laundry expert.
 
-${JSON.stringify(fallback, null, 2)}
+LANGUAGE RULES:
+- Always answer ONLY in the following language: "${userLanguage}".
+- Never answer in English unless userLanguage is "en".
+
+TASK:
+The main AI failed. Generate a NEW structured JSON fallback for the fabric "${fabricName}".
+
+Return JSON with the following fields, ALL written in ${userLanguage}:
+
+{
+  "fabricType": "...",
+  "weave": "...",
+  "sensitivity": "...",
+  "recommended": {
+    "temp": 30,
+    "spin": 800,
+    "program": "..."
+  },
+  "careInstructions": ["...", "..."]
+}
+
+Make sure:
+- All values are translated.
+- No field is undefined.
+- careInstructions has 3–6 bullet points.
 `
         }),
       }
@@ -202,8 +142,23 @@ ${JSON.stringify(fallback, null, 2)}
 
     return JSON.parse(cleanedJson);
 
-  } catch (err) {
-    console.log("❌ multilingualFallback error:", err);
-    return fallback; // last resort
+  } catch {
+    // last resort fallback (English)
+    return {
+      fabricType: "Unknown",
+      weave: "Unknown",
+      sensitivity: "Normal",
+      recommended: {
+        temp: 30,
+        spin: 800,
+        program: "Quick Wash",
+      },
+      careInstructions: [
+        "Wash at 30°C",
+        "Use mild detergent",
+        "Avoid high spin",
+        "Air dry",
+      ],
+    };
   }
 }
