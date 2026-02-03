@@ -96,11 +96,11 @@
   "aiSmartScan": "Έξυπνη Σάρωση AI",
   "batchScan": "Μαζική Σάρωση",
   "smartWardrobe": "Έξυπνη Ντουλάπα",
-  "aiLaundryAssistant": "AI Laundry Assistant",
+  "aiLaundryAssistant": "AI Βοηθός Πλυντηρίου",
   "planner": "Σχεδιαστής"
   },
   "aiAssistant": {
-  "title": "AI Laundry Assistant",
+  "title": "AI Βοηθός Πλυντηρίου",
   "close": "Κλείσιμο",
   "placeholder": "Ρώτησε οτιδήποτε για φροντίδα ρούχων…",
   "suggestedTitle": "Δοκίμασε να ρωτήσεις:",
