@@ -462,43 +462,43 @@ if (ai.stains?.length > 0) {
         {canSeeStainTips ? (
           // ⭐ PRO → βλέπει stain removal tips
           <View>
-            {Array.isArray(result?.stainTips) &&
-              result.stainTips.map((tip: any, i: number) => (
-                <View
-                  key={i}
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.08)",
-                    padding: 14,
-                    borderRadius: 12,
-                    marginBottom: 12,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#fff",
-                      fontSize: 16,
-                      fontWeight: "600",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {tip.stain}
-                  </Text>
+{Array.isArray(result?.stainTips) &&
+  result.stainTips.map((tip: any, i: number) => (
+    <View
+      key={i}
+      style={{
+        backgroundColor: "rgba(255,255,255,0.08)",
+        padding: 14,
+        borderRadius: 12,
+        marginBottom: 12,
+      }}
+    >
+      <Text
+        style={{
+          color: "#fff",
+          fontSize: 16,
+          fontWeight: "600",
+          marginBottom: 6,
+        }}
+      >
+        {tip.stain}
+      </Text>
 
-                  {Array.isArray(tip?.steps) &&
-                    tip.steps.map((step: string, idx: number) => (
-                      <Text
-                        key={idx}
-                        style={{
-                          color: "rgba(255,255,255,0.85)",
-                          marginBottom: 4,
-                          fontSize: 14,
-                        }}
-                      >
-                        {idx + 1}. {step}
-                      </Text>
-                    ))}
-                </View>
-              ))}
+      {Array.isArray(tip?.tips) &&
+        tip.tips.map((step: string, idx: number) => (
+          <Text
+            key={idx}
+            style={{
+              color: "rgba(255,255,255,0.85)",
+              marginBottom: 4,
+              fontSize: 14,
+            }}
+          >
+            {idx + 1}. {step}
+          </Text>
+        ))}
+    </View>
+  ))}
           </View>
         ) : (
           // ⭐ NON-PRO → CTA
