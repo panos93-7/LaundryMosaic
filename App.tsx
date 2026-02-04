@@ -6,6 +6,7 @@ import { syncEntitlements } from "./utils/syncEntitlements";
 
 import AppNavigator from "./navigation/AppNavigator";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import * as Updates from "expo-updates";
 
@@ -32,6 +33,15 @@ export default function App() {
       isPro: false,
       hasSeenOnboarding: false,
     });
+  }, []);
+
+  // ⭐ TEMPORARY: CLEAR ALL CACHE (fix SmartScanScreen crash)
+  useEffect(() => {
+    (async () => {
+      console.log("🧨 CLEARING ASYNC STORAGE (TEMP FIX)");
+      await AsyncStorage.clear();
+      console.log("🔥 ASYNC STORAGE CLEARED");
+    })();
   }, []);
 
   // ⭐ RevenueCat init
