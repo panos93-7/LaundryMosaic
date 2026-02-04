@@ -185,7 +185,7 @@ if (ai.stains?.length > 0) {
     Events.featureUnlockedUsed("ai_smart_scan", userTier);
     navigation.navigate("Planner");
   };
-
+console.log("🔥 STAIN TIPS RAW:", result.stainTips);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -358,7 +358,6 @@ if (ai.stains?.length > 0) {
               )}
 
               {/* RESULT PANEL */}
-              console.log("🔥 STAIN TIPS RAW:", result.stainTips);
               {result && !loading && !error && (
                 <AnimatedReanimated.View
                   entering={FadeInUp.duration(500).springify()}
