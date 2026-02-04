@@ -134,27 +134,37 @@ const analyze = async (uri: string) => {
     let stainTips: any[] = [];
     const locale = (i18n as any).language;
 
-if (ai.stains?.length > 0) {
-  for (const stain of ai.stains) {
-    try {
-      const rawTips = await generateStainRemovalTipsCached(stain, ai.fabric);
+    if (ai.stains?.length > 0) {
+      for (const stain of ai.stains) {
+        try {
+          // 🔥 ΠΡΩΤΑ παίρνουμε rawTips
+          const rawTips = await generateStainRemovalTipsCached(stain, ai.fabric);
 
-      const translated = await translateStainTips(
-  rawTips.steps,
-  locale,
-  `stain_${stain}_${ai.fabric}`
-);
+          console.log("🔥 RAW TIPS:", rawTips);
 
-      stainTips.push({
-        stain,
-        tips: translated,
-      });
-    } catch {}
-  }
-}
+          // 🔥 Safe guard
+          const safeSteps = Array.isArray(rawTips?.steps) ? rawTips.steps : [];
+
+          // 🔥 Μετά κάνουμε translate
+          const translated = await translateStainTips(
+            safeSteps,
+            locale,
+            `stain_${stain}_${ai.fabric}`
+          );
+
+          stainTips.push({
+            stain,
+            tips: translated,
+          });
+        } catch (err) {
+          console.log("❌ Error generating stain tips:", err);
+        }
+      }
+    }
 
     setResult({ ...ai, stainTips });
-  } catch {
+  } catch (err) {
+    console.log("❌ analyze() failed:", err);
     setError(i18n.t("smartScan.errorMessage"));
   }
 
