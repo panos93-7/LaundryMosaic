@@ -414,35 +414,35 @@ if (ai.stains?.length > 0) {
       {result?.recommended?.spin ?? "?"} {i18n.t("rpm")})
     </AnimatedReanimated.Text>
 
-    {/* CARE INSTRUCTIONS */}
-    {Array.isArray(result?.careInstructions) &&
-      result.careInstructions.length > 0 && (
-        <View style={{ marginTop: 20 }}>
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 18,
-              fontWeight: "700",
-              marginBottom: 10,
-            }}
-          >
-            🧼 {i18n.t("smartScan.careInstructions")}
-          </Text>
+{/* CARE INSTRUCTIONS */}
+{Array.isArray(result?.careInstructions) &&
+  result.careInstructions?.length > 0 && (
+    <View style={{ marginTop: 20 }}>
+      <Text
+        style={{
+          color: "#fff",
+          fontSize: 18,
+          fontWeight: "700",
+          marginBottom: 10,
+        }}
+      >
+        🧼 {i18n.t("smartScan.careInstructions")}
+      </Text>
 
-          {result.careInstructions.map((line: string, i: number) => (
-            <Text
-              key={i}
-              style={{
-                color: "rgba(255,255,255,0.8)",
-                marginBottom: 4,
-                fontSize: 15,
-              }}
-            >
-              • {line}
-            </Text>
-          ))}
-        </View>
-      )}
+      {result.careInstructions?.map?.((line: string, i: number) => (
+        <Text
+          key={i}
+          style={{
+            color: "rgba(255,255,255,0.8)",
+            marginBottom: 4,
+            fontSize: 15,
+          }}
+        >
+          • {line}
+        </Text>
+      ))}
+    </View>
+)}
 
     {/* STAIN SECTION */}
     {result?.stains?.length > 0 && (
