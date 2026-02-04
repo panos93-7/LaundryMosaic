@@ -12,7 +12,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import AnimatedReanimated, { FadeIn, FadeInUp, Layout } from "react-native-reanimated";
+import AnimatedReanimated, {
+  FadeIn,
+  FadeInUp,
+  Layout,
+} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -24,9 +28,7 @@ import { generateStainRemovalTipsCached } from "../utils/AI/generateStainRemoval
 import { preprocessImage } from "../utils/AI/preprocessImage";
 import { translateStainTips } from "../utils/AI/translateStainTips";
 
-
 export default function SmartScanScreen({ navigation }: any) {
-
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -59,7 +61,10 @@ export default function SmartScanScreen({ navigation }: any) {
 
   // 🔥 Block hardware back
   useFocusEffect(() => {
-    const subscription = BackHandler.addEventListener("hardwareBackPress", () => true);
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
     return () => subscription.remove();
   });
 
@@ -70,10 +75,10 @@ export default function SmartScanScreen({ navigation }: any) {
     })();
   }, []);
 
-  // ✅ ΕΔΩ ΤΟ LOG — δεν υπογραμμίζει τίποτα, δεν σπάει τίποτα
+  // Debug log για stain tips
   useEffect(() => {
     if (result) {
-      console.log("🔥 STAIN TIPS RAW:", result.stainTips);
+      console.log("🔥 STAIN TIPS RAW ON RESULT:", result.stainTips);
     }
   }, [result]);
 
@@ -114,62 +119,64 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-const analyze = async (uri: string) => {
-  setLoading(true);
-  setResult(null);
-  setError(null);
+  const analyze = async (uri: string) => {
+    setLoading(true);
+    setResult(null);
+    setError(null);
 
-  try {
-    const { base64 } = await preprocessImage(uri);
+    try {
+      const { base64 } = await preprocessImage(uri);
 
-    // ⭐ Cached garment analysis
-    const ai = await analyzeGarmentProCached(base64);
+      // ⭐ Cached garment analysis
+      const ai = await analyzeGarmentProCached(base64);
 
-    if (!ai) {
-      setError(i18n.t("smartScan.errorMessage"));
-      setLoading(false);
-      return;
-    }
+      if (!ai) {
+        setError(i18n.t("smartScan.errorMessage"));
+        setLoading(false);
+        return;
+      }
 
-    let stainTips: any[] = [];
-    const locale = (i18n as any).language;
+      let stainTips: any[] = [];
+      const locale = (i18n as any).language;
 
-    if (ai.stains?.length > 0) {
-      for (const stain of ai.stains) {
-        try {
-          // 🔥 ΠΡΩΤΑ παίρνουμε rawTips
-          const rawTips = await generateStainRemovalTipsCached(stain, ai.fabric);
+      if (Array.isArray(ai.stains) && ai.stains.length > 0) {
+        for (const stain of ai.stains) {
+          try {
+            const rawTips = await generateStainRemovalTipsCached(
+              stain,
+              ai.fabric
+            );
 
-          console.log("🔥 RAW TIPS:", rawTips);
+            console.log("🔥 RAW TIPS:", rawTips);
 
-          // 🔥 Safe guard
-          const safeSteps = Array.isArray(rawTips?.steps) ? rawTips.steps : [];
+            const safeSteps = Array.isArray(rawTips?.steps)
+              ? rawTips.steps
+              : [];
 
-          // 🔥 Μετά κάνουμε translate
-          const translated = await translateStainTips(
-            safeSteps,
-            locale,
-            `stain_${stain}_${ai.fabric}`
-          );
+            const translated = await translateStainTips(
+              safeSteps,
+              locale,
+              `stain_${stain}_${ai.fabric}`
+            );
 
-          stainTips.push({
-            stain,
-            tips: translated,
-          });
-        } catch (err) {
-          console.log("❌ Error generating stain tips:", err);
+            stainTips.push({
+              stain,
+              tips: translated,
+            });
+          } catch (err) {
+            console.log("❌ Error generating stain tips:", err);
+          }
         }
       }
+
+      setResult({ ...ai, stainTips });
+    } catch (err) {
+      console.log("❌ analyze() failed:", err);
+      setError(i18n.t("smartScan.errorMessage"));
     }
 
-    setResult({ ...ai, stainTips });
-  } catch (err) {
-    console.log("❌ analyze() failed:", err);
-    setError(i18n.t("smartScan.errorMessage"));
-  }
-
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
   // 🔥 REAL SAVE TO PLANNER
   const handleAutoAdd = async () => {
@@ -251,7 +258,9 @@ const analyze = async (uri: string) => {
                 marginBottom: 12,
               }}
             >
-              <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
+              <Text
+                style={{ color: "#fff", textAlign: "center", fontSize: 18 }}
+              >
                 📸 {i18n.t("smartScan.takePhoto")}
               </Text>
             </TouchableOpacity>
@@ -264,7 +273,9 @@ const analyze = async (uri: string) => {
                 borderRadius: 14,
               }}
             >
-              <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
+              <Text
+                style={{ color: "#fff", textAlign: "center", fontSize: 18 }}
+              >
                 🖼️ {i18n.t("smartScan.chooseFromGallery")}
               </Text>
             </TouchableOpacity>
@@ -375,282 +386,309 @@ const analyze = async (uri: string) => {
                 </View>
               )}
 
-{/* RESULT PANEL */}
-{result && !loading && !error && (
-  <AnimatedReanimated.View
-    entering={FadeInUp.duration(500).springify()}
-    layout={Layout.springify()}
-    style={{
-      backgroundColor: "rgba(255,255,255,0.1)",
-      padding: 20,
-      borderRadius: 14,
-      width: "100%",
-      marginTop: 10,
-    }}
-  >
-    <AnimatedReanimated.Text
-      entering={FadeIn.delay(100)}
-      style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
-    >
-      🧵 {String(i18n.t("smartScan.fabric"))}:{" "}
-      {String(i18n.t(`fabricValues.${result?.fabric ?? "cotton"}`))}
-    </AnimatedReanimated.Text>
+              {/* RESULT PANEL */}
+              {result && !loading && !error && (
+                <AnimatedReanimated.View
+                  entering={FadeInUp.duration(500).springify()}
+                  layout={Layout.springify()}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    padding: 20,
+                    borderRadius: 14,
+                    width: "100%",
+                    marginTop: 10,
+                  }}
+                >
+                  <AnimatedReanimated.Text
+                    entering={FadeIn.delay(100)}
+                    style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
+                  >
+                    🧵 {String(i18n.t("smartScan.fabric"))}:{" "}
+                    {String(
+                      i18n.t(
+                        `fabricValues.${result?.fabric ? result.fabric : "cotton"}`
+                      )
+                    )}
+                  </AnimatedReanimated.Text>
 
-    <AnimatedReanimated.Text
-      entering={FadeIn.delay(200)}
-      style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
-    >
-      🎨 {String(i18n.t("smartScan.color"))}:{" "}
-      {String(i18n.t(`colorValues.${result?.color ?? "white"}`))}
-    </AnimatedReanimated.Text>
+                  <AnimatedReanimated.Text
+                    entering={FadeIn.delay(200)}
+                    style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
+                  >
+                    🎨 {String(i18n.t("smartScan.color"))}:{" "}
+                    {String(
+                      i18n.t(
+                        `colorValues.${result?.color ? result.color : "white"}`
+                      )
+                    )}
+                  </AnimatedReanimated.Text>
 
-    <AnimatedReanimated.Text
-      entering={FadeIn.delay(300)}
-      style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
-    >
-      🧽 {i18n.t("smartScan.stains")}:{" "}
-      {result?.stains?.length > 0
-        ? result.stains.join(", ")
-        : i18n.t("smartScan.noStains")}
-    </AnimatedReanimated.Text>
+                  <AnimatedReanimated.Text
+                    entering={FadeIn.delay(300)}
+                    style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
+                  >
+                    🧽 {i18n.t("smartScan.stains")}:{" "}
+                    {Array.isArray(result?.stains) &&
+                    result.stains.length > 0
+                      ? result.stains.join(", ")
+                      : i18n.t("smartScan.noStains")}
+                  </AnimatedReanimated.Text>
 
-    <AnimatedReanimated.Text
-      entering={FadeIn.delay(400)}
-      style={{ color: "#fff", fontSize: 18 }}
-    >
-      ⭐ {i18n.t("smartScan.recommendedProgram")}:{" "}
-      {result?.recommended?.program ?? "—"} (
-      {result?.recommended?.temp ?? "?"}°C /{" "}
-      {result?.recommended?.spin ?? "?"} {i18n.t("rpm")})
-    </AnimatedReanimated.Text>
+                  {/* RECOMMENDED PROGRAM */}
+                  {result?.recommended && (
+                    <AnimatedReanimated.Text
+                      entering={FadeIn.delay(400)}
+                      style={{ color: "#fff", fontSize: 18 }}
+                    >
+                      ⭐ {i18n.t("smartScan.recommendedProgram")}:{" "}
+                      {result?.recommended?.program ?? "—"} (
+                      {result?.recommended?.temp ?? "?"}°C /{" "}
+                      {result?.recommended?.spin ?? "?"} {i18n.t("rpm")})
+                    </AnimatedReanimated.Text>
+                  )}
 
-{/* CARE INSTRUCTIONS */}
-{Array.isArray(result?.careInstructions) &&
-  result.careInstructions?.length > 0 && (
-    <View style={{ marginTop: 20 }}>
-      <Text
-        style={{
-          color: "#fff",
-          fontSize: 18,
-          fontWeight: "700",
-          marginBottom: 10,
-        }}
-      >
-        🧼 {i18n.t("smartScan.careInstructions")}
-      </Text>
+                  {/* CARE INSTRUCTIONS */}
+                  {Array.isArray(result?.careInstructions) &&
+                    result.careInstructions?.length > 0 && (
+                      <View style={{ marginTop: 20 }}>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 18,
+                            fontWeight: "700",
+                            marginBottom: 10,
+                          }}
+                        >
+                          🧼 {i18n.t("smartScan.careInstructions")}
+                        </Text>
 
-      {result.careInstructions?.map?.((line: string, i: number) => (
-        <Text
-          key={i}
-          style={{
-            color: "rgba(255,255,255,0.8)",
-            marginBottom: 4,
-            fontSize: 15,
-          }}
-        >
-          • {line}
-        </Text>
-      ))}
-    </View>
-)}
+                        {result.careInstructions?.map?.(
+                          (line: string, i: number) => (
+                            <Text
+                              key={i}
+                              style={{
+                                color: "rgba(255,255,255,0.8)",
+                                marginBottom: 4,
+                                fontSize: 15,
+                              }}
+                            >
+                              • {line}
+                            </Text>
+                          )
+                        )}
+                      </View>
+                    )}
 
-    {/* STAIN SECTION */}
-    {result?.stains?.length > 0 && (
-      <View style={{ marginTop: 25 }}>
-        <Text
-          style={{
-            color: "#fff",
-            fontSize: 18,
-            fontWeight: "700",
-            marginBottom: 10,
-          }}
-        >
-          🧴 {i18n.t("smartScan.stainsDetected")}:{" "}
-          {result.stains.join(", ")}
-        </Text>
+                  {/* STAIN SECTION */}
+                  {Array.isArray(result?.stains) &&
+                    result.stains.length > 0 && (
+                      <View style={{ marginTop: 25 }}>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 18,
+                            fontWeight: "700",
+                            marginBottom: 10,
+                          }}
+                        >
+                          🧴 {i18n.t("smartScan.stainsDetected")}:{" "}
+                          {result.stains.join(", ")}
+                        </Text>
 
-        {canSeeStainTips ? (
-          // ⭐ PRO → βλέπει stain removal tips
-          <View>
-{Array.isArray(result?.stainTips) &&
-  result.stainTips.map((tip: any, i: number) => (
-    <View
-      key={i}
-      style={{
-        backgroundColor: "rgba(255,255,255,0.08)",
-        padding: 14,
-        borderRadius: 12,
-        marginBottom: 12,
-      }}
-    >
-      <Text
-        style={{
-          color: "#fff",
-          fontSize: 16,
-          fontWeight: "600",
-          marginBottom: 6,
-        }}
-      >
-        {tip.stain}
-      </Text>
+                        {canSeeStainTips ? (
+                          // ⭐ PRO → βλέπει stain removal tips
+                          <View>
+                            {Array.isArray(result?.stainTips) &&
+                              result.stainTips.map(
+                                (tip: any, i: number) => (
+                                  <View
+                                    key={i}
+                                    style={{
+                                      backgroundColor:
+                                        "rgba(255,255,255,0.08)",
+                                      padding: 14,
+                                      borderRadius: 12,
+                                      marginBottom: 12,
+                                    }}
+                                  >
+                                    <Text
+                                      style={{
+                                        color: "#fff",
+                                        fontSize: 16,
+                                        fontWeight: "600",
+                                        marginBottom: 6,
+                                      }}
+                                    >
+                                      {tip.stain}
+                                    </Text>
 
-      {Array.isArray(tip?.tips) &&
-        tip.tips.map((step: string, idx: number) => (
-          <Text
-            key={idx}
-            style={{
-              color: "rgba(255,255,255,0.85)",
-              marginBottom: 4,
-              fontSize: 14,
-            }}
-          >
-            {idx + 1}. {step}
-          </Text>
-        ))}
-    </View>
-  ))}
-          </View>
-        ) : (
-          // ⭐ NON-PRO → CTA
-          <View
-            style={{ width: "100%", alignItems: "center", marginTop: 20 }}
-          >
-            <Animated.View
-              style={{
-                width: "100%",
-                transform: [{ scale: pulseAnim }],
-              }}
-            >
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Paywall", { source: "stainTips" })
-                }
-                activeOpacity={0.9}
-                style={{
-                  width: "100%",
-                  backgroundColor: "#314A7A",
-                  paddingVertical: 18,
-                  borderRadius: 14,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderWidth: 1.5,
-                  borderColor: "rgba(255,255,255,0.15)",
-                }}
-              >
-                <View style={{ alignItems: "center" }}>
-                  <Text
+                                    {Array.isArray(tip?.tips) &&
+                                      tip.tips.map(
+                                        (step: string, idx: number) => (
+                                          <Text
+                                            key={idx}
+                                            style={{
+                                              color:
+                                                "rgba(255,255,255,0.85)",
+                                              marginBottom: 4,
+                                              fontSize: 14,
+                                            }}
+                                          >
+                                            {idx + 1}. {step}
+                                          </Text>
+                                        )
+                                      )}
+                                  </View>
+                                )
+                              )}
+                          </View>
+                        ) : (
+                          // ⭐ NON-PRO → CTA
+                          <View
+                            style={{
+                              width: "100%",
+                              alignItems: "center",
+                              marginTop: 20,
+                            }}
+                          >
+                            <Animated.View
+                              style={{
+                                width: "100%",
+                                transform: [{ scale: pulseAnim }],
+                              }}
+                            >
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate("Paywall", {
+                                    source: "stainTips",
+                                  })
+                                }
+                                activeOpacity={0.9}
+                                style={{
+                                  width: "100%",
+                                  backgroundColor: "#314A7A",
+                                  paddingVertical: 18,
+                                  borderRadius: 14,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  borderWidth: 1.5,
+                                  borderColor: "rgba(255,255,255,0.15)",
+                                }}
+                              >
+                                <View style={{ alignItems: "center" }}>
+                                  <Text
+                                    style={{
+                                      color: "#FFCC4D",
+                                      fontSize: 17,
+                                      fontWeight: "700",
+                                    }}
+                                  >
+                                    {i18n
+                                      .t("smartScan.unlockStainCare")
+                                      .split(" ")
+                                      .slice(0, 3)
+                                      .join(" ")}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      color: "#FFCC4D",
+                                      fontSize: 17,
+                                      fontWeight: "700",
+                                      marginTop: -2,
+                                    }}
+                                  >
+                                    {i18n
+                                      .t("smartScan.unlockStainCare")
+                                      .split(" ")
+                                      .slice(3)
+                                      .join(" ")}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      color: "#FFCC4D",
+                                      fontSize: 16,
+                                      fontWeight: "900",
+                                      marginTop: 4,
+                                      opacity: 1,
+                                    }}
+                                  >
+                                    PRO
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            </Animated.View>
+                          </View>
+                        )}
+                      </View>
+                    )}
+
+                  {/* TAKE ANOTHER PHOTO */}
+                  <TouchableOpacity
+                    onPress={takeAnotherPhoto}
                     style={{
-                      color: "#FFCC4D",
-                      fontSize: 17,
-                      fontWeight: "700",
+                      marginTop: 20,
+                      backgroundColor: "rgba(255,255,255,0.15)",
+                      padding: 14,
+                      borderRadius: 12,
                     }}
                   >
-                    {i18n
-                      .t("smartScan.unlockStainCare")
-                      .split(" ")
-                      .slice(0, 3)
-                      .join(" ")}
-                  </Text>
-                  <Text
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "600",
+                      }}
+                    >
+                      {i18n.t("smartScan.takeAnother")}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* CLOSE RESULT */}
+                  <TouchableOpacity
+                    onPress={resetState}
                     style={{
-                      color: "#FFCC4D",
-                      fontSize: 17,
-                      fontWeight: "700",
-                      marginTop: -2,
+                      marginTop: 14,
+                      backgroundColor: "rgba(255,255,255,0.15)",
+                      padding: 14,
+                      borderRadius: 12,
                     }}
                   >
-                    {i18n
-                      .t("smartScan.unlockStainCare")
-                      .split(" ")
-                      .slice(3)
-                      .join(" ")}
-                  </Text>
-                  <Text
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "700",
+                      }}
+                    >
+                      {i18n.t("smartScan.close")}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* ADD TO PLANNER */}
+                  <TouchableOpacity
+                    onPress={handleAutoAdd}
                     style={{
-                      color: "#FFCC4D",
-                      fontSize: 16,
-                      fontWeight: "900",
-                      marginTop: 4,
-                      opacity: 1,
+                      marginTop: 14,
+                      backgroundColor: "#2575fc",
+                      padding: 14,
+                      borderRadius: 12,
                     }}
                   >
-                    PRO
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </Animated.View>
-          </View>
-        )}
-      </View>
-    )}
-
-    {/* TAKE ANOTHER PHOTO */}
-    <TouchableOpacity
-      onPress={takeAnotherPhoto}
-      style={{
-        marginTop: 20,
-        backgroundColor: "rgba(255,255,255,0.15)",
-        padding: 14,
-        borderRadius: 12,
-      }}
-    >
-      <Text
-        style={{
-          color: "#fff",
-          textAlign: "center",
-          fontSize: 18,
-          fontWeight: "600",
-        }}
-      >
-        {i18n.t("smartScan.takeAnother")}
-      </Text>
-    </TouchableOpacity>
-
-    {/* CLOSE RESULT */}
-    <TouchableOpacity
-      onPress={resetState}
-      style={{
-        marginTop: 14,
-        backgroundColor: "rgba(255,255,255,0.15)",
-        padding: 14,
-        borderRadius: 12,
-      }}
-    >
-      <Text
-        style={{
-          color: "#fff",
-          textAlign: "center",
-          fontSize: 18,
-          fontWeight: "700",
-        }}
-      >
-        {i18n.t("smartScan.close")}
-      </Text>
-    </TouchableOpacity>
-
-    {/* ADD TO PLANNER */}
-    <TouchableOpacity
-      onPress={handleAutoAdd}
-      style={{
-        marginTop: 14,
-        backgroundColor: "#2575fc",
-        padding: 14,
-        borderRadius: 12,
-      }}
-    >
-      <Text
-        style={{
-          color: "#fff",
-          textAlign: "center",
-          fontSize: 18,
-          fontWeight: "700",
-        }}
-      >
-        {i18n.t("smartScan.addToPlanner")}
-      </Text>
-    </TouchableOpacity>
-  </AnimatedReanimated.View>
-)}
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "700",
+                      }}
+                    >
+                      {i18n.t("smartScan.addToPlanner")}
+                    </Text>
+                  </TouchableOpacity>
+                </AnimatedReanimated.View>
+              )}
             </View>
           </ScrollView>
         )}
