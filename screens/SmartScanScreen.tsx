@@ -26,6 +26,7 @@ import { translateStainTips } from "../utils/AI/translateStainTips";
 
 
 export default function SmartScanScreen({ navigation }: any) {
+
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -68,6 +69,13 @@ export default function SmartScanScreen({ navigation }: any) {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     })();
   }, []);
+
+  // ✅ ΕΔΩ ΤΟ LOG — δεν υπογραμμίζει τίποτα, δεν σπάει τίποτα
+  useEffect(() => {
+    if (result) {
+      console.log("🔥 STAIN TIPS RAW:", result.stainTips);
+    }
+  }, [result]);
 
   const resetState = () => {
     setImage(null);
@@ -185,7 +193,7 @@ if (ai.stains?.length > 0) {
     Events.featureUnlockedUsed("ai_smart_scan", userTier);
     navigation.navigate("Planner");
   };
-console.log("🔥 STAIN TIPS RAW:", result.stainTips);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
