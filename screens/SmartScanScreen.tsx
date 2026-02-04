@@ -243,6 +243,20 @@ const analyze = async (uri: string) => {
     Events.featureUnlockedUsed("ai_smart_scan", userTier);
     navigation.navigate("Planner");
   };
+// 🧪 Debug: Show final result before render
+  useEffect(() => {
+    if (result !== null) {
+      try {
+        console.log(
+          "🧪 FINAL RESULT BEFORE RENDER:",
+          JSON.stringify(result, null, 2)
+        );
+      } catch (err) {
+        console.log("🧪 RESULT (non-serializable):", result);
+      }
+    }
+  }, [result]);
+
 
   // Build careInstructions array from AI care object
 const careInstructions = result?.care
@@ -255,7 +269,7 @@ const careInstructions = result?.care
       ...(Array.isArray(result.care.warnings) ? result.care.warnings : []),
     ].filter(Boolean)
   : [];
-
+console.log("🧪 RENDER START — result:", result);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -432,7 +446,7 @@ const careInstructions = result?.care
               )}
 
               {/* RESULT PANEL */}
-              {result && !loading && !error && (
+              {result && typeof result === "object" && !Array.isArray(result) && !loading && !error && (
                 <AnimatedReanimated.View
                   entering={FadeInUp.duration(500).springify()}
                   layout={Layout.springify()}
