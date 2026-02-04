@@ -24,6 +24,7 @@ export async function analyzeGarmentProCached(base64: string) {
     console.log("🔵 Calling analyzeGarmentPro...");
     const result = await analyzeGarmentPro(base64);
     console.log("🔵 AI RAW RESULT:", result);
+    
 
     // 4) If AI failed → return SAFE EMPTY OBJECT (never null)
     if (!result || typeof result !== "object") {
