@@ -6,14 +6,17 @@ function hashSteps(steps: string[]) {
 }
 
 export async function translateStainTips(
-  tips: string[],
+  tips: any,
   locale: string,
   cacheKeyPrefix: string
 ) {
-  // English → no translation needed
-  if (locale === "en") return tips;
+  // 🔥 Always sanitize input
+  const safeTips = Array.isArray(tips) ? tips : [];
 
-  const stepsHash = hashSteps(tips);
+  // English → no translation needed
+  if (locale === "en") return safeTips;
+
+  const stepsHash = hashSteps(safeTips);
   const cacheKey = `${cacheKeyPrefix}_${locale}_${stepsHash}`;
 
   // 1) Check deduped cache
@@ -22,8 +25,8 @@ export async function translateStainTips(
     return JSON.parse(cached);
   }
 
-  // 2) Translate each tip
-  const translated = tips.map((tip) =>
+  // 2) Translate each tip safely
+  const translated = safeTips.map((tip) =>
     i18n.t("stainTips.dynamic", { tip })
   );
 

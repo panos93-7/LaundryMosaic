@@ -120,63 +120,82 @@ export default function SmartScanScreen({ navigation }: any) {
   };
 
   const analyze = async (uri: string) => {
-    setLoading(true);
-    setResult(null);
-    setError(null);
+  setLoading(true);
+  setResult(null);
+  setError(null);
 
-    try {
-      const { base64 } = await preprocessImage(uri);
+  try {
+    const { base64 } = await preprocessImage(uri);
 
-      // ⭐ Cached garment analysis
-      const ai = await analyzeGarmentProCached(base64);
+    // ⭐ Cached garment analysis
+    const ai = await analyzeGarmentProCached(base64);
 
-      if (!ai) {
-        setError(i18n.t("smartScan.errorMessage"));
-        setLoading(false);
-        return;
-      }
-
-      let stainTips: any[] = [];
-      const locale = (i18n as any).language;
-
-      if (Array.isArray(ai.stains) && ai.stains.length > 0) {
-        for (const stain of ai.stains) {
-          try {
-            const rawTips = await generateStainRemovalTipsCached(
-              stain,
-              ai.fabric
-            );
-
-            console.log("🔥 RAW TIPS:", rawTips);
-
-            const safeSteps = Array.isArray(rawTips?.steps)
-              ? rawTips.steps
-              : [];
-
-            const translated = await translateStainTips(
-              safeSteps,
-              locale,
-              `stain_${stain}_${ai.fabric}`
-            );
-
-            stainTips.push({
-              stain,
-              tips: translated,
-            });
-          } catch (err) {
-            console.log("❌ Error generating stain tips:", err);
-          }
-        }
-      }
-
-      setResult({ ...ai, stainTips });
-    } catch (err) {
-      console.log("❌ analyze() failed:", err);
+    if (!ai) {
       setError(i18n.t("smartScan.errorMessage"));
+      setLoading(false);
+      return;
     }
 
-    setLoading(false);
-  };
+    let stainTips: any[] = [];
+    const locale = (i18n as any).language;
+
+    // ⭐ Stains loop (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
+    if (Array.isArray(ai.stains) && ai.stains.length > 0) {
+      for (const stain of ai.stains) {
+        try {
+          const rawTips = await generateStainRemovalTipsCached(
+            stain,
+            ai.fabric
+          );
+
+          console.log("🔥 RAW TIPS:", rawTips);
+
+          // ⭐ Normalize ANY possible AI output into an array of strings
+          let safeSteps: string[] = [];
+
+          if (Array.isArray(rawTips?.steps)) {
+            safeSteps = rawTips.steps.filter(
+              (step: any) => typeof step === "string"
+            );
+          } else if (Array.isArray(rawTips)) {
+            safeSteps = rawTips.filter(
+              (step: any) => typeof step === "string"
+            );
+          } else if (typeof rawTips === "string") {
+            safeSteps = [rawTips];
+          } else if (rawTips?.tip && typeof rawTips.tip === "string") {
+            safeSteps = [rawTips.tip];
+          } else if (Array.isArray(rawTips?.tips)) {
+            safeSteps = rawTips.tips.filter(
+              (step: any) => typeof step === "string"
+            );
+          }
+
+          // ⭐ Always safe array
+          const translated = await translateStainTips(
+            safeSteps,
+            locale,
+            `stain_${stain}_${ai.fabric}`
+          );
+
+          stainTips.push({
+            stain,
+            tips: translated,
+          });
+        } catch (err) {
+          console.log("❌ Error generating stain tips:", err);
+        }
+      }
+    }
+
+    setResult({ ...ai, stainTips });
+  } catch (err) {
+    console.log("❌ analyze() failed:", err);
+    setError(i18n.t("smartScan.errorMessage"));
+  }
+
+  setLoading(false);
+};
 
   // 🔥 REAL SAVE TO PLANNER
   const handleAutoAdd = async () => {
