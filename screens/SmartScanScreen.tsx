@@ -358,6 +358,7 @@ if (ai.stains?.length > 0) {
               )}
 
               {/* RESULT PANEL */}
+              console.log("🔥 STAIN TIPS RAW:", result.stainTips);
               {result && !loading && !error && (
                 <AnimatedReanimated.View
                   entering={FadeInUp.duration(500).springify()}
