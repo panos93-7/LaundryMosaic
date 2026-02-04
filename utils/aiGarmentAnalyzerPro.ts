@@ -1,15 +1,9 @@
-
 export async function analyzeGarmentPro(base64: string) {
   try {
-    // Clean base64 prefix
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
-
-    // ❗ SmartScanScreen already preprocesses the image.
-    // So here we DO NOT preprocess again.
     const processedBase64 = cleaned;
     const mimeType = "image/jpeg";
 
-    // Call Cloudflare Worker
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
       {
@@ -84,7 +78,7 @@ Rules:
 - Use short, clear English phrases.
 - If uncertain, make the best reasonable guess based on the garment.
 - Return ONLY the JSON object.
-`
+`,
         }),
       }
     );
@@ -96,14 +90,8 @@ Rules:
 
     const data = await response.json();
 
-    // -----------------------------
-    //  ROBUST JSON EXTRACTION
-    // -----------------------------
     const parts = data?.candidates?.[0]?.content?.parts || [];
-    const rawText = parts
-      .map((p: any) => p?.text || "")
-      .join("\n")
-      .trim();
+    const rawText = parts.map((p: any) => p?.text || "").join("\n").trim();
 
     const cleanedJson = rawText
       .replace(/```json/g, "")
@@ -115,7 +103,7 @@ Rules:
       throw new Error("Invalid AI JSON");
     }
 
-    let parsed;
+    let parsed: any;
 
     try {
       parsed = JSON.parse(cleanedJson);
@@ -124,66 +112,62 @@ Rules:
       throw new Error("JSON parse error");
     }
 
-    // -----------------------------
-    //  BULLETPROOF NORMALIZATION
-    // -----------------------------
-return {
-  name: parsed.name ?? "",
-  type: parsed.type ?? "",
-  category: parsed.category ?? "",
-  fabric: parsed.fabric ?? "",
-  color: parsed.color ?? "",
-  pattern: parsed.pattern ?? "",
+    return {
+      name: parsed.name ?? "",
+      type: parsed.type ?? "",
+      category: parsed.category ?? "",
+      fabric: parsed.fabric ?? "",
+      color: parsed.color ?? "",
+      pattern: parsed.pattern ?? "",
 
-  stains: Array.isArray(parsed.stains)
-    ? parsed.stains.filter((s: any) => typeof s === "string")
-    : [],
+      stains: Array.isArray(parsed.stains)
+        ? parsed.stains.filter((s: any) => typeof s === "string")
+        : [],
 
-  recommended: {
-    program: parsed?.recommended?.program ?? "",
-    temp:
-      typeof parsed?.recommended?.temp === "number"
-        ? parsed.recommended.temp
-        : 30,
-    spin:
-      typeof parsed?.recommended?.spin === "number"
-        ? parsed.recommended.spin
-        : 800,
-    detergent: parsed?.recommended?.detergent ?? "",
-    notes: Array.isArray(parsed?.recommended?.notes)
-      ? parsed.recommended.notes.filter((n: any) => typeof n === "string")
-      : [],
-  },
+      recommended: {
+        program: parsed?.recommended?.program ?? "",
+        temp:
+          typeof parsed?.recommended?.temp === "number"
+            ? parsed.recommended.temp
+            : 30,
+        spin:
+          typeof parsed?.recommended?.spin === "number"
+            ? parsed.recommended.spin
+            : 800,
+        detergent: parsed?.recommended?.detergent ?? "",
+        notes: Array.isArray(parsed?.recommended?.notes)
+          ? parsed.recommended.notes.filter((n: any) => typeof n === "string")
+          : [],
+      },
 
-  care: {
-    wash: parsed?.care?.wash ?? "",
-    bleach: parsed?.care?.bleach ?? "",
-    dry: parsed?.care?.dry ?? "",
-    iron: parsed?.care?.iron ?? "",
-    dryclean: parsed?.care?.dryclean ?? "",
-    warnings: Array.isArray(parsed?.care?.warnings)
-      ? parsed.care.warnings.filter((w: any) => typeof w === "string")
-      : [],
-  },
+      care: {
+        wash: parsed?.care?.wash ?? "",
+        bleach: parsed?.care?.bleach ?? "",
+        dry: parsed?.care?.dry ?? "",
+        iron: parsed?.care?.iron ?? "",
+        dryclean: parsed?.care?.dryclean ?? "",
+        warnings: Array.isArray(parsed?.care?.warnings)
+          ? parsed.care.warnings.filter((w: any) => typeof w === "string")
+          : [],
+      },
 
-  risks: {
-    shrinkage: parsed?.risks?.shrinkage ?? "",
-    colorBleeding: parsed?.risks?.colorBleeding ?? "",
-    delicacy: parsed?.risks?.delicacy ?? "",
-  },
+      risks: {
+        shrinkage: parsed?.risks?.shrinkage ?? "",
+        colorBleeding: parsed?.risks?.colorBleeding ?? "",
+        delicacy: parsed?.risks?.delicacy ?? "",
+      },
 
-  washFrequency: parsed.washFrequency ?? "",
+      washFrequency: parsed.washFrequency ?? "",
 
-  careSymbols: Array.isArray(parsed.careSymbols)
-    ? parsed.careSymbols.filter((c: any) => typeof c === "string")
-    : [],
+      careSymbols: Array.isArray(parsed.careSymbols)
+        ? parsed.careSymbols.filter((c: any) => typeof c === "string")
+        : [],
 
-  // ⭐ ALWAYS include stainTips in the analyzer result
-  stainTips: [],
-};
-
+      // ΠΑΝΤΑ παρόν, έστω κενό
+      stainTips: [],
+    };
   } catch (err) {
     console.log("❌ PRO analyzer error:", err);
-    throw err; // ❗ Throw so SmartScanScreen shows error panel instead of crashing
+    throw err;
   }
 }

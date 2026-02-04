@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   BackHandler,
@@ -35,7 +35,6 @@ export default function SmartScanScreen({ navigation }: any) {
   const userTier = useUserStore((s) => s.userTier);
   const canSeeStainTips = userTier === "pro";
 
-  // 🔥 Pulse animation (scale 1 → 1.1)
   const pulseAnim = useRef(new RNAnimated.Value(1)).current;
 
   useEffect(() => {
@@ -55,7 +54,16 @@ export default function SmartScanScreen({ navigation }: any) {
     ).start();
   }, []);
 
-  // 🔥 Block hardware back
+  useFocusEffect(
+    React.useCallback(() => {
+      setImage(null);
+      setResult(null);
+      setError(null);
+      setLoading(false);
+      return () => {};
+    }, [])
+  );
+
   useFocusEffect(() => {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -64,27 +72,12 @@ export default function SmartScanScreen({ navigation }: any) {
     return () => subscription.remove();
   });
 
-  // 🔥 Reset state on mount to avoid stale result
-  useEffect(() => {
-    setImage(null);
-    setResult(null);
-    setError(null);
-    setLoading(false);
-  }, []);
-
   useEffect(() => {
     (async () => {
       await ImagePicker.requestCameraPermissionsAsync();
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     })();
   }, []);
-
-  // Debug log για stain tips
-  useEffect(() => {
-    if (result) {
-      console.log("🔥 STAIN TIPS RAW ON RESULT:", result.stainTips);
-    }
-  }, [result]);
 
   const resetState = () => {
     setImage(null);
@@ -133,21 +126,27 @@ export default function SmartScanScreen({ navigation }: any) {
 
       const ai = await analyzeGarmentProCached(base64);
 
-      if (!ai) {
+      if (!ai || typeof ai !== "object") {
         setError(i18n.t("smartScan.errorMessage"));
         setLoading(false);
         return;
       }
 
+      const safeAi = {
+        ...ai,
+        stains: Array.isArray(ai.stains) ? ai.stains : [],
+        stainTips: Array.isArray(ai.stainTips) ? ai.stainTips : [],
+      };
+
       let stainTips: any[] = [];
       const locale = (i18n as any).language;
 
-      if (Array.isArray(ai.stains) && ai.stains.length > 0) {
-        for (const stain of ai.stains) {
+      if (Array.isArray(safeAi.stains) && safeAi.stains.length > 0) {
+        for (const stain of safeAi.stains) {
           try {
             const rawTips = await generateStainRemovalTipsCached(
               stain,
-              ai.fabric
+              safeAi.fabric
             );
 
             let safeSteps: string[] = [];
@@ -173,7 +172,7 @@ export default function SmartScanScreen({ navigation }: any) {
             const translatedRaw = await translateStainTips(
               safeSteps,
               locale,
-              `stain_${stain}_${ai.fabric}`
+              `stain_${stain}_${safeAi.fabric}`
             );
 
             const translated = Array.isArray(translatedRaw)
@@ -195,7 +194,10 @@ export default function SmartScanScreen({ navigation }: any) {
         }
       }
 
-      setResult({ ...ai, stainTips });
+      setResult({
+        ...safeAi,
+        stainTips,
+      });
     } catch (err) {
       console.log("❌ analyze() failed:", err);
       setError(i18n.t("smartScan.errorMessage"));
@@ -236,21 +238,19 @@ export default function SmartScanScreen({ navigation }: any) {
     navigation.navigate("Planner");
   };
 
-  // 🧪 Debug: render start
-  console.log("🧪 RENDER START — result:", result);
-
-  const careInstructions = result?.care
-    ? [
-        result.care.wash,
-        result.care.bleach,
-        result.care.dry,
-        result.care.iron,
-        result.care.dryclean,
-        ...(Array.isArray(result.care.warnings)
-          ? result.care.warnings
-          : []),
-      ].filter(Boolean)
-    : [];
+  const careInstructions =
+    result && result.care
+      ? [
+          result.care.wash,
+          result.care.bleach,
+          result.care.dry,
+          result.care.iron,
+          result.care.dryclean,
+          ...(Array.isArray(result.care.warnings)
+            ? result.care.warnings
+            : []),
+        ].filter(Boolean)
+      : [];
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -529,8 +529,7 @@ export default function SmartScanScreen({ navigation }: any) {
                     )}
 
                     {/* STAIN TIPS SECTION */}
-                    {result &&
-                      Array.isArray(result.stains) &&
+                    {Array.isArray(result?.stains) &&
                       result.stains.length > 0 && (
                         <View style={{ marginTop: 25 }}>
                           <Text
