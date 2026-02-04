@@ -88,9 +88,18 @@ export default function SmartScanScreen({ navigation }: any) {
     })();
   }, []);
 
-  // --- SAFE RESULT (MUST COME FIRST) ---
+  // ---------------------------------------------------------------------------
+  // SAFE RESULT — ΠΟΤΕ ΔΕΝ ΕΠΙΣΤΡΕΦΕΙ null
+  // ---------------------------------------------------------------------------
   const safeResult = useMemo(() => {
-    if (!result || typeof result !== "object") return null;
+    if (!result || typeof result !== "object") return {
+      stains: [],
+      stainTips: [],
+      recommended: {},
+      care: {},
+      fabric: "cotton",
+      color: "white",
+    };
 
     const stains = Array.isArray(result.stains) ? result.stains : [];
     const stainTips = Array.isArray(result.stainTips) ? result.stainTips : [];
@@ -108,10 +117,14 @@ export default function SmartScanScreen({ navigation }: any) {
       stainTips,
       recommended,
       care,
+      fabric: typeof result.fabric === "string" ? result.fabric : "cotton",
+      color: typeof result.color === "string" ? result.color : "white",
     };
   }, [result]);
 
-  // --- CARE INSTRUCTIONS (MUST COME AFTER safeResult) ---
+  // ---------------------------------------------------------------------------
+  // CARE INSTRUCTIONS — ΠΑΝΤΑ array of strings
+  // ---------------------------------------------------------------------------
   const careInstructions: string[] = useMemo(() => {
     if (!safeResult || !safeResult.care) return [];
 
@@ -128,7 +141,9 @@ export default function SmartScanScreen({ navigation }: any) {
     ].filter((x) => typeof x === "string" && x.trim().length > 0);
   }, [safeResult]);
 
+  // ---------------------------------------------------------------------------
   // SAFE RESET
+  // ---------------------------------------------------------------------------
   const resetState = () => {
     if (analyzingRef.current) return;
     setImage(null);
