@@ -127,63 +127,60 @@ Rules:
     // -----------------------------
     //  BULLETPROOF NORMALIZATION
     // -----------------------------
-    return {
-      name: parsed.name ?? "",
-      type: parsed.type ?? "",
-      category: parsed.category ?? "",
-      fabric: parsed.fabric ?? "",
-      color: parsed.color ?? "",
-      pattern: parsed.pattern ?? "",
+return {
+  name: parsed.name ?? "",
+  type: parsed.type ?? "",
+  category: parsed.category ?? "",
+  fabric: parsed.fabric ?? "",
+  color: parsed.color ?? "",
+  pattern: parsed.pattern ?? "",
 
-      stains: Array.isArray(parsed.stains)
-        ? parsed.stains.filter((s: any) => typeof s === "string")
-        : [],
+  stains: Array.isArray(parsed.stains)
+    ? parsed.stains.filter((s: any) => typeof s === "string")
+    : [],
 
-      recommended: {
-        program: parsed?.recommended?.program ?? "",
-        temp:
-          typeof parsed?.recommended?.temp === "number"
-            ? parsed.recommended.temp
-            : 30,
-        spin:
-          typeof parsed?.recommended?.spin === "number"
-            ? parsed.recommended.spin
-            : 800,
-        detergent: parsed?.recommended?.detergent ?? "",
-        notes: Array.isArray(parsed?.recommended?.notes)
-          ? parsed.recommended.notes.filter(
-              (n: any) => typeof n === "string"
-            )
-          : [],
-      },
+  recommended: {
+    program: parsed?.recommended?.program ?? "",
+    temp:
+      typeof parsed?.recommended?.temp === "number"
+        ? parsed.recommended.temp
+        : 30,
+    spin:
+      typeof parsed?.recommended?.spin === "number"
+        ? parsed.recommended.spin
+        : 800,
+    detergent: parsed?.recommended?.detergent ?? "",
+    notes: Array.isArray(parsed?.recommended?.notes)
+      ? parsed.recommended.notes.filter((n: any) => typeof n === "string")
+      : [],
+  },
 
-      care: {
-        wash: parsed?.care?.wash ?? "",
-        bleach: parsed?.care?.bleach ?? "",
-        dry: parsed?.care?.dry ?? "",
-        iron: parsed?.care?.iron ?? "",
-        dryclean: parsed?.care?.dryclean ?? "",
-        warnings: Array.isArray(parsed?.care?.warnings)
-          ? parsed.care.warnings.filter(
-              (w: any) => typeof w === "string"
-            )
-          : [],
-      },
+  care: {
+    wash: parsed?.care?.wash ?? "",
+    bleach: parsed?.care?.bleach ?? "",
+    dry: parsed?.care?.dry ?? "",
+    iron: parsed?.care?.iron ?? "",
+    dryclean: parsed?.care?.dryclean ?? "",
+    warnings: Array.isArray(parsed?.care?.warnings)
+      ? parsed.care.warnings.filter((w: any) => typeof w === "string")
+      : [],
+  },
 
-      risks: {
-        shrinkage: parsed?.risks?.shrinkage ?? "",
-        colorBleeding: parsed?.risks?.colorBleeding ?? "",
-        delicacy: parsed?.risks?.delicacy ?? "",
-      },
+  risks: {
+    shrinkage: parsed?.risks?.shrinkage ?? "",
+    colorBleeding: parsed?.risks?.colorBleeding ?? "",
+    delicacy: parsed?.risks?.delicacy ?? "",
+  },
 
-      washFrequency: parsed.washFrequency ?? "",
+  washFrequency: parsed.washFrequency ?? "",
 
-      careSymbols: Array.isArray(parsed.careSymbols)
-        ? parsed.careSymbols.filter(
-            (c: any) => typeof c === "string"
-          )
-        : [],
-    };
+  careSymbols: Array.isArray(parsed.careSymbols)
+    ? parsed.careSymbols.filter((c: any) => typeof c === "string")
+    : [],
+
+  // ⭐ ALWAYS include stainTips in the analyzer result
+  stainTips: [],
+};
 
   } catch (err) {
     console.log("❌ PRO analyzer error:", err);

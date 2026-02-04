@@ -11,6 +11,12 @@ export async function analyzeGarmentProCached(base64: string) {
     const cached = await aiCacheGet(hash);
     if (cached) {
       console.log("⚡ Using cached GarmentPro result");
+
+      // 🔥 SAFETY FIX: ensure stainTips always exists
+      if (!Array.isArray(cached.stainTips)) {
+        cached.stainTips = [];
+      }
+
       return cached;
     }
 
@@ -54,6 +60,11 @@ export async function analyzeGarmentProCached(base64: string) {
         careSymbols: [],
         stainTips: [],
       };
+    }
+
+    // 🔥 SAFETY FIX: ensure stainTips exists before caching
+    if (!Array.isArray(result.stainTips)) {
+      result.stainTips = [];
     }
 
     // 5) Save to cache

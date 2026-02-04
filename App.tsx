@@ -6,7 +6,6 @@ import { syncEntitlements } from "./utils/syncEntitlements";
 
 import AppNavigator from "./navigation/AppNavigator";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import * as Updates from "expo-updates";
 
@@ -32,13 +31,6 @@ export default function App() {
       isPremiumAnnual: false,
       isPro: false,
       hasSeenOnboarding: false,
-    });
-  }, []);
-
-  // ⭐ FULL CLEAR (TEMPORARY)
-  useEffect(() => {
-    AsyncStorage.clear().then(() => {
-      console.log("🧽 FULL CLEAR DONE");
     });
   }, []);
 
