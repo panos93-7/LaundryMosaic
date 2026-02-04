@@ -1,14 +1,13 @@
-import { preprocessImage } from "./AI/preprocessImage";
 
 export async function analyzeGarmentPro(base64: string) {
   try {
     // Clean base64 prefix
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
 
-    // Preprocess image (resize, compress, JPEG)
-    const { base64: processedBase64, mimeType } = await preprocessImage(
-      `data:image/jpeg;base64,${cleaned}`
-    );
+    // ❗ SmartScanScreen already preprocesses the image.
+    // So here we DO NOT preprocess again.
+    const processedBase64 = cleaned;
+    const mimeType = "image/jpeg";
 
     // Call Cloudflare Worker
     const response = await fetch(
@@ -92,21 +91,29 @@ Rules:
 
     if (!response.ok) {
       console.log("❌ Worker error:", await response.text());
-      return null;
+      throw new Error("Worker returned non-OK response");
     }
 
     const data = await response.json();
 
     // -----------------------------
-    //  BULLETPROOF JSON EXTRACTION
+    //  ROBUST JSON EXTRACTION
     // -----------------------------
-    let rawText =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    const rawText = parts
+      .map((p: any) => p?.text || "")
+      .join("\n")
+      .trim();
 
     const cleanedJson = rawText
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
+
+    if (!cleanedJson || cleanedJson.length < 5) {
+      console.log("❌ Empty or invalid JSON from model:", cleanedJson);
+      throw new Error("Invalid AI JSON");
+    }
 
     let parsed;
 
@@ -114,7 +121,7 @@ Rules:
       parsed = JSON.parse(cleanedJson);
     } catch (e) {
       console.log("❌ Failed to parse JSON:", cleanedJson);
-      return null;
+      throw new Error("JSON parse error");
     }
 
     // -----------------------------
@@ -180,6 +187,6 @@ Rules:
 
   } catch (err) {
     console.log("❌ PRO analyzer error:", err);
-    return null;
+    throw err; // ❗ Throw so SmartScanScreen shows error panel instead of crashing
   }
 }
