@@ -15,15 +15,86 @@ export async function analyzeGarmentProCached(base64: string) {
     }
 
     // 3) Call original GarmentPro AI
+    console.log("🔵 Calling analyzeGarmentPro...");
     const result = await analyzeGarmentPro(base64);
-    if (!result) return null;
+    console.log("🔵 AI RAW RESULT:", result);
 
-    // 4) Save to cache
+    // 4) If AI failed → return SAFE EMPTY OBJECT (never null)
+    if (!result || typeof result !== "object") {
+      console.log("❌ AI returned null/invalid → using safe fallback");
+      return {
+        name: "",
+        type: "",
+        category: "",
+        fabric: "",
+        color: "",
+        pattern: "",
+        stains: [],
+        recommended: {
+          program: "",
+          temp: 30,
+          spin: 800,
+          detergent: "",
+          notes: [],
+        },
+        care: {
+          wash: "",
+          bleach: "",
+          dry: "",
+          iron: "",
+          dryclean: "",
+          warnings: [],
+        },
+        risks: {
+          shrinkage: "",
+          colorBleeding: "",
+          delicacy: "",
+        },
+        washFrequency: "",
+        careSymbols: [],
+        stainTips: [],
+      };
+    }
+
+    // 5) Save to cache
     await aiCacheSet(hash, result);
 
     return result;
   } catch (err) {
     console.log("❌ analyzeGarmentProCached error:", err);
-    return null;
+
+    // SAFE FALLBACK (never return null)
+    return {
+      name: "",
+      type: "",
+      category: "",
+      fabric: "",
+      color: "",
+      pattern: "",
+      stains: [],
+      recommended: {
+        program: "",
+        temp: 30,
+        spin: 800,
+        detergent: "",
+        notes: [],
+      },
+      care: {
+        wash: "",
+        bleach: "",
+        dry: "",
+        iron: "",
+        dryclean: "",
+        warnings: [],
+      },
+      risks: {
+        shrinkage: "",
+        colorBleeding: "",
+        delicacy: "",
+      },
+      washFrequency: "",
+      careSymbols: [],
+      stainTips: [],
+    };
   }
 }
