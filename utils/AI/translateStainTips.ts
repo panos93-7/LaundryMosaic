@@ -2,32 +2,30 @@ import { analyzeImageWithGemini } from "./aiClient";
 import { getImageHash } from "./imageHash";
 import { translationCacheStains } from "./translationCacheStains";
 
+/**
+ * Normalizes any AI translation output into a clean string[]
+ */
 function normalizeTranslated(raw: any): string[] {
   if (!raw) return [];
 
-  // Case 1: array of strings
   if (Array.isArray(raw)) {
     return raw.filter((s: any) => typeof s === "string");
   }
 
-  // Case 2: { steps: [...] }
   const steps = (raw as any).steps;
   if (Array.isArray(steps)) {
     return steps.filter((s: any) => typeof s === "string");
   }
 
-  // Case 3: { tips: [...] }
   const tips = (raw as any).tips;
   if (Array.isArray(tips)) {
     return tips.filter((t: any) => typeof t === "string");
   }
 
-  // Case 4: single string
   if (typeof raw === "string") {
     return [raw];
   }
 
-  // Case 5: { text: "..." }
   const text = (raw as any).text;
   if (typeof text === "string") {
     return [text];
@@ -36,43 +34,49 @@ function normalizeTranslated(raw: any): string[] {
   return [];
 }
 
+/**
+ * Generic AI translator for ANY text array.
+ * Works for stain tips, fabric, color, care instructions, etc.
+ */
 export async function translateStainTips(
-  tips: any,
+  input: any,
   locale: string,
   cacheKeyPrefix: string
 ) {
-  // 1) Sanitize input
-  const safeTips = Array.isArray(tips)
-    ? tips.filter((t: any) => typeof t === "string")
+  // Normalize input to array of strings
+  const safeArray = Array.isArray(input)
+    ? input.filter((t: any) => typeof t === "string")
+    : typeof input === "string"
+    ? [input]
     : [];
 
-  // 2) English → no translation needed
+  // English → no translation needed
   if (!locale || locale.startsWith("en")) {
-    return safeTips;
+    return safeArray;
   }
 
-  // 3) Build deduped cache key
-  const stepsString = safeTips.join("||");
-  const stepsHash = await getImageHash(stepsString);
-  const cacheKey = `${cacheKeyPrefix}_${locale}_${stepsHash}`;
+  // Build cache key
+  const joined = safeArray.join("||");
+  const hash = await getImageHash(joined);
+  const cacheKey = `${cacheKeyPrefix}_${locale}_${hash}`;
 
-  // 4) Check cache
+  // Check cache
   const cached = translationCacheStains.get(cacheKey);
   if (cached) {
     try {
       const parsed = JSON.parse(cached);
       return normalizeTranslated(parsed);
     } catch {
-      // corrupted cache → ignore
+      // ignore corrupted cache
     }
   }
 
-  // 5) Build translation prompt
+  // Build translation prompt
   const prompt = `
-Translate the following stain removal steps into ${locale}.
+Translate the following text into ${locale}.
 Return ONLY a JSON array of strings. No explanations, no markdown.
 
-${JSON.stringify(safeTips)}
+${JSON.stringify(safeArray)}
 `;
 
   let translated: any = null;
@@ -83,14 +87,13 @@ ${JSON.stringify(safeTips)}
       prompt,
     });
   } catch {
-    translated = safeTips;
+    translated = safeArray;
   }
 
-  // 7) Normalize AI output
   const normalized = normalizeTranslated(translated);
-  const finalOutput = normalized.length > 0 ? normalized : safeTips;
+  const finalOutput = normalized.length > 0 ? normalized : safeArray;
 
-  // 8) Save to cache
+  // Save to cache
   try {
     translationCacheStains.set(cacheKey, JSON.stringify(finalOutput));
   } catch {

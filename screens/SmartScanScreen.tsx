@@ -24,11 +24,20 @@ import { generateStainRemovalTipsCached } from "../utils/AI/generateStainRemoval
 import { preprocessImage } from "../utils/AI/preprocessImage";
 import { translateStainTips } from "../utils/AI/translateStainTips";
 
+type CareFields = {
+  wash?: string;
+  bleach?: string;
+  dry?: string;
+  iron?: string;
+  dryclean?: string;
+  warnings?: string[];
+};
+
 const SAFE_FALLBACK = {
   stains: [],
   stainTips: [],
   recommended: {},
-  care: {},
+  care: {} as CareFields,
   fabric: "cotton",
   color: "white",
 };
@@ -101,210 +110,274 @@ export default function SmartScanScreen({ navigation }: any) {
 
   // SAFE RESULT — ΠΟΤΕ ΔΕΝ ΕΙΝΑΙ null
   const safeResult = useMemo(() => {
-    if (!result || typeof result !== "object") return SAFE_FALLBACK;
+  if (!result || typeof result !== "object") return SAFE_FALLBACK;
 
-    const stains = Array.isArray(result.stains) ? result.stains : [];
-    const stainTips = Array.isArray(result.stainTips) ? result.stainTips : [];
-    const recommended =
-      result.recommended && typeof result.recommended === "object"
-        ? result.recommended
-        : {};
+  const stains = Array.isArray(result.stains) ? result.stains : [];
+  const stainTips = Array.isArray(result.stainTips) ? result.stainTips : [];
+  const recommended =
+    result.recommended && typeof result.recommended === "object"
+      ? result.recommended
+      : {};
 
-    const care =
-      result.care && typeof result.care === "object" ? result.care : {};
+  const care =
+    result.care && typeof result.care === "object"
+      ? (result.care as CareFields)
+      : ({} as CareFields);
 
-    return {
-      ...SAFE_FALLBACK,
-      ...result,
-      stains,
-      stainTips,
-      recommended,
-      care,
-      fabric: typeof result.fabric === "string" ? result.fabric : "cotton",
-      color: typeof result.color === "string" ? result.color : "white",
-    };
-  }, [result]);
-
-  // CARE INSTRUCTIONS — ΠΑΝΤΑ array of strings
-  const careInstructions: string[] = useMemo(() => {
-    const c = safeResult.care || {};
-    const warnings = Array.isArray(c.warnings) ? c.warnings : [];
-
-    return [
-      c.wash,
-      c.bleach,
-      c.dry,
-      c.iron,
-      c.dryclean,
-      ...warnings,
-    ].filter((x) => typeof x === "string" && x.trim().length > 0);
-  }, [safeResult]);
-
-  // RESET
-  const resetState = () => {
-    if (analyzingRef.current) return;
-    setImage(null);
-    setResult(null);
-    setError(null);
-    setLoading(false);
+  return {
+    ...SAFE_FALLBACK,
+    ...result,
+    stains,
+    stainTips,
+    recommended,
+    care,
+    fabric: typeof result.fabric === "string" ? result.fabric : "cotton",
+    color: typeof result.color === "string" ? result.color : "white",
   };
+}, [result]);
 
-  const takeAnotherPhoto = () => {
-    resetState();
-    takePhoto();
-  };
+// CARE INSTRUCTIONS — ΠΑΝΤΑ array of strings
+const careInstructions: string[] = useMemo(() => {
+  const c = safeResult.care || {};
+  const warnings = Array.isArray(c.warnings) ? c.warnings : [];
 
-  const pickImage = async () => {
-    resetState();
-    try {
-      const res = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.9,
-      });
+  return [
+    c.wash,
+    c.bleach,
+    c.dry,
+    c.iron,
+    c.dryclean,
+    ...warnings,
+  ].filter((x) => typeof x === "string" && x.trim().length > 0);
+}, [safeResult]);
 
-      if (!res.canceled) {
-        const uri = res.assets?.[0]?.uri;
-        if (!uri) {
-          console.log("SmartScan: gallery result has no uri");
-          setError(i18n.t("smartScan.errorMessage"));
-          return;
-        }
-        setImage(uri);
-        Events.aiScanStarted("gallery");
-        analyze(uri);
-      }
-    } catch (e) {
-      console.log("SmartScan: pickImage failed", e);
-      setError(i18n.t("smartScan.errorMessage"));
-    }
-  };
+// RESET
+const resetState = () => {
+  if (analyzingRef.current) return;
+  setImage(null);
+  setResult(null);
+  setError(null);
+  setLoading(false);
+};
 
-  const takePhoto = async () => {
-    resetState();
-    try {
-      const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
+const takeAnotherPhoto = () => {
+  resetState();
+  takePhoto();
+};
 
-      if (!res.canceled) {
-        const uri = res.assets?.[0]?.uri;
-        if (!uri) {
-          console.log("SmartScan: camera result has no uri");
-          setError(i18n.t("smartScan.errorMessage"));
-          return;
-        }
-        setImage(uri);
-        Events.aiScanStarted("camera");
-        analyze(uri);
-      }
-    } catch (e) {
-      console.log("SmartScan: takePhoto failed", e);
-      setError(i18n.t("smartScan.errorMessage"));
-    }
-  };
+const pickImage = async () => {
+  resetState();
+  try {
+    const res = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.9,
+    });
 
-  const analyze = async (uri: string) => {
-    if (!uri) return;
-    if (analyzingRef.current) return;
-    analyzingRef.current = true;
-
-    setLoading(true);
-    setResult(null);
-    setError(null);
-
-    try {
-      const pre = await preprocessImage(uri);
-      let base64: string | null = null;
-
-if (typeof pre === "string") {
-  base64 = pre;
-} else if (pre && typeof pre === "object") {
-  const p = pre as any;
-  if (typeof p.base64 === "string") base64 = p.base64;
-  else if (typeof p.imageBase64 === "string") base64 = p.imageBase64;
-}
-
-      if (!base64) throw new Error("Invalid base64");
-
-      const ai = await analyzeGarmentProCached(base64);
-
-      if (!ai || typeof ai !== "object") {
+    if (!res.canceled) {
+      const uri = res.assets?.[0]?.uri;
+      if (!uri) {
+        console.log("SmartScan: gallery result has no uri");
         setError(i18n.t("smartScan.errorMessage"));
         return;
       }
-
-      const base = {
-        ...ai,
-        fabric: typeof ai.fabric === "string" ? ai.fabric : "cotton",
-        color: typeof ai.color === "string" ? ai.color : "white",
-        stains: Array.isArray(ai.stains) ? ai.stains : [],
-        stainTips: Array.isArray(ai.stainTips) ? ai.stainTips : [],
-        recommended:
-          ai.recommended && typeof ai.recommended === "object"
-            ? ai.recommended
-            : {},
-        care: ai.care && typeof ai.care === "object" ? ai.care : {},
-      };
-
-      let stainTips: any[] = [];
-      const locale = (i18n as any).language;
-
-      if (Array.isArray(base.stains) && base.stains.length > 0) {
-        for (const stain of base.stains) {
-          try {
-            const rawTips = await generateStainRemovalTipsCached(
-              stain,
-              base.fabric
-            );
-
-            let safeSteps: string[] = [];
-
-if (Array.isArray(rawTips)) {
-  // TS now knows rawTips is string[]
-  safeSteps = rawTips.filter((s) => typeof s === "string");
-} else if (rawTips && typeof rawTips === "object") {
-  const obj = rawTips as any;
-
-  if (Array.isArray(obj.steps)) {
-    safeSteps = obj.steps.filter((s: any) => typeof s === "string");
-  } else if (Array.isArray(obj.tips)) {
-    safeSteps = obj.tips.filter((s: any) => typeof s === "string");
-  } else if (typeof obj.tip === "string") {
-    safeSteps = [obj.tip];
+      setImage(uri);
+      Events.aiScanStarted("gallery");
+      analyze(uri);
+    }
+  } catch (e) {
+    console.log("SmartScan: pickImage failed", e);
+    setError(i18n.t("smartScan.errorMessage"));
   }
-} else if (typeof rawTips === "string") {
-  safeSteps = [rawTips];
-}
+};
 
-            const translatedRaw = await translateStainTips(
-              safeSteps,
-              locale,
-              `stain_${stain}_${base.fabric}`
-            );
+const takePhoto = async () => {
+  resetState();
+  try {
+    const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
 
-            const translated = Array.isArray(translatedRaw)
-              ? translatedRaw.filter((s: any) => typeof s === "string")
-              : typeof translatedRaw === "string"
-              ? [translatedRaw]
-              : [];
+    if (!res.canceled) {
+      const uri = res.assets?.[0]?.uri;
+      if (!uri) {
+        console.log("SmartScan: camera result has no uri");
+        setError(i18n.t("smartScan.errorMessage"));
+        return;
+      }
+      setImage(uri);
+      Events.aiScanStarted("camera");
+      analyze(uri);
+    }
+  } catch (e) {
+    console.log("SmartScan: takePhoto failed", e);
+    setError(i18n.t("smartScan.errorMessage"));
+  }
+};
 
-            stainTips.push({ stain, tips: translated });
-          } catch (err) {
-            stainTips.push({ stain, tips: [] });
+const analyze = async (uri: string) => {
+  if (!uri) return;
+  if (analyzingRef.current) return;
+  analyzingRef.current = true;
+
+  setLoading(true);
+  setResult(null);
+  setError(null);
+
+  try {
+    const pre = await preprocessImage(uri);
+    let base64: string | null = null;
+
+    if (typeof pre === "string") {
+      base64 = pre;
+    } else if (pre && typeof pre === "object") {
+      const p = pre as any;
+      if (typeof p.base64 === "string") base64 = p.base64;
+      else if (typeof p.imageBase64 === "string") base64 = p.imageBase64;
+    }
+
+    if (!base64) throw new Error("Invalid base64");
+
+    const ai = await analyzeGarmentProCached(base64);
+
+    if (!ai || typeof ai !== "object") {
+      setError(i18n.t("smartScan.errorMessage"));
+      return;
+    }
+
+    const base = {
+  ...ai,
+  fabric: typeof ai.fabric === "string" ? ai.fabric : "cotton",
+  color: typeof ai.color === "string" ? ai.color : "white",
+  stains: Array.isArray(ai.stains) ? ai.stains : [],
+  stainTips: Array.isArray(ai.stainTips) ? ai.stainTips : [],
+  recommended:
+    (ai.recommended && typeof ai.recommended === "object"
+      ? ai.recommended
+      : {}) as { program?: string },
+  care:
+    (ai.care && typeof ai.care === "object"
+      ? ai.care
+      : {}) as CareFields,
+};
+
+    const locale = (i18n as any).language;
+
+    // CARE ARRAY (safe)
+const careArray = (() => {
+  const c = base.care || {};
+  const warnings = Array.isArray(c.warnings)
+    ? c.warnings.filter((w) => typeof w === "string")
+    : [];
+
+  return [
+    typeof c.wash === "string" ? c.wash : "",
+    typeof c.bleach === "string" ? c.bleach : "",
+    typeof c.dry === "string" ? c.dry : "",
+    typeof c.iron === "string" ? c.iron : "",
+    typeof c.dryclean === "string" ? c.dryclean : "",
+    ...warnings,
+  ].filter((x) => x.trim().length > 0);
+})();
+
+    // TRANSLATE EVERYTHING
+    const [
+      translatedFabric,
+      translatedColor,
+      translatedStains,
+      translatedCare,
+      translatedProgram,
+    ] = await Promise.all([
+      translateStainTips(
+        typeof base.fabric === "string" ? base.fabric : "",
+        locale,
+        "fabric"
+      ),
+      translateStainTips(
+        typeof base.color === "string" ? base.color : "",
+        locale,
+        "color"
+      ),
+      translateStainTips(
+        Array.isArray(base.stains) ? base.stains : [],
+        locale,
+        "stains"
+      ),
+      translateStainTips(careArray, locale, "care"),
+      translateStainTips(
+  typeof base.recommended?.program === "string"
+    ? base.recommended.program
+    : "",
+  locale,
+  "program"
+),
+    ]);
+
+    // TRANSLATE STAIN TIPS (per stain)
+    let stainTips: any[] = [];
+
+    if (Array.isArray(base.stains) && base.stains.length > 0) {
+      for (const stain of base.stains) {
+        try {
+          const rawTips = await generateStainRemovalTipsCached(
+            stain,
+            base.fabric
+          );
+
+          let safeSteps: string[] = [];
+
+          if (Array.isArray(rawTips)) {
+            safeSteps = rawTips.filter((s) => typeof s === "string");
+          } else if (rawTips && typeof rawTips === "object") {
+            const obj = rawTips as any;
+
+            if (Array.isArray(obj.steps)) {
+              safeSteps = obj.steps.filter((s: any) => typeof s === "string");
+            } else if (Array.isArray(obj.tips)) {
+              safeSteps = obj.tips.filter((s: any) => typeof s === "string");
+            } else if (typeof obj.tip === "string") {
+              safeSteps = [obj.tip];
+            }
+          } else if (typeof rawTips === "string") {
+            safeSteps = [rawTips];
           }
+
+          const translatedRaw = await translateStainTips(
+            safeSteps,
+            locale,
+            `stain_${stain}_${base.fabric}`
+          );
+
+          const translated = Array.isArray(translatedRaw)
+            ? translatedRaw.filter((s: any) => typeof s === "string")
+            : typeof translatedRaw === "string"
+            ? [translatedRaw]
+            : [];
+
+          stainTips.push({ stain, tips: translated });
+        } catch (err) {
+          stainTips.push({ stain, tips: [] });
         }
       }
-
-      setResult({
-        ...base,
-        stainTips,
-      });
-    } catch (err) {
-      setError(i18n.t("smartScan.errorMessage"));
-    } finally {
-      analyzingRef.current = false;
-      setLoading(false);
     }
-  };
 
+    // FINAL RESULT
+    setResult({
+      ...base,
+      fabric: translatedFabric[0] || base.fabric,
+      color: translatedColor[0] || base.color,
+      stains: translatedStains,
+      care: translatedCare,
+      recommended: {
+        ...base.recommended,
+        program: translatedProgram[0] || base.recommended?.program,
+      },
+      stainTips,
+    });
+  } catch (err) {
+    setError(i18n.t("smartScan.errorMessage"));
+  } finally {
+    analyzingRef.current = false;
+    setLoading(false);
+  }
+};
   const handleAutoAdd = async () => {
     try {
       await AsyncStorage.setItem(
@@ -511,11 +584,7 @@ if (Array.isArray(rawTips)) {
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
                     🧵 {String(i18n.t("smartScan.fabric"))}:{" "}
-                    {String(
-                      i18n.t(
-                        `fabricValues.${safeResult.fabric || "cotton"}`
-                      )
-                    )}
+                        {safeResult.fabric}
                   </Animated.Text>
 
                   {/* COLOR */}
@@ -524,9 +593,7 @@ if (Array.isArray(rawTips)) {
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
                     🎨 {String(i18n.t("smartScan.color"))}:{" "}
-                    {String(
-                      i18n.t(`colorValues.${safeResult.color || "white"}`)
-                    )}
+                    🎨 {safeResult.color}
                   </Animated.Text>
 
                   {/* STAINS */}
