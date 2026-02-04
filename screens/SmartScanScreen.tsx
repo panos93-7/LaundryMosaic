@@ -4,19 +4,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
-  Animated,
   BackHandler,
   Image,
+  Animated as RNAnimated,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import AnimatedReanimated, {
-  FadeIn,
-  FadeInUp,
-  Layout,
-} from "react-native-reanimated";
+import Animated, { FadeIn, FadeInUp, Layout } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -40,17 +36,17 @@ export default function SmartScanScreen({ navigation }: any) {
   const canSeeStainTips = userTier === "pro";
 
   // 🔥 Pulse animation (scale 1 → 1.1)
-  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const pulseAnim = useRef(new RNAnimated.Value(1)).current;
 
   useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
+    RNAnimated.loop(
+      RNAnimated.sequence([
+        RNAnimated.timing(pulseAnim, {
           toValue: 1.1,
           duration: 900,
           useNativeDriver: true,
         }),
-        Animated.timing(pulseAnim, {
+        RNAnimated.timing(pulseAnim, {
           toValue: 1,
           duration: 900,
           useNativeDriver: true,
@@ -119,99 +115,87 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-const analyze = async (uri: string) => {
-  setLoading(true);
-  setResult(null);
-  setError(null);
+  const analyze = async (uri: string) => {
+    setLoading(true);
+    setResult(null);
+    setError(null);
 
-  try {
-    const { base64 } = await preprocessImage(uri);
+    try {
+      const { base64 } = await preprocessImage(uri);
 
-    // ⭐ Cached garment analysis
-    const ai = await analyzeGarmentProCached(base64);
+      const ai = await analyzeGarmentProCached(base64);
 
-    if (!ai) {
-      setError(i18n.t("smartScan.errorMessage"));
-      setLoading(false);
-      return;
-    }
+      if (!ai) {
+        setError(i18n.t("smartScan.errorMessage"));
+        setLoading(false);
+        return;
+      }
 
-    let stainTips: any[] = [];
-    const locale = (i18n as any).language;
+      let stainTips: any[] = [];
+      const locale = (i18n as any).language;
 
-    // ⭐ Stains loop (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
-    if (Array.isArray(ai.stains) && ai.stains.length > 0) {
-      for (const stain of ai.stains) {
-        try {
-          const rawTips = await generateStainRemovalTipsCached(
-            stain,
-            ai.fabric
-          );
-
-          console.log("🔥 RAW TIPS:", rawTips);
-
-          // ⭐ Normalize ANY possible AI output into an array of strings
-          let safeSteps: string[] = [];
-
-          if (Array.isArray(rawTips?.steps)) {
-            safeSteps = rawTips.steps.filter(
-              (step: any) => typeof step === "string"
+      if (Array.isArray(ai.stains) && ai.stains.length > 0) {
+        for (const stain of ai.stains) {
+          try {
+            const rawTips = await generateStainRemovalTipsCached(
+              stain,
+              ai.fabric
             );
-          } else if (Array.isArray(rawTips)) {
-            safeSteps = rawTips.filter(
-              (step: any) => typeof step === "string"
+
+            let safeSteps: string[] = [];
+
+            if (Array.isArray(rawTips?.steps)) {
+              safeSteps = rawTips.steps.filter(
+                (step: any) => typeof step === "string"
+              );
+            } else if (Array.isArray(rawTips)) {
+              safeSteps = rawTips.filter(
+                (step: any) => typeof step === "string"
+              );
+            } else if (typeof rawTips === "string") {
+              safeSteps = [rawTips];
+            } else if (rawTips?.tip && typeof rawTips.tip === "string") {
+              safeSteps = [rawTips.tip];
+            } else if (Array.isArray(rawTips?.tips)) {
+              safeSteps = rawTips.tips.filter(
+                (step: any) => typeof step === "string"
+              );
+            }
+
+            const translatedRaw = await translateStainTips(
+              safeSteps,
+              locale,
+              `stain_${stain}_${ai.fabric}`
             );
-          } else if (typeof rawTips === "string") {
-            safeSteps = [rawTips];
-          } else if (rawTips?.tip && typeof rawTips.tip === "string") {
-            safeSteps = [rawTips.tip];
-          } else if (Array.isArray(rawTips?.tips)) {
-            safeSteps = rawTips.tips.filter(
-              (step: any) => typeof step === "string"
-            );
+
+            const translated = Array.isArray(translatedRaw)
+              ? translatedRaw.filter((s: any) => typeof s === "string")
+              : typeof translatedRaw === "string"
+              ? [translatedRaw]
+              : [];
+
+            stainTips.push({
+              stain,
+              tips: translated,
+            });
+          } catch (err) {
+            stainTips.push({
+              stain,
+              tips: [],
+            });
           }
-
-          // ⭐ Always safe array for translated steps
-          const translatedRaw = await translateStainTips(
-            safeSteps,
-            locale,
-            `stain_${stain}_${ai.fabric}`
-          );
-
-          const translated = Array.isArray(translatedRaw)
-            ? translatedRaw.filter((s: any) => typeof s === "string")
-            : typeof translatedRaw === "string"
-            ? [translatedRaw]
-            : [];
-
-          // ⭐ FINAL: tip.tips is ALWAYS array
-          stainTips.push({
-            stain,
-            tips: translated,
-          });
-        } catch (err) {
-          console.log("❌ Error generating stain tips:", err);
-
-          // ⭐ Even on error, push safe empty array
-          stainTips.push({
-            stain,
-            tips: [],
-          });
         }
       }
+
+      setResult({ ...ai, stainTips });
+    } catch (err) {
+      console.log("❌ analyze() failed:", err);
+      setError(i18n.t("smartScan.errorMessage"));
     }
 
-    // ⭐ FINAL RESULT — ALWAYS SAFE
-    setResult({ ...ai, stainTips });
-  } catch (err) {
-    console.log("❌ analyze() failed:", err);
-    setError(i18n.t("smartScan.errorMessage"));
-  }
+    setLoading(false);
+  };
 
-  setLoading(false);
-};
-
-  // 🔥 REAL SAVE TO PLANNER
   const handleAutoAdd = async () => {
     if (!result) return;
 
@@ -243,211 +227,201 @@ const analyze = async (uri: string) => {
     Events.featureUnlockedUsed("ai_smart_scan", userTier);
     navigation.navigate("Planner");
   };
-// 🧪 Debug: Show final result before render
-  useEffect(() => {
-    if (result !== null) {
-      try {
-        console.log(
-          "🧪 FINAL RESULT BEFORE RENDER:",
-          JSON.stringify(result, null, 2)
-        );
-      } catch (err) {
-        console.log("🧪 RESULT (non-serializable):", result);
-      }
-    }
-  }, [result]);
 
+  // 🧪 Debug: render start
+  console.log("🧪 RENDER START — result:", result);
 
-  // Build careInstructions array from AI care object
-const careInstructions = result?.care
-  ? [
-      result.care.wash,
-      result.care.bleach,
-      result.care.dry,
-      result.care.iron,
-      result.care.dryclean,
-      ...(Array.isArray(result.care.warnings) ? result.care.warnings : []),
-    ].filter(Boolean)
-  : [];
-console.log("🧪 RENDER START — result:", result);
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient
-        colors={["#0f0c29", "#302b63", "#24243e"]}
-        style={{ flex: 1, padding: 20 }}
+  const careInstructions = result?.care
+    ? [
+        result.care.wash,
+        result.care.bleach,
+        result.care.dry,
+        result.care.iron,
+        result.care.dryclean,
+        ...(Array.isArray(result.care.warnings)
+          ? result.care.warnings
+          : []),
+      ].filter(Boolean)
+    : [];
+
+return (
+  <SafeAreaView style={{ flex: 1 }}>
+    <LinearGradient
+      colors={["#0f0c29", "#302b63", "#24243e"]}
+      style={{ flex: 1, padding: 20 }}
+    >
+      {/* HEADER */}
+      <View
+        style={{
+          paddingBottom: 10,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
       >
-        {/* ⭐ HEADER */}
-        <View
+        <Text
           style={{
-            paddingBottom: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            color: "#fff",
+            fontSize: 28,
+            fontWeight: "700",
+            flexShrink: 1,
+            marginRight: 10,
           }}
+          numberOfLines={2}
         >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 28,
-              fontWeight: "700",
-              flexShrink: 1,
-              marginRight: 10,
-            }}
-            numberOfLines={2}
-          >
-            {String(i18n.t("smartScan.title"))}
-          </Text>
+          {String(i18n.t("smartScan.title"))}
+        </Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
-              {i18n.t("smartScan.close")}
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+            {i18n.t("smartScan.close")}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* PHOTO OPTIONS */}
+      {!image && (
+        <>
+          <TouchableOpacity
+            onPress={takePhoto}
+            style={{
+              backgroundColor: "rgba(255,255,255,0.1)",
+              padding: 16,
+              borderRadius: 14,
+              marginBottom: 12,
+            }}
+          >
+            <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
+              📸 {i18n.t("smartScan.takePhoto")}
             </Text>
           </TouchableOpacity>
-        </View>
 
-        {/* PHOTO OPTIONS */}
-        {!image && (
-          <>
-            <TouchableOpacity
-              onPress={takePhoto}
-              style={{
-                backgroundColor: "rgba(255,255,255,0.1)",
-                padding: 16,
-                borderRadius: 14,
-                marginBottom: 12,
-              }}
-            >
-              <Text
-                style={{ color: "#fff", textAlign: "center", fontSize: 18 }}
-              >
-                📸 {i18n.t("smartScan.takePhoto")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={pickImage}
-              style={{
-                backgroundColor: "rgba(255,255,255,0.1)",
-                padding: 16,
-                borderRadius: 14,
-              }}
-            >
-              <Text
-                style={{ color: "#fff", textAlign: "center", fontSize: 18 }}
-              >
-                🖼️ {i18n.t("smartScan.chooseFromGallery")}
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
-
-        {/* RESULT VIEW */}
-        {image && (
-          <ScrollView
-            style={{ flex: 1 }}
-            contentContainerStyle={{ paddingBottom: 160 }}
-            showsVerticalScrollIndicator={false}
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{
+              backgroundColor: "rgba(255,255,255,0.1)",
+              padding: 16,
+              borderRadius: 14,
+            }}
           >
-            <View style={{ alignItems: "center", marginTop: 20 }}>
-              {/* IMAGE PREVIEW */}
-              <Image
-                source={{ uri: image }}
-                style={{
-                  width: 260,
-                  height: 260,
-                  borderRadius: 14,
-                  marginBottom: 20,
-                }}
+            <Text style={{ color: "#fff", textAlign: "center", fontSize: 18 }}>
+              🖼️ {i18n.t("smartScan.chooseFromGallery")}
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
+
+      {/* RESULT VIEW */}
+      {image && (
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingBottom: 160 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={{ alignItems: "center", marginTop: 20 }}>
+            {/* IMAGE PREVIEW */}
+            <Image
+              source={{ uri: image }}
+              style={{
+                width: 260,
+                height: 260,
+                borderRadius: 14,
+                marginBottom: 20,
+              }}
+            />
+
+            {/* LOADING */}
+            {loading && (
+              <ActivityIndicator
+                size="large"
+                color="#fff"
+                style={{ marginTop: 10 }}
               />
+            )}
 
-              {/* LOADING */}
-              {loading && (
-                <ActivityIndicator
-                  size="large"
-                  color="#fff"
-                  style={{ marginTop: 10 }}
-                />
-              )}
-
-              {/* ERROR PANEL */}
-              {error && !loading && (
-                <View
+            {/* ERROR PANEL */}
+            {error && !loading && (
+              <View
+                style={{
+                  backgroundColor: "rgba(255, 80, 80, 0.15)",
+                  padding: 20,
+                  borderRadius: 14,
+                  width: "100%",
+                  marginTop: 10,
+                  borderWidth: 1,
+                  borderColor: "rgba(255, 80, 80, 0.4)",
+                }}
+              >
+                <Text
                   style={{
-                    backgroundColor: "rgba(255, 80, 80, 0.15)",
-                    padding: 20,
-                    borderRadius: 14,
-                    width: "100%",
-                    marginTop: 10,
-                    borderWidth: 1,
-                    borderColor: "rgba(255, 80, 80, 0.4)",
+                    color: "#ff6b6b",
+                    fontSize: 18,
+                    marginBottom: 10,
+                  }}
+                >
+                  ❌ {i18n.t("smartScan.errorTitle")}
+                </Text>
+
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 16,
+                    marginBottom: 20,
+                  }}
+                >
+                  {i18n.t("smartScan.errorMessage")}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={() => analyze(image!)}
+                  style={{
+                    backgroundColor: "#ff6b6b",
+                    padding: 14,
+                    borderRadius: 12,
                   }}
                 >
                   <Text
                     style={{
-                      color: "#ff6b6b",
+                      color: "#fff",
+                      textAlign: "center",
                       fontSize: 18,
-                      marginBottom: 10,
+                      fontWeight: "600",
                     }}
                   >
-                    ❌ {i18n.t("smartScan.errorTitle")}
+                    {i18n.t("smartScan.retry")}
                   </Text>
+                </TouchableOpacity>
 
+                <TouchableOpacity
+                  onPress={takeAnotherPhoto}
+                  style={{
+                    marginTop: 12,
+                    padding: 14,
+                    borderRadius: 12,
+                    backgroundColor: "rgba(255,255,255,0.15)",
+                  }}
+                >
                   <Text
                     style={{
                       color: "#fff",
-                      fontSize: 16,
-                      marginBottom: 20,
+                      textAlign: "center",
+                      fontSize: 18,
+                      fontWeight: "600",
                     }}
                   >
-                    {i18n.t("smartScan.errorMessage")}
+                    {i18n.t("smartScan.takeAnother")}
                   </Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
-                  <TouchableOpacity
-                    onPress={() => analyze(image!)}
-                    style={{
-                      backgroundColor: "#ff6b6b",
-                      padding: 14,
-                      borderRadius: 12,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        textAlign: "center",
-                        fontSize: 18,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {i18n.t("smartScan.retry")}
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={takeAnotherPhoto}
-                    style={{
-                      marginTop: 12,
-                      padding: 14,
-                      borderRadius: 12,
-                      backgroundColor: "rgba(255,255,255,0.15)",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        textAlign: "center",
-                        fontSize: 18,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {i18n.t("smartScan.takeAnother")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-
-              {/* RESULT PANEL */}
-              {result && typeof result === "object" && !Array.isArray(result) && !loading && !error && (
-                <AnimatedReanimated.View
+            {/* RESULT PANEL */}
+            {result &&
+              typeof result === "object" &&
+              !Array.isArray(result) &&
+              !loading &&
+              !error && (
+                <Animated.View
                   entering={FadeInUp.duration(500).springify()}
                   layout={Layout.springify()}
                   style={{
@@ -458,7 +432,8 @@ console.log("🧪 RENDER START — result:", result);
                     marginTop: 10,
                   }}
                 >
-                  <AnimatedReanimated.Text
+                  {/* FABRIC */}
+                  <Animated.Text
                     entering={FadeIn.delay(100)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
@@ -468,9 +443,10 @@ console.log("🧪 RENDER START — result:", result);
                         `fabricValues.${result?.fabric ? result.fabric : "cotton"}`
                       )
                     )}
-                  </AnimatedReanimated.Text>
+                  </Animated.Text>
 
-                  <AnimatedReanimated.Text
+                  {/* COLOR */}
+                  <Animated.Text
                     entering={FadeIn.delay(200)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
@@ -480,9 +456,10 @@ console.log("🧪 RENDER START — result:", result);
                         `colorValues.${result?.color ? result.color : "white"}`
                       )
                     )}
-                  </AnimatedReanimated.Text>
+                  </Animated.Text>
 
-                  <AnimatedReanimated.Text
+                  {/* STAINS */}
+                  <Animated.Text
                     entering={FadeIn.delay(300)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
@@ -491,11 +468,11 @@ console.log("🧪 RENDER START — result:", result);
                     result.stains.length > 0
                       ? result.stains.join(", ")
                       : i18n.t("smartScan.noStains")}
-                  </AnimatedReanimated.Text>
+                  </Animated.Text>
 
                   {/* RECOMMENDED PROGRAM */}
                   {result?.recommended && (
-                    <AnimatedReanimated.Text
+                    <Animated.Text
                       entering={FadeIn.delay(400)}
                       style={{ color: "#fff", fontSize: 18 }}
                     >
@@ -503,39 +480,39 @@ console.log("🧪 RENDER START — result:", result);
                       {result?.recommended?.program ?? "—"} (
                       {result?.recommended?.temp ?? "?"}°C /{" "}
                       {result?.recommended?.spin ?? "?"} {i18n.t("rpm")})
-                    </AnimatedReanimated.Text>
+                    </Animated.Text>
                   )}
 
-{/* CARE INSTRUCTIONS */}
-{careInstructions.length > 0 && (
-  <View style={{ marginTop: 20 }}>
-    <Text
-      style={{
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "700",
-        marginBottom: 10,
-      }}
-    >
-      🧼 {i18n.t("smartScan.careInstructions")}
-    </Text>
+                  {/* CARE INSTRUCTIONS */}
+                  {careInstructions.length > 0 && (
+                    <View style={{ marginTop: 20 }}>
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontSize: 18,
+                          fontWeight: "700",
+                          marginBottom: 10,
+                        }}
+                      >
+                        🧼 {i18n.t("smartScan.careInstructions")}
+                      </Text>
 
-    {careInstructions.map((line: string, i: number) => (
-      <Text
-        key={i}
-        style={{
-          color: "rgba(255,255,255,0.8)",
-          marginBottom: 4,
-          fontSize: 15,
-        }}
-      >
-        • {line}
-      </Text>
-    ))}
-  </View>
-)}
+                      {careInstructions.map((line: string, i: number) => (
+                        <Text
+                          key={i}
+                          style={{
+                            color: "rgba(255,255,255,0.8)",
+                            marginBottom: 4,
+                            fontSize: 15,
+                          }}
+                        >
+                          • {line}
+                        </Text>
+                      ))}
+                    </View>
+                  )}
 
-                  {/* STAIN SECTION */}
+                  {/* STAIN TIPS SECTION */}
                   {Array.isArray(result?.stains) &&
                     result.stains.length > 0 && (
                       <View style={{ marginTop: 25 }}>
@@ -552,54 +529,50 @@ console.log("🧪 RENDER START — result:", result);
                         </Text>
 
                         {canSeeStainTips ? (
-                          // ⭐ PRO → βλέπει stain removal tips
                           <View>
                             {Array.isArray(result?.stainTips) &&
-                              result.stainTips.map(
-                                (tip: any, i: number) => (
-                                  <View
-                                    key={i}
+                              result.stainTips.map((tip: any, i: number) => (
+                                <View
+                                  key={i}
+                                  style={{
+                                    backgroundColor:
+                                      "rgba(255,255,255,0.08)",
+                                    padding: 14,
+                                    borderRadius: 12,
+                                    marginBottom: 12,
+                                  }}
+                                >
+                                  <Text
                                     style={{
-                                      backgroundColor:
-                                        "rgba(255,255,255,0.08)",
-                                      padding: 14,
-                                      borderRadius: 12,
-                                      marginBottom: 12,
+                                      color: "#fff",
+                                      fontSize: 16,
+                                      fontWeight: "600",
+                                      marginBottom: 6,
                                     }}
                                   >
-                                    <Text
-                                      style={{
-                                        color: "#fff",
-                                        fontSize: 16,
-                                        fontWeight: "600",
-                                        marginBottom: 6,
-                                      }}
-                                    >
-                                      {tip.stain}
-                                    </Text>
+                                    {tip.stain}
+                                  </Text>
 
-                                    {Array.isArray(tip?.tips) &&
-                                      tip.tips.map(
-                                        (step: string, idx: number) => (
-                                          <Text
-                                            key={idx}
-                                            style={{
-                                              color:
-                                                "rgba(255,255,255,0.85)",
-                                              marginBottom: 4,
-                                              fontSize: 14,
-                                            }}
-                                          >
-                                            {idx + 1}. {step}
-                                          </Text>
-                                        )
-                                      )}
-                                  </View>
-                                )
-                              )}
+                                  {Array.isArray(tip?.tips) &&
+                                    tip.tips.map(
+                                      (step: string, idx: number) => (
+                                        <Text
+                                          key={idx}
+                                          style={{
+                                            color:
+                                              "rgba(255,255,255,0.85)",
+                                            marginBottom: 4,
+                                            fontSize: 14,
+                                          }}
+                                        >
+                                          {idx + 1}. {step}
+                                        </Text>
+                                      )
+                                    )}
+                                </View>
+                              ))}
                           </View>
                         ) : (
-                          // ⭐ NON-PRO → CTA
                           <View
                             style={{
                               width: "100%",
@@ -743,12 +716,12 @@ console.log("🧪 RENDER START — result:", result);
                       {i18n.t("smartScan.addToPlanner")}
                     </Text>
                   </TouchableOpacity>
-                </AnimatedReanimated.View>
+                </Animated.View>
               )}
-            </View>
-          </ScrollView>
-        )}
-      </LinearGradient>
-    </SafeAreaView>
-  );
+          </View>
+        </ScrollView>
+      )}
+    </LinearGradient>
+  </SafeAreaView>
+)
 }
