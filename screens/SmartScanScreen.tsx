@@ -676,7 +676,7 @@ else {
                       </View>
                     )}
 
-              {/* STAIN TIPS SECTION */}
+{/* STAIN TIPS SECTION */}
 {Array.isArray(safeResult.stains) &&
   safeResult.stains.length > 0 && (
     <View style={{ marginTop: 25 }}>
@@ -696,38 +696,60 @@ else {
         <View>
           {Array.isArray(safeResult.stainTips) &&
             safeResult.stainTips.length > 0 &&
-            safeResult.stainTips.map((step: string, i: number) => (
-              <View
-                key={i}
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.08)",
-                  padding: 14,
-                  borderRadius: 12,
-                  marginBottom: 12,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#fff",
-                    fontSize: 16,
-                    fontWeight: "600",
-                    marginBottom: 6,
-                  }}
-                >
-                  {i18n.t("smartScan.stainRemovalStep")} {i + 1}
-                </Text>
+            safeResult.stainTips.map((item: any, i: number) => {
+              // SUPPORT BOTH SCHEMAS:
+              // 1) ["Step 1", "Step 2"]
+              // 2) [{ stain: "...", tips: ["Step 1", ...] }]
 
-                <Text
+              const isObject =
+                item &&
+                typeof item === "object" &&
+                Array.isArray(item.tips)
+
+              const title = isObject
+                ? item.stain
+                : `${i18n.t("smartScan.stainRemovalStep")} ${i + 1}`
+
+              const steps = isObject
+                ? item.tips
+                : [String(item)]
+
+              return (
+                <View
+                  key={i}
                   style={{
-                    color: "rgba(255,255,255,0.85)",
-                    marginBottom: 4,
-                    fontSize: 14,
+                    backgroundColor: "rgba(255,255,255,0.08)",
+                    padding: 14,
+                    borderRadius: 12,
+                    marginBottom: 12,
                   }}
                 >
-                  {step}
-                </Text>
-              </View>
-            ))}
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 16,
+                      fontWeight: "600",
+                      marginBottom: 6,
+                    }}
+                  >
+                    {title}
+                  </Text>
+
+                  {steps.map((step: string, idx: number) => (
+                    <Text
+                      key={idx}
+                      style={{
+                        color: "rgba(255,255,255,0.85)",
+                        marginBottom: 4,
+                        fontSize: 14,
+                      }}
+                    >
+                      {idx + 1}. {step}
+                    </Text>
+                  ))}
+                </View>
+              )
+            })}
         </View>
       ) : (
         <View
