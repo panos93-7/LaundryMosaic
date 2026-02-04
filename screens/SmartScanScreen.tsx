@@ -230,6 +230,18 @@ export default function SmartScanScreen({ navigation }: any) {
     navigation.navigate("Planner");
   };
 
+  // Build careInstructions array from AI care object
+const careInstructions = result?.care
+  ? [
+      result.care.wash,
+      result.care.bleach,
+      result.care.dry,
+      result.care.iron,
+      result.care.dryclean,
+      ...(Array.isArray(result.care.warnings) ? result.care.warnings : []),
+    ].filter(Boolean)
+  : [];
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -466,37 +478,34 @@ export default function SmartScanScreen({ navigation }: any) {
                     </AnimatedReanimated.Text>
                   )}
 
-                  {/* CARE INSTRUCTIONS */}
-                  {Array.isArray(result?.careInstructions) &&
-                    result.careInstructions?.length > 0 && (
-                      <View style={{ marginTop: 20 }}>
-                        <Text
-                          style={{
-                            color: "#fff",
-                            fontSize: 18,
-                            fontWeight: "700",
-                            marginBottom: 10,
-                          }}
-                        >
-                          🧼 {i18n.t("smartScan.careInstructions")}
-                        </Text>
+{/* CARE INSTRUCTIONS */}
+{careInstructions.length > 0 && (
+  <View style={{ marginTop: 20 }}>
+    <Text
+      style={{
+        color: "#fff",
+        fontSize: 18,
+        fontWeight: "700",
+        marginBottom: 10,
+      }}
+    >
+      🧼 {i18n.t("smartScan.careInstructions")}
+    </Text>
 
-                        {result.careInstructions?.map?.(
-                          (line: string, i: number) => (
-                            <Text
-                              key={i}
-                              style={{
-                                color: "rgba(255,255,255,0.8)",
-                                marginBottom: 4,
-                                fontSize: 15,
-                              }}
-                            >
-                              • {line}
-                            </Text>
-                          )
-                        )}
-                      </View>
-                    )}
+    {careInstructions.map((line: string, i: number) => (
+      <Text
+        key={i}
+        style={{
+          color: "rgba(255,255,255,0.8)",
+          marginBottom: 4,
+          fontSize: 15,
+        }}
+      >
+        • {line}
+      </Text>
+    ))}
+  </View>
+)}
 
                   {/* STAIN SECTION */}
                   {Array.isArray(result?.stains) &&
