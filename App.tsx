@@ -35,24 +35,11 @@ export default function App() {
     });
   }, []);
 
-  // ⭐ TEMPORARY: CLEAR OLD STAIN TIPS CACHE (V1)
+  // ⭐ FULL CLEAR (TEMPORARY)
   useEffect(() => {
-    async function clearOldStainTips() {
-      try {
-        const keys = await AsyncStorage.getAllKeys();
-        const stainKeys = keys.filter((k) => k.startsWith("stainTips:"));
-        if (stainKeys.length > 0) {
-          await AsyncStorage.multiRemove(stainKeys);
-          console.log("🧽 Cleared old stainTips cache!");
-        } else {
-          console.log("🧽 No old stainTips cache found.");
-        }
-      } catch (err) {
-        console.log("❌ Failed to clear stainTips cache:", err);
-      }
-    }
-
-    clearOldStainTips();
+    AsyncStorage.clear().then(() => {
+      console.log("🧽 FULL CLEAR DONE");
+    });
   }, []);
 
   // ⭐ RevenueCat init
