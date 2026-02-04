@@ -124,21 +124,34 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  // ⭐ FIXED ANALYZE — with lock/unlock
+  // ⭐ FIXED ANALYZE — with lock/unlock + LOGS
   const analyze = async (uri: string) => {
-    if (analyzingRef.current) return; // prevent double calls
+    if (analyzingRef.current) {
+      console.log("ANALYZE: blocked, already analyzing");
+      return;
+    }
     analyzingRef.current = true;
+
+    console.log("ANALYZE: start with uri =", uri);
 
     setLoading(true);
     setResult(null);
     setError(null);
 
     try {
+      console.log("ANALYZE: calling preprocessImage");
       const { base64 } = await preprocessImage(uri);
+      console.log(
+        "ANALYZE: preprocessImage OK, base64 length =",
+        base64 ? base64.length : "NO_BASE64"
+      );
 
+      console.log("ANALYZE: calling analyzeGarmentProCached");
       const ai = await analyzeGarmentProCached(base64);
+      console.log("ANALYZE: AI returned:", ai);
 
       if (!ai || typeof ai !== "object") {
+        console.log("ANALYZE: AI result invalid");
         setError(i18n.t("smartScan.errorMessage"));
         return;
       }
@@ -149,16 +162,24 @@ export default function SmartScanScreen({ navigation }: any) {
         stainTips: Array.isArray(ai.stainTips) ? ai.stainTips : [],
       };
 
+      console.log(
+        "ANALYZE: base object prepared. stains length =",
+        base.stains.length
+      );
+
       let stainTips: any[] = [];
       const locale = (i18n as any).language;
+      console.log("ANALYZE: locale =", locale);
 
       if (Array.isArray(base.stains) && base.stains.length > 0) {
         for (const stain of base.stains) {
           try {
+            console.log("ANALYZE: generating tips for stain =", stain);
             const rawTips = await generateStainRemovalTipsCached(
               stain,
               base.fabric
             );
+            console.log("ANALYZE: rawTips =", rawTips);
 
             let safeSteps: string[] = [];
 
@@ -180,11 +201,15 @@ export default function SmartScanScreen({ navigation }: any) {
               );
             }
 
+            console.log("ANALYZE: safeSteps =", safeSteps);
+
+            console.log("ANALYZE: calling translateStainTips");
             const translatedRaw = await translateStainTips(
               safeSteps,
               locale,
               `stain_${stain}_${base.fabric}`
             );
+            console.log("ANALYZE: translatedRaw =", translatedRaw);
 
             const translated = Array.isArray(translatedRaw)
               ? translatedRaw.filter((s: any) => typeof s === "string")
@@ -192,29 +217,48 @@ export default function SmartScanScreen({ navigation }: any) {
               ? [translatedRaw]
               : [];
 
+            console.log("ANALYZE: translated =", translated);
+
             stainTips.push({
               stain,
               tips: translated,
             });
-          } catch {
+          } catch (innerErr) {
+            console.log(
+              "ANALYZE: error in stain loop for stain =",
+              stain,
+              "err =",
+              innerErr
+            );
             stainTips.push({
               stain,
               tips: [],
             });
           }
         }
+      } else {
+        console.log("ANALYZE: no stains found in base.stains");
       }
+
+      console.log(
+        "ANALYZE: final stainTips length =",
+        stainTips.length,
+        " — setting result"
+      );
 
       setResult({
         ...base,
         stainTips,
       });
+
+      console.log("ANALYZE: setResult completed");
     } catch (err) {
       console.log("❌ analyze() failed:", err);
       setError(i18n.t("smartScan.errorMessage"));
     } finally {
       analyzingRef.current = false; // ⭐ unlock
       setLoading(false);
+      console.log("ANALYZE: finally block executed");
     }
   };
 
