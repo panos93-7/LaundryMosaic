@@ -37,7 +37,7 @@ export default function SmartScanScreen({ navigation }: any) {
 
   const pulseAnim = useRef(new RNAnimated.Value(1)).current;
 
-  // ⭐ NEW — prevents double analyze + race conditions
+  // prevents double analyze + race conditions
   const analyzingRef = useRef(false);
 
   useEffect(() => {
@@ -55,11 +55,11 @@ export default function SmartScanScreen({ navigation }: any) {
         }),
       ])
     ).start();
-  }, []);
+  }, [pulseAnim]);
 
   useFocusEffect(
     React.useCallback(() => {
-      // ⭐ SAFE RESET — only if not analyzing
+      // SAFE RESET — only if not analyzing
       if (!analyzingRef.current) {
         setImage(null);
         setResult(null);
@@ -80,12 +80,55 @@ export default function SmartScanScreen({ navigation }: any) {
 
   useEffect(() => {
     (async () => {
-      await ImagePicker.requestCameraPermissionsAsync();
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+      try {
+        await ImagePicker.requestCameraPermissionsAsync();
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      } catch (e) {
+        console.log("SmartScan: permission request failed", e);
+      }
     })();
   }, []);
 
-  // ⭐ SAFE RESET
+  // derived safeResult with full guards
+  const safeResult = useMemo(() => {
+    if (!result || typeof result !== "object") return null;
+
+    const stains = Array.isArray(result.stains) ? result.stains : [];
+    const stainTips = Array.isArray(result.stainTips) ? result.stainTips : [];
+    const recommended =
+      result.recommended && typeof result.recommended === "object"
+        ? result.recommended
+        : {};
+
+    const care =
+      result.care && typeof result.care === "object" ? result.care : {};
+
+    return {
+      ...result,
+      stains,
+      stainTips,
+      recommended,
+      care,
+    };
+  }, [result]);
+
+  const careInstructions: string[] = useMemo(() => {
+    if (!safeResult || !safeResult.care) return [];
+
+    const c = safeResult.care || {};
+    const warnings = Array.isArray(c.warnings) ? c.warnings : [];
+
+    return [
+      c.wash,
+      c.bleach,
+      c.dry,
+      c.iron,
+      c.dryclean,
+      ...warnings,
+    ].filter((x) => typeof x === "string" && x.trim().length > 0);
+  }, [safeResult]);
+
+  // SAFE RESET
   const resetState = () => {
     if (analyzingRef.current) return;
     setImage(null);
@@ -101,31 +144,58 @@ export default function SmartScanScreen({ navigation }: any) {
 
   const pickImage = async () => {
     resetState();
-    const res = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.9,
-    });
+    try {
+      const res = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 0.9,
+      });
 
-    if (!res.canceled) {
-      setImage(res.assets[0].uri);
-      Events.aiScanStarted("gallery");
-      analyze(res.assets[0].uri);
+      if (!res.canceled) {
+        const uri = res.assets?.[0]?.uri;
+        if (!uri) {
+          console.log("SmartScan: gallery result has no uri");
+          setError(i18n.t("smartScan.errorMessage"));
+          return;
+        }
+        setImage(uri);
+        Events.aiScanStarted("gallery");
+        analyze(uri);
+      }
+    } catch (e) {
+      console.log("SmartScan: pickImage failed", e);
+      setError(i18n.t("smartScan.errorMessage"));
     }
   };
 
   const takePhoto = async () => {
     resetState();
-    const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
+    try {
+      const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
 
-    if (!res.canceled) {
-      setImage(res.assets[0].uri);
-      Events.aiScanStarted("camera");
-      analyze(res.assets[0].uri);
+      if (!res.canceled) {
+        const uri = res.assets?.[0]?.uri;
+        if (!uri) {
+          console.log("SmartScan: camera result has no uri");
+          setError(i18n.t("smartScan.errorMessage"));
+          return;
+        }
+        setImage(uri);
+        Events.aiScanStarted("camera");
+        analyze(uri);
+      }
+    } catch (e) {
+      console.log("SmartScan: takePhoto failed", e);
+      setError(i18n.t("smartScan.errorMessage"));
     }
   };
 
-  // ⭐ FIXED ANALYZE — with lock/unlock + LOGS
+  // BULLETPROOF ANALYZE
   const analyze = async (uri: string) => {
+    if (!uri) {
+      console.log("ANALYZE: no uri provided");
+      return;
+    }
+
     if (analyzingRef.current) {
       console.log("ANALYZE: blocked, already analyzing");
       return;
@@ -140,10 +210,18 @@ export default function SmartScanScreen({ navigation }: any) {
 
     try {
       console.log("ANALYZE: calling preprocessImage");
-      const { base64 } = await preprocessImage(uri);
+      const pre = await preprocessImage(uri);
+      const base64 =
+  (pre && typeof pre === "object" && "base64" in pre && pre.base64) ||
+  (pre && typeof pre === "object" && "imageBase64" in pre && pre.imageBase64) ||
+  (typeof pre === "string" ? pre : null);
+      if (!base64 || typeof base64 !== "string") {
+        console.log("ANALYZE: preprocessImage returned invalid base64", pre);
+        throw new Error("Invalid base64 from preprocessImage");
+      }
       console.log(
         "ANALYZE: preprocessImage OK, base64 length =",
-        base64 ? base64.length : "NO_BASE64"
+        base64.length
       );
 
       console.log("ANALYZE: calling analyzeGarmentProCached");
@@ -158,8 +236,21 @@ export default function SmartScanScreen({ navigation }: any) {
 
       const base = {
         ...ai,
+        fabric:
+          typeof ai.fabric === "string" && ai.fabric.length > 0
+            ? ai.fabric
+            : "cotton",
+        color:
+          typeof ai.color === "string" && ai.color.length > 0
+            ? ai.color
+            : "white",
         stains: Array.isArray(ai.stains) ? ai.stains : [],
         stainTips: Array.isArray(ai.stainTips) ? ai.stainTips : [],
+        recommended:
+          ai.recommended && typeof ai.recommended === "object"
+            ? ai.recommended
+            : {},
+        care: ai.care && typeof ai.care === "object" ? ai.care : {},
       };
 
       console.log(
@@ -183,25 +274,43 @@ export default function SmartScanScreen({ navigation }: any) {
 
             let safeSteps: string[] = [];
 
-            if (Array.isArray(rawTips?.steps)) {
-              safeSteps = rawTips.steps.filter(
-                (step: any) => typeof step === "string"
-              );
-            } else if (Array.isArray(rawTips)) {
-              safeSteps = rawTips.filter(
-                (step: any) => typeof step === "string"
-              );
-            } else if (typeof rawTips === "string") {
-              safeSteps = [rawTips];
-            } else if (rawTips?.tip && typeof rawTips.tip === "string") {
-              safeSteps = [rawTips.tip];
-            } else if (Array.isArray(rawTips?.tips)) {
-              safeSteps = rawTips.tips.filter(
-                (step: any) => typeof step === "string"
-              );
-            }
+            // Case 1: { steps: [...] }
+const steps = (rawTips as any)?.steps;
+if (Array.isArray(steps)) {
+  safeSteps = steps.filter((s: any) => typeof s === "string");
+}
 
+// Case 2: array of strings
+else if (Array.isArray(rawTips)) {
+  safeSteps = rawTips.filter((s: any) => typeof s === "string");
+}
+
+// Case 3: single string
+else if (typeof rawTips === "string") {
+  safeSteps = [rawTips];
+}
+
+// Case 4: { tip: "..." }
+else if ((rawTips as any)?.tip && typeof (rawTips as any).tip === "string") {
+  safeSteps = [(rawTips as any).tip];
+}
+
+// Case 5: { tips: [...] }
+else {
+  const tips = (rawTips as any)?.tips;
+  if (Array.isArray(tips)) {
+    safeSteps = tips.filter((t: any) => typeof t === "string");
+  }
+}
             console.log("ANALYZE: safeSteps =", safeSteps);
+
+            if (safeSteps.length === 0) {
+              stainTips.push({
+                stain,
+                tips: [],
+              });
+              continue;
+            }
 
             console.log("ANALYZE: calling translateStainTips");
             const translatedRaw = await translateStainTips(
@@ -256,7 +365,7 @@ export default function SmartScanScreen({ navigation }: any) {
       console.log("❌ analyze() failed:", err);
       setError(i18n.t("smartScan.errorMessage"));
     } finally {
-      analyzingRef.current = false; // ⭐ unlock
+      analyzingRef.current = false;
       setLoading(false);
       console.log("ANALYZE: finally block executed");
     }
@@ -293,56 +402,6 @@ export default function SmartScanScreen({ navigation }: any) {
     Events.featureUnlockedUsed("ai_smart_scan", userTier);
     navigation.navigate("Planner");
   };
-
-  // 🔒 SAFE RESULT ΓΙΑ ΤΟ UI
-  const safeResult = useMemo(() => {
-    if (!result || typeof result !== "object" || Array.isArray(result)) {
-      return null;
-    }
-
-    const care = result.care || {};
-    const recommended = result.recommended || {};
-
-    return {
-      ...result,
-      stains: Array.isArray(result.stains) ? result.stains : [],
-      stainTips: Array.isArray(result.stainTips) ? result.stainTips : [],
-      care: {
-        wash: care.wash || "",
-        bleach: care.bleach || "",
-        dry: care.dry || "",
-        iron: care.iron || "",
-        dryclean: care.dryclean || "",
-        warnings: Array.isArray(care.warnings) ? care.warnings : [],
-      },
-      recommended: {
-        program: recommended.program || "",
-        temp:
-          typeof recommended.temp === "number" ? recommended.temp : 30,
-        spin:
-          typeof recommended.spin === "number" ? recommended.spin : 800,
-        detergent: recommended.detergent || "",
-        notes: Array.isArray(recommended.notes) ? recommended.notes : [],
-      },
-      careSymbols: Array.isArray(result.careSymbols)
-        ? result.careSymbols
-        : [],
-    };
-  }, [result]);
-
-  const careInstructions =
-    safeResult && safeResult.care
-      ? [
-          safeResult.care.wash,
-          safeResult.care.bleach,
-          safeResult.care.dry,
-          safeResult.care.iron,
-          safeResult.care.dryclean,
-          ...(Array.isArray(safeResult.care.warnings)
-            ? safeResult.care.warnings
-            : []),
-        ].filter(Boolean)
-      : [];
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -587,235 +646,243 @@ export default function SmartScanScreen({ navigation }: any) {
                     </Animated.Text>
                   )}
 
-{/* CARE INSTRUCTIONS */}
-{Array.isArray(careInstructions) && careInstructions.length > 0 && (
-  <View style={{ marginTop: 20 }}>
-    <Text
-      style={{
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "700",
-        marginBottom: 10,
-      }}
-    >
-      🧼 {i18n.t("smartScan.careInstructions")}
-    </Text>
+                  {/* CARE INSTRUCTIONS */}
+                  {Array.isArray(careInstructions) &&
+                    careInstructions.length > 0 && (
+                      <View style={{ marginTop: 20 }}>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 18,
+                            fontWeight: "700",
+                            marginBottom: 10,
+                          }}
+                        >
+                          🧼 {i18n.t("smartScan.careInstructions")}
+                        </Text>
 
-    {careInstructions.map((line: string, i: number) => (
-      <Text
-        key={i}
-        style={{
-          color: "rgba(255,255,255,0.8)",
-          marginBottom: 4,
-          fontSize: 15,
-        }}
-      >
-        • {line}
-      </Text>
-    ))}
-  </View>
-)}
+                        {careInstructions.map((line: string, i: number) => (
+                          <Text
+                            key={i}
+                            style={{
+                              color: "rgba(255,255,255,0.8)",
+                              marginBottom: 4,
+                              fontSize: 15,
+                            }}
+                          >
+                            • {line}
+                          </Text>
+                        ))}
+                      </View>
+                    )}
 
-{/* STAIN TIPS SECTION */}
-{Array.isArray(safeResult?.stains) && safeResult.stains.length > 0 && (
-  <View style={{ marginTop: 25 }}>
-    <Text
-      style={{
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "700",
-        marginBottom: 10,
-      }}
-    >
-      🧴 {i18n.t("smartScan.stainsDetected")}:{" "}
-      {safeResult.stains.join(", ")}
-    </Text>
+                  {/* STAIN TIPS SECTION */}
+                  {Array.isArray(safeResult.stains) &&
+                    safeResult.stains.length > 0 && (
+                      <View style={{ marginTop: 25 }}>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 18,
+                            fontWeight: "700",
+                            marginBottom: 10,
+                          }}
+                        >
+                          🧴 {i18n.t("smartScan.stainsDetected")}:{" "}
+                          {safeResult.stains.join(", ")}
+                        </Text>
 
-    {canSeeStainTips ? (
-      <View>
-        {Array.isArray(safeResult?.stainTips) &&
-          safeResult.stainTips.length > 0 &&
-          safeResult.stainTips.map((tip: any, i: number) => (
-            <View
-              key={i}
-              style={{
-                backgroundColor: "rgba(255,255,255,0.08)",
-                padding: 14,
-                borderRadius: 12,
-                marginBottom: 12,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontSize: 16,
-                  fontWeight: "600",
-                  marginBottom: 6,
-                }}
-              >
-                {tip.stain}
-              </Text>
+                        {canSeeStainTips ? (
+                          <View>
+                            {Array.isArray(safeResult.stainTips) &&
+                              safeResult.stainTips.length > 0 &&
+                              safeResult.stainTips.map(
+                                (tip: any, i: number) => (
+                                  <View
+                                    key={i}
+                                    style={{
+                                      backgroundColor:
+                                        "rgba(255,255,255,0.08)",
+                                      padding: 14,
+                                      borderRadius: 12,
+                                      marginBottom: 12,
+                                    }}
+                                  >
+                                    <Text
+                                      style={{
+                                        color: "#fff",
+                                        fontSize: 16,
+                                        fontWeight: "600",
+                                        marginBottom: 6,
+                                      }}
+                                    >
+                                      {tip.stain}
+                                    </Text>
 
-              {Array.isArray(tip?.tips) &&
-                tip.tips.map((step: string, idx: number) => (
-                  <Text
-                    key={idx}
+                                    {Array.isArray(tip?.tips) &&
+                                      tip.tips.map(
+                                        (step: string, idx: number) => (
+                                          <Text
+                                            key={idx}
+                                            style={{
+                                              color:
+                                                "rgba(255,255,255,0.85)",
+                                              marginBottom: 4,
+                                              fontSize: 14,
+                                            }}
+                                          >
+                                            {idx + 1}. {step}
+                                          </Text>
+                                        )
+                                      )}
+                                  </View>
+                                )
+                              )}
+                          </View>
+                        ) : (
+                          <View
+                            style={{
+                              width: "100%",
+                              alignItems: "center",
+                              marginTop: 20,
+                            }}
+                          >
+                            <Animated.View
+                              style={{
+                                width: "100%",
+                                transform: [{ scale: pulseAnim }],
+                              }}
+                            >
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate("Paywall", {
+                                    source: "stainTips",
+                                  })
+                                }
+                                activeOpacity={0.9}
+                                style={{
+                                  width: "100%",
+                                  backgroundColor: "#314A7A",
+                                  paddingVertical: 18,
+                                  borderRadius: 14,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  borderWidth: 1.5,
+                                  borderColor: "rgba(255,255,255,0.15)",
+                                }}
+                              >
+                                <View style={{ alignItems: "center" }}>
+                                  <Text
+                                    style={{
+                                      color: "#FFCC4D",
+                                      fontSize: 17,
+                                      fontWeight: "700",
+                                    }}
+                                  >
+                                    {i18n
+                                      .t("smartScan.unlockStainCare")
+                                      .split(" ")
+                                      .slice(0, 3)
+                                      .join(" ")}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      color: "#FFCC4D",
+                                      fontSize: 17,
+                                      fontWeight: "700",
+                                      marginTop: -2,
+                                    }}
+                                  >
+                                    {i18n
+                                      .t("smartScan.unlockStainCare")
+                                      .split(" ")
+                                      .slice(3)
+                                      .join(" ")}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      color: "#FFCC4D",
+                                      fontSize: 16,
+                                      fontWeight: "900",
+                                      marginTop: 4,
+                                      opacity: 1,
+                                    }}
+                                  >
+                                    PRO
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            </Animated.View>
+                          </View>
+                        )}
+                      </View>
+                    )}
+
+                  {/* TAKE ANOTHER PHOTO */}
+                  <TouchableOpacity
+                    onPress={takeAnotherPhoto}
                     style={{
-                      color: "rgba(255,255,255,0.85)",
-                      marginBottom: 4,
-                      fontSize: 14,
+                      marginTop: 20,
+                      backgroundColor: "rgba(255,255,255,0.15)",
+                      padding: 14,
+                      borderRadius: 12,
                     }}
                   >
-                    {idx + 1}. {step}
-                  </Text>
-                ))}
-            </View>
-          ))}
-      </View>
-    ) : (
-      <View
-        style={{
-          width: "100%",
-          alignItems: "center",
-          marginTop: 20,
-        }}
-      >
-        <Animated.View
-          style={{
-            width: "100%",
-            transform: [{ scale: pulseAnim }],
-          }}
-        >
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("Paywall", {
-                source: "stainTips",
-              })
-            }
-            activeOpacity={0.9}
-            style={{
-              width: "100%",
-              backgroundColor: "#314A7A",
-              paddingVertical: 18,
-              borderRadius: 14,
-              alignItems: "center",
-              justifyContent: "center",
-              borderWidth: 1.5,
-              borderColor: "rgba(255,255,255,0.15)",
-            }}
-          >
-            <View style={{ alignItems: "center" }}>
-              <Text
-                style={{
-                  color: "#FFCC4D",
-                  fontSize: 17,
-                  fontWeight: "700",
-                }}
-              >
-                {i18n
-                  .t("smartScan.unlockStainCare")
-                  .split(" ")
-                  .slice(0, 3)
-                  .join(" ")}
-              </Text>
-              <Text
-                style={{
-                  color: "#FFCC4D",
-                  fontSize: 17,
-                  fontWeight: "700",
-                  marginTop: -2,
-                }}
-              >
-                {i18n
-                  .t("smartScan.unlockStainCare")
-                  .split(" ")
-                  .slice(3)
-                  .join(" ")}
-              </Text>
-              <Text
-                style={{
-                  color: "#FFCC4D",
-                  fontSize: 16,
-                  fontWeight: "900",
-                  marginTop: 4,
-                  opacity: 1,
-                }}
-              >
-                PRO
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
-      </View>
-    )}
-  </View>
-)}
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "600",
+                      }}
+                    >
+                      {i18n.t("smartScan.takeAnother")}
+                    </Text>
+                  </TouchableOpacity>
 
-{/* TAKE ANOTHER PHOTO */}
-<TouchableOpacity
-  onPress={takeAnotherPhoto}
-  style={{
-    marginTop: 20,
-    backgroundColor: "rgba(255,255,255,0.15)",
-    padding: 14,
-    borderRadius: 12,
-  }}
->
-  <Text
-    style={{
-      color: "#fff",
-      textAlign: "center",
-      fontSize: 18,
-      fontWeight: "600",
-    }}
-  >
-    {i18n.t("smartScan.takeAnother")}
-  </Text>
-</TouchableOpacity>
+                  {/* CLOSE RESULT */}
+                  <TouchableOpacity
+                    onPress={resetState}
+                    style={{
+                      marginTop: 14,
+                      backgroundColor: "rgba(255,255,255,0.15)",
+                      padding: 14,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "700",
+                      }}
+                    >
+                      {i18n.t("smartScan.close")}
+                    </Text>
+                  </TouchableOpacity>
 
-{/* CLOSE RESULT */}
-<TouchableOpacity
-  onPress={resetState}
-  style={{
-    marginTop: 14,
-    backgroundColor: "rgba(255,255,255,0.15)",
-    padding: 14,
-    borderRadius: 12,
-  }}
->
-  <Text
-    style={{
-      color: "#fff",
-      textAlign: "center",
-      fontSize: 18,
-      fontWeight: "700",
-    }}
-  >
-    {i18n.t("smartScan.close")}
-  </Text>
-</TouchableOpacity>
-
-{/* ADD TO PLANNER */}
-<TouchableOpacity
-  onPress={handleAutoAdd}
-  style={{
-    marginTop: 14,
-    backgroundColor: "#2575fc",
-    padding: 14,
-    borderRadius: 12,
-  }}
->
-  <Text
-    style={{
-      color: "#fff",
-      textAlign: "center",
-      fontSize: 18,
-      fontWeight: "700",
-    }}
-  >
-    {i18n.t("smartScan.addToPlanner")}
-  </Text>
-</TouchableOpacity>
+                  {/* ADD TO PLANNER */}
+                  <TouchableOpacity
+                    onPress={handleAutoAdd}
+                    style={{
+                      marginTop: 14,
+                      backgroundColor: "#2575fc",
+                      padding: 14,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "700",
+                      }}
+                    >
+                      {i18n.t("smartScan.addToPlanner")}
+                    </Text>
+                  </TouchableOpacity>
                 </Animated.View>
               )}
             </View>

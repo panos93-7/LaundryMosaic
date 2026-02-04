@@ -6,10 +6,8 @@ export async function analyzeImageWithGemini({
   prompt: string;
 }) {
   try {
-    // Remove base64 prefix if present
     const cleanedBase64 = base64.replace(/^data:image\/\w+;base64,/, "");
 
-    // Detect mime type
     const mimeType = base64.startsWith("data:image/png")
       ? "image/png"
       : "image/jpeg";
@@ -34,31 +32,60 @@ export async function analyzeImageWithGemini({
 
     const data = await response.json();
 
-    // -----------------------------
-    //  BULLETPROOF JSON EXTRACTION
-    // -----------------------------
+    // Extract text safely
     let rawText =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data?.text ||
+      data?.output ||
+      "";
 
-    // Clean markdown fences
+    if (typeof rawText !== "string") {
+      rawText = JSON.stringify(rawText);
+    }
+
     const cleaned = rawText
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
 
-    let parsed;
+    // If empty → fallback to empty array
+    if (!cleaned || cleaned.length < 2) {
+      return [];
+    }
+
+    let parsed: any = null;
 
     try {
       parsed = JSON.parse(cleaned);
     } catch (e) {
       console.error("❌ Failed to parse JSON:", cleaned);
-      throw new Error("Invalid JSON returned from Worker");
+      return [];
     }
 
-    return parsed;
+    // Normalize output
+    if (Array.isArray(parsed)) {
+      return parsed.filter((x) => typeof x === "string");
+    }
 
+    if (Array.isArray(parsed?.steps)) {
+  return parsed.steps.filter((step: any) => typeof step === "string");
+}
+
+if (Array.isArray(parsed?.tips)) {
+  return parsed.tips.filter((tip: any) => typeof tip === "string");
+}
+
+    if (typeof parsed === "string") {
+      return [parsed];
+    }
+
+    if (typeof parsed?.text === "string") {
+      return [parsed.text];
+    }
+
+    return [];
   } catch (error: any) {
     console.error("Gemini Worker Error:", error.message);
-    throw error;
+    return [];
   }
 }
