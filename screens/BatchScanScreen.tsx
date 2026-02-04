@@ -13,7 +13,7 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import i18n from "../i18n";
-import { analyzeImageWithGemini } from "../services/analyzeImage";
+import { analyzeImageCached } from "../utils/AI/analyzeImageCached";
 import { preprocessImage } from "../utils/AI/preprocessImage";
 
 export default function BatchScanScreen() {
@@ -46,7 +46,7 @@ export default function BatchScanScreen() {
 
     try {
       const { base64, mimeType } = await preprocessImage(uri);
-      const ai = await analyzeImageWithGemini(base64, mimeType);
+      const ai = await analyzeImageCached(base64, mimeType);
 
       if (!ai) {
         setIsProcessing(false);

@@ -17,12 +17,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Events } from "../analytics/events";
-import { analyzeImageWithGemini } from "../services/analyzeImage";
-import { preprocessImage } from "../utils/AI/preprocessImage";
-import { generateStainRemovalTips } from "../utils/aiStainRemoval";
-
 import i18n from "../i18n";
 import { useUserStore } from "../store/userStore";
+import { analyzeGarmentProCached } from "../utils/AI/analyzeGarmentProCached";
+import { generateStainRemovalTipsCached } from "../utils/AI/generateStainRemovalTipsCached";
+import { preprocessImage } from "../utils/AI/preprocessImage";
+import { translateStainTips } from "../utils/AI/translateStainTips";
+
 
 export default function SmartScanScreen({ navigation }: any) {
   const [image, setImage] = useState<string | null>(null);
@@ -105,38 +106,52 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  const analyze = async (uri: string) => {
-    setLoading(true);
-    setResult(null);
-    setError(null);
+const analyze = async (uri: string) => {
+  setLoading(true);
+  setResult(null);
+  setError(null);
 
-    try {
-      const { base64, mimeType } = await preprocessImage(uri);
-      const aiResult = await analyzeImageWithGemini(base64, mimeType);
+  try {
+    const { base64 } = await preprocessImage(uri);
 
-      if (!aiResult) {
-        setError(i18n.t("smartScan.errorMessage"));
-        setLoading(false);
-        return;
-      }
+    // ⭐ Cached garment analysis
+    const ai = await analyzeGarmentProCached(base64);
 
-      let stainTips: any[] = [];
-      if (aiResult.stains?.length > 0) {
-        for (const stain of aiResult.stains) {
-          try {
-            const tips = await generateStainRemovalTips(stain, aiResult.fabric);
-            stainTips.push(tips);
-          } catch {}
-        }
-      }
-
-      setResult({ ...aiResult, stainTips });
-    } catch {
+    if (!ai) {
       setError(i18n.t("smartScan.errorMessage"));
+      setLoading(false);
+      return;
     }
 
-    setLoading(false);
-  };
+    let stainTips: any[] = [];
+    const locale = (i18n as any).language;
+
+if (ai.stains?.length > 0) {
+  for (const stain of ai.stains) {
+    try {
+      const rawTips = await generateStainRemovalTipsCached(stain, ai.fabric);
+
+      const translated = await translateStainTips(
+  rawTips.steps,
+  locale,
+  `stain_${stain}_${ai.fabric}`
+);
+
+      stainTips.push({
+        stain,
+        tips: translated,
+      });
+    } catch {}
+  }
+}
+
+    setResult({ ...ai, stainTips });
+  } catch {
+    setError(i18n.t("smartScan.errorMessage"));
+  }
+
+  setLoading(false);
+};
 
   // 🔥 REAL SAVE TO PLANNER
   const handleAutoAdd = async () => {

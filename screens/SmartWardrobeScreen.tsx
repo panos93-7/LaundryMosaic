@@ -9,9 +9,10 @@ import { GarmentCard } from "../components/GarmentCard";
 import i18n from "../i18n";
 import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
+import { analyzeGarmentProCached } from "../utils/AI/analyzeGarmentProCached";
 import { translateGarmentProfile } from "../utils/AI/translateGarment";
 import { translationCache } from "../utils/AI/translationCache";
-import { analyzeGarmentPro } from "../utils/aiGarmentAnalyzerPro";
+
 
 export default function WardrobeScreen() {
   const navigation = useNavigation<any>();
@@ -75,7 +76,8 @@ useEffect(() => {
 
     try {
       // 1. Analyze image → ALWAYS natural English
-      const ai = await analyzeGarmentPro(base64);
+      
+const ai = await analyzeGarmentProCached(base64);
 
       // 2. Detect current locale
       const locale = (i18n as any).language;

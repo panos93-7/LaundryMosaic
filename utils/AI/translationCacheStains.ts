@@ -1,0 +1,1 @@
+export const translationCacheStains: Map<string, string> = new Map();
