@@ -119,7 +119,7 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  const analyze = async (uri: string) => {
+const analyze = async (uri: string) => {
   setLoading(true);
   setResult(null);
   setError(null);
@@ -171,23 +171,37 @@ export default function SmartScanScreen({ navigation }: any) {
             );
           }
 
-          // ⭐ Always safe array
-          const translated = await translateStainTips(
+          // ⭐ Always safe array for translated steps
+          const translatedRaw = await translateStainTips(
             safeSteps,
             locale,
             `stain_${stain}_${ai.fabric}`
           );
 
+          const translated = Array.isArray(translatedRaw)
+            ? translatedRaw.filter((s: any) => typeof s === "string")
+            : typeof translatedRaw === "string"
+            ? [translatedRaw]
+            : [];
+
+          // ⭐ FINAL: tip.tips is ALWAYS array
           stainTips.push({
             stain,
             tips: translated,
           });
         } catch (err) {
           console.log("❌ Error generating stain tips:", err);
+
+          // ⭐ Even on error, push safe empty array
+          stainTips.push({
+            stain,
+            tips: [],
+          });
         }
       }
     }
 
+    // ⭐ FINAL RESULT — ALWAYS SAFE
     setResult({ ...ai, stainTips });
   } catch (err) {
     console.log("❌ analyze() failed:", err);
