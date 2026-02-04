@@ -37,6 +37,9 @@ export default function SmartScanScreen({ navigation }: any) {
 
   const pulseAnim = useRef(new RNAnimated.Value(1)).current;
 
+  // ⭐ NEW — prevents double analyze + race conditions
+  const analyzingRef = useRef(false);
+
   useEffect(() => {
     RNAnimated.loop(
       RNAnimated.sequence([
@@ -56,10 +59,13 @@ export default function SmartScanScreen({ navigation }: any) {
 
   useFocusEffect(
     React.useCallback(() => {
-      setImage(null);
-      setResult(null);
-      setError(null);
-      setLoading(false);
+      // ⭐ SAFE RESET — only if not analyzing
+      if (!analyzingRef.current) {
+        setImage(null);
+        setResult(null);
+        setError(null);
+        setLoading(false);
+      }
       return () => {};
     }, [])
   );
@@ -79,7 +85,9 @@ export default function SmartScanScreen({ navigation }: any) {
     })();
   }, []);
 
+  // ⭐ SAFE RESET
   const resetState = () => {
+    if (analyzingRef.current) return;
     setImage(null);
     setResult(null);
     setError(null);
@@ -116,7 +124,11 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
+  // ⭐ FIXED ANALYZE — with lock/unlock
   const analyze = async (uri: string) => {
+    if (analyzingRef.current) return; // prevent double calls
+    analyzingRef.current = true;
+
     setLoading(true);
     setResult(null);
     setError(null);
@@ -128,7 +140,6 @@ export default function SmartScanScreen({ navigation }: any) {
 
       if (!ai || typeof ai !== "object") {
         setError(i18n.t("smartScan.errorMessage"));
-        setLoading(false);
         return;
       }
 
@@ -201,9 +212,10 @@ export default function SmartScanScreen({ navigation }: any) {
     } catch (err) {
       console.log("❌ analyze() failed:", err);
       setError(i18n.t("smartScan.errorMessage"));
+    } finally {
+      analyzingRef.current = false; // ⭐ unlock
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const handleAutoAdd = async () => {
