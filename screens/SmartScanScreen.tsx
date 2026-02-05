@@ -384,7 +384,7 @@ if (
       fabric: translatedFabric[0] || base.fabric,
       color: translatedColor[0] || base.color,
       stains: translatedStains,
-      care: translatedCare,
+      care: base.care,
       recommended: {
         ...base.recommended,
         program: translatedProgram[0] || base.recommended?.program,
