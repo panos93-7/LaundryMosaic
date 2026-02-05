@@ -6,9 +6,11 @@ export async function analyzeImageWithGemini({
   prompt: string;
 }) {
   try {
-    const cleanedBase64 = base64.replace(/^data:image\/\w+;base64,/, "");
+    const cleanedBase64 = base64
+      ? base64.replace(/^data:image\/\w+;base64,/, "")
+      : null;
 
-    const mimeType = base64.startsWith("data:image/png")
+    const mimeType = base64?.startsWith("data:image/png")
       ? "image/png"
       : "image/jpeg";
 
@@ -48,7 +50,6 @@ export async function analyzeImageWithGemini({
       .replace(/```/g, "")
       .trim();
 
-    // If empty → fallback to empty array
     if (!cleaned || cleaned.length < 2) {
       return [];
     }
@@ -68,12 +69,12 @@ export async function analyzeImageWithGemini({
     }
 
     if (Array.isArray(parsed?.steps)) {
-  return parsed.steps.filter((step: any) => typeof step === "string");
-}
+      return parsed.steps.filter((step: any) => typeof step === "string");
+    }
 
-if (Array.isArray(parsed?.tips)) {
-  return parsed.tips.filter((tip: any) => typeof tip === "string");
-}
+    if (Array.isArray(parsed?.tips)) {
+      return parsed.tips.filter((tip: any) => typeof tip === "string");
+    }
 
     if (typeof parsed === "string") {
       return [parsed];
@@ -86,6 +87,62 @@ if (Array.isArray(parsed?.tips)) {
     return [];
   } catch (error: any) {
     console.error("Gemini Worker Error:", error.message);
+    return [];
+  }
+}
+
+/**
+ * ⭐ TEXT‑ONLY TRANSLATION ENDPOINT
+ * Χρησιμοποιείται ΜΟΝΟ για μεταφράσεις.
+ */
+export async function analyzeTextWithGemini(prompt: string) {
+  try {
+    const response = await fetch(
+      "https://gemini-proxy.panos-ai.workers.dev",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt,
+          imageBase64: null, // ⭐ text-only mode
+          mimeType: null,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error("Worker error: " + err);
+    }
+
+    const data = await response.json();
+
+    let rawText =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data?.text ||
+      data?.output ||
+      "";
+
+    if (typeof rawText !== "string") {
+      rawText = JSON.stringify(rawText);
+    }
+
+    const cleaned = rawText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    if (!cleaned || cleaned.length < 2) {
+      return [];
+    }
+
+    try {
+      return JSON.parse(cleaned);
+    } catch {
+      return [];
+    }
+  } catch (err) {
+    console.error("Gemini Text Error:", err);
     return [];
   }
 }

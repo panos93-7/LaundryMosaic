@@ -1,4 +1,4 @@
-import { analyzeImageWithGemini } from "./aiClient";
+import { analyzeTextWithGemini } from "./aiClient";
 import { getImageHash } from "./imageHash";
 import { translationCacheStains } from "./translationCacheStains";
 
@@ -82,10 +82,8 @@ ${JSON.stringify(safeArray)}
   let translated: any = null;
 
   try {
-    translated = await analyzeImageWithGemini({
-      base64: "",
-      prompt,
-    });
+    // ⭐ TEXT-ONLY TRANSLATION (FIX)
+    translated = await analyzeTextWithGemini(prompt);
   } catch {
     translated = safeArray;
   }
