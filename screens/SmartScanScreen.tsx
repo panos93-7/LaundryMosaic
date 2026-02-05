@@ -211,7 +211,14 @@ const takePhoto = async () => {
     setError(i18n.t("smartScan.errorMessage"));
   }
 };
-
+async function safeTranslate(input: any, locale: string, key: string) {
+  try {
+    const res = await translateStainTips(input, locale, key);
+    return res;
+  } catch (e) {
+    return input; // fallback: no translation
+  }
+}
 const analyze = async (uri: string) => {
   if (!uri) return;
   if (analyzingRef.current) return;
@@ -243,72 +250,74 @@ const analyze = async (uri: string) => {
     }
 
     const base = {
-  ...ai,
-  fabric: typeof ai.fabric === "string" ? ai.fabric : "cotton",
-  color: typeof ai.color === "string" ? ai.color : "white",
-  stains: Array.isArray(ai.stains) ? ai.stains : [],
-  stainTips: Array.isArray(ai.stainTips) ? ai.stainTips : [],
-  recommended:
-    (ai.recommended && typeof ai.recommended === "object"
-      ? ai.recommended
-      : {}) as { program?: string },
-  care:
-    (ai.care && typeof ai.care === "object"
-      ? ai.care
-      : {}) as CareFields,
-};
+      ...ai,
+      fabric: typeof ai.fabric === "string" ? ai.fabric : "cotton",
+      color: typeof ai.color === "string" ? ai.color : "white",
+      stains: Array.isArray(ai.stains) ? ai.stains : [],
+      stainTips: Array.isArray(ai.stainTips) ? ai.stainTips : [],
+      recommended:
+        (ai.recommended && typeof ai.recommended === "object"
+          ? ai.recommended
+          : {}) as { program?: string },
+      care:
+        (ai.care && typeof ai.care === "object"
+          ? ai.care
+          : {}) as CareFields,
+    };
 
     const locale = (i18n as any).language;
 
     // CARE ARRAY (safe)
-const careArray = (() => {
-  const c = base.care || {};
-  const warnings = Array.isArray(c.warnings)
-    ? c.warnings.filter((w) => typeof w === "string")
-    : [];
+    const careArray = (() => {
+      const c = base.care || {};
+      const warnings = Array.isArray(c.warnings)
+        ? c.warnings.filter((w) => typeof w === "string")
+        : [];
 
-  return [
-    typeof c.wash === "string" ? c.wash : "",
-    typeof c.bleach === "string" ? c.bleach : "",
-    typeof c.dry === "string" ? c.dry : "",
-    typeof c.iron === "string" ? c.iron : "",
-    typeof c.dryclean === "string" ? c.dryclean : "",
-    ...warnings,
-  ].filter((x) => x.trim().length > 0);
-})();
+      return [
+        typeof c.wash === "string" ? c.wash : "",
+        typeof c.bleach === "string" ? c.bleach : "",
+        typeof c.dry === "string" ? c.dry : "",
+        typeof c.iron === "string" ? c.iron : "",
+        typeof c.dryclean === "string" ? c.dryclean : "",
+        ...warnings,
+      ].filter((x) => x.trim().length > 0);
+    })();
 
-    // TRANSLATE EVERYTHING
-    const [
-      translatedFabric,
-      translatedColor,
-      translatedStains,
-      translatedCare,
-      translatedProgram,
-    ] = await Promise.all([
-      translateStainTips(
-        typeof base.fabric === "string" ? base.fabric : "",
-        locale,
-        "fabric"
-      ),
-      translateStainTips(
-        typeof base.color === "string" ? base.color : "",
-        locale,
-        "color"
-      ),
-      translateStainTips(
-        Array.isArray(base.stains) ? base.stains : [],
-        locale,
-        "stains"
-      ),
-      translateStainTips(careArray, locale, "care"),
-      translateStainTips(
-  typeof base.recommended?.program === "string"
-    ? base.recommended.program
-    : "",
-  locale,
-  "program"
-),
-    ]);
+    // TRANSLATE EVERYTHING (SAFE)
+    const translatedFabric = await safeTranslate(
+      typeof base.fabric === "string" ? base.fabric : "",
+      locale,
+      "fabric"
+    );
+
+    const translatedColor = await safeTranslate(
+      typeof base.color === "string" ? base.color : "",
+      locale,
+      "color"
+    );
+
+    const translatedStains = await safeTranslate(
+      Array.isArray(base.stains)
+        ? base.stains.filter((s) => typeof s === "string")
+        : [],
+      locale,
+      "stains"
+    );
+
+    const translatedCare = await safeTranslate(
+      careArray,
+      locale,
+      "care"
+    );
+
+    const translatedProgram = await safeTranslate(
+      typeof base.recommended?.program === "string"
+        ? base.recommended.program
+        : "",
+      locale,
+      "program"
+    );
 
     // TRANSLATE STAIN TIPS (per stain)
     let stainTips: any[] = [];
@@ -339,7 +348,7 @@ const careArray = (() => {
             safeSteps = [rawTips];
           }
 
-          const translatedRaw = await translateStainTips(
+          const translatedRaw = await safeTranslate(
             safeSteps,
             locale,
             `stain_${stain}_${base.fabric}`
