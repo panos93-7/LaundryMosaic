@@ -10,7 +10,6 @@ interface RequestBody {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    // Handle GET requests (browser test)
     if (request.method !== "POST") {
       return new Response(
         "👋 Gemini Worker is running. Send a POST request with JSON body.",
@@ -21,7 +20,6 @@ export default {
       );
     }
 
-    // Parse JSON safely
     let body: RequestBody;
     try {
       body = await request.json();
@@ -37,7 +35,6 @@ export default {
 
     const { imageBase64, mimeType, prompt } = body;
 
-    // Prompt is required
     if (!prompt) {
       return new Response(JSON.stringify({ error: "Missing prompt" }), {
         status: 400,
@@ -47,7 +44,35 @@ export default {
 
     const apiKey = env.GEMINI_API_KEY;
 
-    // Build Gemini payload safely
+    // ⭐ MODEL SELECTION
+    const model = imageBase64
+      ? "gemini-2.5-pro"        // Vision mode
+      : "gemini-2.5-pro-exp";   // Text-only mode
+
+    // ⭐ WARM-UP (only for Vision)
+    if (imageBase64) {
+      try {
+        await fetch(
+          `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [{ text: "warmup" }],
+                },
+              ],
+            }),
+          }
+        );
+      } catch (e) {
+        // ignore warm-up errors
+      }
+    }
+
+    // Build payload
     const payload: any = {
       contents: [
         {
@@ -57,7 +82,6 @@ export default {
       ],
     };
 
-    // Add image only if provided
     if (imageBase64) {
       payload.contents[0].parts.push({
         inlineData: {
@@ -67,40 +91,36 @@ export default {
       });
     }
 
-    // Add prompt
     payload.contents[0].parts.push({ text: prompt });
 
-try {
-  const response = await fetch(
-    "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=" +
-      apiKey,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errText = await response.text();
+        return new Response(JSON.stringify({ error: errText }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      const data = await response.json();
+
+      return new Response(JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (err: any) {
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
     }
-  );
-
-  if (!response.ok) {
-    const errText = await response.text();
-    return new Response(JSON.stringify({ error: errText }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  const data = await response.json();
-
-  console.log("GEMINI RAW RESPONSE:", data);
-
-  return new Response(JSON.stringify(data), {
-    headers: { "Content-Type": "application/json" },
-  });
-} catch (err: any) {
-  return new Response(JSON.stringify({ error: err.message }), {
-    status: 500,
-    headers: { "Content-Type": "application/json" },
-  });
-}
   },
 };
