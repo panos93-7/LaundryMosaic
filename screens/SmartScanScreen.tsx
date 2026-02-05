@@ -377,7 +377,11 @@ if (
         }
       }
     }
-
+const cleanStains = Array.isArray(translatedStains)
+  ? translatedStains.filter(
+      (s) => typeof s === "string" && s.trim().length > 0
+    )
+  : [];
 setResult({
   ...base,
 
@@ -393,9 +397,7 @@ setResult({
     ? translatedColor
     : base.color,
 
-  stains: Array.isArray(translatedStains)
-    ? translatedStains.filter((s) => typeof s === "string")
-    : [],
+  stains: cleanStains,
 
   care: base.care,
 
@@ -417,6 +419,7 @@ setResult({
     )
   : [],
       }))
+    
     : [],
 });
   } catch (err) {
