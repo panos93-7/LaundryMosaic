@@ -3,100 +3,82 @@ import { getImageHash } from "./imageHash";
 import { translationCacheStains } from "./translationCacheStains";
 
 /**
- * Normalizes any AI translation output into a clean string[]
+ * Translate a single string safely
  */
-function normalizeTranslated(raw: any): string[] {
-  if (!raw) return [];
-
-  if (Array.isArray(raw)) {
-    return raw.filter((s: any) => typeof s === "string");
-  }
-
-  const steps = (raw as any).steps;
-  if (Array.isArray(steps)) {
-    return steps.filter((s: any) => typeof s === "string");
-  }
-
-  const tips = (raw as any).tips;
-  if (Array.isArray(tips)) {
-    return tips.filter((t: any) => typeof t === "string");
-  }
-
-  if (typeof raw === "string") {
-    return [raw];
-  }
-
-  const text = (raw as any).text;
-  if (typeof text === "string") {
-    return [text];
-  }
-
-  return [];
-}
-
-/**
- * Generic AI translator for ANY text array.
- * Works for stain tips, fabric, color, care instructions, etc.
- */
-export async function translateStainTips(
-  input: any,
-  locale: string,
-  cacheKeyPrefix: string
-) {
-  // Normalize input to array of strings
-  const safeArray = Array.isArray(input)
-    ? input.filter((t: any) => typeof t === "string")
-    : typeof input === "string"
-    ? [input]
-    : [];
+async function translateOne(text: string, locale: string, cacheKeyPrefix: string) {
+  if (!text || typeof text !== "string") return text;
 
   // English → no translation needed
-  if (!locale || locale.startsWith("en")) {
-    return safeArray;
-  }
+  if (!locale || locale.startsWith("en")) return text;
 
   // Build cache key
-  const joined = safeArray.join("||");
-  const hash = await getImageHash(joined);
+  const hash = await getImageHash(text);
   const cacheKey = `${cacheKeyPrefix}_${locale}_${hash}`;
 
   // Check cache
   const cached = translationCacheStains.get(cacheKey);
   if (cached) {
     try {
-      const parsed = JSON.parse(cached);
-      return normalizeTranslated(parsed);
-    } catch {
-      // ignore corrupted cache
-    }
+      return JSON.parse(cached);
+    } catch {}
   }
 
-  // Build translation prompt
   const prompt = `
 Translate the following text into ${locale}.
-Return ONLY a JSON array of strings. No explanations, no markdown.
+Return ONLY a JSON string. No explanations, no markdown.
 
-${JSON.stringify(safeArray)}
+"${text}"
 `;
 
   let translated: any = null;
 
   try {
-    // ⭐ TEXT-ONLY TRANSLATION (FIX)
     translated = await analyzeTextWithGemini(prompt);
   } catch {
-    translated = safeArray;
+    translated = text;
   }
 
-  const normalized = normalizeTranslated(translated);
-  const finalOutput = normalized.length > 0 ? normalized : safeArray;
+  // Normalize output
+  let finalText = text;
+
+  if (typeof translated === "string") {
+    finalText = translated.trim();
+  } else if (Array.isArray(translated) && translated.length > 0) {
+    finalText = translated[0];
+  } else if (translated?.text) {
+    finalText = translated.text;
+  }
 
   // Save to cache
   try {
-    translationCacheStains.set(cacheKey, JSON.stringify(finalOutput));
-  } catch {
-    // ignore cache write errors
+    translationCacheStains.set(cacheKey, JSON.stringify(finalText));
+  } catch {}
+
+  return finalText;
+}
+
+/**
+ * Translate an array of strings safely
+ */
+export async function translateStainTips(
+  input: any,
+  locale: string,
+  cacheKeyPrefix: string
+) {
+  const safeArray = Array.isArray(input)
+    ? input.filter((t) => typeof t === "string")
+    : typeof input === "string"
+    ? [input]
+    : [];
+
+  if (!locale || locale.startsWith("en")) return safeArray;
+
+  const results: string[] = [];
+
+  for (const item of safeArray) {
+    const translated = await translateOne(item, locale, cacheKeyPrefix);
+    results.push(translated);
   }
 
-  return finalOutput;
+  return results;
 }
