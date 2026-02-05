@@ -683,7 +683,7 @@ if (
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
                     🧵 {String(i18n.t("smartScan.fabric"))}:{" "}
-                        {safeResult.fabric}
+                        {safeResult.fabric ?? "-"}
                   </Animated.Text>
 
                   {/* COLOR */}
@@ -692,7 +692,7 @@ if (
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
                     🎨 {String(i18n.t("smartScan.color"))}:{" "}
-                    🎨 {safeResult.color}
+                    🎨 {safeResult.color ?? "-"}
                   </Animated.Text>
 
                   {/* STAINS */}
