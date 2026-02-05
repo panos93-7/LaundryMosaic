@@ -47,7 +47,7 @@ export default {
     // ⭐ MODEL SELECTION
     const model = imageBase64
       ? "gemini-2.5-pro"        // Vision mode
-      : "gemini-2.5-pro-exp";   // Text-only mode
+      : "gemini-2.5-flash";   // Text-only mode
 
     // ⭐ WARM-UP (only for Vision)
     if (imageBase64) {
