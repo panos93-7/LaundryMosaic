@@ -378,19 +378,47 @@ if (
       }
     }
 
-    // FINAL RESULT
-    setResult({
-      ...base,
-      fabric: translatedFabric[0] || base.fabric,
-      color: translatedColor[0] || base.color,
-      stains: translatedStains,
-      care:base.care,
-      recommended: {
-        ...base.recommended,
-        program: translatedProgram[0] || base.recommended?.program,
-      },
-      stainTips,
-    });
+setResult({
+  ...base,
+
+  fabric: Array.isArray(translatedFabric)
+    ? translatedFabric[0] || base.fabric
+    : typeof translatedFabric === "string"
+    ? translatedFabric
+    : base.fabric,
+
+  color: Array.isArray(translatedColor)
+    ? translatedColor[0] || base.color
+    : typeof translatedColor === "string"
+    ? translatedColor
+    : base.color,
+
+  stains: Array.isArray(translatedStains)
+    ? translatedStains.filter((s) => typeof s === "string")
+    : [],
+
+  care: base.care,
+
+  recommended: {
+    ...base.recommended,
+    program: Array.isArray(translatedProgram)
+      ? translatedProgram[0] || base.recommended?.program
+      : typeof translatedProgram === "string"
+      ? translatedProgram
+      : base.recommended?.program,
+  },
+
+  stainTips: Array.isArray(stainTips)
+    ? stainTips.map((item) => ({
+        stain: typeof item.stain === "string" ? item.stain : "",
+        tips: Array.isArray(item.tips)
+  ? (item.tips as string[]).filter(
+      (s) => typeof s === "string" && s.trim().length > 0
+    )
+  : [],
+      }))
+    : [],
+});
   } catch (err) {
   setError(i18n.t("smartScan.errorMessage"));
   setImage(null);
