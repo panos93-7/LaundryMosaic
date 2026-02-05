@@ -66,7 +66,8 @@
     "plannerDefaultType": "일반",
     "plannerAnyTime": "언제든지",
     "stainsDetected": "얼룩이 감지되었습니다",
-    "unlockStainCare": "얼룩 제거 팁 잠금 해제"
+    "unlockStainCare": "얼룩 제거 팁 잠금 해제",
+    "uploadAnother": "다른 사진 업로드"
   },
   "batchScan": {
     "title": "일괄 스캔",

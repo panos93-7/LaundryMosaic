@@ -71,7 +71,8 @@
     "plannerDefaultType": "Général",
     "plannerAnyTime": "N'importe quand",
     "stainsDetected": "Taches détectées",
-    "unlockStainCare": "Débloquer les conseils de détachage"
+    "unlockStainCare": "Débloquer les conseils de détachage",
+    "uploadAnother": "Télécharger une autre photo"
   },
 
   "batchScan": {

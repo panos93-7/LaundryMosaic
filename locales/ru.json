@@ -71,7 +71,8 @@
     "plannerDefaultType": "Общее",
     "plannerAnyTime": "В любое время",
     "stainsDetected": "Обнаружены пятна",
-    "unlockStainCare": "Разблокировать советы по удалению пятен"
+    "unlockStainCare": "Разблокировать советы по удалению пятен",
+    "uploadAnother": "Загрузить другое фото"
   },
 
   "batchScan": {

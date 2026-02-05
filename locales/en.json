@@ -71,7 +71,8 @@
     "plannerDefaultType": "General",
     "plannerAnyTime": "Any time",
     "stainsDetected": "Stains detected",
-    "unlockStainCare": "Unlock stain removal tips"
+    "unlockStainCare": "Unlock stain removal tips",
+    "uploadAnother": "Upload another photo"
   },
 
   "batchScan": {

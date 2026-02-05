@@ -71,7 +71,8 @@
     "plannerDefaultType": "Geral",
     "plannerAnyTime": "A qualquer momento",
     "stainsDetected": "Manchas detetadas",
-    "unlockStainCare": "Desbloquear dicas de remoção de manchas"
+    "unlockStainCare": "Desbloquear dicas de remoção de manchas",
+    "uploadAnother": "Carregar outra fotografia"
   },
 
   "batchScan": {

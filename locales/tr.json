@@ -71,7 +71,8 @@
     "plannerDefaultType": "Genel",
     "plannerAnyTime": "Herhangi bir zaman",
     "stainsDetected": "Lekeler tespit edildi",
-    "unlockStainCare": "Leke çıkarma ipuçlarını aç"
+    "unlockStainCare": "Leke çıkarma ipuçlarını aç",
+    "uploadAnother": "Yeni bir fotoğraf yükle"
   },
 
   "batchScan": {

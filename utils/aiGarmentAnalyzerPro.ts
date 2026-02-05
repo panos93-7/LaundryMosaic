@@ -1,3 +1,6 @@
+import i18n from "../i18n";
+const locale = i18n.locale;
+
 export async function analyzeGarmentPro(base64: string) {
   try {
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
@@ -17,14 +20,20 @@ You are an expert fashion, textile, and laundry-care assistant.
 Analyze the garment in the image and return ONLY valid JSON.
 Do NOT include explanations, markdown, or extra text.
 
-IMPORTANT:
-- All responses must be in clear, natural English.
-- Use natural language for all fields (not keys).
-- Do NOT translate anything into Greek or any other language.
-- The UI will handle translations into other languages.
+LANGUAGE RULES:
+- Respond ONLY in ${locale}.
+- Translate ALL fields into ${locale}.
+- Do NOT use English words unless absolutely unavoidable.
+- Keep translations natural, short, and consistent.
+- Do NOT translate JSON keys, only values.
 
-Extract a complete garment profile with the following structure:
+OUTPUT RULES:
+- Return ONLY the JSON object.
+- No commentary, no markdown, no code fences.
+- All fields must be filled with short, clear phrases.
+- If uncertain, make the best reasonable guess.
 
+SCHEMA:
 {
   "name": "...",
   "type": "...",
@@ -38,46 +47,36 @@ Extract a complete garment profile with the following structure:
     "program": "...",
     "temp": 30,
     "spin": 800,
-    "detergent": "Liquid | Powder | Delicate | Wool | Color-safe",
+    "detergent": "...",
     "notes": ["...", "..."]
   },
 
   "care": {
-    "wash": "Machine wash cold (30°C) | Hand wash | Do not wash",
-    "bleach": "Do not bleach | Non-chlorine bleach only",
-    "dry": "Tumble dry low | Do not tumble dry | Line dry | Dry flat",
-    "iron": "Do not iron | Iron low | Iron medium | Iron high",
-    "dryclean": "Do not dry clean | Dry clean only",
-    "warnings": [
-      "May shrink",
-      "Wash with similar colors",
-      "Turn inside out",
-      "Avoid high heat"
-    ]
+    "wash": "...",
+    "bleach": "...",
+    "dry": "...",
+    "iron": "...",
+    "dryclean": "...",
+    "warnings": ["...", "..."]
   },
 
   "risks": {
-    "shrinkage": "Low | Medium | High",
-    "colorBleeding": "Low | Medium | High",
-    "delicacy": "Low | Medium | High"
+    "shrinkage": "...",
+    "colorBleeding": "...",
+    "delicacy": "..."
   },
 
-  "washFrequency": "After 1 wear | After 2–3 wears | After heavy use",
+  "washFrequency": "...",
 
-  "careSymbols": [
-    "Wash 30",
-    "No bleach",
-    "Tumble low",
-    "Iron low",
-    "No dryclean"
-  ]
+  "careSymbols": ["...", "..."]
 }
 
-Rules:
-- All fields must be filled.
-- Use short, clear English phrases.
-- If uncertain, make the best reasonable guess based on the garment.
-- Return ONLY the JSON object.
+IMPORTANT:
+- JSON keys must remain in English.
+- JSON values must be translated into ${locale}.
+- Do NOT invent new fields.
+- Do NOT remove fields.
+- Do NOT wrap the JSON in backticks.
 `,
         }),
       }
@@ -164,7 +163,9 @@ Rules:
         : [],
 
       // ΠΑΝΤΑ παρόν, έστω κενό
-      stainTips: [],
+      stainTips: Array.isArray(parsed.stainTips)
+  ? parsed.stainTips.filter((s: any) => typeof s === "string")
+  : [],
     };
   } catch (err) {
     console.log("❌ PRO analyzer error:", err);

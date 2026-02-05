@@ -52,7 +52,7 @@ export default function SmartScanScreen({ navigation }: any) {
   const isPro = useUserStore((s) => s.isPro);
   const userTier = useUserStore((s) => s.userTier);
   const canSeeStainTips = userTier === "pro";
-
+  const [sourceType, setSourceType] = useState<"camera" | "gallery" | null>(null);
   const pulseAnim = useRef(new RNAnimated.Value(1)).current;
   const analyzingRef = useRef(false);
 
@@ -180,6 +180,7 @@ const pickImage = async () => {
         setError(i18n.t("smartScan.errorMessage"));
         return;
       }
+      setSourceType("gallery");
       setImage(uri);
       Events.aiScanStarted("gallery");
       analyze(uri);
@@ -202,6 +203,7 @@ const takePhoto = async () => {
         setError(i18n.t("smartScan.errorMessage"));
         return;
       }
+      setSourceType("camera");
       setImage(uri);
       Events.aiScanStarted("camera");
       analyze(uri);
@@ -434,20 +436,31 @@ setResult({
   setLoading(false);
 }
 };
-  const handleAutoAdd = async () => {
-    try {
-      await AsyncStorage.setItem(
-        "smartScan:lastResult",
-        JSON.stringify({
-          image,
-          result: safeResult,
-        })
-      );
-      navigation.navigate("Planner", { source: "smartScan" });
-    } catch (e) {
-      console.log("SmartScan: handleAutoAdd failed", e);
-    }
-  };
+ const handleAutoAdd = async () => {
+  try {
+    const payload = {
+      image,
+      result: {
+        fabric: safeResult.fabric ?? null,
+        color: safeResult.color ?? null,
+        stains: Array.isArray(safeResult.stains) ? safeResult.stains : [],
+        stainTips: Array.isArray(safeResult.stainTips) ? safeResult.stainTips : [],
+        recommended: safeResult.recommended ?? null,
+        care: Array.isArray(safeResult.care) ? safeResult.care : [],
+      },
+      createdAt: Date.now(),
+    };
+
+    await AsyncStorage.setItem(
+      "smartScan:lastResult",
+      JSON.stringify(payload)
+    );
+
+    navigation.navigate("Planner", { source: "smartScan" });
+  } catch (e) {
+    console.log("SmartScan: handleAutoAdd failed", e);
+  }
+};
 
   // UI
   return (
@@ -940,27 +953,29 @@ setResult({
     )}
   </View>
 )}
-                  {/* TAKE ANOTHER PHOTO */}
-                  <TouchableOpacity
-                    onPress={takeAnotherPhoto}
-                    style={{
-                      marginTop: 20,
-                      backgroundColor: "rgba(255,255,255,0.15)",
-                      padding: 14,
-                      borderRadius: 12,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        textAlign: "center",
-                        fontSize: 18,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {i18n.t("smartScan.takeAnother")}
-                    </Text>
-                  </TouchableOpacity>
+{/* TAKE OR UPLOAD ANOTHER PHOTO */}
+<TouchableOpacity
+  onPress={sourceType === "camera" ? takeAnotherPhoto : pickImage}
+  style={{
+    marginTop: 20,
+    backgroundColor: "rgba(255,255,255,0.15)",
+    padding: 14,
+    borderRadius: 12,
+  }}
+>
+  <Text
+    style={{
+      color: "#fff",
+      textAlign: "center",
+      fontSize: 18,
+      fontWeight: "600",
+    }}
+  >
+    {sourceType === "camera"
+      ? i18n.t("smartScan.takeAnother")       // "Take another photo"
+      : i18n.t("smartScan.uploadAnother")}    // "Upload another photo"
+  </Text>
+</TouchableOpacity>
 
                   {/* CLOSE RESULT */}
                   <TouchableOpacity

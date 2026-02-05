@@ -71,7 +71,8 @@
     "plannerDefaultType": "一般",
     "plannerAnyTime": "いつでも",
     "stainsDetected": "シミを検出しました",
-    "unlockStainCare": "シミ抜きガイドをアンロック"
+    "unlockStainCare": "シミ抜きガイドをアンロック",
+    "uploadAnother": "別の写真をアップロード"
   },
 
   "batchScan": {

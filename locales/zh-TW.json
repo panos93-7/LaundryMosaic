@@ -71,7 +71,8 @@
     "plannerDefaultType": "一般",
     "plannerAnyTime": "任何時間",
     "stainsDetected": "偵測到污漬",
-    "unlockStainCare": "解鎖去漬指南"
+    "unlockStainCare": "解鎖去漬指南",
+    "uploadAnother": "上傳另一張照片"
   },
 
   "batchScan": {

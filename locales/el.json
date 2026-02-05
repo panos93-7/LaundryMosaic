@@ -71,7 +71,8 @@
     "plannerDefaultType": "Γενικό",
     "plannerAnyTime": "Οποιαδήποτε ώρα",
     "stainsDetected": "Εντοπίστηκαν λεκέδες",
-    "unlockStainCare": "Ξεκλείδωσε οδηγίες αφαίρεσης λεκέδων"
+    "unlockStainCare": "Ξεκλείδωσε οδηγίες αφαίρεσης λεκέδων",
+    "uploadAnother": "Ανέβασμα νέας φωτογραφίας"
   },
 
   "batchScan": {

@@ -71,7 +71,8 @@
     "plannerDefaultType": "Allgemein",
     "plannerAnyTime": "Jederzeit",
     "stainsDetected": "Flecken erkannt",
-    "unlockStainCare": "Tipps zur Fleckenentfernung freischalten"
+    "unlockStainCare": "Tipps zur Fleckenentfernung freischalten",
+    "uploadAnother": "Ein weiteres Foto hochladen"
   },
 
   "batchScan": {

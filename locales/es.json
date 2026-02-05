@@ -71,7 +71,8 @@
     "plannerDefaultType": "General",
     "plannerAnyTime": "En cualquier momento",
     "stainsDetected": "Manchas detectadas",
-    "unlockStainCare": "Desbloquear consejos para quitar manchas"
+    "unlockStainCare": "Desbloquear consejos para quitar manchas",
+    "uploadAnother": "Subir otra foto"
   },
   "batchScan": {
     "title": "Escaneo por Lotes",
