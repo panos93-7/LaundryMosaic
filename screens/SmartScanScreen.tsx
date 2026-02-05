@@ -244,11 +244,22 @@ const analyze = async (uri: string) => {
 
     const ai = await analyzeGarmentProCached(base64);
 
-    if (!ai || typeof ai !== "object") {
-      setError(i18n.t("smartScan.errorMessage"));
-      return;
-    }
-
+    // HARD VALIDATION
+if (
+  !ai ||
+  typeof ai !== "object" ||
+  (
+    typeof ai.fabric !== "string" &&
+    typeof ai.color !== "string" &&
+    !Array.isArray(ai.stains) &&
+    typeof ai.care !== "object"
+  )
+) {
+  setError(i18n.t("smartScan.errorMessage"));
+  analyzingRef.current = false;
+  setLoading(false);
+  return;
+}
     const base = {
       ...ai,
       fabric: typeof ai.fabric === "string" ? ai.fabric : "cotton",
@@ -381,11 +392,16 @@ const analyze = async (uri: string) => {
       stainTips,
     });
   } catch (err) {
-    setError(i18n.t("smartScan.errorMessage"));
-  } finally {
-    analyzingRef.current = false;
-    setLoading(false);
-  }
+  setError(i18n.t("smartScan.errorMessage"));
+  setImage(null);
+  setResult(null);
+  analyzingRef.current = false;
+  setLoading(false);
+  return; // ⭐ ΑΥΤΟ ΛΕΙΠΕΙ
+ } finally {
+  analyzingRef.current = false;
+  setLoading(false);
+}
 };
   const handleAutoAdd = async () => {
     try {
@@ -573,7 +589,81 @@ const analyze = async (uri: string) => {
                   </TouchableOpacity>
                 </View>
               )}
+{/* EMPTY STATE (image but no loading, no error, no result) */}
+{image && !loading && !error && !result && (
+  <View
+    style={{
+      backgroundColor: "rgba(255, 80, 80, 0.15)",
+      padding: 20,
+      borderRadius: 14,
+      width: "100%",
+      marginTop: 10,
+      borderWidth: 1,
+      borderColor: "rgba(255, 80, 80, 0.4)",
+    }}
+  >
+    <Text
+      style={{
+        color: "#ff6b6b",
+        fontSize: 18,
+        marginBottom: 10,
+      }}
+    >
+      ❌ {i18n.t("smartScan.errorTitle")}
+    </Text>
 
+    <Text
+      style={{
+        color: "#fff",
+        fontSize: 16,
+        marginBottom: 20,
+      }}
+    >
+      {i18n.t("smartScan.errorMessage")}
+    </Text>
+
+    <TouchableOpacity
+      onPress={() => analyze(image!)}
+      style={{
+        backgroundColor: "#ff6b6b",
+        padding: 14,
+        borderRadius: 12,
+      }}
+    >
+      <Text
+        style={{
+          color: "#fff",
+          textAlign: "center",
+          fontSize: 18,
+          fontWeight: "600",
+        }}
+      >
+        {i18n.t("smartScan.retry")}
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      onPress={takeAnotherPhoto}
+      style={{
+        marginTop: 12,
+        padding: 14,
+        borderRadius: 12,
+        backgroundColor: "rgba(255,255,255,0.15)",
+      }}
+    >
+      <Text
+        style={{
+          color: "#fff",
+          textAlign: "center",
+          fontSize: 18,
+          fontWeight: "600",
+        }}
+      >
+        {i18n.t("smartScan.takeAnother")}
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
               {/* RESULT PANEL */}
               {safeResult && !loading && !error && (
                 <Animated.View
