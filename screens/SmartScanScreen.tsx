@@ -808,7 +808,7 @@ if (
                   </Text>
 
                   {Array.isArray(steps) &&
-                    steps.map((step: string, idx: number) => (
+                  steps.filter(Boolean).map((step, idx) => (
                       <Text
                         key={idx}
                         style={{
