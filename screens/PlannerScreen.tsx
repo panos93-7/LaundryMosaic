@@ -58,16 +58,13 @@ export default function PlannerScreen({ navigation }: any) {
         const last = await AsyncStorage.getItem("smartScan:lastResult");
 
         if (last) {
-          const parsed = JSON.parse(last);
+  const parsed = JSON.parse(last);
 
-          // Prefill wash modal with SmartScan data
-          setEditingWash(parsed);
+  setEditingWash(parsed);   // initialData
+  setModalVisible(true);    // add mode (editingWash !== null is OK)
 
-          setModalVisible(true);
-
-          // Clear cache so it doesn't reopen every time
-          await AsyncStorage.removeItem("smartScan:lastResult");
-        }
+  await AsyncStorage.removeItem("smartScan:lastResult");
+}
       } catch (e) {
         console.log("Planner: failed to load smartScan result", e);
       }
@@ -103,7 +100,7 @@ async function handleSaveWash(wash: any) {
   };
 
   // EDIT MODE
-  if (editingWash) {
+  if (editingWash && editingWash.day !== undefined) {
     const index = plans.findIndex(
       (p) =>
         p.day === editingWash.day &&
