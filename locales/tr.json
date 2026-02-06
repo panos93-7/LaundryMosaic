@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "AI Akıllı Tarama",
     "close": "Kapat",
-
     "takePhoto": "Fotoğraf Çek",
     "chooseFromGallery": "Galeriden Seç",
-
     "errorTitle": "Analiz Başarısız",
     "errorMessage": "AI görüntüyü analiz edemedi. Daha net bir fotoğrafla tekrar deneyin.",
     "retry": "Tekrar Tara",
     "takeAnother": "Yeni Fotoğraf Çek",
-
     "fabric": "Kumaş",
     "color": "Renk",
     "stains": "Lekeler",
@@ -64,15 +61,14 @@
     "recommendedProgram": "Önerilen Program",
     "careInstructions": "Bakım Talimatları",
     "stainTips": "Leke Çıkarma İpuçları",
-
     "addToPlanner": "Planlayıcıya otomatik ekle",
-
     "plannerDefaultTitle": "Giysi",
     "plannerDefaultType": "Genel",
     "plannerAnyTime": "Herhangi bir zaman",
     "stainsDetected": "Lekeler tespit edildi",
     "unlockStainCare": "Leke çıkarma ipuçlarını aç",
-    "uploadAnother": "Yeni bir fotoğraf yükle"
+    "uploadAnother": "Yeni bir fotoğraf yükle",
+    "loadingCamera": "Kamera açılıyor…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "Çakışmalar",
     "suggestions": "Öneriler",
     "scanAgain": "Tekrar Tara",
-
     "conflict_wool": "Yünlü ürünler ayrı yıkanmalıdır.",
     "conflict_delicate": "Hassas kumaşlar diğerleriyle karıştırılmamalıdır.",
     "conflict_cotton_wool": "Pamuklu ve yün farklı sıcaklık gerektirir.",
-
     "suggest_cotton": "Pamuklu Renkli programı için ideal yük.",
     "suggest_synthetics": "Sentetik tespit edildi — Sentetik programını kullanın.",
     "suggest_stains": "Bazı ürünlerde lekeler var — ön işlem önerilir.",
@@ -129,19 +123,15 @@
  "editGarment": {
   "back": "Geri",
   "title": "Giysiyi Düzenle",
-
   "tapToAddImage": "Resim eklemek için dokun",
-
   "name": "Ad",
   "type": "Tür",
   "color": "Renk",
   "category": "Kategori",
   "fabric": "Kumaş",
   "pattern": "Desen",
-
   "saveChanges": "Değişiklikleri Kaydet",
   "deleteGarment": "Giysiyi Sil",
-
   "alertTitle": "Giysiyi Sil",
   "alertMessage": "Bu öğeyi silmek istediğinizden emin misiniz?",
   "cancel": "İptal",
@@ -159,37 +149,29 @@
  "garmentDetails": {
   "back": "Geri",
   "noImage": "Görüntü yok",
-
   "type": "Tür",
   "color": "Renk",
   "fabric": "Kumaş",
   "pattern": "Desen",
   "category": "Kategori",
-
   "unknown": "Bilinmiyor",
   "none": "Yok",
   "uncategorized": "Kategori yok",
-
   "stainsDetected": "Lekeler tespit edildi:",
-
   "careInstructions": "Bakım Talimatları:",
   "recommendedTemp": "Önerilen Sıcaklık",
   "spinSpeed": "Sıkma Hızı",
-
   "recommendedWashProgram": "Önerilen Yıkama Programı:",
   "program": "Program",
   "temp": "Sıcaklık",
   "spin": "Sıkma",
-
   "riskShrinkage": "Çekme",
   "riskColorBleeding": "Renk akması",
   "riskDelicacy": "Hassasiyet",
-
   "editGarment": "Giysiyi Düzenle",
   "deleteGarment": "Giysiyi Sil",
   "warnings": "Uyarılar",
   "translating": "Çevriliyor",
-  
   "detergent": "Deterjan",
   "notes": "Notlar",
   "risks": "Riskler:",
@@ -199,11 +181,8 @@
  "history": {
   "title": "Yıkama Geçmişi",
   "close": "Kapat",
-
   "emptyTitle": "Henüz yıkama geçmişi yok.",
-
   "typeLabel": "yıkama",
-
   "premiumRedirect": "Yönlendiriliyor…"
  },
  "calendar": {
@@ -214,11 +193,9 @@
   "addTitle": "Yeni Yıkama Ekle",
   "editTitle": "Yıkamayı Düzenle",
   "close": "Kapat",
-
   "labelTitle": "Başlık",
   "labelTime": "Saat",
   "labelType": "Yıkama Türü",
-
   "placeholderTitle": "örn. Beyazlar",
   "placeholderTime": "örn. 10:30",
 
@@ -232,16 +209,12 @@
 
   "errorMissingTitle": "Başlık Eksik",
   "errorMissingTitleMsg": "Lütfen yıkama için bir başlık girin.",
-
   "errorMissingTime": "Saat Eksik",
   "errorMissingTimeMsg": "Lütfen bir saat girin.",
-
   "errorMissingType": "Tür Eksik",
   "errorMissingTypeMsg": "Lütfen bir yıkama türü seçin.",
-
   "errorInvalidDate": "Geçersiz Tarih",
   "errorInvalidDateMsg": "Geçmiş bir tarihe yıkama ekleyemezsiniz.",
-
   "saveChanges": "Değişiklikleri Kaydet",
   "saveWash": "Yıkamayı Kaydet"
  },

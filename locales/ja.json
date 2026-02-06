@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "AIスマートスキャン",
     "close": "閉じる",
-
     "takePhoto": "写真を撮る",
     "chooseFromGallery": "ギャラリーから選ぶ",
-
     "errorTitle": "AI解析に失敗しました",
     "errorMessage": "画像を解析できませんでした。より鮮明な写真で再度お試しください。",
     "retry": "再スキャン",
     "takeAnother": "もう一度撮影",
-
     "fabric": "素材",
     "color": "色",
     "stains": "汚れ",
@@ -64,15 +61,14 @@
     "recommendedProgram": "おすすめプログラム",
     "careInstructions": "お手入れ方法",
     "stainTips": "汚れ落としのコツ",
-
     "addToPlanner": "プランナーに自動追加",
-
     "plannerDefaultTitle": "洗濯アイテム",
     "plannerDefaultType": "一般",
     "plannerAnyTime": "いつでも",
     "stainsDetected": "シミを検出しました",
     "unlockStainCare": "シミ抜きガイドをアンロック",
-    "uploadAnother": "別の写真をアップロード"
+    "uploadAnother": "別の写真をアップロード",
+    "loadingCamera": "カメラを起動しています…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "注意点",
     "suggestions": "おすすめ",
     "scanAgain": "再スキャン",
-
     "conflict_wool": "ウールは単独で洗う必要があります。",
     "conflict_delicate": "デリケート素材は他の衣類と混ぜないでください。",
     "conflict_cotton_wool": "コットンとウールは適正温度が異なります。",
-
     "suggest_cotton": "コットンカラー用プログラムに最適な洗濯物です。",
     "suggest_synthetics": "合成繊維が多いため、合成繊維プログラムがおすすめです。",
     "suggest_stains": "汚れがあるアイテムがあります。前処理を検討してください。",
@@ -131,19 +125,15 @@
   "editGarment": {
   "back": "戻る",
   "title": "衣類を編集",
-
   "tapToAddImage": "画像を追加するにはタップ",
-
   "name": "名前",
   "type": "種類",
   "color": "色",
   "category": "カテゴリ",
   "fabric": "素材",
   "pattern": "柄",
-
   "saveChanges": "変更を保存",
   "deleteGarment": "衣類を削除",
-
   "alertTitle": "衣類を削除",
   "alertMessage": "このアイテムを削除してもよろしいですか？",
   "cancel": "キャンセル",
@@ -161,37 +151,29 @@
  "garmentDetails": {
   "back": "戻る",
   "noImage": "画像なし",
-
   "type": "種類",
   "color": "色",
   "fabric": "素材",
   "pattern": "柄",
   "category": "カテゴリ",
-
   "unknown": "不明",
   "none": "なし",
   "uncategorized": "未分類",
-
   "stainsDetected": "汚れを検出:",
-
   "careInstructions": "お手入れ方法:",
   "recommendedTemp": "推奨温度",
   "spinSpeed": "脱水速度",
-
   "recommendedWashProgram": "推奨洗濯プログラム:",
   "program": "プログラム",
   "temp": "温度",
   "spin": "脱水",
-
   "riskShrinkage": "縮み",
   "riskColorBleeding": "色落ち",
   "riskDelicacy": "デリケートさ",
-
   "editGarment": "衣類を編集",
   "deleteGarment": "衣類を削除",
   "warnings": "注意事項",
   "translating": "翻訳中",
-  
   "detergent": "洗剤",
   "notes": "注意事項",
   "risks": "リスク:",
@@ -201,11 +183,8 @@
  "history": {
   "title": "洗濯履歴",
   "close": "閉じる",
-
   "emptyTitle": "まだ洗濯履歴がありません。",
-
   "typeLabel": "洗濯",
-
   "premiumRedirect": "リダイレクト中…"
  },
  "calendar": {
@@ -216,11 +195,9 @@
   "addTitle": "新しい洗濯を追加",
   "editTitle": "洗濯を編集",
   "close": "閉じる",
-
   "labelTitle": "タイトル",
   "labelTime": "時間",
   "labelType": "洗濯タイプ",
-
   "placeholderTitle": "例: 白物",
   "placeholderTime": "例: 10:30",
 
@@ -234,16 +211,12 @@
 
   "errorMissingTitle": "タイトルがありません",
   "errorMissingTitleMsg": "洗濯のタイトルを入力してください。",
-
   "errorMissingTime": "時間がありません",
   "errorMissingTimeMsg": "時間を入力してください。",
-
   "errorMissingType": "タイプがありません",
   "errorMissingTypeMsg": "洗濯タイプを選択してください。",
-
   "errorInvalidDate": "無効な日付",
   "errorInvalidDateMsg": "過去に洗濯を予定することはできません。",
-
   "saveChanges": "変更を保存",
   "saveWash": "洗濯を保存"
  },

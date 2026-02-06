@@ -64,15 +64,14 @@
     "recommendedProgram": "Recommended Program",
     "careInstructions": "Care Instructions",
     "stainTips": "Stain Removal Tips",
-
     "addToPlanner": "Add to Planner automatically",
-
     "plannerDefaultTitle": "Laundry Item",
     "plannerDefaultType": "General",
     "plannerAnyTime": "Any time",
     "stainsDetected": "Stains detected",
     "unlockStainCare": "Unlock stain removal tips",
-    "uploadAnother": "Upload another photo"
+    "uploadAnother": "Upload another photo",
+    "loadingCamera": "Opening camera…"
   },
 
   "batchScan": {

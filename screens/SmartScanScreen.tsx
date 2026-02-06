@@ -537,49 +537,24 @@ export default function SmartScanScreen({ navigation }: any) {
     setLoading(false);
   }
 };
-    const handleAutoAdd = async () => {
-    try {
-      const payload = {
-        image,
-        result: {
-          fabric: safeResult.fabric ?? null,
-          color: safeResult.color ?? null,
+const handleAutoAdd = async () => {
+  try {
+    const payload = {
+      title: safeResult?.recommended?.program || "",
+      type: safeResult?.fabric || "",
+      time: "12:00",
+    };
 
-          stains: Array.isArray(safeResult.stains)
-            ? safeResult.stains
-            : [],
+    await AsyncStorage.setItem(
+      "smartScan:lastResult",
+      JSON.stringify(payload)
+    );
 
-          stainTips: Array.isArray(safeResult.stainTips)
-            ? safeResult.stainTips
-            : [],
-
-          recommended: safeResult.recommended ?? null,
-
-          care: {
-            wash: safeResult?.care?.wash ?? "",
-            bleach: safeResult?.care?.bleach ?? "",
-            dry: safeResult?.care?.dry ?? "",
-            iron: safeResult?.care?.iron ?? "",
-            dryclean: safeResult?.care?.dryclean ?? "",
-            warnings: Array.isArray(safeResult?.care?.warnings)
-              ? safeResult.care.warnings
-              : [],
-          },
-        },
-
-        createdAt: Date.now(),
-      };
-
-      await AsyncStorage.setItem(
-        "smartScan:lastResult",
-        JSON.stringify(payload)
-      );
-
-      navigation.navigate("Planner", { source: "smartScan" });
-    } catch (e) {
-      console.log("SmartScan: handleAutoAdd failed", e);
-    }
-  };
+    navigation.navigate("Planner", { source: "smartScan" });
+  } catch (e) {
+    console.log("SmartScan: handleAutoAdd failed", e);
+  }
+};
 
   // UI
   // ⭐ NEW: cameraReady fallback to avoid grey screen before native modules are ready

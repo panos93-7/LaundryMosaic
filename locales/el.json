@@ -72,7 +72,8 @@
     "plannerAnyTime": "Οποιαδήποτε ώρα",
     "stainsDetected": "Εντοπίστηκαν λεκέδες",
     "unlockStainCare": "Ξεκλείδωσε οδηγίες αφαίρεσης λεκέδων",
-    "uploadAnother": "Ανέβασμα νέας φωτογραφίας"
+    "uploadAnother": "Ανέβασμα νέας φωτογραφίας",
+    "loadingCamera": "Προετοιμασία κάμερας…"
   },
 
   "batchScan": {

@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "Escaneo Inteligente AI",
     "close": "Cerrar",
-
     "takePhoto": "Tomar Foto",
     "chooseFromGallery": "Elegir de la Galería",
-
     "errorTitle": "Error en el Análisis",
     "errorMessage": "La IA no pudo analizar la imagen. Intenta nuevamente con una foto más clara.",
     "retry": "Reintentar Escaneo",
     "takeAnother": "Tomar Otra Foto",
-
     "fabric": "Tela",
     "color": "Color",
     "stains": "Manchas",
@@ -64,15 +61,14 @@
     "recommendedProgram": "Programa Recomendado",
     "careInstructions": "Instrucciones de Cuidado",
     "stainTips": "Consejos para Quitar Manchas",
-
     "addToPlanner": "Agregar al Planificador automáticamente",
-
     "plannerDefaultTitle": "Prenda",
     "plannerDefaultType": "General",
     "plannerAnyTime": "En cualquier momento",
     "stainsDetected": "Manchas detectadas",
     "unlockStainCare": "Desbloquear consejos para quitar manchas",
-    "uploadAnother": "Subir otra foto"
+    "uploadAnother": "Subir otra foto",
+    "loadingCamera": "Abriendo la cámara…"
   },
   "batchScan": {
     "title": "Escaneo por Lotes",

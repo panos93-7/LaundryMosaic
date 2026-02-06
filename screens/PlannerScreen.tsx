@@ -61,11 +61,7 @@ export default function PlannerScreen({ navigation }: any) {
           const parsed = JSON.parse(last);
 
           // Prefill wash modal with SmartScan data
-          setEditingWash({
-            title: parsed?.result?.recommended?.program || "",
-            type: parsed?.result?.fabric || "",
-            time: "12:00",
-          });
+          setEditingWash(parsed);
 
           setModalVisible(true);
 

@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "Scansione Intelligente AI",
     "close": "Chiudi",
-
     "takePhoto": "Scatta Foto",
     "chooseFromGallery": "Scegli dalla Galleria",
-
     "errorTitle": "Analisi Fallita",
     "errorMessage": "L'AI non è riuscita ad analizzare l'immagine. Riprova con una foto più chiara.",
     "retry": "Riprova Scansione",
     "takeAnother": "Scatta un'Altra Foto",
-
     "fabric": "Tessuto",
     "color": "Colore",
     "stains": "Macchie",
@@ -64,15 +61,14 @@
     "recommendedProgram": "Programma Consigliato",
     "careInstructions": "Istruzioni di Cura",
     "stainTips": "Consigli per Rimuovere le Macchie",
-
     "addToPlanner": "Aggiungi automaticamente al Pianificatore",
-
     "plannerDefaultTitle": "Indumento",
     "plannerDefaultType": "Generale",
     "plannerAnyTime": "Qualsiasi orario",
     "stainsDetected": "Macchie rilevate",
     "unlockStainCare": "Sblocca i consigli per rimuovere le macchie",
-    "uploadAnother": "Carica un'altra foto"
+    "uploadAnother": "Carica un'altra foto",
+    "loadingCamera": "Apertura della fotocamera…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "Conflitti",
     "suggestions": "Suggerimenti",
     "scanAgain": "Scansiona di nuovo",
-
     "conflict_wool": "Gli indumenti in lana devono essere lavati separatamente.",
     "conflict_delicate": "I delicati non devono essere mescolati con altri tessuti.",
     "conflict_cotton_wool": "Cotone e lana richiedono temperature diverse.",
-
     "suggest_cotton": "Carico ideale per il programma Cotone Colorati.",
     "suggest_synthetics": "Rilevati sintetici — usa il programma Sintetici.",
     "suggest_stains": "Alcuni articoli hanno macchie — valuta un pretrattamento.",
@@ -129,19 +123,15 @@
  "editGarment": {
   "back": "Indietro",
   "title": "Modifica Indumento",
-
   "tapToAddImage": "Tocca per aggiungere un'immagine",
-
   "name": "Nome",
   "type": "Tipo",
   "color": "Colore",
   "category": "Categoria",
   "fabric": "Tessuto",
   "pattern": "Motivo",
-
   "saveChanges": "Salva Modifiche",
   "deleteGarment": "Elimina Indumento",
-
   "alertTitle": "Elimina Indumento",
   "alertMessage": "Sei sicuro di voler eliminare questo elemento?",
   "cancel": "Annulla",
@@ -159,37 +149,29 @@
  "garmentDetails": {
   "back": "Indietro",
   "noImage": "Nessuna immagine",
-
   "type": "Tipo",
   "color": "Colore",
   "fabric": "Tessuto",
   "pattern": "Motivo",
   "category": "Categoria",
-
   "unknown": "Sconosciuto",
   "none": "Nessuno",
   "uncategorized": "Non categorizzato",
-
   "stainsDetected": "Macchie rilevate:",
-
   "careInstructions": "Istruzioni di Cura:",
   "recommendedTemp": "Temperatura Consigliata",
   "spinSpeed": "Velocità di Centrifuga",
-
   "recommendedWashProgram": "Programma di Lavaggio Consigliato:",
   "program": "Programma",
   "temp": "Temperatura",
   "spin": "Centrifuga",
-
   "riskShrinkage": "Restrizione",
   "riskColorBleeding": "Scolorimento",
   "riskDelicacy": "Delicatezza",
-
   "editGarment": "Modifica Indumento",
   "deleteGarment": "Elimina Indumento",
   "warnings": "Avvertenze",
   "translating": "Traduzione in corso",
-
   "detergent": "Detergente",
   "notes": "Note",
   "risks": "Rischi:",
@@ -199,11 +181,8 @@
  "history": {
   "title": "Cronologia dei Lavaggi",
   "close": "Chiudi",
-
   "emptyTitle": "Nessuna cronologia di lavaggi disponibile.",
-
   "typeLabel": "lavaggio",
-
   "premiumRedirect": "Reindirizzamento…"
  },
  "calendar": {
@@ -214,11 +193,9 @@
   "addTitle": "Aggiungi Nuovo Lavaggio",
   "editTitle": "Modifica Lavaggio",
   "close": "Chiudi",
-
   "labelTitle": "Titolo",
   "labelTime": "Ora",
   "labelType": "Tipo di Lavaggio",
-
   "placeholderTitle": "es. Bianchi",
   "placeholderTime": "es. 10:30",
 

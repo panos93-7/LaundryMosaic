@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "Analyse Intelligente AI",
     "close": "Fermer",
-
     "takePhoto": "Prendre une photo",
     "chooseFromGallery": "Choisir depuis la galerie",
-
     "errorTitle": "Échec de l'analyse",
     "errorMessage": "L'IA n'a pas pu analyser l'image. Réessayez avec une photo plus claire.",
     "retry": "Réessayer l'analyse",
     "takeAnother": "Prendre une autre photo",
-
     "fabric": "Tissu",
     "color": "Couleur",
     "stains": "Taches",
@@ -64,15 +61,14 @@
     "recommendedProgram": "Programme recommandé",
     "careInstructions": "Instructions d'entretien",
     "stainTips": "Conseils pour enlever les taches",
-
     "addToPlanner": "Ajouter automatiquement au planificateur",
-
     "plannerDefaultTitle": "Vêtement",
     "plannerDefaultType": "Général",
     "plannerAnyTime": "N'importe quand",
     "stainsDetected": "Taches détectées",
     "unlockStainCare": "Débloquer les conseils de détachage",
-    "uploadAnother": "Télécharger une autre photo"
+    "uploadAnother": "Télécharger une autre photo",
+    "loadingCamera": "Ouverture de la caméra…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "Conflits",
     "suggestions": "Suggestions",
     "scanAgain": "Analyser à nouveau",
-
     "conflict_wool": "Les articles en laine doivent être lavés séparément.",
     "conflict_delicate": "Les articles délicats ne doivent pas être mélangés avec d'autres tissus.",
     "conflict_cotton_wool": "Le coton et la laine nécessitent des températures différentes.",
-
     "suggest_cotton": "Charge idéale pour le programme Coton Couleurs.",
     "suggest_synthetics": "Synthétiques détectés — utilisez le programme Synthétiques.",
     "suggest_stains": "Certains articles ont des taches — envisagez un prétraitement.",
@@ -129,19 +123,15 @@
  "editGarment": {
   "back": "Retour",
   "title": "Modifier le Vêtement",
-
   "tapToAddImage": "Appuyez pour ajouter une image",
-
   "name": "Nom",
   "type": "Type",
   "color": "Couleur",
   "category": "Catégorie",
   "fabric": "Tissu",
   "pattern": "Motif",
-
   "saveChanges": "Enregistrer les Modifications",
   "deleteGarment": "Supprimer le Vêtement",
-
   "alertTitle": "Supprimer le Vêtement",
   "alertMessage": "Êtes-vous sûr de vouloir supprimer cet article ?",
   "cancel": "Annuler",
@@ -165,13 +155,10 @@
   "fabric": "Tissu",
   "pattern": "Motif",
   "category": "Catégorie",
-
   "unknown": "Inconnu",
   "none": "Aucun",
   "uncategorized": "Non catégorisé",
-
   "stainsDetected": "Taches détectées :",
-
   "careInstructions": "Instructions d’Entretien:",
   "recommendedTemp": "Température Recommandée",
   "spinSpeed": "Vitesse d’Essorage",
@@ -180,16 +167,13 @@
   "program": "Programme",
   "temp": "Température",
   "spin": "Essorage",
-
   "riskShrinkage": "Rétrécissement",
   "riskColorBleeding": "Dégorgement des couleurs",
   "riskDelicacy": "Délicatesse",
-
   "editGarment": "Modifier le Vêtement",
   "deleteGarment": "Supprimer le Vêtement",
   "warnings": "Avertissements",
   "translating": "Traduction en cours",
-
   "detergent": "Détergent",
   "notes": "Notes",
   "risks": "Risques:",
@@ -199,11 +183,8 @@
  "history": {
   "title": "Historique de Lavage",
   "close": "Fermer",
-
   "emptyTitle": "Aucun historique de lavage pour le moment.",
-
   "typeLabel": "lavage",
-
   "premiumRedirect": "Redirection…"
  },
  "calendar": {
@@ -214,11 +195,9 @@
   "addTitle": "Ajouter un Lavage",
   "editTitle": "Modifier le Lavage",
   "close": "Fermer",
-
   "labelTitle": "Titre",
   "labelTime": "Heure",
   "labelType": "Type de Lavage",
-
   "placeholderTitle": "ex. Blancs",
   "placeholderTime": "ex. 10:30",
 
@@ -232,16 +211,12 @@
 
   "errorMissingTitle": "Titre Manquant",
   "errorMissingTitleMsg": "Veuillez entrer un titre pour le lavage.",
-
   "errorMissingTime": "Heure Manquante",
   "errorMissingTimeMsg": "Veuillez entrer une heure.",
-
   "errorMissingType": "Type Manquant",
   "errorMissingTypeMsg": "Veuillez sélectionner un type de lavage.",
-
   "errorInvalidDate": "Date Invalide",
   "errorInvalidDateMsg": "Vous ne pouvez pas programmer un lavage dans le passé.",
-
   "saveChanges": "Enregistrer les Modifications",
   "saveWash": "Enregistrer le Lavage"
  },

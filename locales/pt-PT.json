@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "Smart Scan com IA",
     "close": "Fechar",
-
     "takePhoto": "Tirar Fotografia",
     "chooseFromGallery": "Escolher da Galeria",
-
     "errorTitle": "Falha na Análise da IA",
     "errorMessage": "A IA não conseguiu analisar a imagem. Tente novamente com uma fotografia mais nítida.",
     "retry": "Tentar Novamente",
     "takeAnother": "Tirar Outra Fotografia",
-
     "fabric": "Tecido",
     "color": "Cor",
     "stains": "Manchas",
@@ -64,15 +61,14 @@
     "recommendedProgram": "Programa Recomendado",
     "careInstructions": "Instruções de Cuidado",
     "stainTips": "Dicas para Remover Manchas",
-
     "addToPlanner": "Adicionar automaticamente ao Planner",
-
     "plannerDefaultTitle": "Item de Lavagem",
     "plannerDefaultType": "Geral",
     "plannerAnyTime": "A qualquer momento",
     "stainsDetected": "Manchas detetadas",
     "unlockStainCare": "Desbloquear dicas de remoção de manchas",
-    "uploadAnother": "Carregar outra fotografia"
+    "uploadAnother": "Carregar outra fotografia",
+    "loadingCamera": "A abrir a câmara…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "Conflitos",
     "suggestions": "Sugestões",
     "scanAgain": "Voltar a Scanear",
-
     "conflict_wool": "Peças de lã devem ser lavadas separadamente.",
     "conflict_delicate": "Tecidos delicados não devem ser misturados com outros.",
     "conflict_cotton_wool": "Algodão e lã requerem temperaturas diferentes.",
-
     "suggest_cotton": "Carga ideal para o programa Algodão Colorido.",
     "suggest_synthetics": "Carga sintética detetada — utilize o programa Sintéticos.",
     "suggest_stains": "Alguns itens têm manchas — considere pré‑tratamento.",
@@ -131,19 +125,15 @@
   "editGarment": {
   "back": "Voltar",
   "title": "Editar Peça",
-
   "tapToAddImage": "Toque para adicionar imagem",
-
   "name": "Nome",
   "type": "Tipo",
   "color": "Cor",
   "category": "Categoria",
   "fabric": "Tecido",
   "pattern": "Padrão",
-
   "saveChanges": "Guardar Alterações",
   "deleteGarment": "Eliminar Peça",
-
   "alertTitle": "Eliminar Peça",
   "alertMessage": "Tem a certeza de que deseja eliminar este item?",
   "cancel": "Cancelar",
@@ -161,37 +151,29 @@
  "garmentDetails": {
   "back": "Voltar",
   "noImage": "Sem imagem",
-
   "type": "Tipo",
   "color": "Cor",
   "fabric": "Tecido",
   "pattern": "Padrão",
   "category": "Categoria",
-
   "unknown": "Desconhecido",
   "none": "Nenhum",
   "uncategorized": "Sem categoria",
-
   "stainsDetected": "Manchas detetadas:",
-
   "careInstructions": "Instruções de Cuidado:",
   "recommendedTemp": "Temperatura Recomendada",
   "spinSpeed": "Velocidade de Centrifugação",
-
   "recommendedWashProgram": "Programa de Lavagem Recomendado:",
   "program": "Programa",
   "temp": "Temperatura",
   "spin": "Centrifugação",
-
   "riskShrinkage": "Encolhimento",
   "riskColorBleeding": "Descoloração",
   "riskDelicacy": "Delicadeza",
-
   "editGarment": "Editar Peça",
   "deleteGarment": "Eliminar Peça",
   "warnings": "Avisos",
   "translating": "A traduzir",
-  
   "detergent": "Detergente",
   "notes": "Notas",
   "risks": "Riscos:",
@@ -201,11 +183,8 @@
  "history": {
   "title": "Histórico de Lavagens",
   "close": "Fechar",
-
   "emptyTitle": "Ainda não existe histórico de lavagens.",
-
   "typeLabel": "lavagem",
-
   "premiumRedirect": "A redirecionar…"
  },
  "calendar": {
@@ -216,11 +195,9 @@
   "addTitle": "Adicionar Nova Lavagem",
   "editTitle": "Editar Lavagem",
   "close": "Fechar",
-
   "labelTitle": "Título",
   "labelTime": "Hora",
   "labelType": "Tipo de Lavagem",
-
   "placeholderTitle": "ex.: Roupa Branca",
   "placeholderTime": "ex.: 10:30",
 
@@ -234,16 +211,12 @@
 
   "errorMissingTitle": "Título em Falta",
   "errorMissingTitleMsg": "Introduza um título para a lavagem.",
-
   "errorMissingTime": "Hora em Falta",
   "errorMissingTimeMsg": "Introduza uma hora.",
-
   "errorMissingType": "Tipo em Falta",
   "errorMissingTypeMsg": "Selecione um tipo de lavagem.",
-
   "errorInvalidDate": "Data Inválida",
   "errorInvalidDateMsg": "Não pode agendar uma lavagem no passado.",
-
   "saveChanges": "Guardar Alterações",
   "saveWash": "Guardar Lavagem"
  },

@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "AI 智能掃描",
     "close": "關閉",
-
     "takePhoto": "拍照",
     "chooseFromGallery": "從相簿選取",
-
     "errorTitle": "AI 分析失敗",
     "errorMessage": "無法分析此圖片，請使用更清晰的照片再試一次。",
     "retry": "重新掃描",
     "takeAnother": "再拍一張",
-
     "fabric": "布料",
     "color": "顏色",
     "stains": "污漬",
@@ -64,15 +61,14 @@
     "recommendedProgram": "推薦行程",
     "careInstructions": "保養方式",
     "stainTips": "去漬小技巧",
-
     "addToPlanner": "自動加入排程",
-
     "plannerDefaultTitle": "洗衣項目",
     "plannerDefaultType": "一般",
     "plannerAnyTime": "任何時間",
     "stainsDetected": "偵測到污漬",
     "unlockStainCare": "解鎖去漬指南",
-    "uploadAnother": "上傳另一張照片"
+    "uploadAnother": "上傳另一張照片",
+    "loadingCamera": "正在開啟相機…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "注意事項",
     "suggestions": "建議",
     "scanAgain": "重新掃描",
-
     "conflict_wool": "羊毛衣物需單獨清洗。",
     "conflict_delicate": "精緻衣物不建議與其他布料混洗。",
     "conflict_cotton_wool": "棉質與羊毛適用的溫度不同，請勿混洗。",
-
     "suggest_cotton": "適合使用棉質彩色洗行程。",
     "suggest_synthetics": "偵測到化纖衣物，建議使用化纖行程。",
     "suggest_stains": "部分衣物有污漬，建議先進行預處理。",
@@ -131,19 +125,15 @@
   "editGarment": {
   "back": "返回",
   "title": "編輯衣物",
-
   "tapToAddImage": "點擊以新增圖片",
-
   "name": "名稱",
   "type": "種類",
   "color": "顏色",
   "category": "分類",
   "fabric": "布料",
   "pattern": "圖案",
-
   "saveChanges": "儲存變更",
   "deleteGarment": "刪除衣物",
-
   "alertTitle": "刪除衣物",
   "alertMessage": "確定要刪除此項目嗎？",
   "cancel": "取消",
@@ -161,32 +151,25 @@
  "garmentDetails": {
   "back": "返回",
   "noImage": "無圖片",
-
   "type": "種類",
   "color": "顏色",
   "fabric": "布料",
   "pattern": "圖案",
   "category": "分類",
-
   "unknown": "未知",
   "none": "無",
   "uncategorized": "未分類",
-
   "stainsDetected": "偵測到污漬：",
-
   "careInstructions": "保養方式:",
   "recommendedTemp": "建議溫度",
   "spinSpeed": "脫水速度",
-
   "recommendedWashProgram": "建議洗衣行程:",
   "program": "行程",
   "temp": "溫度",
   "spin": "脫水",
-
   "riskShrinkage": "縮水",
   "riskColorBleeding": "掉色",
   "riskDelicacy": "易損性",
-
   "editGarment": "編輯衣物",
   "deleteGarment": "刪除衣物",
   "detergent": "洗衣精",
@@ -201,11 +184,8 @@
  "history": {
   "title": "洗衣紀錄",
   "close": "關閉",
-
   "emptyTitle": "目前沒有洗衣紀錄。",
-
   "typeLabel": "洗衣",
-
   "premiumRedirect": "正在跳轉…"
  },
  "calendar": {
@@ -216,11 +196,9 @@
   "addTitle": "新增洗衣",
   "editTitle": "編輯洗衣",
   "close": "關閉",
-
   "labelTitle": "標題",
   "labelTime": "時間",
   "labelType": "洗衣類型",
-
   "placeholderTitle": "例如：白色衣物",
   "placeholderTime": "例如：10:30",
 
@@ -234,16 +212,12 @@
 
   "errorMissingTitle": "缺少標題",
   "errorMissingTitleMsg": "請輸入洗衣標題。",
-
   "errorMissingTime": "缺少時間",
   "errorMissingTimeMsg": "請輸入時間。",
-
   "errorMissingType": "缺少類型",
   "errorMissingTypeMsg": "請選擇洗衣類型。",
-
   "errorInvalidDate": "無效日期",
   "errorInvalidDateMsg": "無法在過去的日期安排洗衣。",
-
   "saveChanges": "儲存變更",
   "saveWash": "儲存洗衣"
  },

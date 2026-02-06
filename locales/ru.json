@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "Умное сканирование AI",
     "close": "Закрыть",
-
     "takePhoto": "Сделать фото",
     "chooseFromGallery": "Выбрать из галереи",
-
     "errorTitle": "Ошибка анализа",
     "errorMessage": "AI не смог проанализировать изображение. Попробуйте снова с более чётким фото.",
     "retry": "Повторить сканирование",
     "takeAnother": "Сделать другое фото",
-
     "fabric": "Ткань",
     "color": "Цвет",
     "stains": "Пятна",
@@ -64,15 +61,14 @@
     "recommendedProgram": "Рекомендуемая программа",
     "careInstructions": "Инструкции по уходу",
     "stainTips": "Советы по удалению пятен",
-
     "addToPlanner": "Автоматически добавить в планировщик",
-
     "plannerDefaultTitle": "Одежда",
     "plannerDefaultType": "Общее",
     "plannerAnyTime": "В любое время",
     "stainsDetected": "Обнаружены пятна",
     "unlockStainCare": "Разблокировать советы по удалению пятен",
-    "uploadAnother": "Загрузить другое фото"
+    "uploadAnother": "Загрузить другое фото",
+    "loadingCamera": "Открытие камеры…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "Конфликты",
     "suggestions": "Рекомендации",
     "scanAgain": "Сканировать снова",
-
     "conflict_wool": "Вещи из шерсти нужно стирать отдельно.",
     "conflict_delicate": "Деликатные ткани нельзя смешивать с другими.",
     "conflict_cotton_wool": "Хлопок и шерсть требуют разной температуры.",
-
     "suggest_cotton": "Идеальная загрузка для программы Хлопок Цветной.",
     "suggest_synthetics": "Обнаружена синтетика — используйте программу Синтетика.",
     "suggest_stains": "Некоторые вещи имеют пятна — рекомендуется предварительная обработка.",
@@ -129,19 +123,15 @@
  "editGarment": {
   "back": "Назад",
   "title": "Редактировать вещь",
-
   "tapToAddImage": "Нажмите, чтобы добавить изображение",
-
   "name": "Название",
   "type": "Тип",
   "color": "Цвет",
   "category": "Категория",
   "fabric": "Ткань",
   "pattern": "Узор",
-
   "saveChanges": "Сохранить изменения",
   "deleteGarment": "Удалить вещь",
-
   "alertTitle": "Удалить вещь",
   "alertMessage": "Вы уверены, что хотите удалить этот предмет?",
   "cancel": "Отмена",
@@ -159,37 +149,29 @@
  "garmentDetails": {
   "back": "Назад",
   "noImage": "Нет изображения",
-
   "type": "Тип",
   "color": "Цвет",
   "fabric": "Ткань",
   "pattern": "Узор",
   "category": "Категория",
-
   "unknown": "Неизвестно",
   "none": "Нет",
   "uncategorized": "Без категории",
-
   "stainsDetected": "Обнаружены пятна:",
-
   "careInstructions": "Инструкции по уходу:",
   "recommendedTemp": "Рекомендуемая температура",
   "spinSpeed": "Скорость отжима",
-
   "recommendedWashProgram": "Рекомендуемая программа стирки:",
   "program": "Программа",
   "temp": "Температура",
   "spin": "Отжим",
-
   "riskShrinkage": "Усадка",
   "riskColorBleeding": "Линька цвета",
   "riskDelicacy": "Деликатность",
-
   "editGarment": "Редактировать вещь",
   "deleteGarment": "Удалить вещь",
   "warnings": "Предупреждения",
   "translating": "Перевод",
-  
   "detergent": "Моющее средство",
   "notes": "Заметки",
   "risks": "Риски:",
@@ -200,11 +182,8 @@
  "history": {
   "title": "История Стирок",
   "close": "Закрыть",
-
   "emptyTitle": "История стирок пока пуста.",
-
   "typeLabel": "стирка",
-
   "premiumRedirect": "Перенаправление…"
  },
  "calendar": {
@@ -215,11 +194,9 @@
   "addTitle": "Добавить Стирку",
   "editTitle": "Редактировать Стирку",
   "close": "Закрыть",
-
   "labelTitle": "Название",
   "labelTime": "Время",
   "labelType": "Тип Стирки",
-
   "placeholderTitle": "например, Белое",
   "placeholderTime": "например, 10:30",
 
@@ -233,16 +210,12 @@
 
   "errorMissingTitle": "Нет Названия",
   "errorMissingTitleMsg": "Введите название стирки.",
-
   "errorMissingTime": "Нет Времени",
   "errorMissingTimeMsg": "Введите время.",
-
   "errorMissingType": "Нет Типа",
   "errorMissingTypeMsg": "Выберите тип стирки.",
-
   "errorInvalidDate": "Неверная Дата",
   "errorInvalidDateMsg": "Нельзя запланировать стирку в прошлом.",
-
   "saveChanges": "Сохранить Изменения",
   "saveWash": "Сохранить Стирку"
  },

@@ -48,15 +48,12 @@
   "smartScan": {
     "title": "AI Smart Scan",
     "close": "Schließen",
-
     "takePhoto": "Foto aufnehmen",
     "chooseFromGallery": "Aus Galerie wählen",
-
     "errorTitle": "Analyse fehlgeschlagen",
     "errorMessage": "Die KI konnte das Bild nicht analysieren. Bitte versuche es mit einem klareren Foto erneut.",
     "retry": "Erneut scannen",
     "takeAnother": "Neues Foto aufnehmen",
-
     "fabric": "Stoff",
     "color": "Farbe",
     "stains": "Flecken",
@@ -64,15 +61,14 @@
     "recommendedProgram": "Empfohlenes Programm",
     "careInstructions": "Pflegehinweise",
     "stainTips": "Fleckenentfernungstipps",
-
     "addToPlanner": "Automatisch zum Planer hinzufügen",
-
     "plannerDefaultTitle": "Wäsche",
     "plannerDefaultType": "Allgemein",
     "plannerAnyTime": "Jederzeit",
     "stainsDetected": "Flecken erkannt",
     "unlockStainCare": "Tipps zur Fleckenentfernung freischalten",
-    "uploadAnother": "Ein weiteres Foto hochladen"
+    "uploadAnother": "Ein weiteres Foto hochladen",
+    "loadingCamera": "Ouverture de la caméra…"
   },
 
   "batchScan": {
@@ -83,11 +79,9 @@
     "conflicts": "Konflikte",
     "suggestions": "Vorschläge",
     "scanAgain": "Erneut scannen",
-
     "conflict_wool": "Wollartikel sollten separat gewaschen werden.",
     "conflict_delicate": "Feinwäsche sollte nicht mit anderen Stoffen gemischt werden.",
     "conflict_cotton_wool": "Baumwolle und Wolle benötigen unterschiedliche Temperaturen.",
-
     "suggest_cotton": "Perfekte Ladung für das Programm Baumwolle Bunt.",
     "suggest_synthetics": "Synthetik erkannt — verwende das Synthetikprogramm.",
     "suggest_stains": "Einige Artikel haben Flecken — Vorbehandlung empfohlen.",
@@ -129,19 +123,15 @@
  "editGarment": {
   "back": "Zurück",
   "title": "Kleidungsstück Bearbeiten",
-
   "tapToAddImage": "Tippen, um ein Bild hinzuzufügen",
-
   "name": "Name",
   "type": "Typ",
   "color": "Farbe",
   "category": "Kategorie",
   "fabric": "Stoff",
   "pattern": "Muster",
-
   "saveChanges": "Änderungen Speichern",
   "deleteGarment": "Kleidungsstück Löschen",
-
   "alertTitle": "Kleidungsstück Löschen",
   "alertMessage": "Möchten Sie dieses Kleidungsstück wirklich löschen?",
   "cancel": "Abbrechen",
@@ -159,37 +149,30 @@
  "garmentDetails": {
   "back": "Zurück",
   "noImage": "Kein Bild",
-
   "type": "Typ",
   "color": "Farbe",
   "fabric": "Stoff",
   "pattern": "Muster",
   "category": "Kategorie",
-
   "unknown": "Unbekannt",
   "none": "Keins",
   "uncategorized": "Nicht kategorisiert",
-
   "stainsDetected": "Flecken erkannt:",
 
   "careInstructions": "Pflegehinweise:",
   "recommendedTemp": "Empfohlene Temperatur",
   "spinSpeed": "Schleudergeschwindigkeit",
-
   "recommendedWashProgram": "Empfohlenes Waschprogramm:",
   "program": "Programm",
   "temp": "Temperatur",
   "spin": "Schleudern",
-
   "riskShrinkage": "Einlaufen",
   "riskColorBleeding": "Ausbluten der Farbe",
   "riskDelicacy": "Empfindlichkeit",
-
   "editGarment": "Kleidungsstück Bearbeiten",
   "deleteGarment": "Kleidungsstück Löschen",
   "warnings": "Warnhinweise",
   "translating": "Übersetzung läuft",
-
   "detergent": "Waschmittel",
   "notes": "Hinweise",
   "risks": "Risiken:",
@@ -199,11 +182,8 @@
  "history": {
   "title": "Waschhistorie",
   "close": "Schließen",
-
   "emptyTitle": "Noch keine Waschgänge vorhanden.",
-
   "typeLabel": "Wäsche",
-
   "premiumRedirect": "Weiterleiten…"
  },
  "calendar": {
@@ -214,11 +194,9 @@
   "addTitle": "Neuen Waschgang Hinzufügen",
   "editTitle": "Waschgang Bearbeiten",
   "close": "Schließen",
-
   "labelTitle": "Titel",
   "labelTime": "Zeit",
   "labelType": "Waschtyp",
-
   "placeholderTitle": "z. B. Weißwäsche",
   "placeholderTime": "z. B. 10:30",
 
@@ -232,16 +210,12 @@
 
   "errorMissingTitle": "Titel Fehlt",
   "errorMissingTitleMsg": "Bitte gib einen Titel für den Waschgang ein.",
-
   "errorMissingTime": "Zeit Fehlt",
   "errorMissingTimeMsg": "Bitte gib eine Zeit ein.",
-
   "errorMissingType": "Typ Fehlt",
   "errorMissingTypeMsg": "Bitte wähle einen Waschtyp aus.",
-
   "errorInvalidDate": "Ungültiges Datum",
   "errorInvalidDateMsg": "Du kannst keinen Waschgang in der Vergangenheit planen.",
-
   "saveChanges": "Änderungen Speichern",
   "saveWash": "Waschgang Speichern"
  },
