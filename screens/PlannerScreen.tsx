@@ -51,6 +51,36 @@ export default function PlannerScreen({ navigation }: any) {
     ]).start();
   };
 
+  // ⭐ NEW: Load SmartScan Auto-Add
+  useEffect(() => {
+    async function loadFromSmartScan() {
+      try {
+        const last = await AsyncStorage.getItem("smartScan:lastResult");
+
+        if (last) {
+          const parsed = JSON.parse(last);
+
+          // Prefill wash modal with SmartScan data
+          setEditingWash({
+            title: parsed?.result?.recommended?.program || "",
+            type: parsed?.result?.fabric || "",
+            time: "12:00",
+          });
+
+          setModalVisible(true);
+
+          // Clear cache so it doesn't reopen every time
+          await AsyncStorage.removeItem("smartScan:lastResult");
+        }
+      } catch (e) {
+        console.log("Planner: failed to load smartScan result", e);
+      }
+    }
+
+    loadFromSmartScan();
+  }, []);
+
+  // Load saved plans
   useEffect(() => {
     async function loadPlans() {
       try {
@@ -63,6 +93,7 @@ export default function PlannerScreen({ navigation }: any) {
     loadPlans();
   }, []);
 
+  // Save plans on change
   useEffect(() => {
     AsyncStorage.setItem("PLANS", JSON.stringify(plans));
   }, [plans]);

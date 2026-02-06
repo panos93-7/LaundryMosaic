@@ -294,7 +294,7 @@
   "restore": "Восстановить Покупки",
 
   "benefits": {
-    "smartScan": "Разблокировать AI Smart Scan",
+    "smartScan": "Разблокировать умное сканирование с ИИ",
     "stainDetection": "AI‑обнаружение пятен",
     "autoAdd": "Авто‑добавление в планировщик",
     "history": "Полная история стирок",
@@ -367,23 +367,23 @@
   "no_dryclean": "Не подвергать химчистке"
  },
   "onboarding": {
-    "welcomeTitle": "Добро пожаловать в LaundryMosaic",
+    "welcomeTitle": "Добро пожаловать в LaundryMosaic!",
     "welcomeSubtitle": "Ваш умный помощник по стирке на базе ИИ",
     "continue": "Продолжить",
 
-    "valueTitle": "Мощные функции ИИ",
+    "valueTitle": "Мощные функции ИИ!",
     "valueFeature1": "Умное сканирование и обнаружение пятен",
     "valueFeature2": "Умный гардероб для организации вещей",
     "valueFeature3": "Пакетное сканирование и ИИ‑ассистент стирки",
     "valueFeature4": "Персональный планировщик стирки",
 
-    "personalizeTitle": "Персонализируйте свой опыт",
+    "personalizeTitle": "Персонализируйте свой опыт!",
     "personalizeQ1": "Что вы стираете чаще всего?",
     "personalizeQ2": "Хотите использовать ИИ для обнаружения пятен?",
     "personalizeQ3": "Хотите организацию гардероба?",
     "personalizeQ4": "Расслабьтесь и позвольте ИИ упростить вашу жизнь!",
 
-    "finishTitle": "Все готово",
+    "finishTitle": "Все готово!",
     "finishSubtitle": "Откройте полный потенциал ИИ с Premium или Pro."
   }
 }

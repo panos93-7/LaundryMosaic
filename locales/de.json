@@ -293,7 +293,7 @@
   "restore": "Käufe Wiederherstellen",
 
   "benefits": {
-    "smartScan": "AI Smart Scan freischalten",
+    "smartScan": "AI‑Intelligentes Scannen freischalten",
     "stainDetection": "KI‑Fleckenerkennung",
     "autoAdd": "Automatisches Hinzufügen zum Planner",
     "history": "Vollständige Waschhistorie",
@@ -366,23 +366,23 @@
   "no_dryclean": "Nicht chemisch reinigen"
  },
   "onboarding": {
-    "welcomeTitle": "Willkommen bei LaundryMosaic",
+    "welcomeTitle": "Willkommen bei LaundryMosaic!",
     "welcomeSubtitle": "Dein KI-gestützter Waschassistent",
     "continue": "Weiter",
 
-    "valueTitle": "Leistungsstarke KI‑Funktionen",
+    "valueTitle": "Leistungsstarke KI‑Funktionen!",
     "valueFeature1": "Intelligenter Scan & Fleckenerkennung",
     "valueFeature2": "Intelligenter Kleiderschrank zur Organisation",
     "valueFeature3": "Batch‑Scan & KI‑Waschassistent",
     "valueFeature4": "Personalisierter Waschplaner",
 
-    "personalizeTitle": "Personalisieren Sie Ihr Erlebnis",
+    "personalizeTitle": "Personalisieren Sie Ihr Erlebnis!",
     "personalizeQ1": "Was waschen Sie am häufigsten?",
     "personalizeQ2": "Möchten Sie KI‑Fleckenerkennung?",
     "personalizeQ3": "Möchten Sie Kleiderschrank‑Organisation?",
     "personalizeQ4": "Lehnen Sie sich zurück und lassen Sie die KI helfen!",
 
-    "finishTitle": "Alles bereit",
+    "finishTitle": "Alles bereit!",
     "finishSubtitle": "Schalten Sie das volle KI‑Erlebnis mit Premium oder Pro frei."
   }
 }

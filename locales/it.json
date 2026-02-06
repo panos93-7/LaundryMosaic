@@ -293,9 +293,9 @@
   "restore": "Ripristina Acquisti",
 
   "benefits": {
-    "smartScan": "Sblocca AI Smart Scan",
+    "smartScan": "Sblocca la Scansione Intelligente con IA",
     "stainDetection": "Rilevamento macchie con IA",
-    "autoAdd": "Aggiunta Automatica al Planner",
+    "autoAdd": "Aggiunta Automatica al Pianificatore",
     "history": "Cronologia completa dei lavaggi",
     "faster": "Elaborazione più veloce"
 }
@@ -366,23 +366,23 @@
   "no_dryclean": "Non lavare a secco"
  },
   "onboarding": {
-    "welcomeTitle": "Benvenuto in LaundryMosaic",
+    "welcomeTitle": "Benvenuto in LaundryMosaic!",
     "welcomeSubtitle": "Il tuo assistente di lavanderia con IA",
     "continue": "Continua",
 
-    "valueTitle": "Potenti funzioni IA",
+    "valueTitle": "Potenti funzioni IA!",
     "valueFeature1": "Scansione intelligente e rilevamento macchie",
     "valueFeature2": "Guardaroba intelligente per organizzare i capi",
     "valueFeature3": "Scansione multipla e assistente IA",
     "valueFeature4": "Pianificatore di lavaggio personalizzato",
 
-    "personalizeTitle": "Personalizza la tua esperienza",
+    "personalizeTitle": "Personalizza la tua esperienza!",
     "personalizeQ1": "Cosa lavi più spesso?",
     "personalizeQ2": "Vuoi il rilevamento macchie IA?",
     "personalizeQ3": "Vuoi l’organizzazione del guardaroba?",
     "personalizeQ4": "Rilassati e lascia che l’IA semplifichi la tua vita!",
 
-    "finishTitle": "Tutto pronto",
+    "finishTitle": "Tutto pronto!",
     "finishSubtitle": "Sblocca l’esperienza completa con Premium o Pro."
   }
 }

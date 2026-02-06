@@ -293,7 +293,7 @@
   "restore": "Restaurer les Achats",
 
   "benefits": {
-    "smartScan": "Débloquer l’AI Smart Scan",
+    "smartScan": "Débloquer la Analyse Intelligente IA",
     "stainDetection": "Détection de taches par IA",
     "autoAdd": "Ajout automatique au Planner",
     "history": "Historique complet des lavages",
@@ -366,23 +366,23 @@
   "no_dryclean": "Ne pas nettoyer à sec"
 },
   "onboarding": {
-    "welcomeTitle": "Bienvenue sur LaundryMosaic",
+    "welcomeTitle": "Bienvenue sur LaundryMosaic!",
     "welcomeSubtitle": "Votre assistant de lessive intelligent",
     "continue": "Continuer",
 
-    "valueTitle": "Fonctionnalités IA puissantes",
+    "valueTitle": "Fonctionnalités IA puissantes!",
     "valueFeature1": "Analyse intelligente et détection des taches",
     "valueFeature2": "Garde-robe intelligente pour organiser vos vêtements",
     "valueFeature3": "Analyse en lot et assistant IA",
     "valueFeature4": "Planificateur de lessive personnalisé",
 
-    "personalizeTitle": "Personnalisez votre expérience",
+    "personalizeTitle": "Personnalisez votre expérience!",
     "personalizeQ1": "Que lavez-vous le plus souvent ?",
     "personalizeQ2": "Souhaitez-vous la détection des taches par IA ?",
     "personalizeQ3": "Souhaitez-vous une organisation de garde-robe ?",
-    "personalizeQ4": "Détendez-vous et laissez l’IA simplifier votre vie !",
+    "personalizeQ4": "Détendez-vous et laissez l’IA simplifier votre vie!",
 
-    "finishTitle": "C’est prêt",
+    "finishTitle": "C’est prêt!",
     "finishSubtitle": "Débloquez l’expérience complète avec Premium ou Pro."
   }
 }

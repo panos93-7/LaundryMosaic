@@ -436,18 +436,36 @@ setResult({
   setLoading(false);
 }
 };
- const handleAutoAdd = async () => {
+const handleAutoAdd = async () => {
   try {
     const payload = {
       image,
       result: {
         fabric: safeResult.fabric ?? null,
         color: safeResult.color ?? null,
-        stains: Array.isArray(safeResult.stains) ? safeResult.stains : [],
-        stainTips: Array.isArray(safeResult.stainTips) ? safeResult.stainTips : [],
+
+        stains: Array.isArray(safeResult.stains)
+          ? safeResult.stains
+          : [],
+
+        stainTips: Array.isArray(safeResult.stainTips)
+          ? safeResult.stainTips
+          : [],
+
         recommended: safeResult.recommended ?? null,
-        care: Array.isArray(safeResult.care) ? safeResult.care : [],
+
+        care: {
+          wash: safeResult?.care?.wash ?? "",
+          bleach: safeResult?.care?.bleach ?? "",
+          dry: safeResult?.care?.dry ?? "",
+          iron: safeResult?.care?.iron ?? "",
+          dryclean: safeResult?.care?.dryclean ?? "",
+          warnings: Array.isArray(safeResult?.care?.warnings)
+            ? safeResult.care.warnings
+            : [],
+        },
       },
+
       createdAt: Date.now(),
     };
 
@@ -972,8 +990,8 @@ setResult({
     }}
   >
     {sourceType === "camera"
-      ? i18n.t("smartScan.takeAnother")       // "Take another photo"
-      : i18n.t("smartScan.uploadAnother")}    // "Upload another photo"
+      ? i18n.t("smartScan.takeAnother")      
+      : i18n.t("smartScan.uploadAnother")}    
   </Text>
 </TouchableOpacity>
 

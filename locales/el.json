@@ -292,9 +292,9 @@
   "restore": "Επαναφορά Αγορών",
 
   "benefits": {
-    "smartScan": "Ξεκλείδωσε το AI Smart Scan",
+    "smartScan": "Ξεκλείδωσε την AI Έξυπνη σάρωση",
     "stainDetection": "AI ανίχνευση λεκέδων",
-    "autoAdd": "Αυτόματη Προσθήκη στο Planner",
+    "autoAdd": "Αυτόματη Προσθήκη στον Σχεδιαστή",
     "history": "Πλήρες Ιστορικό Πλύσεων",
     "faster": "Ταχύτερη επεξεργασία"
 }
@@ -365,23 +365,23 @@
   "no_dryclean": "Όχι στεγνό καθάρισμα"
  },
   "onboarding": {
-    "welcomeTitle": "Καλώς ήρθες στο LaundryMosaic",
+    "welcomeTitle": "Καλώς ήρθες στο LaundryMosaic!",
     "welcomeSubtitle": "Ο έξυπνος AI βοηθός για το πλύσιμο",
     "continue": "Συνέχεια",
 
-    "valueTitle": "Ισχυρές AI δυνατότητες",
+    "valueTitle": "Τεράστιες AI δυνατότητες!",
     "valueFeature1": "Έξυπνη σάρωση & ανίχνευση λεκέδων",
     "valueFeature2": "Έξυπνη ντουλάπα για οργάνωση ρούχων",
     "valueFeature3": "Μαζική σάρωση & AI βοηθός πλυντηρίου",
     "valueFeature4": "Προσωποποιημένος σχεδιαστής πλύσης",
 
-    "personalizeTitle": "Προσωποποίησε την εμπειρία σου",
+    "personalizeTitle": "Προσωποποίησε την εμπειρία σου!",
     "personalizeQ1": "Τι πλένεις πιο συχνά;",
     "personalizeQ2": "Θέλεις AI ανίχνευση λεκέδων;",
     "personalizeQ3": "Θέλεις οργάνωση ντουλάπας;",
     "personalizeQ4": "Χαλάρωσε και άσε τo AI να κάνει την ζωή σου ευκολότερη!",
 
-    "finishTitle": "Είσαι έτοιμος",
+    "finishTitle": "Είσαι έτοιμος!",
     "finishSubtitle": "Ξεκλείδωσε όλη την AI εμπειρία με Premium ή Pro."
   }
 }

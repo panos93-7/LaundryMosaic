@@ -370,23 +370,23 @@
   "no_dryclean": "Do not dry clean"
  },
   "onboarding": {
-    "welcomeTitle": "Welcome to LaundryMosaic",
+    "welcomeTitle": "Welcome to LaundryMosaic!",
     "welcomeSubtitle": "Your AI-powered laundry assistant",
     "continue": "Continue",
 
-    "valueTitle": "Powerful AI Features",
+    "valueTitle": "Powerful AI Features!",
     "valueFeature1": "AI smart scan & stain detection",
     "valueFeature2": "Smart wardrobe to organize your items",
     "valueFeature3": "Batch scanning & AI laundry assistant",
     "valueFeature4": "Personalized laundry planner",
 
-    "personalizeTitle": "Personalize Your Experience",
+    "personalizeTitle": "Personalize Your Experience!",
     "personalizeQ1": "What do you wash most often?",
     "personalizeQ2": "Do you want AI stain detection?",
     "personalizeQ3": "Do you want wardrobe organization?",
     "personalizeQ4": "Sit back and let AI make your life easier!",
 
-    "finishTitle": "You're All Set",
+    "finishTitle": "You're All Set!",
     "finishSubtitle": "Unlock the full AI experience with Premium or Pro."
   }
 }

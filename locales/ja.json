@@ -295,7 +295,7 @@
   "restore": "購入を復元",
 
   "benefits": {
-    "smartScan": "AI Smart Scan をアンロック",
+    "smartScan": "AIスマートスキャンを解除",
     "stainDetection": "AI シミ検出",
     "autoAdd": "Planner への自動追加",
     "history": "洗濯履歴の全機能",
@@ -368,23 +368,23 @@
   "no_dryclean": "ドライクリーニング不可"
  },
   "onboarding": {
-    "welcomeTitle": "LaundryMosaic へようこそ",
+    "welcomeTitle": "LaundryMosaic へようこそ!",
     "welcomeSubtitle": "AI がサポートするランドリーアシスタント",
     "continue": "続ける",
 
-    "valueTitle": "強力な AI 機能",
+    "valueTitle": "強力な AI 機能!",
     "valueFeature1": "AI スマートスキャンとシミ検出",
     "valueFeature2": "アイテムを整理するスマートワードローブ",
     "valueFeature3": "バッチスキャン & AI ランドリーアシスタント",
     "valueFeature4": "パーソナライズされた洗濯プランナー",
 
-    "personalizeTitle": "体験をパーソナライズ",
+    "personalizeTitle": "体験をパーソナライズ!",
     "personalizeQ1": "最もよく洗うものは何ですか？",
     "personalizeQ2": "AI シミ検出を使いますか？",
     "personalizeQ3": "ワードローブ整理を使いますか？",
     "personalizeQ4": "AI に任せて、もっと楽に！",
 
-    "finishTitle": "準備完了",
+    "finishTitle": "準備完了!",
     "finishSubtitle": "Premium または Pro で AI 体験を最大化。"
   }
 }

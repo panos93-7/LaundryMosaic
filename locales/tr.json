@@ -293,7 +293,7 @@
   "restore": "Satın Alımları Geri Yükle",
 
   "benefits": {
-    "smartScan": "AI Smart Scan’in kilidini aç",
+    "smartScan": "AI Akıllı Tarama’yı aç",
     "stainDetection": "Yapay zeka leke tespiti",
     "autoAdd": "Planlayıcıya Otomatik Ekleme",
     "history": "Tam Yıkama Geçmişi",
@@ -366,23 +366,23 @@
   "no_dryclean": "Kuru temizleme yok"
  },
   "onboarding": {
-    "welcomeTitle": "LaundryMosaic’e Hoş Geldin",
+    "welcomeTitle": "LaundryMosaic’e Hoş Geldin!",
     "welcomeSubtitle": "Yapay zekâ destekli çamaşır asistanın",
     "continue": "Devam et",
 
-    "valueTitle": "Güçlü Yapay Zekâ Özellikleri",
+    "valueTitle": "Güçlü Yapay Zekâ Özellikleri!",
     "valueFeature1": "Akıllı tarama ve leke tespiti",
     "valueFeature2": "Eşyalarını düzenlemek için akıllı gardırop",
     "valueFeature3": "Toplu tarama ve yapay zekâ asistanı",
     "valueFeature4": "Kişiselleştirilmiş çamaşır planlayıcı",
 
-    "personalizeTitle": "Deneyimini kişiselleştir",
+    "personalizeTitle": "Deneyimini kişiselleştir!",
     "personalizeQ1": "En çok ne yıkıyorsun?",
     "personalizeQ2": "Yapay zekâ leke tespiti ister misin?",
     "personalizeQ3": "Gardırop düzeni ister misin?",
     "personalizeQ4": "Rahatla ve yapay zekânın işini yapmasına izin ver!",
 
-    "finishTitle": "Hazırsın",
+    "finishTitle": "Hazırsın!",
     "finishSubtitle": "Premium veya Pro ile tam yapay zekâ deneyimini aç."
   }
 }
