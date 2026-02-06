@@ -226,7 +226,8 @@
     "whites": "Weißwäsche",
     "colors": "Buntwäsche",
     "delicates": "Feinwäsche",
-    "quick": "Schnellwäsche"
+    "darks": "Dunkle Wäsche",
+    "pastels": "Pastellfarben"
   },
 
   "errorMissingTitle": "Titel Fehlt",

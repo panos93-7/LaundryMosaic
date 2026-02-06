@@ -228,7 +228,8 @@
     "whites": "Brancos",
     "colors": "Cores",
     "delicates": "Delicados",
-    "quick": "Lavagem Rápida"
+    "darks": "Roupa escura",
+    "pastels": "Tons pastel"
   },
 
   "errorMissingTitle": "Título em Falta",

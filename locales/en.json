@@ -230,7 +230,8 @@
     "whites": "Whites",
     "colors": "Colors",
     "delicates": "Delicates",
-    "quick": "Quick Wash"
+    "darks": "Darks",
+    "pastels": "Pastels"
   },
 
   "errorMissingTitle": "Missing Title",

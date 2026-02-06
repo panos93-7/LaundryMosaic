@@ -227,7 +227,8 @@
     "whites": "Brancas",
     "colors": "Coloridas",
     "delicates": "Delicadas",
-    "quick": "Lavagem Rápida"
+    "darks": "Roupas escuras",
+    "pastels": "Cores pastéis"
   },
 
   "errorMissingTitle": "Título Ausente",

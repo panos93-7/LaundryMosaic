@@ -200,7 +200,8 @@
     "whites": "흰색",
     "colors": "색깔",
     "delicates": "섬세함",
-    "quick": "빠른 세탁"
+    "darks": "진한 색상",
+    "pastels": "파스텔"
   },
 
   "errorMissingTitle": "제목 없음",

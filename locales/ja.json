@@ -228,7 +228,8 @@
     "whites": "白物",
     "colors": "色物",
     "delicates": "デリケート",
-    "quick": "クイック洗濯"
+    "darks": "濃色",
+    "pastels": "パステル"
   },
 
   "errorMissingTitle": "タイトルがありません",

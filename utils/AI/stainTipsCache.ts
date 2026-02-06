@@ -1,9 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AI_CACHE_VERSION } from "./aiCache";
 
 const MEMORY_CACHE = new Map<string, any>();
 
+// ⭐ Versioned key
 const makeKey = (stain: string, fabric: string) =>
-  `stainTips:${stain}:${fabric}`;
+  `v${AI_CACHE_VERSION}:stainTips:${stain}:${fabric}`;
 
 export const stainTipsCache = {
   async get(stain: string, fabric: string) {

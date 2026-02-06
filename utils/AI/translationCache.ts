@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AI_CACHE_VERSION } from "./aiCache"; // ⭐ version import
 import { GarmentProfile, Locale, TranslationCache } from "./translateGarment";
 
+// ⭐ Versioned key
 const makeKey = (garmentId: string, locale: Locale) =>
-  `garment:${garmentId}:${locale}`;
+  `v${AI_CACHE_VERSION}:garment:${garmentId}:${locale}`;
 
 export const translationCache: TranslationCache = {
   async get(garmentId: string, locale: Locale) {

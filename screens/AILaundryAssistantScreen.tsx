@@ -14,7 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import i18n from "../i18n";
-import { generateCareInstructionsPro } from "../utils/aiFabricCarePro";
+import { generateLaundryAdviceCached } from "../utils/AI/generateLaundryAdviceCached";
 
 export default function AILaundryAssistantScreen() {
   const navigation = useNavigation<any>();
@@ -36,12 +36,17 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
-      const ai = await generateCareInstructionsPro(userMessage);
+      const ai = await generateLaundryAdviceCached(
+        i18n.locale,
+        "unknown",
+        userMessage,
+        messages
+      );
 
       const formatted =
-  Array.isArray(ai?.careInstructions) && ai.careInstructions.length > 0
-    ? ai.careInstructions.map((line: string) => `• ${line}`).join("\n")
-    : String(i18n.t("aiAssistant.noAnswer"));
+        Array.isArray(ai?.careInstructions) && ai.careInstructions.length > 0
+          ? ai.careInstructions.map((line: string) => `• ${line}`).join("\n")
+          : String(i18n.t("aiAssistant.noAnswer"));
 
       setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
     } catch (err) {
@@ -77,19 +82,19 @@ export default function AILaundryAssistantScreen() {
           }}
         >
           <Text
-  style={{
-    color: "#fff",
-    fontSize: 28,
-    fontWeight: "700",
-    flexShrink: 1,
-    maxWidth: "80%",
-  }}
-  numberOfLines={2}
-  adjustsFontSizeToFit
-  minimumFontScale={0.85}
->
-  {String(i18n.t("aiAssistant.title"))}
-</Text>
+            style={{
+              color: "#fff",
+              fontSize: 28,
+              fontWeight: "700",
+              flexShrink: 1,
+              maxWidth: "80%",
+            }}
+            numberOfLines={2}
+            adjustsFontSizeToFit
+            minimumFontScale={0.85}
+          >
+            {String(i18n.t("aiAssistant.title"))}
+          </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
               {String(i18n.t("aiAssistant.close"))}
@@ -141,19 +146,71 @@ export default function AILaundryAssistantScreen() {
                 alignSelf: item.from === "user" ? "flex-end" : "flex-start",
                 backgroundColor:
                   item.from === "user"
-                    ? "rgba(37,117,252,0.9)"
-                    : "rgba(255,255,255,0.1)",
-                padding: 12,
-                borderRadius: 12,
-                marginBottom: 10,
+                    ? "rgba(37,117,252,0.95)"
+                    : "rgba(255,255,255,0.08)",
+                paddingVertical: 12,
+                paddingHorizontal: 14,
+                borderRadius: 16,
+                marginBottom: 12,
                 maxWidth: "85%",
+                borderWidth: item.from === "ai" ? 1 : 0,
+                borderColor: "rgba(255,255,255,0.12)",
+                shadowColor: "#000",
+                shadowOpacity: 0.15,
+                shadowRadius: 6,
+                shadowOffset: { width: 0, height: 3 },
               }}
             >
-              <Text style={{ color: "#fff", fontSize: 16 }}>{item.text}</Text>
+              <Text style={{ color: "#fff", fontSize: 16, lineHeight: 22 }}>
+                {item.text}
+              </Text>
             </View>
           )}
           style={{ flex: 1 }}
         />
+
+        {/* TYPING INDICATOR */}
+        {loading && (
+          <View
+            style={{
+              alignSelf: "flex-start",
+              backgroundColor: "rgba(255,255,255,0.08)",
+              paddingVertical: 10,
+              paddingHorizontal: 14,
+              borderRadius: 16,
+              marginBottom: 12,
+              borderWidth: 1,
+              borderColor: "rgba(255,255,255,0.12)",
+              flexDirection: "row",
+              gap: 6,
+            }}
+          >
+            <View
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: "rgba(255,255,255,0.6)",
+              }}
+            />
+            <View
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: "rgba(255,255,255,0.6)",
+              }}
+            />
+            <View
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: "rgba(255,255,255,0.6)",
+              }}
+            />
+          </View>
+        )}
 
         {/* INPUT */}
         <KeyboardAvoidingView

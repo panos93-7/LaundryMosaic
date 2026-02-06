@@ -225,7 +225,8 @@
     "whites": "Λευκά",
     "colors": "Χρωματιστά",
     "delicates": "Ευαίσθητα",
-    "quick": "Γρήγορη Πλύση"
+    "darks": "Σκούρα",
+    "pastels": "Παστέλ"
   },
 
   "errorMissingTitle": "Λείπει ο Τίτλος",

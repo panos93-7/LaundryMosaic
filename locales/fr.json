@@ -226,7 +226,8 @@
     "whites": "Blancs",
     "colors": "Couleurs",
     "delicates": "Délicats",
-    "quick": "Lavage Rapide"
+    "darks": "Foncés",
+    "pastels": "Pastels"
   },
 
   "errorMissingTitle": "Titre Manquant",

@@ -18,11 +18,13 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
   const [time, setTime] = useState(initialData?.time || "");
   const [type, setType] = useState(initialData?.type || "");
 
+  // ⭐ PREMIUM COLOR SWATCHES
   const washTypes = [
-    { key: "whites", label: i18n.t("addWash.washTypes.whites") },
-    { key: "colors", label: i18n.t("addWash.washTypes.colors") },
-    { key: "delicates", label: i18n.t("addWash.washTypes.delicates") },
-    { key: "quick", label: i18n.t("addWash.washTypes.quick") },
+    { key: "whites", label: i18n.t("addWash.washTypes.whites"), color: "#ffffff" },
+    { key: "colors", label: i18n.t("addWash.washTypes.colors"), color: "#ff8c00" },
+    { key: "darks", label: i18n.t("addWash.washTypes.darks"), color: "#000000" },
+    { key: "delicates", label: i18n.t("addWash.washTypes.delicates"), color: "#b388ff" },
+    { key: "pastels", label: i18n.t("addWash.washTypes.pastels"), color: "#ffe8a3" },
   ];
 
   useEffect(() => {
@@ -154,6 +156,7 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
             {String(i18n.t("addWash.labelType"))}
           </Text>
 
+          {/* ⭐ PREMIUM COLOR SWATCH BUTTONS */}
           <View
             style={{
               flexDirection: "row",
@@ -167,15 +170,33 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
                 key={t.key}
                 onPress={() => setType(t.label)}
                 style={{
+                  flexDirection: "row",
+                  alignItems: "center",
                   paddingVertical: 10,
                   paddingHorizontal: 16,
                   borderRadius: 12,
-                  backgroundColor: type === t.label ? "#2575fc" : "#111",
+                  backgroundColor: type === t.label ? "#2575fc22" : "#111",
                   borderWidth: 1,
                   borderColor: type === t.label ? "#2575fc" : "#222",
                 }}
               >
-                <Text style={{ color: "#fff", fontWeight: "600" }}>{t.label}</Text>
+                {/* COLOR SWATCH */}
+                <View
+                  style={{
+                    width: 14,
+                    height: 14,
+                    borderRadius: 7,
+                    backgroundColor: t.color,
+                    marginRight: 10,
+                    borderWidth: 1,
+                    borderColor: "rgba(255,255,255,0.3)",
+                  }}
+                />
+
+                {/* LABEL */}
+                <Text style={{ color: "#fff", fontWeight: "600" }}>
+                  {t.label}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>

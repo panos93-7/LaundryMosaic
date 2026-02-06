@@ -226,7 +226,8 @@
     "whites": "Beyazlar",
     "colors": "Renkliler",
     "delicates": "Hassaslar",
-    "quick": "Hızlı Yıkama"
+    "darks": "Koyu renkler",
+    "pastels": "Pastel tonlar"
   },
 
   "errorMissingTitle": "Başlık Eksik",

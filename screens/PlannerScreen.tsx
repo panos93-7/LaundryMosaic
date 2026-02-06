@@ -98,35 +98,47 @@ export default function PlannerScreen({ navigation }: any) {
     AsyncStorage.setItem("PLANS", JSON.stringify(plans));
   }, [plans]);
 
-  async function handleSaveWash(wash: any) {
-    const fullWash = {
-      ...wash,
-      day: selectedDay.day,
-      month: selectedDay.month,
-      year: selectedDay.year,
-    };
+async function handleSaveWash(wash: any) {
+  const fullWash = {
+    ...wash,
+    day: selectedDay.day,
+    month: selectedDay.month,
+    year: selectedDay.year,
+  };
 
-    if (editingWash) {
+  // EDIT MODE
+  if (editingWash) {
+    const index = plans.findIndex(
+      (p) =>
+        p.day === editingWash.day &&
+        p.month === editingWash.month &&
+        p.year === editingWash.year &&
+        p.title === editingWash.title &&
+        p.time === editingWash.time &&
+        p.type === editingWash.type
+    );
+
+    if (index !== -1) {
       if (editingWash.reminderId) {
         await cancelReminder(editingWash.reminderId);
       }
 
       const newReminderId = await scheduleSmartReminder(fullWash);
 
-      setPlans((prev) =>
-        prev.map((p) =>
-          p === editingWash ? { ...fullWash, reminderId: newReminderId } : p
-        )
-      );
+      const updated = [...plans];
+      updated[index] = { ...fullWash, reminderId: newReminderId };
 
-      setEditingWash(null);
-      return;
+      setPlans(updated);
     }
 
-    const reminderId = await scheduleSmartReminder(fullWash);
-
-    setPlans((prev) => [...prev, { ...fullWash, reminderId }]);
+    setEditingWash(null);
+    return;
   }
+
+  // ADD MODE
+  const reminderId = await scheduleSmartReminder(fullWash);
+  setPlans((prev) => [...prev, { ...fullWash, reminderId }]);
+}
 
   async function handleDeleteWash(wash: any) {
     Alert.alert(

@@ -226,7 +226,8 @@
     "whites": "Bianchi",
     "colors": "Colorati",
     "delicates": "Delicati",
-    "quick": "Lavaggio Rapido"
+    "darks": "Capi scuri",
+    "pastels": "Colori pastello"
   },
 
   "errorMissingTitle": "Titolo Mancante",

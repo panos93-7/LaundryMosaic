@@ -228,7 +228,8 @@
     "whites": "白色衣物",
     "colors": "彩色衣物",
     "delicates": "精緻衣物",
-    "quick": "快速洗衣"
+    "darks": "深色衣物",
+    "pastels": "粉彩色"
   },
 
   "errorMissingTitle": "缺少標題",
