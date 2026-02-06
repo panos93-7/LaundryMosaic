@@ -13,7 +13,7 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import i18n from "../i18n";
-import { analyzeImageCached } from "../utils/AI/analyzeImageCached";
+import { analyzeBatchCached } from "../utils/AI/analyzeBatchCached";
 import { preprocessImage } from "../utils/AI/preprocessImage";
 
 export default function BatchScanScreen() {
@@ -34,8 +34,9 @@ export default function BatchScanScreen() {
     });
 
     if (!res.canceled && res.assets?.length > 0) {
-      setPhoto(res.assets[0].uri);
-      analyze(res.assets[0].uri);
+      const uri = res.assets[0].uri;
+      setPhoto(uri);
+      analyze(uri);
     } else {
       navigation.goBack();
     }
@@ -45,78 +46,18 @@ export default function BatchScanScreen() {
     setIsProcessing(true);
 
     try {
-      const { base64, mimeType } = await preprocessImage(uri);
-      const ai = await analyzeImageCached(base64, mimeType);
+      // preprocess (keeps consistency with SmartScan)
+      await preprocessImage(uri);
 
-      if (!ai) {
+      // NEW: premium batch pipeline
+      const batch = await analyzeBatchCached(uri);
+
+      if (!batch) {
         setIsProcessing(false);
         return;
       }
 
-      let items: any[] = [];
-
-      if (Array.isArray(ai.items)) {
-        items = ai.items;
-      } else {
-        items = [ai];
-      }
-
-      const grouped = items.reduce((acc: any, item: any) => {
-        const fabric = item.fabric || "Unknown";
-
-        if (!acc[fabric]) {
-          acc[fabric] = {
-            fabric,
-            count: 0,
-            items: [],
-          };
-        }
-
-        acc[fabric].count += 1;
-        acc[fabric].items.push(item);
-
-        return acc;
-      }, {});
-
-      const fabrics = Object.keys(grouped);
-      const conflicts: string[] = [];
-
-      if (fabrics.includes("wool") && fabrics.some((f) => f !== "wool")) {
-        conflicts.push(i18n.t("batchScan.conflict_wool"));
-      }
-
-      if (fabrics.includes("delicate") && fabrics.some((f) => f !== "delicate")) {
-        conflicts.push(i18n.t("batchScan.conflict_delicate"));
-      }
-
-      if (fabrics.includes("cotton") && fabrics.includes("wool")) {
-        conflicts.push(i18n.t("batchScan.conflict_cotton_wool"));
-      }
-
-      const suggestions: string[] = [];
-
-      if (fabrics.includes("cotton") && fabrics.length === 1) {
-        suggestions.push(i18n.t("batchScan.suggest_cotton"));
-      }
-
-      if (fabrics.includes("synthetics") && fabrics.length === 1) {
-        suggestions.push(i18n.t("batchScan.suggest_synthetics"));
-      }
-
-      if (items.some((i) => i.stains?.length > 0)) {
-        suggestions.push(i18n.t("batchScan.suggest_stains"));
-      }
-
-      if (fabrics.length > 1 && conflicts.length === 0) {
-        suggestions.push(i18n.t("batchScan.suggest_mixed"));
-      }
-
-      setResult({
-        total: items.length,
-        groups: Object.values(grouped),
-        conflicts,
-        suggestions,
-      });
+      setResult(batch);
     } catch (err) {
       console.log("❌ Error analyzing image:", err);
     }
