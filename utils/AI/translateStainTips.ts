@@ -1,84 +1,51 @@
-import { analyzeTextWithGemini } from "./aiClient";
-import { getImageHash } from "./imageHash";
-import { translationCacheStains } from "./translationCacheStains";
+import i18n from "../../i18n";
 
-/**
- * Translate a single string safely
- */
-async function translateOne(text: string, locale: string, cacheKeyPrefix: string) {
-  if (!text || typeof text !== "string") return text;
-
-  // English → no translation needed
-  if (!locale || locale.startsWith("en")) return text;
-
-  // Build cache key
-  const hash = await getImageHash(text);
-  const cacheKey = `${cacheKeyPrefix}_${locale}_${hash}`;
-
-  // Check cache
-  const cached = translationCacheStains.get(cacheKey);
-  if (cached) {
-    try {
-      return JSON.parse(cached);
-    } catch {}
-  }
-
-  const prompt = `
-Translate the following text into ${locale}.
-Return ONLY a JSON string. No explanations, no markdown.
-
-"${text}"
-`;
-
-  let translated: any = null;
-
+export async function translateStainTips(raw: any, locale: string, cacheKey: string) {
   try {
-    translated = await analyzeTextWithGemini(prompt);
-  } catch {
-    translated = text;
+    // 1) GUARDS — prevent crashes from corrupted or old cache
+    if (!raw || typeof raw !== "object") return raw;
+
+    // If raw is already translated or minimal, return as-is
+    if (!raw.care || typeof raw.care !== "object") return raw;
+
+    const care = raw.care;
+
+    // 2) SAFE NORMALIZATION — ensure all fields exist
+    const normalized = {
+      ...raw,
+      care: {
+        wash: care.wash ?? "",
+        bleach: care.bleach ?? "",
+        dry: care.dry ?? "",
+        iron: care.iron ?? "",
+        dryclean: care.dryclean ?? "",
+        warnings: Array.isArray(care.warnings) ? care.warnings : [],
+      },
+      stainTips: Array.isArray(raw.stainTips) ? raw.stainTips : [],
+    };
+
+    // 3) TRANSLATION — only translate strings, never crash
+    const translateField = (text: string) => {
+      if (!text || typeof text !== "string") return text;
+      return i18n.t(text, { locale }) || text;
+    };
+
+    const translated = {
+      ...normalized,
+      care: {
+        wash: translateField(normalized.care.wash),
+        bleach: translateField(normalized.care.bleach),
+        dry: translateField(normalized.care.dry),
+        iron: translateField(normalized.care.iron),
+        dryclean: translateField(normalized.care.dryclean),
+        warnings: normalized.care.warnings.map((w: string) => translateField(w)),
+      },
+      stainTips: normalized.stainTips.map((tip: string) => translateField(tip)),
+    };
+
+    return translated;
+  } catch (err) {
+    console.log("translateStainTips failed:", err);
+    return raw; // fallback to raw to avoid UI crash
   }
-
-  // Normalize output
-  let finalText = text;
-
-  if (typeof translated === "string") {
-    finalText = translated.trim();
-  } else if (Array.isArray(translated) && translated.length > 0) {
-    finalText = translated[0];
-  } else if (translated?.text) {
-    finalText = translated.text;
-  }
-
-  // Save to cache
-  try {
-    translationCacheStains.set(cacheKey, JSON.stringify(finalText));
-  } catch {}
-
-  return finalText;
-}
-
-/**
- * Translate an array of strings safely
- */
-export async function translateStainTips(
-  input: any,
-  locale: string,
-  cacheKeyPrefix: string
-) {
-  const safeArray = Array.isArray(input)
-    ? input.filter((t) => typeof t === "string")
-    : typeof input === "string"
-    ? [input]
-    : [];
-
-  if (!locale || locale.startsWith("en")) return safeArray;
-
-  const results: string[] = [];
-
-  for (const item of safeArray) {
-    const translated = await translateOne(item, locale, cacheKeyPrefix);
-    results.push(translated);
-  }
-
-  return results;
 }
