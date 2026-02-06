@@ -10,6 +10,7 @@ export async function generateLaundryAdviceCached(
 ) {
   const hashed = await hashQuery(query);
 
+  // 1) RAW CACHE LOOKUP
   const rawCached = await aiLaundryCache.get(fabric, hashed);
 
   let rawResult: any = null;
@@ -18,6 +19,7 @@ export async function generateLaundryAdviceCached(
     console.log("⚡ Using RAW cached Laundry Assistant result");
     rawResult = rawCached;
   } else {
+    // 2) AI CALL
     try {
       rawResult = await generateCareInstructionsPro(query);
     } catch (err) {
@@ -25,8 +27,27 @@ export async function generateLaundryAdviceCached(
       return null;
     }
 
-    // ⭐ Fallback to safe schema
-    if (!rawResult || typeof rawResult !== "object" || !rawResult.care) {
+    // 3) MAP AI SCHEMA → APP SCHEMA
+    // AI returns: careInstructions[]
+    // App expects: care.{wash,bleach,dry,iron,dryclean,warnings[]}
+    if (rawResult && Array.isArray(rawResult.careInstructions)) {
+      const arr = rawResult.careInstructions;
+
+      rawResult = {
+        care: {
+          wash: arr[0] ?? "",
+          bleach: arr[1] ?? "",
+          dry: arr[2] ?? "",
+          iron: arr[3] ?? "",
+          dryclean: arr[4] ?? "",
+          warnings: arr.slice(5) ?? []
+        },
+        stainTips: [] // AI does not provide stain tips → empty array
+      };
+    }
+
+    // 4) SAFETY FALLBACK (in case AI returned weird schema)
+    if (!rawResult || !rawResult.care) {
       rawResult = {
         care: {
           wash: "",
@@ -34,15 +55,17 @@ export async function generateLaundryAdviceCached(
           dry: "",
           iron: "",
           dryclean: "",
-          warnings: [],
+          warnings: []
         },
-        stainTips: [],
+        stainTips: []
       };
     }
 
+    // 5) SAVE RAW RESULT TO CACHE
     await aiLaundryCache.set(fabric, hashed, rawResult);
   }
 
+  // 6) TRANSLATE RAW → LOCALE
   try {
     const translated = await translateStainTips(
       rawResult,

@@ -2,26 +2,39 @@ import i18n from "../../i18n";
 
 export async function translateStainTips(raw: any, locale: string, cacheKey: string) {
   try {
-    // 1) GUARDS — prevent crashes from corrupted or old cache
-    if (!raw || typeof raw !== "object") return raw;
+    // 1) GUARDS — ensure raw is valid
+    if (!raw || typeof raw !== "object") {
+      return {
+        care: {
+          wash: "",
+          bleach: "",
+          dry: "",
+          iron: "",
+          dryclean: "",
+          warnings: [],
+        },
+        stainTips: [],
+      };
+    }
 
-    // If raw is already translated or minimal, return as-is
+    // 2) ENSURE CARE EXISTS (fallback)
     if (!raw.care || typeof raw.care !== "object") {
-  return {
-    care: {
-      wash: "",
-      bleach: "",
-      dry: "",
-      iron: "",
-      dryclean: "",
-      warnings: [],
-    },
-    stainTips: [],
-  };
-}
+      raw = {
+        care: {
+          wash: "",
+          bleach: "",
+          dry: "",
+          iron: "",
+          dryclean: "",
+          warnings: [],
+        },
+        stainTips: [],
+      };
+    }
+
     const care = raw.care;
 
-    // 2) SAFE NORMALIZATION — ensure all fields exist
+    // 3) NORMALIZATION — ensure all fields exist
     const normalized = {
       ...raw,
       care: {
@@ -35,7 +48,7 @@ export async function translateStainTips(raw: any, locale: string, cacheKey: str
       stainTips: Array.isArray(raw.stainTips) ? raw.stainTips : [],
     };
 
-    // 3) TRANSLATION — only translate strings, never crash
+    // 4) TRANSLATION — safe, never crashes
     const translateField = (text: string) => {
       if (!text || typeof text !== "string") return text;
       return i18n.t(text, { locale }) || text;
@@ -57,6 +70,18 @@ export async function translateStainTips(raw: any, locale: string, cacheKey: str
     return translated;
   } catch (err) {
     console.log("translateStainTips failed:", err);
-    return raw; // fallback to raw to avoid UI crash
+
+    // FINAL FALLBACK — never break UI
+    return {
+      care: {
+        wash: "",
+        bleach: "",
+        dry: "",
+        iron: "",
+        dryclean: "",
+        warnings: [],
+      },
+      stainTips: [],
+    };
   }
 }
