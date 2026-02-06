@@ -45,41 +45,46 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
     return selected < today;
   }
 
-  function handleSave() {
-    if (!title.trim()) {
-      Alert.alert(
-        String(i18n.t("addWash.errorMissingTitle")),
-        String(i18n.t("addWash.errorMissingTitleMsg"))
-      );
-      return;
-    }
-
-    if (!time.trim()) {
-      Alert.alert(
-        String(i18n.t("addWash.errorMissingTime")),
-        String(i18n.t("addWash.errorMissingTimeMsg"))
-      );
-      return;
-    }
-
-    if (!type.trim()) {
-      Alert.alert(
-        String(i18n.t("addWash.errorMissingType")),
-        String(i18n.t("addWash.errorMissingTypeMsg"))
-      );
-      return;
-    }
-
-    if (isPastDate()) {
-      Alert.alert(
-        String(i18n.t("addWash.errorInvalidDate")),
-        String(i18n.t("addWash.errorInvalidDateMsg"))
-      );
-      return;
-    }
-
-    onSave({ title, time, type });
+function handleSave() {
+  if (!title.trim()) {
+    Alert.alert(
+      String(i18n.t("addWash.errorMissingTitle")),
+      String(i18n.t("addWash.errorMissingTitleMsg"))
+    );
+    return;
   }
+
+  if (!time.trim()) {
+    Alert.alert(
+      String(i18n.t("addWash.errorMissingTime")),
+      String(i18n.t("addWash.errorMissingTimeMsg"))
+    );
+    return;
+  }
+
+  if (!type.trim()) {
+    Alert.alert(
+      String(i18n.t("addWash.errorMissingType")),
+      String(i18n.t("addWash.errorMissingTypeMsg"))
+    );
+    return;
+  }
+
+  if (isPastDate()) {
+    Alert.alert(
+      String(i18n.t("addWash.errorInvalidDate")),
+      String(i18n.t("addWash.errorInvalidDateMsg"))
+    );
+    return;
+  }
+
+  onSave({
+    title,
+    time,
+    type,
+    careInstructions: []   // ← ΑΠΑΡΑΙΤΗΤΟ ΓΙΑ ΝΑ ΚΑΝΕΙ SAVE ΤΟ PLANNER
+  });
+}
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0d0d0d" }} edges={["top"]}>

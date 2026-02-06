@@ -1,18 +1,16 @@
 import { generateCareInstructionsPro } from "../../utils/aiFabricCarePro";
 import { translateStainTips } from "../AI/translateStainTips";
 import { aiLaundryCache } from "./aiLaundryCache";
-import { normalizeQuery } from "./normalizeQuery";
+import { hashQuery } from "./hashQuery";
 
 export async function generateLaundryAdviceCached(
   locale: string,
   fabric: string,
   query: string
 ) {
-  // 1) Normalize query → English
-  const normalizedQuery = await normalizeQuery(query);
+  const hashed = await hashQuery(query);
 
-  // 2) RAW CACHE LOOKUP (locale-agnostic)
-  const rawCached = await aiLaundryCache.get(fabric, normalizedQuery);
+  const rawCached = await aiLaundryCache.get(fabric, hashed);
 
   let rawResult: any = null;
 
@@ -20,24 +18,36 @@ export async function generateLaundryAdviceCached(
     console.log("⚡ Using RAW cached Laundry Assistant result");
     rawResult = rawCached;
   } else {
-    // 3) AI CALL ONLY IF RAW NOT FOUND
     try {
-      rawResult = await generateCareInstructionsPro(normalizedQuery);
+      rawResult = await generateCareInstructionsPro(query);
     } catch (err) {
       console.log("❌ LaundryAssistant: AI call failed:", err);
       return null;
     }
 
-    // 4) SAVE RAW RESULT (locale-agnostic)
-    await aiLaundryCache.set(fabric, normalizedQuery, rawResult);
+    // ⭐ Fallback to safe schema
+    if (!rawResult || typeof rawResult !== "object" || !rawResult.care) {
+      rawResult = {
+        care: {
+          wash: "",
+          bleach: "",
+          dry: "",
+          iron: "",
+          dryclean: "",
+          warnings: [],
+        },
+        stainTips: [],
+      };
+    }
+
+    await aiLaundryCache.set(fabric, hashed, rawResult);
   }
 
-  // 5) TRANSLATE RAW → LOCALE (NO NEW AI CALL)
   try {
     const translated = await translateStainTips(
       rawResult,
       locale,
-      `laundry_${fabric}_${normalizedQuery}`
+      `laundry_${fabric}_${hashed}`
     );
 
     return translated;

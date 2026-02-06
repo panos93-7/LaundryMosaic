@@ -6,8 +6,19 @@ export async function translateStainTips(raw: any, locale: string, cacheKey: str
     if (!raw || typeof raw !== "object") return raw;
 
     // If raw is already translated or minimal, return as-is
-    if (!raw.care || typeof raw.care !== "object") return raw;
-
+    if (!raw.care || typeof raw.care !== "object") {
+  return {
+    care: {
+      wash: "",
+      bleach: "",
+      dry: "",
+      iron: "",
+      dryclean: "",
+      warnings: [],
+    },
+    stainTips: [],
+  };
+}
     const care = raw.care;
 
     // 2) SAFE NORMALIZATION — ensure all fields exist
