@@ -27,37 +27,46 @@ export default function AILaundryAssistantScreen() {
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+  if (!input.trim() || loading) return;
 
-    const userMessage = input.trim();
-    setMessages((prev) => [...prev, { from: "user", text: userMessage }]);
-    setInput("");
+  const userMessage = input.trim();
+  setMessages((prev) => [...prev, { from: "user", text: userMessage }]);
+  setInput("");
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const ai = await generateLaundryAdviceCached(
-        i18n.locale,
-        "unknown",
-        userMessage,
-        messages
-      );
+  try {
+    const ai = await generateLaundryAdviceCached(
+      i18n.locale,
+      "unknown",
+      userMessage
+    );
 
-      const formatted =
-        Array.isArray(ai?.careInstructions) && ai.careInstructions.length > 0
-          ? ai.careInstructions.map((line: string) => `• ${line}`).join("\n")
-          : String(i18n.t("aiAssistant.noAnswer"));
+    const formatted =
+      ai?.care
+        ? [
+            ai.care.wash,
+            ai.care.bleach,
+            ai.care.dry,
+            ai.care.iron,
+            ai.care.dryclean,
+            ...(ai.care.warnings || [])
+          ]
+            .filter(Boolean)
+            .map((line) => `• ${line}`)
+            .join("\n")
+        : String(i18n.t("aiAssistant.noAnswer"));
 
-      setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
-    } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        { from: "ai", text: String(i18n.t("aiAssistant.error")) },
-      ]);
-    }
+    setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
+  } catch (err) {
+    setMessages((prev) => [
+      ...prev,
+      { from: "ai", text: String(i18n.t("aiAssistant.error")) },
+    ]);
+  }
 
-    setLoading(false);
-  };
+  setLoading(false);
+};
 
   const suggested = [
     String(i18n.t("aiAssistant.suggest1")),
