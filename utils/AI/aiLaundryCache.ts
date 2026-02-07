@@ -3,15 +3,16 @@ import { AI_CACHE_VERSION } from "./aiCache";
 
 const MEMORY_CACHE = new Map<string, any>();
 
-function makeKey(fabric: string, normalizedQuery: string) {
-  const raw = `raw::${fabric}::${normalizedQuery}`;
-  const encoded = encodeURIComponent(raw);
-  return `v${AI_CACHE_VERSION}:laundry:${encoded}`;
+// canonicalKey = sha256(normalizedQuery)
+// subKey = "canonical" OR "translated_en" OR "translated_el" ...
+function makeKey(canonicalKey: string, subKey: string) {
+  const raw = `v${AI_CACHE_VERSION}::laundry::${canonicalKey}::${subKey}`;
+  return encodeURIComponent(raw);
 }
 
 export const aiLaundryCache = {
-  async get(fabric: string, normalizedQuery: string) {
-    const key = makeKey(fabric, normalizedQuery);
+  async get(canonicalKey: string, subKey: string) {
+    const key = makeKey(canonicalKey, subKey);
 
     if (MEMORY_CACHE.has(key)) {
       return MEMORY_CACHE.get(key);
@@ -25,8 +26,8 @@ export const aiLaundryCache = {
     return parsed;
   },
 
-  async set(fabric: string, normalizedQuery: string, value: any) {
-    const key = makeKey(fabric, normalizedQuery);
+  async set(canonicalKey: string, subKey: string, value: any) {
+    const key = makeKey(canonicalKey, subKey);
 
     MEMORY_CACHE.set(key, value);
     await AsyncStorage.setItem(key, JSON.stringify(value));

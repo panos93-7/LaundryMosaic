@@ -1,4 +1,3 @@
-
 /**
  * PRO Fabric Care Generator (via Cloudflare Worker)
  * Fully multilingual — works for fabrics, clothes, shoes, and any item.

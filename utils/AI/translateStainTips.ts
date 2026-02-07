@@ -1,63 +1,82 @@
-export async function translateStainTips(raw: any) {
+import { generateCareInstructionsPro } from "../../utils/aiFabricCarePro";
+
+export async function translateStainTips(canonical: any, targetLocale: string) {
   try {
-    if (!raw || typeof raw !== "object") {
-      return {
-        care: {
-          wash: "",
-          bleach: "",
-          dry: "",
-          iron: "",
-          dryclean: "",
-          warnings: [],
-        },
-        stainTips: [],
-      };
+    if (!canonical || typeof canonical !== "object") {
+      return emptyResult();
     }
 
-    if (!raw.care || typeof raw.care !== "object") {
-      raw = {
-        care: {
-          wash: "",
-          bleach: "",
-          dry: "",
-          iron: "",
-          dryclean: "",
-          warnings: [],
-        },
-        stainTips: [],
-      };
-    }
+    const care = canonical.care || {};
+    const warnings = Array.isArray(care.warnings) ? care.warnings : [];
 
-    const care = raw.care;
+    // 1) Join canonical care instructions σε ένα block
+    const block = [
+      care.wash ?? "",
+      care.bleach ?? "",
+      care.dry ?? "",
+      care.iron ?? "",
+      care.dryclean ?? "",
+      ...warnings
+    ]
+      .filter(Boolean)
+      .join("\n");
 
-    const normalized = {
-      ...raw,
-      care: {
-        wash: care.wash ?? "",
-        bleach: care.bleach ?? "",
-        dry: care.dry ?? "",
-        iron: care.iron ?? "",
-        dryclean: care.dryclean ?? "",
-        warnings: Array.isArray(care.warnings) ? care.warnings : [],
-      },
-      stainTips: Array.isArray(raw.stainTips) ? raw.stainTips : [],
-    };
+    // 2) Prompt για ΜΕΤΑΦΡΑΣΗ ΜΟΝΟ
+    const translationPrompt = `
+Μετάφρασε ΑΚΡΙΒΩΣ το παρακάτω κείμενο στη γλώσσα: "${targetLocale}".
+ΜΗΝ ξαναυπολογίσεις οδηγίες.
+ΜΗΝ αλλάξεις σειρά.
+ΜΗΝ προσθέσεις τίποτα.
+ΜΗΝ αφαιρέσεις τίποτα.
+Μόνο μετάφραση.
 
-    return normalized;
+Κείμενο:
+${block}
+    `.trim();
 
-  } catch (err) {
-    console.log("translateStainTips failed:", err);
+    // 3) Κλήση AI ΜΟΝΟ για μετάφραση
+    const translated = await generateCareInstructionsPro(
+      translationPrompt,
+      targetLocale
+    );
+
+    const translatedText = translated?.careInstructions || [];
+
+    // 4) Split back σε γραμμές
+    const lines = Array.isArray(translatedText)
+      ? translatedText
+      : String(translatedText)
+          .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean);
 
     return {
       care: {
-        wash: "",
-        bleach: "",
-        dry: "",
-        iron: "",
-        dryclean: "",
-        warnings: [],
+        wash: lines[0] ?? "",
+        bleach: lines[1] ?? "",
+        dry: lines[2] ?? "",
+        iron: lines[3] ?? "",
+        dryclean: lines[4] ?? "",
+        warnings: lines.slice(5)
       },
-      stainTips: [],
+      stainTips: []
     };
+  } catch (err) {
+    console.log("translateStainTips failed:", err);
+    return emptyResult();
   }
+}
+
+function emptyResult() {
+  return {
+    care: {
+      wash: "",
+      bleach: "",
+      dry: "",
+      iron: "",
+      dryclean: "",
+      warnings: []
+    },
+    stainTips: []
+  };
 }

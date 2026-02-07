@@ -37,35 +37,40 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
-      // 1. Safe locale (μόνο για UI translation)
+      // 1. Safe locale
       const lang = (i18n as any).language || "en";
       const normalizedLocale = lang.split("-")[0].toLowerCase();
 
-      // 2. Locale‑agnostic cache key
-      const cacheKey = await hashQuery(userMessage);
+      // 2. Normalized query (για canonical key)
+      const normalizedQuery = userMessage.trim().toLowerCase();
 
-      // 3. AI call με stable cache key
-      const ai = await generateLaundryAdviceCached(
-        cacheKey,
-        normalizedLocale,
-        userMessage
-      );
+      // 3. Canonical cache key (ΔΕΝ περιλαμβάνει γλώσσα)
+      const canonicalKey = await hashQuery(normalizedQuery);
 
-      // 4. Format AI response
-      const formatted =
-        ai?.care
-          ? [
-              ai.care.wash,
-              ai.care.bleach,
-              ai.care.dry,
-              ai.care.iron,
-              ai.care.dryclean,
-              ...(ai.care.warnings || []),
-            ]
-              .filter(Boolean)
-              .map((line) => `• ${line}`)
-              .join("\n")
-          : String(i18n.t("aiAssistant.noAnswer"));
+      // 4. Ζήτα canonical + translated result
+      const ai = await generateLaundryAdviceCached({
+        canonicalKey,
+        userQuery: userMessage,
+        targetLocale: normalizedLocale,
+      });
+
+      // 5. Διάλεξε το σωστό output
+      const output = ai?.translated || ai?.canonical;
+
+      // 6. Format
+      const formatted = output?.care
+        ? [
+            output.care.wash,
+            output.care.bleach,
+            output.care.dry,
+            output.care.iron,
+            output.care.dryclean,
+            ...(output.care.warnings || []),
+          ]
+            .filter(Boolean)
+            .map((line) => `• ${line}`)
+            .join("\n")
+        : String(i18n.t("aiAssistant.noAnswer"));
 
       setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
     } catch (err) {
