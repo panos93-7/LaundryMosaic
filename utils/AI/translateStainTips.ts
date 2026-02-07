@@ -1,8 +1,5 @@
-import i18n from "../../i18n";
-
-export async function translateStainTips(raw: any, locale: string, cacheKey: string) {
+export async function translateStainTips(raw: any) {
   try {
-    // 1) GUARDS — ensure raw is valid
     if (!raw || typeof raw !== "object") {
       return {
         care: {
@@ -17,7 +14,6 @@ export async function translateStainTips(raw: any, locale: string, cacheKey: str
       };
     }
 
-    // 2) ENSURE CARE EXISTS (fallback)
     if (!raw.care || typeof raw.care !== "object") {
       raw = {
         care: {
@@ -34,7 +30,6 @@ export async function translateStainTips(raw: any, locale: string, cacheKey: str
 
     const care = raw.care;
 
-    // 3) NORMALIZATION — ensure all fields exist
     const normalized = {
       ...raw,
       care: {
@@ -48,30 +43,12 @@ export async function translateStainTips(raw: any, locale: string, cacheKey: str
       stainTips: Array.isArray(raw.stainTips) ? raw.stainTips : [],
     };
 
-    // 4) TRANSLATION — safe, never crashes
-    const translateField = (text: string) => {
-      if (!text || typeof text !== "string") return text;
-      return i18n.t(text, { locale }) || text;
-    };
+    // No translation needed — AI already returns correct language
+    return normalized;
 
-    const translated = {
-      ...normalized,
-      care: {
-        wash: translateField(normalized.care.wash),
-        bleach: translateField(normalized.care.bleach),
-        dry: translateField(normalized.care.dry),
-        iron: translateField(normalized.care.iron),
-        dryclean: translateField(normalized.care.dryclean),
-        warnings: normalized.care.warnings.map((w: string) => translateField(w)),
-      },
-      stainTips: normalized.stainTips.map((tip: string) => translateField(tip)),
-    };
-
-    return translated;
   } catch (err) {
     console.log("translateStainTips failed:", err);
 
-    // FINAL FALLBACK — never break UI
     return {
       care: {
         wash: "",

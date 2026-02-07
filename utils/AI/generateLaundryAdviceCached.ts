@@ -10,8 +10,8 @@ export async function generateLaundryAdviceCached(
 ) {
   const hashed = await hashQuery(query);
 
-  // 1) RAW CACHE LOOKUP
-  const rawCached = await aiLaundryCache.get(fabric, hashed);
+  // 1) CACHE LOOKUP (locale-aware)
+  const rawCached = await aiLaundryCache.get(fabric, hashed, locale);
 
   let rawResult: any = null;
 
@@ -28,8 +28,6 @@ export async function generateLaundryAdviceCached(
     }
 
     // 3) MAP AI SCHEMA → APP SCHEMA
-    // AI returns: careInstructions[]
-    // App expects: care.{wash,bleach,dry,iron,dryclean,warnings[]}
     if (rawResult && Array.isArray(rawResult.careInstructions)) {
       const arr = rawResult.careInstructions;
 
@@ -42,11 +40,11 @@ export async function generateLaundryAdviceCached(
           dryclean: arr[4] ?? "",
           warnings: arr.slice(5) ?? []
         },
-        stainTips: [] // AI does not provide stain tips → empty array
+        stainTips: []
       };
     }
 
-    // 4) SAFETY FALLBACK (in case AI returned weird schema)
+    // 4) SAFETY FALLBACK
     if (!rawResult || !rawResult.care) {
       rawResult = {
         care: {
@@ -61,21 +59,10 @@ export async function generateLaundryAdviceCached(
       };
     }
 
-    // 5) SAVE RAW RESULT TO CACHE
-    await aiLaundryCache.set(fabric, hashed, rawResult);
+    // 5) SAVE TO CACHE (locale-aware)
+    await aiLaundryCache.set(fabric, hashed, locale, rawResult);
   }
 
-  // 6) TRANSLATE RAW → LOCALE
-  try {
-    const translated = await translateStainTips(
-      rawResult,
-      locale,
-      `laundry_${fabric}_${hashed}`
-    );
-
-    return translated;
-  } catch (err) {
-    console.log("⚠️ LaundryAssistant: translation failed, returning raw");
-    return rawResult;
-  }
+  // 6) RETURN (no translation needed)
+  return translateStainTips(rawResult);
 }
