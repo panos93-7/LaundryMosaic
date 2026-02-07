@@ -252,14 +252,14 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  async function safeTranslate(input: any, locale: string, key: string) {
-    try {
-      const res = await translateStainTips(input, locale, key);
-      return res;
-    } catch (e) {
-      return input; // fallback: no translation
-    }
+ async function safeTranslate(input: any, locale: string, key: string) {
+  try {
+    const res = await translateStainTips(input, locale, key);
+    return res;
+  } catch (e) {
+    return input; // fallback
   }
+}
 
   const analyze = async (uri: string) => {
   if (!uri) return;

@@ -1,4 +1,8 @@
-export async function translateStainTips(canonical: any, targetLocale: string) {
+export async function translateStainTips(
+  canonical: any,
+  targetLocale: string,
+  key?: string // ← κρατάμε το key για συμβατότητα με safeTranslate
+) {
   try {
     if (!canonical || typeof canonical !== "object") {
       return emptyResult();
@@ -51,8 +55,7 @@ ${block}
         iron: lines[3] ?? "",
         dryclean: lines[4] ?? "",
         warnings: lines.slice(5)
-      },
-      stainTips: []
+      }
     };
   } catch (err) {
     console.log("translateStainTips failed:", err);
@@ -69,7 +72,6 @@ function emptyResult() {
       iron: "",
       dryclean: "",
       warnings: []
-    },
-    stainTips: []
+    }
   };
 }
