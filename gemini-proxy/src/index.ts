@@ -44,46 +44,36 @@ export default {
 
     const apiKey = env.GEMINI_API_KEY;
 
-    // ⭐ MODEL SELECTION
+    // MODEL SELECTION
     const model = imageBase64
-      ? "gemini-2.5-pro"        // Vision mode
-      : "gemini-2.5-flash";   // Text-only mode
+      ? "gemini-2.5-pro"
+      : "gemini-2.5-flash";
 
-    // ⭐ WARM-UP (only for Vision)
-    if (imageBase64) {
-      try {
-        await fetch(
-          `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=${apiKey}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [
-                {
-                  role: "user",
-                  parts: [{ text: "warmup" }],
-                },
-              ],
-            }),
-          }
-        );
-      } catch (e) {
-        // ignore warm-up errors
-      }
-    }
-
-    // Build payload
+    // SYSTEM + USER PAYLOAD
     const payload: any = {
       contents: [
         {
-          role: "user",
-          parts: [],
+          role: "system",
+          parts: [
+            {
+              text: `
+You are a multilingual textile and laundry expert.
+You ALWAYS answer in the language specified inside the user prompt.
+You NEVER switch languages unless explicitly instructed.
+You NEVER default to English unless the user language is English.
+`
+            }
+          ]
         },
-      ],
+        {
+          role: "user",
+          parts: []
+        }
+      ]
     };
 
     if (imageBase64) {
-      payload.contents[0].parts.push({
+      payload.contents[1].parts.push({
         inlineData: {
           data: imageBase64,
           mimeType: mimeType || "image/jpeg",
@@ -91,7 +81,7 @@ export default {
       });
     }
 
-    payload.contents[0].parts.push({ text: prompt });
+    payload.contents[1].parts.push({ text: prompt });
 
     try {
       const response = await fetch(
