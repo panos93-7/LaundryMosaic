@@ -104,7 +104,8 @@
   "suggest3": "Comment sécher une couverture en polaire ?",
   "suggest4": "Quel programme utiliser pour le blanc ?",
   "noAnswer": "Je n’ai trouvé aucune instruction d’entretien pour cela.",
-  "error": "Une erreur s’est produite. Veuillez réessayer."
+  "error": "Une erreur s’est produite. Veuillez réessayer.",
+  "typing": "L’assistant IA est en train d’écrire..."
  },
  "planner": {
   "title": "Planificateur de Lavage",

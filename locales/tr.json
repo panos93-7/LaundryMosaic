@@ -104,7 +104,8 @@
   "suggest3": "Polar battaniye nasıl kurutulur?",
   "suggest4": "Beyazlar için hangi programı kullanmalıyım?",
   "noAnswer": "Bunun için bakım talimatı bulunamadı.",
-  "error": "Bir hata oluştu. Lütfen tekrar deneyin."
+  "error": "Bir hata oluştu. Lütfen tekrar deneyin.",
+  "typing": "Yapay zeka asistanı yazıyor..."
  },
  "planner": {
   "title": "Çamaşır Planlayıcı",

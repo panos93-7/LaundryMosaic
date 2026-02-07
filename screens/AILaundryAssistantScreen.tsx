@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import LottieView from "lottie-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -12,7 +13,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import i18n from "../i18n";
 import { generateLaundryAdviceCached } from "../utils/AI/generateLaundryAdviceCached";
 
@@ -36,11 +36,13 @@ export default function AILaundryAssistantScreen() {
   setLoading(true);
 
   try {
+    const normalizedLocale = i18n.locale.split("-")[0].toLowerCase();
+
     const ai = await generateLaundryAdviceCached(
-      i18n.locale,
-      "unknown",
-      userMessage
-    );
+  normalizedLocale,
+  "unknown",
+  userMessage
+);
 
     const formatted =
       ai?.care
@@ -177,50 +179,44 @@ export default function AILaundryAssistantScreen() {
           )}
           style={{ flex: 1 }}
         />
-
         {/* TYPING INDICATOR */}
         {loading && (
-          <View
-            style={{
-              alignSelf: "flex-start",
-              backgroundColor: "rgba(255,255,255,0.08)",
-              paddingVertical: 10,
-              paddingHorizontal: 14,
-              borderRadius: 16,
-              marginBottom: 12,
-              borderWidth: 1,
-              borderColor: "rgba(255,255,255,0.12)",
-              flexDirection: "row",
-              gap: 6,
-            }}
-          >
-            <View
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                backgroundColor: "rgba(255,255,255,0.6)",
-              }}
-            />
-            <View
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                backgroundColor: "rgba(255,255,255,0.6)",
-              }}
-            />
-            <View
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                backgroundColor: "rgba(255,255,255,0.6)",
-              }}
-            />
-          </View>
-        )}
+  <View
+    style={{
+      alignSelf: "flex-start",
+      backgroundColor: "rgba(255,255,255,0.08)",
+      paddingVertical: 10,
+      paddingHorizontal: 14,
+      borderRadius: 16,
+      marginBottom: 12,
+      borderWidth: 1,
+      borderColor: "rgba(255,255,255,0.12)",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+    }}
+  >
+    <LottieView
+      source={require("../typing.json")}
+      autoPlay
+      loop
+      style={{
+        width: 40,
+        height: 24,
+      }}
+    />
 
+    <Text
+      style={{
+        color: "rgba(255,255,255,0.7)",
+        fontSize: 14,
+        fontStyle: "italic",
+      }}
+    >
+      {String(i18n.t("aiAssistant.typing"))}
+    </Text>
+  </View>
+)}
         {/* INPUT */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}

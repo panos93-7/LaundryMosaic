@@ -105,7 +105,8 @@
   "suggest3": "Como secar uma manta polar?",
   "suggest4": "Que programa usar para roupa branca?",
   "noAnswer": "Não encontrei instruções de cuidado para isso.",
-  "error": "Ocorreu um erro. Tente novamente."
+  "error": "Ocorreu um erro. Tente novamente.",
+  "typing": "O assistente de IA está a escrever..."
   },
 
   "planner": {

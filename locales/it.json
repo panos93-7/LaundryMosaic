@@ -104,7 +104,8 @@
   "suggest3": "Come asciugo una coperta in pile?",
   "suggest4": "Quale programma usare per i bianchi?",
   "noAnswer": "Non ho trovato istruzioni di cura per questo.",
-  "error": "Qualcosa è andato storto. Riprova."
+  "error": "Qualcosa è andato storto. Riprova.",
+  "typing": "L’assistente IA sta scrivendo..."
  },
  "planner": {
   "title": "Pianificatore di Lavaggio",

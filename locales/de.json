@@ -104,7 +104,8 @@
   "suggest3": "Wie trockne ich eine Fleece-Decke?",
   "suggest4": "Welches Waschprogramm für weiße Kleidung?",
   "noAnswer": "Ich konnte keine Pflegehinweise dafür finden.",
-  "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+  "typing": "Der KI‑Assistent schreibt..."
  },
  "planner": {
   "title": "Waschplaner",

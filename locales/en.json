@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "Start Washing",
   "screenTitle": "Washing Settings",
-
   "fabricTypeLabel": "Fabric Type",
   "fabricColorLabel": "Fabric Color",
   "laundryProgram": "Laundry Program",
   "language": "Language",
-
   "savePreset": "Save Preset",
   "loadPreset": "Load Preset",
-
   "lightMode": "Light Mode",
   "darkMode": "Dark Mode",
-
   "fabricLabel": "Fabric",
   "colorLabel": "Color",
   "programLabel": "Program",
@@ -48,15 +44,12 @@
   "smartScan": {
     "title": "AI Smart Scan",
     "close": "Close",
-
     "takePhoto": "Take Photo",
     "chooseFromGallery": "Choose from Gallery",
-
     "errorTitle": "AI Scan Failed",
     "errorMessage": "The AI could not analyze the image. Try again with a clearer photo.",
     "retry": "Retry Scan",
     "takeAnother": "Take Another Photo",
-
     "fabric": "Fabric",
     "color": "Color",
     "stains": "Stains",
@@ -82,11 +75,9 @@
     "conflicts": "Conflicts",
     "suggestions": "Suggestions",
     "scanAgain": "Scan Again",
-
     "conflict_wool": "Wool items should be washed separately.",
     "conflict_delicate": "Delicate items should not be mixed with other fabrics.",
     "conflict_cotton_wool": "Cotton and wool require different temperatures.",
-
     "suggest_cotton": "Perfect load for Cotton Colors program.",
     "suggest_synthetics": "Synthetics load detected — use Synthetics program.",
     "suggest_stains": "Some items have stains — consider pre-treatment.",
@@ -102,17 +93,15 @@
   "aiAssistant": {
   "title": "AI Laundry Assistant",
   "close": "Close",
-
   "placeholder": "Ask anything about laundry care…",
-
   "suggestedTitle": "Try asking:",
   "suggest1": "How do I remove an oil stain?",
   "suggest2": "How do I wash suede shoes?",
   "suggest3": "How do I dry a fleece blanket?",
   "suggest4": "What wash program should I use for whites?",
-
   "noAnswer": "I couldn't find care instructions for that.",
-  "error": "Something went wrong. Please try again."
+  "error": "Something went wrong. Please try again.",
+  "typing": "AI assistant is typing..."
  },
  "planner": {
   "title": "Laundry Planner",

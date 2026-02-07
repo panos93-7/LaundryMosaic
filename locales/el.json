@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "Πλύσιμο",
   "screenTitle": "Ρυθμίσεις Πλύσης",
-
   "fabricTypeLabel": "Τύπος Υφάσματος",
   "fabricColorLabel": "Χρώμα Υφάσματος",
   "laundryProgram": "Πρόγραμμα Πλύσης",
   "language": "Γλώσσα",
-
   "savePreset": "Αποθήκευση Προεπιλογής",
   "loadPreset": "Φόρτωση Προεπιλογής",
-
   "lightMode": "Φωτεινό Θέμα",
   "darkMode": "Σκοτεινό Θέμα",
-
   "fabricLabel": "Ύφασμα",
   "colorLabel": "Χρώμα",
   "programLabel": "Πρόγραμμα",
@@ -48,15 +44,12 @@
   "smartScan": {
     "title": "Έξυπνη Σάρωση AI",
     "close": "Κλείσιμο",
-
     "takePhoto": "Λήψη Φωτογραφίας",
     "chooseFromGallery": "Επιλογή από τη Συλλογή",
-
     "errorTitle": "Αποτυχία Ανάλυσης",
     "errorMessage": "Η AI δεν μπόρεσε να αναλύσει την εικόνα. Δοκίμασε ξανά με πιο καθαρή φωτογραφία.",
     "retry": "Επανάληψη Σάρωσης",
     "takeAnother": "Λήψη Νέας Φωτογραφίας",
-
     "fabric": "Ύφασμα",
     "color": "Χρώμα",
     "stains": "Λεκέδες",
@@ -64,9 +57,7 @@
     "recommendedProgram": "Προτεινόμενο Πρόγραμμα",
     "careInstructions": "Οδηγίες Φροντίδας",
     "stainTips": "Συμβουλές Αφαίρεσης Λεκέδων",
-
     "addToPlanner": "Προσθήκη στον Σχεδιαστή αυτόματα",
-
     "plannerDefaultTitle": "Ρούχο",
     "plannerDefaultType": "Γενικό",
     "plannerAnyTime": "Οποιαδήποτε ώρα",
@@ -84,11 +75,9 @@
     "conflicts": "Συγκρούσεις",
     "suggestions": "Προτάσεις",
     "scanAgain": "Νέα Σάρωση",
-
     "conflict_wool": "Τα μάλλινα πρέπει να πλένονται ξεχωριστά.",
     "conflict_delicate": "Τα ευαίσθητα δεν πρέπει να αναμειγνύονται με άλλα υφάσματα.",
     "conflict_cotton_wool": "Τα βαμβακερά και τα μάλλινα απαιτούν διαφορετικές θερμοκρασίες.",
-
     "suggest_cotton": "Ιδανικό φορτίο για πρόγραμμα Βαμβακερά Χρωματιστά.",
     "suggest_synthetics": "Ανιχνεύθηκαν συνθετικά — χρησιμοποίησε πρόγραμμα Συνθετικά.",
     "suggest_stains": "Ορισμένα αντικείμενα έχουν λεκέδες — σκέψου προεπεξεργασία.",
@@ -111,7 +100,8 @@
   "suggest3": "Πώς στεγνώνω κουβέρτα fleece;",
   "suggest4": "Τι πρόγραμμα να βάλω για τα λευκά;",
   "noAnswer": "Δεν βρήκα οδηγίες φροντίδας για αυτό.",
-  "error": "Κάτι πήγε στραβά. Προσπάθησε ξανά."
+  "error": "Κάτι πήγε στραβά. Προσπάθησε ξανά.",
+  "typing": "Ο AI βοηθός πληκτρολογεί..."
  },
  "planner": {
   "title": "Σχεδιαστής Πλύσης",
@@ -130,19 +120,15 @@
  "editGarment": {
   "back": "Πίσω",
   "title": "Επεξεργασία Ρούχου",
-
   "tapToAddImage": "Πάτησε για να προσθέσεις εικόνα",
-
   "name": "Όνομα",
   "type": "Τύπος",
   "color": "Χρώμα",
   "category": "Κατηγορία",
   "fabric": "Ύφασμα",
   "pattern": "Σχέδιο",
-
   "saveChanges": "Αποθήκευση Αλλαγών",
   "deleteGarment": "Διαγραφή Ρούχου",
-
   "alertTitle": "Διαγραφή Ρούχου",
   "alertMessage": "Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτό το αντικείμενο;",
   "cancel": "Ακύρωση",
@@ -160,32 +146,25 @@
  "garmentDetails": {
   "back": "Πίσω",
   "noImage": "Χωρίς εικόνα",
-
   "type": "Τύπος",
   "color": "Χρώμα",
   "fabric": "Ύφασμα",
   "pattern": "Σχέδιο",
   "category": "Κατηγορία",
-
   "unknown": "Άγνωστο",
   "none": "Κανένα",
   "uncategorized": "Χωρίς κατηγορία",
-
   "stainsDetected": "Εντοπίστηκαν λεκέδες:",
-
   "careInstructions": "Οδηγίες Φροντίδας:",
   "recommendedTemp": "Προτεινόμενη Θερμοκρασία",
   "spinSpeed": "Ταχύτητα Στυψίματος",
-
   "recommendedWashProgram": "Προτεινόμενο Πρόγραμμα Πλυσίματος:",
   "program": "Πρόγραμμα",
   "temp": "Θερμοκρασία",
   "spin": "Στύψιμο",
-
   "riskShrinkage": "Συρρίκνωση",
   "riskColorBleeding": "Ξεβάψιμο",
   "riskDelicacy": "Ευαισθησία",
-
   "editGarment": "Επεξεργασία Ρούχου",
   "deleteGarment": "Διαγραφή Ρούχου",
   "detergent": "Απορρυπαντικό",
@@ -199,11 +178,8 @@
  "history": {
   "title": "Ιστορικό Πλύσεων",
   "close": "Κλείσιμο",
-
   "emptyTitle": "Δεν υπάρχει ακόμη ιστορικό πλύσεων.",
-
   "typeLabel": "πλύση",
-
   "premiumRedirect": "Μεταφορά…"
  },
  "calendar": {
@@ -214,11 +190,9 @@
   "addTitle": "Προσθήκη Νέας Πλύσης",
   "editTitle": "Επεξεργασία Πλύσης",
   "close": "Κλείσιμο",
-
   "labelTitle": "Τίτλος",
   "labelTime": "Ώρα",
   "labelType": "Τύπος Πλύσης",
-
   "placeholderTitle": "π.χ. Λευκά",
   "placeholderTime": "π.χ. 10:30",
 
@@ -232,30 +206,23 @@
 
   "errorMissingTitle": "Λείπει ο Τίτλος",
   "errorMissingTitleMsg": "Παρακαλώ εισάγετε έναν τίτλο για την πλύση.",
-
   "errorMissingTime": "Λείπει η Ώρα",
   "errorMissingTimeMsg": "Παρακαλώ εισάγετε ώρα.",
-
   "errorMissingType": "Λείπει ο Τύπος",
   "errorMissingTypeMsg": "Παρακαλώ επιλέξτε τύπο πλύσης.",
-
   "errorInvalidDate": "Μη Έγκυρη Ημερομηνία",
   "errorInvalidDateMsg": "Δεν μπορείτε να προγραμματίσετε πλύση στο παρελθόν.",
-
   "saveChanges": "Αποθήκευση Αλλαγών",
   "saveWash": "Αποθήκευση Πλύσης"
  },
  "paywall": {
   "loading": "Φόρτωση...",
   "noOfferings": "Δεν βρέθηκαν διαθέσιμες προσφορές.",
-
   "headerTitle": "Ξεκλείδωσε το Laundry Pro+",
   "headerSubtitle": "Απεριόριστες AI λειτουργίες, Μαζική σάρωση, Έξυπνη Ντουλάπα & πολλά άλλα.",
-
   "monthly": "Pro Μηνιαίο",
   "annual": "Pro Ετήσιο (Καλύτερη Τιμή)",
   "lifetime": "Pro Πρόσβαση Εφ’ όρου Ζωής",
-
   "upgradeButton": "Αναβάθμιση σε Pro+",
   "continueFree": "Συνέχεια με τη δωρεάν έκδοση",
   "restore": "Επαναφορά Αγορών",
@@ -265,16 +232,12 @@
  "premiumMonthly": {
   "loading": "Φόρτωση...",
   "noOfferings": "Δεν βρέθηκαν διαθέσιμες προσφορές.",
-
   "title": "Premium Πρόσβαση",
-
   "msgHistory": "Το Ιστορικό είναι Premium λειτουργία.",
   "msgAutoAdd": "Η Αυτόματη Προσθήκη στο Planner είναι Premium λειτουργία.",
   "msgDefault": "Ξεκλείδωσε Premium λειτουργίες.",
-
   "monthlyTitle": "Premium Μηνιαίο",
   "monthlySubtitle": "Ξεκλείδωσε την premium λειτουργία άμεσα.",
-
   "upgradeNow": "Αναβάθμιση Τώρα",
   "continueFree": "Συνέχεια Δωρεάν",
   "restore": "Επαναφορά Αγορών"
@@ -282,10 +245,8 @@
  "premiumFallback": {
   "loading": "Φόρτωση προσφοράς...",
   "noOfferings": "Δεν βρέθηκαν διαθέσιμες προσφορές.",
-
   "title": "Smart Wash Premium",
   "subtitle": "Ένα ελαφρύτερο πλάνο με όσα χρειάζεσαι.",
-
   "annualTitle": "Premium Ετήσιο",
   "annualSubtitle": "Εξοικονόμησε περισσότερα με την καλύτερη ετήσια τιμή μας.",
   "perYear": "/έτος",
@@ -370,19 +331,16 @@
     "welcomeTitle": "Καλώς ήρθες στο LaundryMosaic!",
     "welcomeSubtitle": "Ο έξυπνος AI βοηθός για το πλύσιμο",
     "continue": "Συνέχεια",
-
     "valueTitle": "Τεράστιες AI δυνατότητες!",
     "valueFeature1": "Έξυπνη σάρωση & ανίχνευση λεκέδων",
     "valueFeature2": "Έξυπνη ντουλάπα για οργάνωση ρούχων",
     "valueFeature3": "Μαζική σάρωση & AI βοηθός πλυντηρίου",
     "valueFeature4": "Προσωποποιημένος σχεδιαστής πλύσης",
-
     "personalizeTitle": "Προσωποποίησε την εμπειρία σου!",
     "personalizeQ1": "Τι πλένεις πιο συχνά;",
     "personalizeQ2": "Θέλεις AI ανίχνευση λεκέδων;",
     "personalizeQ3": "Θέλεις οργάνωση ντουλάπας;",
     "personalizeQ4": "Χαλάρωσε και άσε τo AI να κάνει την ζωή σου ευκολότερη!",
-
     "finishTitle": "Είσαι έτοιμος!",
     "finishSubtitle": "Ξεκλείδωσε όλη την AI εμπειρία με Premium ή Pro."
   }

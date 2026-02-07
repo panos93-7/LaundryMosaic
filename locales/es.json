@@ -105,7 +105,8 @@
   "suggest3": "¿Cómo seco una manta de forro polar?",
   "suggest4": "¿Qué programa uso para la ropa blanca?",
   "noAnswer": "No encontré instrucciones de cuidado para eso.",
-  "error": "Algo salió mal. Inténtalo de nuevo."
+  "error": "Algo salió mal. Inténtalo de nuevo.",
+  "typing": "El asistente de IA está escribiendo..."
  },
  "planner": {
   "title": "Planificador de Lavado",

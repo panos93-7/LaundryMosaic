@@ -104,7 +104,8 @@
   "suggest3": "Como secar um cobertor de fleece?",
   "suggest4": "Qual programa usar para roupas brancas?",
   "noAnswer": "Não encontrei instruções de cuidado para isso.",
-  "error": "Algo deu errado. Tente novamente."
+  "error": "Algo deu errado. Tente novamente.",
+  "typing": "O assistente de IA está digitando..."
   },
 
   "planner": {
