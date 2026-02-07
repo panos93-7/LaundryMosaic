@@ -36,13 +36,13 @@ export default function AILaundryAssistantScreen() {
   setLoading(true);
 
   try {
-    const normalizedLocale = i18n.locale.split("-")[0].toLowerCase();
+    const normalizedLocale = (i18n as any).language.split("-")[0].toLowerCase();
 
     const ai = await generateLaundryAdviceCached(
-  normalizedLocale,
-  "unknown",
-  userMessage
-);
+      normalizedLocale,
+      "unknown",
+      userMessage
+    );
 
     const formatted =
       ai?.care
