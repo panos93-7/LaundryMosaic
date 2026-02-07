@@ -40,9 +40,9 @@ ${block}
       data?.candidates?.[0]?.content?.parts?.[0]?.text || block;
 
     const lines = String(text)
-  .split("\n")
-  .map((s: string) => s.trim())
-  .filter(Boolean);
+      .split("\n")
+      .map((s: string) => s.trim())
+      .filter(Boolean);
 
     return {
       care: {

@@ -37,30 +37,24 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
-      // 1. Safe locale
       const lang = (i18n as any).language || "en";
       const normalizedLocale = lang.split("-")[0].toLowerCase();
 
-      // 2. Normalized query (για canonical key)
       const normalizedQuery = userMessage.trim().toLowerCase();
-
-      // 3. Canonical cache key (ΔΕΝ περιλαμβάνει γλώσσα)
       const canonicalKey = await hashQuery(normalizedQuery);
 
-      // 4. Ζήτα canonical + translated result
       const ai = await generateLaundryAdviceCached({
         canonicalKey,
         userQuery: userMessage,
         targetLocale: normalizedLocale,
       });
 
-      // 5. Διάλεξε το σωστό output
       if (!ai) {
-  throw new Error("AI returned null");
-}
-const output = ai.translated || ai.canonical;
+        throw new Error("AI returned null");
+      }
 
-      // 6. Format
+      const output = ai.translated || ai.canonical;
+
       const formatted = output?.care
         ? [
             output.care.wash,
