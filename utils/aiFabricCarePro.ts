@@ -1,12 +1,15 @@
-import i18n from "../i18n";
 
 /**
  * PRO Fabric Care Generator (via Cloudflare Worker)
  * Fully multilingual — works for fabrics, clothes, shoes, and any item.
  */
 
-export async function generateCareInstructionsPro(itemName: string) {
-  const userLanguage = (i18n as any).language;
+export async function generateCareInstructionsPro(
+  itemName: string,
+  locale: string
+) {
+  // Use the locale passed from the screen (SAFE)
+  const userLanguage = locale;
 
   try {
     const response = await fetch(
@@ -37,14 +40,6 @@ TASK:
 The user provided the item: "${itemName}"
 
 1. Identify the MOST LIKELY primary material (fabric) of this item.
-   Examples:
-   - “αθλητικά παπούτσια” → mesh / synthetic knit
-   - “μπουφάν” → polyester / nylon
-   - “κουβέρτα” → fleece / cotton / wool
-   - “τσάντα” → canvas / nylon
-   - “παντελόνι” → denim / cotton
-   - “πουκάμισο” → cotton / linen
-
 2. Based on the identified material, generate structured care instructions.
 
 Return ONLY valid JSON in this exact format:

@@ -25,7 +25,7 @@ export async function generateLaundryAdviceCached(
   } else {
     // 2) AI CALL
     try {
-      rawResult = await generateCareInstructionsPro(query);
+      rawResult = await generateCareInstructionsPro(query, normalizedLocale);
     } catch (err) {
       console.log("❌ LaundryAssistant: AI call failed:", err);
       return null;
