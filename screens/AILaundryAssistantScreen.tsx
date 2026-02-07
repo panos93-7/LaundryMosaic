@@ -55,7 +55,10 @@ export default function AILaundryAssistantScreen() {
       });
 
       // 5. Διάλεξε το σωστό output
-      const output = ai?.translated || ai?.canonical;
+      if (!ai) {
+  throw new Error("AI returned null");
+}
+const output = ai.translated || ai.canonical;
 
       // 6. Format
       const formatted = output?.care

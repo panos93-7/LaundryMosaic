@@ -1,5 +1,3 @@
-import { generateCareInstructionsPro } from "../../utils/aiFabricCarePro";
-
 export async function translateStainTips(canonical: any, targetLocale: string) {
   try {
     if (!canonical || typeof canonical !== "object") {
@@ -9,7 +7,6 @@ export async function translateStainTips(canonical: any, targetLocale: string) {
     const care = canonical.care || {};
     const warnings = Array.isArray(care.warnings) ? care.warnings : [];
 
-    // 1) Join canonical care instructions σε ένα block
     const block = [
       care.wash ?? "",
       care.bleach ?? "",
@@ -21,34 +18,31 @@ export async function translateStainTips(canonical: any, targetLocale: string) {
       .filter(Boolean)
       .join("\n");
 
-    // 2) Prompt για ΜΕΤΑΦΡΑΣΗ ΜΟΝΟ
-    const translationPrompt = `
-Μετάφρασε ΑΚΡΙΒΩΣ το παρακάτω κείμενο στη γλώσσα: "${targetLocale}".
-ΜΗΝ ξαναυπολογίσεις οδηγίες.
-ΜΗΝ αλλάξεις σειρά.
-ΜΗΝ προσθέσεις τίποτα.
-ΜΗΝ αφαιρέσεις τίποτα.
-Μόνο μετάφραση.
+    // Lightweight translation call (NOT generateCareInstructionsPro)
+    const response = await fetch("https://gemini-proxy.panos-ai.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        prompt: `
+Translate the following EXACTLY into language "${targetLocale}".
+Do NOT reorder lines.
+Do NOT add anything.
+Do NOT remove anything.
 
-Κείμενο:
+Text:
 ${block}
-    `.trim();
+        `.trim()
+      })
+    });
 
-    // 3) Κλήση AI ΜΟΝΟ για μετάφραση
-    const translated = await generateCareInstructionsPro(
-      translationPrompt,
-      targetLocale
-    );
+    const data = await response.json();
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || block;
 
-    const translatedText = translated?.careInstructions || [];
-
-    // 4) Split back σε γραμμές
-    const lines = Array.isArray(translatedText)
-      ? translatedText
-      : String(translatedText)
-          .split("\n")
-          .map((s) => s.trim())
-          .filter(Boolean);
+    const lines = String(text)
+  .split("\n")
+  .map((s: string) => s.trim())
+  .filter(Boolean);
 
     return {
       care: {
