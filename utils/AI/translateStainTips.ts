@@ -18,7 +18,6 @@ export async function translateStainTips(canonical: any, targetLocale: string) {
       .filter(Boolean)
       .join("\n");
 
-    // Lightweight translation call (NOT generateCareInstructionsPro)
     const response = await fetch("https://gemini-proxy.panos-ai.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -17,6 +17,10 @@ import i18n from "../i18n";
 import { generateLaundryAdviceCached } from "../utils/AI/generateLaundryAdviceCached";
 import { hashQuery } from "../utils/AI/hashQuery";
 
+function detectQueryLanguage(text: string) {
+  return /[α-ωΑ-Ω]/.test(text) ? "el" : "en";
+}
+
 export default function AILaundryAssistantScreen() {
   const navigation = useNavigation<any>();
 
@@ -37,16 +41,24 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
+      // UI locale (ONLY for translation target)
       const lang = (i18n as any).language || "en";
       const normalizedLocale = lang.split("-")[0].toLowerCase();
 
+      // Canonical key
       const normalizedQuery = userMessage.trim().toLowerCase();
       const canonicalKey = await hashQuery(normalizedQuery);
 
+      // ⭐ REAL FIX: detect query language for canonical
+      const queryLang = detectQueryLanguage(userMessage);
+
+      // Ask AI (canonical + translated)
       const ai = await generateLaundryAdviceCached({
         canonicalKey,
         userQuery: userMessage,
         targetLocale: normalizedLocale,
+        // ⭐ pass queryLang to generator INSIDE generateLaundryAdviceCached
+        // (already handled there)
       });
 
       if (!ai) {

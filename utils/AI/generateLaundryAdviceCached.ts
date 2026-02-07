@@ -2,6 +2,10 @@ import { generateCareInstructionsPro } from "../../utils/aiFabricCarePro";
 import { aiLaundryCache } from "./aiLaundryCache";
 import { translateStainTips } from "./translateStainTips";
 
+function detectQueryLanguage(text: string) {
+  return /[α-ωΑ-Ω]/.test(text) ? "el" : "en";
+}
+
 export async function generateLaundryAdviceCached({
   canonicalKey,
   userQuery,
@@ -16,7 +20,9 @@ export async function generateLaundryAdviceCached({
 
   // 2) If no canonical → generate ONCE
   if (!canonical) {
-    const ai = await generateCareInstructionsPro(userQuery, targetLocale);
+    const queryLang = detectQueryLanguage(userQuery);
+
+    const ai = await generateCareInstructionsPro(userQuery, queryLang);
 
     let careInstructions = ai?.careInstructions || [];
 
