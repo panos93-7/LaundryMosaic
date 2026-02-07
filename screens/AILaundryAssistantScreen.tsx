@@ -15,6 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
 import { generateLaundryAdviceCached } from "../utils/AI/generateLaundryAdviceCached";
+import { hashQuery } from "../utils/AI/hashQuery";
 
 export default function AILaundryAssistantScreen() {
   const navigation = useNavigation<any>();
@@ -27,49 +28,55 @@ export default function AILaundryAssistantScreen() {
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
-  if (!input.trim() || loading) return;
+    if (!input.trim() || loading) return;
 
-  const userMessage = input.trim();
-  setMessages((prev) => [...prev, { from: "user", text: userMessage }]);
-  setInput("");
+    const userMessage = input.trim();
+    setMessages((prev) => [...prev, { from: "user", text: userMessage }]);
+    setInput("");
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-  const lang = (i18n as any).language || "en";
-  const normalizedLocale = lang.split("-")[0].toLowerCase();
+    try {
+      // 1. Safe locale (μόνο για UI translation)
+      const lang = (i18n as any).language || "en";
+      const normalizedLocale = lang.split("-")[0].toLowerCase();
 
-  const ai = await generateLaundryAdviceCached(
-    normalizedLocale,
-    "unknown",
-    userMessage
-  );
+      // 2. Locale‑agnostic cache key
+      const cacheKey = await hashQuery(userMessage);
 
-    const formatted =
-      ai?.care
-        ? [
-            ai.care.wash,
-            ai.care.bleach,
-            ai.care.dry,
-            ai.care.iron,
-            ai.care.dryclean,
-            ...(ai.care.warnings || [])
-          ]
-            .filter(Boolean)
-            .map((line) => `• ${line}`)
-            .join("\n")
-        : String(i18n.t("aiAssistant.noAnswer"));
+      // 3. AI call με stable cache key
+      const ai = await generateLaundryAdviceCached(
+        cacheKey,
+        normalizedLocale,
+        userMessage
+      );
 
-    setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
-  } catch (err) {
-    setMessages((prev) => [
-      ...prev,
-      { from: "ai", text: String(i18n.t("aiAssistant.error")) },
-    ]);
-  }
+      // 4. Format AI response
+      const formatted =
+        ai?.care
+          ? [
+              ai.care.wash,
+              ai.care.bleach,
+              ai.care.dry,
+              ai.care.iron,
+              ai.care.dryclean,
+              ...(ai.care.warnings || []),
+            ]
+              .filter(Boolean)
+              .map((line) => `• ${line}`)
+              .join("\n")
+          : String(i18n.t("aiAssistant.noAnswer"));
 
-  setLoading(false);
-};
+      setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { from: "ai", text: String(i18n.t("aiAssistant.error")) },
+      ]);
+    }
+
+    setLoading(false);
+  };
 
   const suggested = [
     String(i18n.t("aiAssistant.suggest1")),
@@ -180,44 +187,46 @@ export default function AILaundryAssistantScreen() {
           )}
           style={{ flex: 1 }}
         />
+
         {/* TYPING INDICATOR */}
         {loading && (
-  <View
-    style={{
-      alignSelf: "flex-start",
-      backgroundColor: "rgba(255,255,255,0.08)",
-      paddingVertical: 10,
-      paddingHorizontal: 14,
-      borderRadius: 16,
-      marginBottom: 12,
-      borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.12)",
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 10,
-    }}
-  >
-    <LottieView
-      source={require("../typing.json")}
-      autoPlay
-      loop
-      style={{
-        width: 40,
-        height: 24,
-      }}
-    />
+          <View
+            style={{
+              alignSelf: "flex-start",
+              backgroundColor: "rgba(255,255,255,0.08)",
+              paddingVertical: 10,
+              paddingHorizontal: 14,
+              borderRadius: 16,
+              marginBottom: 12,
+              borderWidth: 1,
+              borderColor: "rgba(255,255,255,0.12)",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+            }}
+          >
+            <LottieView
+              source={require("../typing.json")}
+              autoPlay
+              loop
+              style={{
+                width: 40,
+                height: 24,
+              }}
+            />
 
-    <Text
-      style={{
-        color: "rgba(255,255,255,0.7)",
-        fontSize: 14,
-        fontStyle: "italic",
-      }}
-    >
-      {String(i18n.t("aiAssistant.typing"))}
-    </Text>
-  </View>
-)}
+            <Text
+              style={{
+                color: "rgba(255,255,255,0.7)",
+                fontSize: 14,
+                fontStyle: "italic",
+              }}
+            >
+              {String(i18n.t("aiAssistant.typing"))}
+            </Text>
+          </View>
+        )}
+
         {/* INPUT */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}

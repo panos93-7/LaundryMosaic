@@ -8,17 +8,14 @@ export async function generateLaundryAdviceCached(
   fabric: string,
   query: string
 ) {
-  // Normalize locale so cache keys are stable
+  // Normalize locale only for UI translation (NOT for cache)
   const normalizedLocale = locale.split("-")[0].toLowerCase();
 
+  // Stable, locale-agnostic hash key
   const hashed = await hashQuery(query);
 
-  // 1) CACHE LOOKUP (locale-aware)
-  const rawCached = await aiLaundryCache.get(
-    fabric,
-    hashed,
-    normalizedLocale
-  );
+  // 1) CACHE LOOKUP (NO locale)
+  const rawCached = await aiLaundryCache.get(fabric, hashed);
 
   let rawResult: any = null;
 
@@ -37,12 +34,10 @@ export async function generateLaundryAdviceCached(
     // 3) NORMALIZE AI OUTPUT BEFORE MAPPING
     let careInstructions = rawResult?.careInstructions;
 
-    // Convert null/undefined → []
     if (!careInstructions) {
       careInstructions = [];
     }
 
-    // Convert string → array (split by newline or bullet)
     if (typeof careInstructions === "string") {
       careInstructions = careInstructions
         .split(/\n|•|-|\*/g)
@@ -50,19 +45,16 @@ export async function generateLaundryAdviceCached(
         .filter((s) => s.length > 0);
     }
 
-    // Convert object → array of values
     if (typeof careInstructions === "object" && !Array.isArray(careInstructions)) {
       careInstructions = Object.values(careInstructions)
         .map((s) => (typeof s === "string" ? s.trim() : ""))
         .filter((s) => s.length > 0);
     }
 
-    // Ensure array
     if (!Array.isArray(careInstructions)) {
       careInstructions = [];
     }
 
-    // Strip prefixes like "el." or "gr."
     const clean = (s: string) =>
       typeof s === "string"
         ? s.replace(/^(el\.|gr\.)/i, "").trim()
@@ -83,15 +75,10 @@ export async function generateLaundryAdviceCached(
       stainTips: []
     };
 
-    // 5) SAVE TO CACHE (locale-aware)
-    await aiLaundryCache.set(
-      fabric,
-      hashed,
-      normalizedLocale,
-      rawResult
-    );
+    // 5) SAVE TO CACHE (NO locale)
+    await aiLaundryCache.set(fabric, hashed, rawResult);
   }
 
-  // 6) RETURN (no translation needed)
+  // 6) RETURN (translation happens elsewhere)
   return translateStainTips(rawResult);
 }
