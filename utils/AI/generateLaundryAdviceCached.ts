@@ -34,42 +34,54 @@ export async function generateLaundryAdviceCached(
       return null;
     }
 
-    // 3) MAP AI SCHEMA → APP SCHEMA
+    // 3) NORMALIZE AI OUTPUT BEFORE MAPPING
+    let careInstructions = rawResult?.careInstructions;
+
+    // Convert null/undefined → []
+    if (!careInstructions) {
+      careInstructions = [];
+    }
+
+    // Convert string → array (split by newline or bullet)
+    if (typeof careInstructions === "string") {
+      careInstructions = careInstructions
+        .split(/\n|•|-|\*/g)
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+    }
+
+    // Convert object → array of values
+    if (typeof careInstructions === "object" && !Array.isArray(careInstructions)) {
+      careInstructions = Object.values(careInstructions)
+        .map((s) => (typeof s === "string" ? s.trim() : ""))
+        .filter((s) => s.length > 0);
+    }
+
+    // Ensure array
+    if (!Array.isArray(careInstructions)) {
+      careInstructions = [];
+    }
+
+    // Strip prefixes like "el." or "gr."
     const clean = (s: string) =>
       typeof s === "string"
-        ? s.replace(/^el\./i, "").replace(/^gr\./i, "").trim()
+        ? s.replace(/^(el\.|gr\.)/i, "").trim()
         : s;
 
-    if (rawResult && Array.isArray(rawResult.careInstructions)) {
-      const arr = rawResult.careInstructions.map(clean);
+    careInstructions = careInstructions.map(clean);
 
-      rawResult = {
-        care: {
-          wash: arr[0] ?? "",
-          bleach: arr[1] ?? "",
-          dry: arr[2] ?? "",
-          iron: arr[3] ?? "",
-          dryclean: arr[4] ?? "",
-          warnings: arr.slice(5) ?? []
-        },
-        stainTips: []
-      };
-    }
-
-    // 4) SAFETY FALLBACK
-    if (!rawResult || !rawResult.care) {
-      rawResult = {
-        care: {
-          wash: "",
-          bleach: "",
-          dry: "",
-          iron: "",
-          dryclean: "",
-          warnings: []
-        },
-        stainTips: []
-      };
-    }
+    // 4) MAP AI SCHEMA → APP SCHEMA
+    rawResult = {
+      care: {
+        wash: careInstructions[0] ?? "",
+        bleach: careInstructions[1] ?? "",
+        dry: careInstructions[2] ?? "",
+        iron: careInstructions[3] ?? "",
+        dryclean: careInstructions[4] ?? "",
+        warnings: careInstructions.slice(5) ?? []
+      },
+      stainTips: []
+    };
 
     // 5) SAVE TO CACHE (locale-aware)
     await aiLaundryCache.set(
