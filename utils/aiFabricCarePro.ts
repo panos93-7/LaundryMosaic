@@ -20,6 +20,8 @@ export async function generateCareInstructionsPro(
           prompt: `
 You are a textile and laundry expert.
 
+USER_LANGUAGE: ${userLanguage}
+
 LANGUAGE RULES:
 - Always answer ONLY in the following language: "${userLanguage}".
 - Translate ALL fields into ${userLanguage}.
@@ -102,6 +104,8 @@ async function multilingualFallback(itemName: string, userLanguage: string) {
         body: JSON.stringify({
           prompt: `
 You are a textile and laundry expert.
+
+USER_LANGUAGE: ${userLanguage}
 
 LANGUAGE RULES:
 - Always answer ONLY in the following language: "${userLanguage}".
