@@ -3,7 +3,7 @@ import { aiLaundryCache } from "./aiLaundryCache";
 import { translateStainTips } from "./translateStainTips";
 
 function detectQueryLanguage(text: string) {
-  return /[α-ωΑ-Ω]/.test(text) ? "el" : "en";
+  return /[α-ωΑ-Ω]/i.test(text) ? "el" : "en";
 }
 
 export async function generateLaundryAdviceCached({

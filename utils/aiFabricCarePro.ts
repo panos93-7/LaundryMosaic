@@ -8,7 +8,7 @@ export async function generateCareInstructionsPro(
   locale: string
 ) {
   // Use the locale passed from the screen (SAFE)
-  const userLanguage = locale;
+  const userLanguage = locale || "en";
 
   try {
     const response = await fetch(
