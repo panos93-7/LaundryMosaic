@@ -8,10 +8,17 @@ export async function generateLaundryAdviceCached(
   fabric: string,
   query: string
 ) {
+  // Normalize locale so cache keys are stable
+  const normalizedLocale = locale.split("-")[0].toLowerCase();
+
   const hashed = await hashQuery(query);
 
   // 1) CACHE LOOKUP (locale-aware)
-  const rawCached = await aiLaundryCache.get(fabric, hashed, locale);
+  const rawCached = await aiLaundryCache.get(
+    fabric,
+    hashed,
+    normalizedLocale
+  );
 
   let rawResult: any = null;
 
@@ -28,8 +35,13 @@ export async function generateLaundryAdviceCached(
     }
 
     // 3) MAP AI SCHEMA → APP SCHEMA
+    const clean = (s: string) =>
+      typeof s === "string"
+        ? s.replace(/^el\./i, "").replace(/^gr\./i, "").trim()
+        : s;
+
     if (rawResult && Array.isArray(rawResult.careInstructions)) {
-      const arr = rawResult.careInstructions;
+      const arr = rawResult.careInstructions.map(clean);
 
       rawResult = {
         care: {
@@ -60,7 +72,12 @@ export async function generateLaundryAdviceCached(
     }
 
     // 5) SAVE TO CACHE (locale-aware)
-    await aiLaundryCache.set(fabric, hashed, locale, rawResult);
+    await aiLaundryCache.set(
+      fabric,
+      hashed,
+      normalizedLocale,
+      rawResult
+    );
   }
 
   // 6) RETURN (no translation needed)

@@ -43,7 +43,6 @@ export async function translateStainTips(raw: any) {
       stainTips: Array.isArray(raw.stainTips) ? raw.stainTips : [],
     };
 
-    // No translation needed — AI already returns correct language
     return normalized;
 
   } catch (err) {
