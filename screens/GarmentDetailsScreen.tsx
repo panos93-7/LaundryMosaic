@@ -10,7 +10,6 @@ import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
 
 // SmartWardrobe v3
-import { translateText } from "../utils/AI/SmartWardrobe/translateText";
 import { translateWardrobeProfile } from "../utils/AI/SmartWardrobe/translateWardrobeProfile";
 import { translationCache } from "../utils/AI/SmartWardrobe/translationCache";
 
@@ -89,12 +88,11 @@ export default function GarmentDetailsScreen() {
         return;
       }
 
-      // Translate canonical EN → locale
+      // ⭐ Batch translate canonical EN → locale
       const translated = await translateWardrobeProfile(
         garment.original,
         locale,
         garment.id.toString(),
-        translateText,
         translationCache
       );
 

@@ -21,9 +21,7 @@ export const translationCache: TranslationCache = {
       const parsed = JSON.parse(json);
 
       // Ensure locale metadata exists
-      if (!parsed.__locale) {
-        parsed.__locale = locale;
-      }
+      parsed.__locale = locale;
 
       return parsed as WardrobeCanonical;
     } catch (err) {
@@ -38,7 +36,7 @@ export const translationCache: TranslationCache = {
 
       const toStore: WardrobeCanonical = {
         ...value,
-        __locale: locale,
+        __locale: locale, // ensure locale is always stored
       };
 
       await AsyncStorage.setItem(key, JSON.stringify(toStore));

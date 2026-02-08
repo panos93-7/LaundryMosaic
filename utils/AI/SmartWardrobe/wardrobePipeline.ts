@@ -8,14 +8,14 @@ import { wardrobeCanonicalKey } from "./wardrobeCanonical";
 
 export async function wardrobePipeline(
   uri: string,
-  locale: Locale,
-  translateFn: (text: string, locale: Locale) => Promise<string>
+  locale: Locale
 ) {
   // 1) Canonical garment (AI analysis + normalize)
   const canonical = await analyzeWardrobeCached(uri);
-console.log("🧩 CANONICAL:", JSON.stringify(canonical, null, 2));
+  console.log("🧩 CANONICAL:", JSON.stringify(canonical, null, 2));
+
   // 2) Deterministic, language‑agnostic garment ID
-  const garmentId = await wardrobeCanonicalKey(canonical); // ⭐ FIXED
+  const garmentId = await wardrobeCanonicalKey(canonical);
 
   // 3) English → no translation needed
   if (locale === "en") {
@@ -34,12 +34,11 @@ console.log("🧩 CANONICAL:", JSON.stringify(canonical, null, 2));
     };
   }
 
-  // 5) Translate canonical → locale
+  // 5) Batch translate canonical → locale
   const translated = await translateWardrobeProfile(
     canonical,
     locale,
     garmentId,
-    translateFn,
     translationCache
   );
 

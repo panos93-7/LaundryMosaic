@@ -59,39 +59,41 @@ export default function EditGarmentScreen() {
     }
   };
 
-  // ⭐ SmartWardrobe V3 aligned save
-  const handleSave = () => {
-    const updatedProfile = {
-      ...garment.profile,
-      name,
-      type,
-      color,
-      category,
-      fabric,
-      pattern,
-      // __locale removed → forces re-translation
-    };
-
-    const updatedOriginal = {
-      ...garment.original,
-      name,
-      type,
-      color,
-      category,
-      fabric,
-      pattern,
-      __locale: "en", // canonical always EN
-    };
-
-    updateGarment({
-      id: garment.id,
-      original: updatedOriginal,
-      profile: updatedProfile,
-      image: image ?? garment.image,
-    });
-
-    navigation.goBack();
+// ⭐ SmartWardrobe V3 aligned save
+const handleSave = () => {
+  // 1) Updated canonical (always EN)
+  const updatedOriginal = {
+    ...garment.original,
+    name,
+    type,
+    color,
+    category,
+    fabric,
+    pattern,
+    __locale: "en", // canonical always EN
   };
+
+  // 2) Updated profile (UI preview only)
+  const updatedProfile = {
+    ...garment.profile,
+    name,
+    type,
+    color,
+    category,
+    fabric,
+    pattern,
+    // ❗ remove __locale to force re-translation
+  };
+
+  updateGarment({
+    id: garment.id,
+    original: updatedOriginal,
+    profile: updatedProfile,
+    image: image ?? garment.image,
+  });
+
+  navigation.goBack();
+};
 
   const handleDelete = () => {
     Alert.alert(

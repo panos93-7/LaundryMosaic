@@ -5,7 +5,7 @@ import { useLanguageStore } from "../store/languageStore";
 export function GarmentCard({ item, onPress }: any) {
   const locale = useLanguageStore((s) => s.language);
 
-  // Always prefer translated profile if locale matches
+  // ⭐ Prefer translated profile if locale matches, else fallback to canonical EN
   const profile =
     item?.profile?.__locale === locale
       ? item.profile
@@ -44,7 +44,7 @@ export function GarmentCard({ item, onPress }: any) {
         )}
       </View>
 
-      {/* TITLE — ALWAYS TRANSLATED */}
+      {/* TITLE — ALWAYS TRANSLATED IF AVAILABLE */}
       <Text
         style={{
           color: "#fff",
@@ -53,10 +53,10 @@ export function GarmentCard({ item, onPress }: any) {
         }}
         numberOfLines={1}
       >
-        {profile.name || "—"}
+        {profile?.name || item.original?.name || "—"}
       </Text>
 
-      {/* SUBTITLE — ALWAYS TRANSLATED */}
+      {/* SUBTITLE — ALWAYS TRANSLATED IF AVAILABLE */}
       <Text
         style={{
           color: "#aaa",
@@ -65,7 +65,7 @@ export function GarmentCard({ item, onPress }: any) {
         }}
         numberOfLines={1}
       >
-        {profile.type || "—"}
+        {profile?.type || item.original?.type || "—"}
       </Text>
     </TouchableOpacity>
   );

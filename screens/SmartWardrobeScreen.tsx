@@ -1,3 +1,5 @@
+// SmartWardrobeScreen.tsx — SmartWardrobe V3 (Batch Translation)
+
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,7 +15,6 @@ import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
 
 // SmartWardrobe v3
-import { translateText } from "../utils/AI/SmartWardrobe/translateText";
 import { translateWardrobeProfile } from "../utils/AI/SmartWardrobe/translateWardrobeProfile";
 import { translationCache } from "../utils/AI/SmartWardrobe/translationCache";
 import { wardrobePipeline } from "../utils/AI/SmartWardrobe/wardrobePipeline";
@@ -35,7 +36,7 @@ export default function WardrobeScreen() {
     hydrate();
   }, []);
 
-  // Auto‑translate when locale changes
+  // Auto‑translate when locale changes (Batch Translation)
   useEffect(() => {
     async function translateAll() {
       if (garments.length === 0) return;
@@ -53,12 +54,11 @@ export default function WardrobeScreen() {
             return { ...g, profile: cached };
           }
 
-          // Translate original canonical
+          // Batch translate original canonical
           const translated = await translateWardrobeProfile(
             g.original,
             locale,
             g.id.toString(),
-            translateText,
             translationCache
           );
 
@@ -91,11 +91,8 @@ export default function WardrobeScreen() {
     try {
       const locale = (i18n as any).language;
 
-      const { original, profile } = await wardrobePipeline(
-        uri,
-        locale,
-        translateText
-      );
+      // Batch pipeline (no translateFn)
+      const { original, profile } = await wardrobePipeline(uri, locale);
 
       await addGarment({
         id: Date.now(),
