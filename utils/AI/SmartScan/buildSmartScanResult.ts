@@ -2,44 +2,86 @@ import { analyzeImageCanonicalCached } from "./analyzeImageCanonicalCached";
 import { generateStainRemovalTipsCached } from "./generateStainRemovalTips";
 import { translateCanonical } from "./translateCanonical";
 
-export async function buildSmartScanResult(base64: string) {
-  const canonicalResult = await analyzeImageCanonicalCached(base64);
-  if (!canonicalResult) return null;
+export async function buildSmartScanResult(
+  base64: string,
+  options: { signal?: AbortSignal } = {}
+) {
+  const { signal } = options;
 
-  const { canonical, hash } = canonicalResult;
+  try {
+    /* ---------------------------------------------------------------------- */
+    /* 1) CANONICAL ANALYSIS (CACHED)                                         */
+    /* ---------------------------------------------------------------------- */
+    const canonicalResult = await analyzeImageCanonicalCached(base64, { signal });
+    if (!canonicalResult) return null;
 
-  // ⭐ Normalize stains HERE (not in screen)
-  const stains = Array.isArray(canonical?.stains)
-    ? canonical.stains
-        .map((s: any) =>
-          typeof s === "string"
-            ? s
-            : typeof s?.type === "string"
-            ? s.type
-            : ""
-        )
-        .filter(Boolean)
-    : [];
+    const { canonical, hash } = canonicalResult;
 
-  const fabric = typeof canonical?.fabric === "string" ? canonical.fabric : "";
+    if (!canonical || typeof canonical !== "object") return null;
 
-  const translatedRaw = await translateCanonical(canonical, hash);
-  const translated =
-    translatedRaw && typeof translatedRaw === "object" ? translatedRaw : {};
-
-  let stainTips: string[] = [];
-
-  if (stains.length > 0 && fabric) {
-    const tips = await generateStainRemovalTipsCached(stains[0], fabric);
-    stainTips = Array.isArray(tips)
-      ? tips.filter((s) => typeof s === "string")
+    /* ---------------------------------------------------------------------- */
+    /* 2) NORMALIZE STAINS                                                    */
+    /* ---------------------------------------------------------------------- */
+    const stains: string[] = Array.isArray(canonical.stains)
+      ? canonical.stains
+          .map((s: any) =>
+            typeof s === "string"
+              ? s.trim()
+              : typeof s?.type === "string"
+              ? s.type.trim()
+              : ""
+          )
+          .filter((x: string) => x.length > 0)
       : [];
-  }
 
-  return {
-    imageHash: hash,
-    canonical,
-    translated,
-    stainTips,
-  };
+    const fabric: string =
+      typeof canonical.fabric === "string" ? canonical.fabric.trim() : "";
+
+    /* ---------------------------------------------------------------------- */
+    /* 3) TRANSLATE CANONICAL (CACHED)                                        */
+    /* ---------------------------------------------------------------------- */
+    const translatedRaw = await translateCanonical(canonical, hash, { signal });
+
+    const translated =
+      translatedRaw && typeof translatedRaw === "object" ? translatedRaw : {};
+
+    /* ---------------------------------------------------------------------- */
+    /* 4) STAIN TIPS (CACHED)                                                 */
+    /* ---------------------------------------------------------------------- */
+    let stainTips: string[] = [];
+
+    if (stains.length > 0 && fabric) {
+      const tips = await generateStainRemovalTipsCached(stains[0], fabric, {
+        signal,
+      });
+
+      const steps: string[] = Array.isArray(tips?.steps)
+        ? tips.steps
+        : Array.isArray(tips)
+        ? tips
+        : [];
+
+      stainTips = steps
+        .filter((s: string) => typeof s === "string" && s.trim().length > 0)
+        .map((s: string) => s.trim());
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* 5) FINAL STRUCTURED OUTPUT                                             */
+    /* ---------------------------------------------------------------------- */
+    return {
+      imageHash: hash,
+      canonical,
+      translated,
+      stainTips,
+    };
+  } catch (err: any) {
+    if (err.name === "AbortError") {
+      console.log("⛔ buildSmartScanResult aborted");
+      return null;
+    }
+
+    console.log("❌ buildSmartScanResult fatal error:", err);
+    return null;
+  }
 }

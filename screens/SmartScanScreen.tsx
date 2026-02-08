@@ -4,15 +4,21 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Animated,
   BackHandler,
   Image,
-  Animated as RNAnimated,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import Animated, { FadeIn, FadeInUp, Layout } from "react-native-reanimated";
+
+import Reanimated, {
+  FadeIn,
+  FadeInUp,
+  Layout,
+} from "react-native-reanimated"; // ⭐ Reanimated components + entering/layout
+
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -46,21 +52,22 @@ export default function SmartScanScreen({ navigation }: any) {
     null
   );
 
-  const pulseAnim = useRef(new RNAnimated.Value(1)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
   const analyzingRef = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   const [cameraReady, setCameraReady] = useState(false);
 
   // Pulse animation
   useEffect(() => {
-    RNAnimated.loop(
-      RNAnimated.sequence([
-        RNAnimated.timing(pulseAnim, {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
           toValue: 1.1,
           duration: 900,
           useNativeDriver: true,
         }),
-        RNAnimated.timing(pulseAnim, {
+        Animated.timing(pulseAnim, {
           toValue: 1,
           duration: 900,
           useNativeDriver: true,
@@ -105,7 +112,7 @@ export default function SmartScanScreen({ navigation }: any) {
     })();
   }, []);
 
-  // ⭐ SAFE RESULT (with stains normalization)
+  // SAFE RESULT
   const safeResult = useMemo(() => {
     if (!result || typeof result !== "object") return SAFE_FALLBACK;
 
@@ -150,7 +157,8 @@ export default function SmartScanScreen({ navigation }: any) {
   }, [result]);
 
   const resetState = () => {
-    if (analyzingRef.current) return;
+    if (abortRef.current) abortRef.current.abort();
+    analyzingRef.current = false;
     setImage(null);
     setResult(null);
     setError(null);
@@ -224,7 +232,7 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  // ⭐ ANALYZE
+  // ANALYZE
   const analyze = async (uri: string) => {
     if (analyzingRef.current) return;
 
@@ -234,13 +242,17 @@ export default function SmartScanScreen({ navigation }: any) {
       setError(null);
       setResult(null);
 
+      abortRef.current = new AbortController();
+
       const { base64 } = await preprocessImage(uri);
       if (!base64) {
         setError(i18n.t("smartScan.errorMessage"));
         return;
       }
 
-      const scan = await buildSmartScanResult(base64);
+      const scan = await buildSmartScanResult(base64, {
+        signal: abortRef.current.signal,
+      });
 
       if (!scan || typeof scan !== "object") {
         setError(i18n.t("smartScan.errorMessage"));
@@ -262,7 +274,11 @@ export default function SmartScanScreen({ navigation }: any) {
         },
         stainTips,
       });
-    } catch (err) {
+    } catch (err: any) {
+      if (err.name === "AbortError") {
+        console.log("SmartScan aborted");
+        return;
+      }
       console.log("❌ SmartScan: analyze() fatal error:", err);
       setError(i18n.t("smartScan.errorMessage"));
       setResult(null);
@@ -298,51 +314,46 @@ export default function SmartScanScreen({ navigation }: any) {
         style={{
           flex: 1,
           paddingHorizontal: 20,
-
-          // ⭐ UI FIX
           justifyContent: image ? "flex-start" : "center",
         }}
       >
-        {/* HEADER — ONLY WHEN IMAGE EXISTS */}
-  {image && (
-    <View
-      style={{
-        width: "100%",
-        paddingTop: 10,
-        paddingBottom: 10,
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
-      {/* LEFT SIDE — TITLE */}
-      <View style={{ flex: 1, paddingRight: 10 }}>
-        <Text
+        {/* HEADER */}
+        <View
           style={{
-            color: "#fff",
-            fontSize: 20,
-            fontWeight: "700",
-            flexShrink: 1,
+            width: "100%",
+            paddingTop: 10,
+            paddingBottom: 10,
+            flexDirection: "row",
+            alignItems: "center",
           }}
-          numberOfLines={2}
         >
-          {i18n.t("smartScan.title")}
-        </Text>
-      </View>
+          <View style={{ flex: 1, paddingRight: 10 }}>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 20,
+                fontWeight: "700",
+                flexShrink: 1,
+              }}
+              numberOfLines={2}
+            >
+              {i18n.t("smartScan.title")}
+            </Text>
+          </View>
 
-      {/* RIGHT SIDE — CLOSE */}
-      <TouchableOpacity
-        onPress={resetState}
-        style={{
-          paddingHorizontal: 6,
-          paddingVertical: 2,
-        }}
-      >
-        <Text style={{ color: "#fff", fontSize: 24, fontWeight: "600" }}>
-          ✕
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )}
+          <TouchableOpacity
+            onPress={resetState}
+            style={{
+              paddingHorizontal: 6,
+              paddingVertical: 2,
+            }}
+          >
+            <Text style={{ color: "#fff", fontSize: 24, fontWeight: "600" }}>
+              ✕
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {/* CAMERA NOT READY */}
         {!cameraReady && (
           <View
@@ -499,85 +510,9 @@ export default function SmartScanScreen({ navigation }: any) {
                 </View>
               )}
 
-              {/* EMPTY STATE */}
-              {image && !loading && !error && !result && (
-                <View
-                  style={{
-                    backgroundColor: "rgba(255, 80, 80, 0.15)",
-                    padding: 20,
-                    borderRadius: 14,
-                    width: "100%",
-                    marginTop: 10,
-                    borderWidth: 1,
-                    borderColor: "rgba(255, 80, 80, 0.4)",
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#ff6b6b",
-                      fontSize: 18,
-                      marginBottom: 10,
-                    }}
-                  >
-                    ❌ {i18n.t("smartScan.errorTitle")}
-                  </Text>
-
-                  <Text
-                    style={{
-                      color: "#fff",
-                      fontSize: 16,
-                      marginBottom: 20,
-                    }}
-                  >
-                    {i18n.t("smartScan.errorMessage")}
-                  </Text>
-
-                  <TouchableOpacity
-                    onPress={() => analyze(image!)}
-                    style={{
-                      backgroundColor: "#ff6b6b",
-                      padding: 14,
-                      borderRadius: 12,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        textAlign: "center",
-                        fontSize: 18,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {i18n.t("smartScan.retry")}
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={takeAnotherPhoto}
-                    style={{
-                      marginTop: 12,
-                      padding: 14,
-                      borderRadius: 12,
-                      backgroundColor: "rgba(255,255,255,0.15)",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        textAlign: "center",
-                        fontSize: 18,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {i18n.t("smartScan.takeAnother")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-
               {/* RESULT PANEL */}
               {safeResult && !loading && !error && (
-                <Animated.View
+                <Reanimated.View
                   entering={FadeInUp.duration(500).springify()}
                   layout={Layout.springify()}
                   style={{
@@ -589,37 +524,37 @@ export default function SmartScanScreen({ navigation }: any) {
                   }}
                 >
                   {/* FABRIC */}
-                  <Animated.Text
+                  <Reanimated.Text
                     entering={FadeIn.delay(100)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
                     🧵 {String(i18n.t("smartScan.fabric"))}:{" "}
                     {safeResult.fabric}
-                  </Animated.Text>
+                  </Reanimated.Text>
 
                   {/* COLOR */}
-                  <Animated.Text
+                  <Reanimated.Text
                     entering={FadeIn.delay(200)}
                     style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
                   >
                     🎨 {String(i18n.t("smartScan.color"))}:{" "}
                     {safeResult.color}
-                  </Animated.Text>
+                  </Reanimated.Text>
 
                   {/* STAINS */}
-<Animated.Text
-  entering={FadeIn.delay(300)}
-  style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
->
-  🧽 {String(i18n.t("smartScan.stains"))}:{" "}
-  {safeResult.stains.length > 0
-    ? safeResult.stains.join(", ")
-    : String(i18n.t("smartScan.noStains"))}
-</Animated.Text>
+                  <Reanimated.Text
+                    entering={FadeIn.delay(300)}
+                    style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
+                  >
+                    🧽 {String(i18n.t("smartScan.stains"))}:{" "}
+                    {safeResult.stains.length > 0
+                      ? safeResult.stains.join(", ")
+                      : String(i18n.t("smartScan.noStains"))}
+                  </Reanimated.Text>
 
                   {/* RECOMMENDED PROGRAM */}
                   {safeResult.recommended && (
-                    <Animated.Text
+                    <Reanimated.Text
                       entering={FadeIn.delay(400)}
                       style={{ color: "#fff", fontSize: 18 }}
                     >
@@ -627,7 +562,7 @@ export default function SmartScanScreen({ navigation }: any) {
                       {safeResult.recommended.program} (
                       {safeResult.recommended.temp}°C /{" "}
                       {safeResult.recommended.spin} {i18n.t("rpm")})
-                    </Animated.Text>
+                    </Reanimated.Text>
                   )}
 
                   {/* CARE INSTRUCTIONS */}
@@ -658,7 +593,6 @@ export default function SmartScanScreen({ navigation }: any) {
                       ))}
                     </View>
                   )}
-
                   {/* STAIN TIPS */}
                   {safeResult.stains.length > 0 && (
                     <View style={{ marginTop: 25 }}>
@@ -673,7 +607,6 @@ export default function SmartScanScreen({ navigation }: any) {
                         🧴 {i18n.t("smartScan.stainsDetected")}:{" "}
                         {safeResult.stains.join(", ")}
                       </Text>
-
 {canSeeStainTips ? (
   <View>
     {safeResult.stainTips.length > 0 && (
@@ -860,7 +793,7 @@ export default function SmartScanScreen({ navigation }: any) {
                       {i18n.t("smartScan.addToPlanner")}
                     </Text>
                   </TouchableOpacity>
-                </Animated.View>
+                </Reanimated.View>
               )}
             </View>
           </ScrollView>

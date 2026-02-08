@@ -1,22 +1,57 @@
-import { aiCacheGet, aiCacheSet } from "../Core/aiCache";
-import { getImageHash } from "../Core/imageHash";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AI_CACHE_VERSION } from "../Core/aiCache";
 import { analyzeImageCanonical } from "./analyzeImageCanonical";
 
-export async function analyzeImageCanonicalCached(base64: string) {
+const MEMORY = new Map<string, any>();
+
+const makeKey = (hash: string) =>
+  `v${AI_CACHE_VERSION}:canonical:${hash}`;
+
+export async function analyzeImageCanonicalCached(
+  base64: string,
+  options: { signal?: AbortSignal } = {}
+) {
+  const { signal } = options;
+
   try {
-    const hash = await getImageHash(base64);
+    // Hash the image for deterministic caching
+    const hash = await hashBase64(base64);
 
-    const cached = await aiCacheGet(hash);
-    if (cached) return { canonical: cached, hash };
+    const key = makeKey(hash);
 
-    const canonical = await analyzeImageCanonical(base64);
+    // 1) Memory cache
+    if (MEMORY.has(key)) {
+      return MEMORY.get(key);
+    }
+
+    // 2) Persistent cache
+    const json = await AsyncStorage.getItem(key);
+    if (json) {
+      const parsed = JSON.parse(json);
+      MEMORY.set(key, parsed);
+      return parsed;
+    }
+
+    // 3) Fresh analysis
+    const canonical = await analyzeImageCanonical(base64, { signal });
     if (!canonical) return null;
 
-    await aiCacheSet(hash, canonical);
+    const result = { canonical, hash };
 
-    return { canonical, hash };
-  } catch (err) {
-    console.log("❌ analyzeImageCanonicalCached error:", err);
+    // Save to caches
+    MEMORY.set(key, result);
+    await AsyncStorage.setItem(key, JSON.stringify(result));
+
+    return result;
+  } catch (err: any) {
+    if (err?.name === "AbortError") return null;
     return null;
   }
+}
+
+async function hashBase64(base64: string) {
+  const msgUint8 = new TextEncoder().encode(base64);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
 }

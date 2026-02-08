@@ -1,73 +1,104 @@
-import { generateStainRemovalTips } from "./aiStainRemoval";
 import { stainTipsCache } from "./stainTipsCache";
 
-function normalizeTips(raw: any): string[] {
+export async function generateStainRemovalTips(
+  stain: string,
+  fabric: string,
+  options: { signal?: AbortSignal } = {}
+) {
+  const { signal } = options;
+
   try {
-    if (!raw) return [];
+    const response = await fetch(
+      "https://gemini-proxy.panos-ai.workers.dev",
+      {
+        method: "POST",
+        signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: buildPrompt(stain, fabric),
+        }),
+      }
+    );
 
-    if (Array.isArray(raw?.steps)) {
-      return raw.steps
-        .filter((x: any) => typeof x === "string")
-        .map((x: string) => x.trim());
+    if (!response.ok) return fabricAwareFallback(stain, fabric);
+
+    const data = await response.json();
+    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+
+    if (!raw.startsWith("{") || !raw.endsWith("}"))
+      return fabricAwareFallback(stain, fabric);
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      return fabricAwareFallback(stain, fabric);
     }
 
-    if (Array.isArray(raw?.tips)) {
-      return raw.tips
-        .filter((x: any) => typeof x === "string")
-        .map((x: string) => x.trim());
-    }
-
-    if (Array.isArray(raw)) {
-      return raw
-        .filter((x: any) => typeof x === "string")
-        .map((x: string) => x.trim());
-    }
-
-    if (typeof raw === "string") {
-      return [raw.trim()];
-    }
-
-    if (typeof raw?.tip === "string") {
-      return [raw.tip.trim()];
-    }
-
-    return [];
-  } catch (err) {
-    console.log("❌ normalizeTips error:", err);
-    return [];
+    return {
+      stain: parsed.stain ?? stain,
+      fabric: parsed.fabric ?? fabric,
+      steps: Array.isArray(parsed.steps)
+        ? parsed.steps
+            .filter((x: any) => typeof x === "string")
+            .map((x: string) => x.trim())
+        : [],
+    };
+  } catch (err: any) {
+    if (err?.name === "AbortError") return fabricAwareFallback(stain, fabric);
+    return fabricAwareFallback(stain, fabric);
   }
 }
 
 export async function generateStainRemovalTipsCached(
   stain: string,
-  fabric: string
+  fabric: string,
+  options: { signal?: AbortSignal } = {}
 ) {
+  const { signal } = options;
+
   try {
-    // 1) Cache lookup
     const cached = await stainTipsCache.get(stain, fabric);
-    if (cached) {
-      console.log("⚡ Using cached stain tips");
-      return normalizeTips(cached);
-    }
+    if (cached) return cached;
 
-    // 2) AI call
-    let result: any = null;
-    try {
-      result = await generateStainRemovalTips(stain, fabric);
-    } catch (err) {
-      console.log("❌ generateStainRemovalTips network error:", err);
-      return [];
-    }
+    const result = await generateStainRemovalTips(stain, fabric, { signal });
 
-    // 3) Normalize BEFORE saving
-    const normalized = normalizeTips(result);
+    await stainTipsCache.set(stain, fabric, result);
 
-    // 4) Save normalized
-    await stainTipsCache.set(stain, fabric, normalized);
-
-    return normalized;
-  } catch (err) {
-    console.log("❌ generateStainRemovalTipsCached fatal error:", err);
-    return [];
+    return result;
+  } catch (err: any) {
+    if (err?.name === "AbortError") return fabricAwareFallback(stain, fabric);
+    return fabricAwareFallback(stain, fabric);
   }
+}
+
+function buildPrompt(stain: string, fabric: string) {
+  return `
+You are a deterministic textile-care engine.
+
+Return ONLY valid JSON. No markdown. No prose.
+
+JSON schema:
+{
+  "stain": string,
+  "fabric": string,
+  "steps": string[]
+}
+
+Now return the JSON for:
+Stain: "${stain}"
+Fabric: "${fabric}"
+`.trim();
+}
+
+function fabricAwareFallback(stain: string, fabric: string) {
+  return {
+    stain,
+    fabric,
+    steps: [
+      "Blot gently with cold water",
+      "Apply mild detergent",
+      "Rinse and repeat if needed",
+    ],
+  };
 }
