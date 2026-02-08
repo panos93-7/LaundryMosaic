@@ -338,6 +338,7 @@ export default function SmartScanScreen({ navigation }: any) {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
+    paddingTop: 10,
   }}
 >
   <Text
