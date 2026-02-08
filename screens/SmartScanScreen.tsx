@@ -234,59 +234,73 @@ export default function SmartScanScreen({ navigation }: any) {
 
   // ANALYZE
   const analyze = async (uri: string) => {
-    if (analyzingRef.current) return;
+  console.log("🚀 analyze() CALLED with URI:", uri);
 
-    try {
-      analyzingRef.current = true;
-      setLoading(true);
-      setError(null);
-      setResult(null);
+  // --- FIX: ξεμπλοκάρει αν έχει μείνει true από πριν ---
+  if (analyzingRef.current) {
+    console.log("⛔ analyze() was BLOCKED — analyzingRef was TRUE. Forcing reset.");
+    analyzingRef.current = false;
+  }
 
-      abortRef.current = new AbortController();
+  try {
+    analyzingRef.current = true;
+    setLoading(true);
+    setError(null);
+    setResult(null);
 
-      const { base64 } = await preprocessImage(uri);
-      if (!base64) {
-        setError(i18n.t("smartScan.errorMessage"));
-        return;
-      }
+    abortRef.current = new AbortController();
 
-      const scan = await buildSmartScanResult(base64, {
-        signal: abortRef.current.signal,
-      });
+    console.log("🟦 preprocessImage START");
+    const { base64 } = await preprocessImage(uri);
+    console.log("🟩 preprocessImage DONE, base64 length:", base64?.length);
 
-      if (!scan || typeof scan !== "object") {
-        setError(i18n.t("smartScan.errorMessage"));
-        return;
-      }
-
-      const translated = scan.translated ?? {};
-      const stainTips = Array.isArray(scan.stainTips) ? scan.stainTips : [];
-
-      setResult({
-        fabric: translated.fabric ?? "—",
-        color: translated.color ?? "—",
-        stains: Array.isArray(translated.stains) ? translated.stains : [],
-        care: Array.isArray(translated.care) ? translated.care : [],
-        recommended: {
-          program: translated.recommended?.program ?? "—",
-          temp: translated.recommended?.temp ?? "—",
-          spin: translated.recommended?.spin ?? "—",
-        },
-        stainTips,
-      });
-    } catch (err: any) {
-      if (err.name === "AbortError") {
-        console.log("SmartScan aborted");
-        return;
-      }
-      console.log("❌ SmartScan: analyze() fatal error:", err);
+    if (!base64) {
+      console.log("❌ preprocessImage returned EMPTY base64");
       setError(i18n.t("smartScan.errorMessage"));
-      setResult(null);
-    } finally {
-      analyzingRef.current = false;
-      setLoading(false);
+      return;
     }
-  };
+
+    console.log("🟦 buildSmartScanResult START");
+    const scan = await buildSmartScanResult(base64, {
+      signal: abortRef.current.signal,
+    });
+    console.log("🟩 buildSmartScanResult DONE:", scan);
+
+    if (!scan || typeof scan !== "object") {
+      console.log("❌ scan is NULL or invalid");
+      setError(i18n.t("smartScan.errorMessage"));
+      return;
+    }
+
+    const translated = scan.translated ?? {};
+    const stainTips = Array.isArray(scan.stainTips) ? scan.stainTips : [];
+
+    setResult({
+      fabric: translated.fabric ?? "—",
+      color: translated.color ?? "—",
+      stains: Array.isArray(translated.stains) ? translated.stains : [],
+      care: Array.isArray(translated.care) ? translated.care : [],
+      recommended: {
+        program: translated.recommended?.program ?? "—",
+        temp: translated.recommended?.temp ?? "—",
+        spin: translated.recommended?.spin ?? "—",
+      },
+      stainTips,
+    });
+  } catch (err: any) {
+    if (err.name === "AbortError") {
+      console.log("⛔ SmartScan aborted");
+      return;
+    }
+    console.log("❌ SmartScan: analyze() fatal error:", err);
+    setError(i18n.t("smartScan.errorMessage"));
+    setResult(null);
+  } finally {
+    analyzingRef.current = false; // --- FIX: πάντα reset ---
+    setLoading(false);
+    console.log("🔚 analyze() FINISHED");
+  }
+};
 
   const handleAutoAdd = async () => {
     try {
