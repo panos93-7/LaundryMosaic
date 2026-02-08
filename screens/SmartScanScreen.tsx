@@ -324,49 +324,41 @@ export default function SmartScanScreen({ navigation }: any) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
       <LinearGradient
-        colors={["#0f2027", "#203a43", "#2c5364"]}
+         colors={["#0f0c29", "#302b63", "#24243e"]}
         style={{
           flex: 1,
           paddingHorizontal: 20,
           justifyContent: image ? "flex-start" : "center",
         }}
       >
-        {/* HEADER */}
-        <View
-          style={{
-            width: "100%",
-            paddingTop: 10,
-            paddingBottom: 10,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ flex: 1, paddingRight: 10 }}>
-            <Text
-              style={{
-                color: "#fff",
-                fontSize: 20,
-                fontWeight: "700",
-                flexShrink: 1,
-              }}
-              numberOfLines={2}
-            >
-              {i18n.t("smartScan.title")}
-            </Text>
-          </View>
+{/* HEADER */}
+<View
+  style={{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  }}
+>
+  <Text
+    style={{
+      color: "#fff",
+      fontSize: 28,
+      fontWeight: "700",
+      flexShrink: 1,
+      marginRight: 10,
+    }}
+    numberOfLines={2}
+  >
+    {String(i18n.t("smartScan.title"))}
+  </Text>
 
-          <TouchableOpacity
-            onPress={resetState}
-            style={{
-              paddingHorizontal: 6,
-              paddingVertical: 2,
-            }}
-          >
-            <Text style={{ color: "#fff", fontSize: 24, fontWeight: "600" }}>
-              ✕
-            </Text>
-          </TouchableOpacity>
-        </View>
+  <TouchableOpacity onPress={() => navigation.goBack()}>
+    <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+      {String(i18n.t("smartScan.close"))}
+    </Text>
+  </TouchableOpacity>
+</View>
 
         {/* CAMERA NOT READY */}
         {!cameraReady && (
