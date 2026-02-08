@@ -1,5 +1,6 @@
 // utils/BatchScan/analyzeBatch.ts
 
+import i18n from "../../../i18n";
 import { preprocessImage } from "../Core/preprocessImage";
 import { analyzeBatchImage } from "./analyzeBatchImage";
 import { getBatchCache, setBatchCache } from "./batchCache";
@@ -28,12 +29,16 @@ export async function analyzeBatch(uri: string) {
     .map((it) => batchNormalize(it))
     .filter((x): x is BatchItemCanonical => x !== null);
 
-  // 6) Build final result
+  // Detect locale
+  const rawLocale = String(i18n.locale || "en");
+  const locale = rawLocale.split("-")[0];
+
+  // 6) Build final result object
   const result = {
     total: normalized.length,
-    groups: batchGroup(normalized),
+    groups: await batchGroup(normalized, locale),
     conflicts: batchConflicts(normalized),
-    suggestions: batchSuggestions(normalized),
+    suggestions: await batchSuggestions(normalized, locale),
     items: normalized,
   };
 

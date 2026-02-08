@@ -1,8 +1,10 @@
-// utils/BatchScan/batchGroup.ts
-
 import { BatchItemCanonical } from "./batchCanonical";
+import { translateBatchText } from "./translateBatch";
 
-export function batchGroup(items: BatchItemCanonical[]) {
+export async function batchGroup(
+  items: BatchItemCanonical[],
+  locale: string
+) {
   const map: Record<string, number> = {};
 
   items.forEach((it) => {
@@ -10,8 +12,14 @@ export function batchGroup(items: BatchItemCanonical[]) {
     map[it.fabric] += 1;
   });
 
-  return Object.keys(map).map((fabric) => ({
-    fabric,
-    count: map[fabric],
-  }));
+  return await Promise.all(
+    Object.keys(map).map(async (fabric) => {
+      const rawLabel = `${fabric} × ${map[fabric]}`;
+      const translated = await translateBatchText(rawLabel, locale);
+      return {
+        fabric: translated,
+        count: map[fabric],
+      };
+    })
+  );
 }

@@ -1,10 +1,11 @@
 // utils/BatchScan/analyzeBatchCached.ts
 // BatchScan v2 — independent, canonical, cached, deterministic
 
+import i18n from "../../../i18n";
 import { preprocessImage } from "../Core/preprocessImage";
 import { analyzeBatchImage } from "./analyzeBatchImage";
 import { getBatchCache, setBatchCache } from "./batchCache";
-import { BatchItemCanonical } from "./batchCanonical"; // ← ΑΥΤΟ ΕΛΕΙΠΕ
+import { BatchItemCanonical } from "./batchCanonical";
 import { batchConflicts } from "./batchConflicts";
 import { batchGroup } from "./batchGroup";
 import { batchNormalize } from "./batchNormalize";
@@ -29,12 +30,16 @@ export async function analyzeBatchCached(uri: string) {
     .map((it) => batchNormalize(it))
     .filter((x): x is BatchItemCanonical => x !== null);
 
+  // Detect locale
+  const rawLocale = String(i18n.locale || "en");
+  const locale = rawLocale.split("-")[0];
+
   // 6) Build final result object
   const result = {
     total: normalized.length,
-    groups: batchGroup(normalized),
+    groups: await batchGroup(normalized, locale),
     conflicts: batchConflicts(normalized),
-    suggestions: batchSuggestions(normalized),
+    suggestions: await batchSuggestions(normalized, locale),
     items: normalized,
   };
 
