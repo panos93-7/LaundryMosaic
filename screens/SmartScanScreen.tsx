@@ -19,7 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "../i18n";
 import { useUserStore } from "../store/userStore";
 
-// ⭐ NEW — the ONLY AI imports you need
+// AI pipeline
 import { preprocessImage } from "../utils/AI/Core/preprocessImage";
 import { buildSmartScanResult } from "../utils/AI/SmartScan/buildSmartScanResult";
 
@@ -49,7 +49,6 @@ export default function SmartScanScreen({ navigation }: any) {
   const pulseAnim = useRef(new RNAnimated.Value(1)).current;
   const analyzingRef = useRef(false);
 
-  // ⭐ NEW: cameraReady state
   const [cameraReady, setCameraReady] = useState(false);
 
   // Pulse animation
@@ -92,7 +91,7 @@ export default function SmartScanScreen({ navigation }: any) {
     return () => subscription.remove();
   });
 
-  // Permissions + cameraReady
+  // Permissions
   useEffect(() => {
     (async () => {
       try {
@@ -106,9 +105,20 @@ export default function SmartScanScreen({ navigation }: any) {
     })();
   }, []);
 
-  // ⭐ NEW — premium safeResult (Option B)
+  // ⭐ SAFE RESULT (with stains normalization)
   const safeResult = useMemo(() => {
     if (!result || typeof result !== "object") return SAFE_FALLBACK;
+
+    const normalizeStains = (arr: any[]) =>
+      arr
+        .map((s) => {
+          if (typeof s === "string") return s.trim();
+          if (s && typeof s === "object" && typeof s.type === "string") {
+            return s.type.trim();
+          }
+          return "";
+        })
+        .filter((s) => s.length > 0);
 
     return {
       fabric:
@@ -119,7 +129,9 @@ export default function SmartScanScreen({ navigation }: any) {
         typeof result.color === "string" && result.color.trim()
           ? result.color
           : "—",
-      stains: Array.isArray(result.stains) ? result.stains : [],
+      stains: Array.isArray(result.stains)
+        ? normalizeStains(result.stains)
+        : [],
       care: Array.isArray(result.care) ? result.care : [],
       recommended:
         result.recommended && typeof result.recommended === "object"
@@ -137,7 +149,6 @@ export default function SmartScanScreen({ navigation }: any) {
     };
   }, [result]);
 
-  // RESET
   const resetState = () => {
     if (analyzingRef.current) return;
     setImage(null);
@@ -151,7 +162,6 @@ export default function SmartScanScreen({ navigation }: any) {
     takePhoto();
   };
 
-  // ⭐ NEW: safe wrappers for camera & gallery
   const safeLaunchCamera = async () => {
     try {
       return await ImagePicker.launchCameraAsync({ quality: 0.9 });
@@ -214,7 +224,7 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-  // ⭐ ANALYZE IMAGE (NEW PREMIUM PIPELINE)
+  // ⭐ ANALYZE
   const analyze = async (uri: string) => {
     if (analyzingRef.current) return;
 
@@ -224,14 +234,12 @@ export default function SmartScanScreen({ navigation }: any) {
       setError(null);
       setResult(null);
 
-      // 1) Convert image → base64 (FIXED: destructure properly)
       const { base64 } = await preprocessImage(uri);
       if (!base64) {
         setError(i18n.t("smartScan.errorMessage"));
         return;
       }
 
-      // 2) NEW: Single unified AI call
       const scan = await buildSmartScanResult(base64);
 
       if (!scan || typeof scan !== "object") {
@@ -239,7 +247,6 @@ export default function SmartScanScreen({ navigation }: any) {
         return;
       }
 
-      // 3) Flatten translated output (Option A)
       const translated = scan.translated ?? {};
       const stainTips = Array.isArray(scan.stainTips) ? scan.stainTips : [];
 
@@ -265,8 +272,6 @@ export default function SmartScanScreen({ navigation }: any) {
     }
   };
 
-
-  // ⭐ ADD TO PLANNER (unchanged)
   const handleAutoAdd = async () => {
     try {
       const payload = {
@@ -285,11 +290,18 @@ export default function SmartScanScreen({ navigation }: any) {
       console.log("SmartScan: handleAutoAdd failed", e);
     }
   };
-    return (
+
+  return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
       <LinearGradient
         colors={["#0f2027", "#203a43", "#2c5364"]}
-        style={{ flex: 1, paddingHorizontal: 20 }}
+        style={{
+          flex: 1,
+          paddingHorizontal: 20,
+
+          // ⭐ UI FIX
+          justifyContent: image ? "flex-start" : "center",
+        }}
       >
         {/* CAMERA NOT READY */}
         {!cameraReady && (
@@ -555,15 +567,15 @@ export default function SmartScanScreen({ navigation }: any) {
                   </Animated.Text>
 
                   {/* STAINS */}
-                  <Animated.Text
-                    entering={FadeIn.delay(300)}
-                    style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
-                  >
-                    🧽 {i18n.t("smartScan.stains")}:{" "}
-                    {safeResult.stains.length > 0
-                      ? safeResult.stains.join(", ")
-                      : i18n.t("smartScan.noStains")}
-                  </Animated.Text>
+<Animated.Text
+  entering={FadeIn.delay(300)}
+  style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}
+>
+  🧽 {String(i18n.t("smartScan.stains"))}:{" "}
+  {safeResult.stains.length > 0
+    ? safeResult.stains.join(", ")
+    : String(i18n.t("smartScan.noStains"))}
+</Animated.Text>
 
                   {/* RECOMMENDED PROGRAM */}
                   {safeResult.recommended && (

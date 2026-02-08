@@ -6,23 +6,29 @@ function normalizeTips(raw: any): string[] {
     if (!raw) return [];
 
     if (Array.isArray(raw?.steps)) {
-      return raw.steps.filter((x: any) => typeof x === "string");
+      return raw.steps
+        .filter((x: any) => typeof x === "string")
+        .map((x: string) => x.trim());
     }
 
     if (Array.isArray(raw?.tips)) {
-      return raw.tips.filter((x: any) => typeof x === "string");
+      return raw.tips
+        .filter((x: any) => typeof x === "string")
+        .map((x: string) => x.trim());
     }
 
     if (Array.isArray(raw)) {
-      return raw.filter((x: any) => typeof x === "string");
+      return raw
+        .filter((x: any) => typeof x === "string")
+        .map((x: string) => x.trim());
     }
 
     if (typeof raw === "string") {
-      return [raw];
+      return [raw.trim()];
     }
 
     if (typeof raw?.tip === "string") {
-      return [raw.tip];
+      return [raw.tip.trim()];
     }
 
     return [];

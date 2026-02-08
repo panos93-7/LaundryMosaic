@@ -1,7 +1,7 @@
 export async function translateStainTips(
   canonical: any,
   targetLocale: string,
-  key?: string // ← κρατάμε το key για συμβατότητα με safeTranslate
+  key?: string
 ) {
   try {
     if (!canonical || typeof canonical !== "object") {
@@ -19,8 +19,13 @@ export async function translateStainTips(
       care.dryclean ?? "",
       ...warnings
     ]
+      .map((x) => String(x).trim())
       .filter(Boolean)
       .join("\n");
+
+    if (!block) {
+      return emptyResult();
+    }
 
     const response = await fetch("https://gemini-proxy.panos-ai.workers.dev", {
       method: "POST",

@@ -1,7 +1,3 @@
-/**
- * Generate step-by-step stain removal instructions
- * based on stain + fabric using Cloudflare Worker.
- */
 export async function generateStainRemovalTips(stain: string, fabric: string) {
   try {
     const response = await fetch(
@@ -45,9 +41,6 @@ Rules:
 
     const data = await response.json();
 
-    // -----------------------------
-    //  BULLETPROOF JSON EXTRACTION
-    // -----------------------------
     let rawText =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
@@ -70,6 +63,8 @@ Rules:
       fabric: parsed.fabric ?? fabric,
       steps: Array.isArray(parsed.steps)
         ? parsed.steps
+            .filter((x: any) => typeof x === "string")
+            .map((x: string) => x.trim())
         : ["No steps provided"],
     };
 

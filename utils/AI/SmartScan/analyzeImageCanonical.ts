@@ -18,6 +18,12 @@ export async function analyzeImageCanonical(base64: string) {
 You are an expert laundry assistant.
 Analyze the garment and return ONLY valid JSON in ENGLISH.
 
+IMPORTANT RULES:
+- "stains" MUST ALWAYS be an array of strings.
+- NEVER return objects inside "stains".
+- NEVER return null in any field.
+- Follow the schema EXACTLY.
+
 Schema:
 {
   "name": "",
@@ -26,10 +32,21 @@ Schema:
   "fabric": "",
   "color": "",
   "pattern": "",
-  "stains": [],
+  "stains": ["string"],  // ALWAYS an array of strings
   "recommended": { "program": "", "temp": 30, "spin": 800 },
-  "care": { "wash": "", "bleach": "", "dry": "", "iron": "", "dryclean": "", "warnings": [] },
-  "risks": { "shrinkage": "", "colorBleeding": "", "delicacy": "" },
+  "care": {
+    "wash": "",
+    "bleach": "",
+    "dry": "",
+    "iron": "",
+    "dryclean": "",
+    "warnings": []
+  },
+  "risks": {
+    "shrinkage": "",
+    "colorBleeding": "",
+    "delicacy": ""
+  },
   "washFrequency": "",
   "careSymbols": []
 }
