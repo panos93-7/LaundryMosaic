@@ -15,7 +15,7 @@ export async function wardrobePipeline(
   const canonical = await analyzeWardrobeCached(uri);
 
   // 2) Deterministic, language‑agnostic garment ID
-  const garmentId = wardrobeCanonicalKey(canonical);
+  const garmentId = await wardrobeCanonicalKey(canonical); // ⭐ FIXED
 
   // 3) English → no translation needed
   if (locale === "en") {

@@ -11,7 +11,7 @@ export async function analyzeWardrobeCached(uri: string) {
   const raw = await analyzeWardrobeImage(base64, mimeType);
   const canonical = wardrobeNormalize(raw);
 
-  const key = wardrobeCanonicalKey(canonical);
+  const key = await wardrobeCanonicalKey(canonical); // ⭐ FIXED
 
   const cached = await wardrobeCacheGet(key);
   if (cached) return cached;
