@@ -13,6 +13,7 @@ export async function buildSmartScanResult(
     /* 1) CANONICAL ANALYSIS (CACHED)                                         */
     /* ---------------------------------------------------------------------- */
     const canonicalResult = await analyzeImageCanonicalCached(base64, { signal });
+    console.log("🧩 canonicalResult:", canonicalResult);
     if (!canonicalResult) return null;
 
     const { canonical, hash } = canonicalResult;
