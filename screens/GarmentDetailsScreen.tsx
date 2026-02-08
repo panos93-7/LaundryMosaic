@@ -2,15 +2,16 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TextStyle, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { TextStyle } from "react-native";
 import i18n from "../i18n";
 import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
-import { translateGarmentProfile } from "../utils/AI/translateGarment";
-import { translationCache } from "../utils/AI/translationCache";
+
+// ⭐ Correct SmartWardrobe v3 imports
+import { translateWardrobeProfile } from "../utils/AI/SmartWardrobe/translateWardrobeProfile";
+import { translationCache } from "../utils/AI/SmartWardrobe/translationCache";
 
 const styles: {
   sectionTitle: TextStyle;
@@ -53,17 +54,12 @@ export default function GarmentDetailsScreen() {
 
   const [isTranslating, setIsTranslating] = useState(false);
 
-  // ⭐ LAZY TRANSLATION EFFECT
+  // ⭐ LAZY TRANSLATION EFFECT (v3 clean)
   useEffect(() => {
     if (!garment) return;
 
-    console.log("🔥 EFFECT TRIGGERED");
-    console.log("locale =", locale);
-    console.log("garment.profile.__locale =", garment?.profile?.__locale);
-
     // 1. English → always original
     if (locale === "en") {
-      console.log("⛔ STOP: locale is EN, using original");
       updateGarment({
         id: garment.id,
         profile: { ...garment.original, __locale: "en" },
@@ -73,28 +69,21 @@ export default function GarmentDetailsScreen() {
 
     // 2. Already translated → stop
     if (garment.profile?.__locale === locale) {
-      console.log("⛔ STOP: already translated for this locale");
       return;
     }
 
     // 3. Prevent double calls
-    if (isTranslating) {
-      console.log("⛔ STOP: already translating");
-      return;
-    }
+    if (isTranslating) return;
 
     async function run() {
       setIsTranslating(true);
-      console.log("🚀 Translating now...");
 
-      const translated = await translateGarmentProfile(
+      const translated = await translateWardrobeProfile(
         garment.original,
         locale,
         garment.id.toString(),
         translationCache
       );
-
-      console.log("✅ AI returned:", translated);
 
       updateGarment({
         id: garment.id,
@@ -118,7 +107,8 @@ export default function GarmentDetailsScreen() {
     );
   }
 
-  const profile: any = garment.profile;
+  // ⭐ Canonical fallback
+  const profile: any = garment.profile ?? garment.original ?? {};
 
   const handleDelete = () => {
     deleteGarment(garment.id);
@@ -207,132 +197,132 @@ export default function GarmentDetailsScreen() {
             </View>
           )}
 
-{/* BASIC INFO */}
-<View style={{ marginTop: 10 }}>
-  <Text style={styles.label}>{i18n.t("garmentDetails.type")}</Text>
-  <Text style={styles.value}>{profile.type}</Text>
+          {/* BASIC INFO */}
+          <View style={{ marginTop: 10 }}>
+            <Text style={styles.label}>{i18n.t("garmentDetails.type")}</Text>
+            <Text style={styles.value}>{profile.type}</Text>
 
-  <Text style={styles.label}>{i18n.t("garmentDetails.color")}</Text>
-  <Text style={styles.value}>{profile.color}</Text>
+            <Text style={styles.label}>{i18n.t("garmentDetails.color")}</Text>
+            <Text style={styles.value}>{profile.color}</Text>
 
-  <Text style={styles.label}>{i18n.t("garmentDetails.fabric")}</Text>
-  <Text style={styles.value}>{profile.fabric}</Text>
+            <Text style={styles.label}>{i18n.t("garmentDetails.fabric")}</Text>
+            <Text style={styles.value}>{profile.fabric}</Text>
 
-  <Text style={styles.label}>{i18n.t("garmentDetails.pattern")}</Text>
-  <Text style={styles.value}>{profile.pattern}</Text>
+            <Text style={styles.label}>{i18n.t("garmentDetails.pattern")}</Text>
+            <Text style={styles.value}>{profile.pattern}</Text>
 
-  <Text style={styles.label}>{i18n.t("garmentDetails.category")}</Text>
-  <Text style={styles.value}>{profile.category}</Text>
-</View>
+            <Text style={styles.label}>{i18n.t("garmentDetails.category")}</Text>
+            <Text style={styles.value}>{profile.category}</Text>
+          </View>
 
-{/* STAINS */}
-{(profile?.stains?.length ?? 0) > 0 && (
-  <View>
-    <Text style={styles.sectionTitle}>
-      {i18n.t("garmentDetails.stainsDetected")}
-    </Text>
+          {/* STAINS */}
+          {(profile?.stains?.length ?? 0) > 0 && (
+            <View>
+              <Text style={styles.sectionTitle}>
+                {i18n.t("garmentDetails.stainsDetected")}
+              </Text>
 
-    {profile.stains.map((stain: string, _index: number) => (
-      <Text key={_index} style={styles.value}>• {stain}</Text>
-    ))}
-  </View>
-)}
+              {profile.stains.map((stain: string, _index: number) => (
+                <Text key={_index} style={styles.value}>• {stain}</Text>
+              ))}
+            </View>
+          )}
 
-{/* RECOMMENDED PROGRAM */}
-{profile?.recommended && (
-  <View>
-    <Text style={styles.sectionTitle}>
-      {i18n.t("garmentDetails.recommendedWashProgram")}
-    </Text>
+          {/* RECOMMENDED PROGRAM */}
+          {profile?.recommended && (
+            <View>
+              <Text style={styles.sectionTitle}>
+                {i18n.t("garmentDetails.recommendedWashProgram")}
+              </Text>
 
-    <Text style={styles.label}>{i18n.t("garmentDetails.program")}</Text>
-    <Text style={styles.value}>{profile.recommended.program}</Text>
+              <Text style={styles.label}>{i18n.t("garmentDetails.program")}</Text>
+              <Text style={styles.value}>{profile.recommended.program}</Text>
 
-    <Text style={styles.label}>{i18n.t("garmentDetails.temp")}</Text>
-    <Text style={styles.value}>{profile.recommended.temp}°C</Text>
+              <Text style={styles.label}>{i18n.t("garmentDetails.temp")}</Text>
+              <Text style={styles.value}>{profile.recommended.temp}°C</Text>
 
-    <Text style={styles.label}>{i18n.t("garmentDetails.spin")}</Text>
-    <Text style={styles.value}>{profile.recommended.spin} rpm</Text>
+              <Text style={styles.label}>{i18n.t("garmentDetails.spin")}</Text>
+              <Text style={styles.value}>{profile.recommended.spin} rpm</Text>
 
-    <Text style={styles.label}>{i18n.t("garmentDetails.detergent")}</Text>
-    <Text style={styles.value}>{profile.recommended.detergent}</Text>
+              <Text style={styles.label}>{i18n.t("garmentDetails.detergent")}</Text>
+              <Text style={styles.value}>{profile.recommended.detergent}</Text>
 
-    {profile.recommended.notes?.length > 0 && (
-      <View style={{ marginTop: 10 }}>
-        <Text style={styles.label}>{i18n.t("garmentDetails.notes")}</Text>
-        {profile.recommended.notes.map((note: string, _index: number) => (
-          <Text key={_index} style={styles.value}>• {note}</Text>
-        ))}
-      </View>
-    )}
-  </View>
-)}
+              {profile.recommended.notes?.length > 0 && (
+                <View style={{ marginTop: 10 }}>
+                  <Text style={styles.label}>{i18n.t("garmentDetails.notes")}</Text>
+                  {profile.recommended.notes.map((note: string, _index: number) => (
+                    <Text key={_index} style={styles.value}>• {note}</Text>
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
 
-{/* CARE INSTRUCTIONS */}
-{profile?.care && (
-  <View>
-    <Text style={styles.sectionTitle}>
-      {i18n.t("garmentDetails.careInstructions")}
-    </Text>
+          {/* CARE INSTRUCTIONS */}
+          {profile?.care && (
+            <View>
+              <Text style={styles.sectionTitle}>
+                {i18n.t("garmentDetails.careInstructions")}
+              </Text>
 
-    <Text style={styles.value}>{profile.care.wash}</Text>
-    <Text style={styles.value}>{profile.care.bleach}</Text>
-    <Text style={styles.value}>{profile.care.dry}</Text>
-    <Text style={styles.value}>{profile.care.iron}</Text>
-    <Text style={styles.value}>{profile.care.dryclean}</Text>
+              <Text style={styles.value}>{profile.care.wash}</Text>
+              <Text style={styles.value}>{profile.care.bleach}</Text>
+              <Text style={styles.value}>{profile.care.dry}</Text>
+              <Text style={styles.value}>{profile.care.iron}</Text>
+              <Text style={styles.value}>{profile.care.dryclean}</Text>
 
-    {profile.care.warnings?.length > 0 && (
-      <View style={{ marginTop: 10 }}>
-        <Text style={styles.label}>{i18n.t("garmentDetails.warnings")}</Text>
-        {profile.care.warnings.map((warning: string, _index: number) => (
-          <Text key={_index} style={styles.value}>• {warning}</Text>
-        ))}
-      </View>
-    )}
-  </View>
-)}
+              {profile.care.warnings?.length > 0 && (
+                <View style={{ marginTop: 10 }}>
+                  <Text style={styles.label}>{i18n.t("garmentDetails.warnings")}</Text>
+                  {profile.care.warnings.map((warning: string, _index: number) => (
+                    <Text key={_index} style={styles.value}>• {warning}</Text>
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
 
-{/* RISKS */}
-{profile?.risks && (
-  <View>
-    <Text style={styles.sectionTitle}>
-      {i18n.t("garmentDetails.risks")}
-    </Text>
+          {/* RISKS */}
+          {profile?.risks && (
+            <View>
+              <Text style={styles.sectionTitle}>
+                {i18n.t("garmentDetails.risks")}
+              </Text>
 
-    <Text style={styles.label}>{i18n.t("garmentDetails.riskShrinkage")}</Text>
-    <Text style={styles.value}>{profile.risks.shrinkage}</Text>
+              <Text style={styles.label}>{i18n.t("garmentDetails.riskShrinkage")}</Text>
+              <Text style={styles.value}>{profile.risks.shrinkage}</Text>
 
-    <Text style={styles.label}>{i18n.t("garmentDetails.riskColorBleeding")}</Text>
-    <Text style={styles.value}>{profile.risks.colorBleeding}</Text>
+              <Text style={styles.label}>{i18n.t("garmentDetails.riskColorBleeding")}</Text>
+              <Text style={styles.value}>{profile.risks.colorBleeding}</Text>
 
-    <Text style={styles.label}>{i18n.t("garmentDetails.riskDelicacy")}</Text>
-    <Text style={styles.value}>{profile.risks.delicacy}</Text>
-  </View>
-)}
+              <Text style={styles.label}>{i18n.t("garmentDetails.riskDelicacy")}</Text>
+              <Text style={styles.value}>{profile.risks.delicacy}</Text>
+            </View>
+          )}
 
-{/* WASH FREQUENCY */}
-{profile?.washFrequency && (
-  <View>
-    <Text style={styles.sectionTitle}>
-      {i18n.t("garmentDetails.washFrequency")}
-    </Text>
+          {/* WASH FREQUENCY */}
+          {profile?.washFrequency && (
+            <View>
+              <Text style={styles.sectionTitle}>
+                {i18n.t("garmentDetails.washFrequency")}
+              </Text>
 
-    <Text style={styles.value}>{profile.washFrequency}</Text>
-  </View>
-)}
+              <Text style={styles.value}>{profile.washFrequency}</Text>
+            </View>
+          )}
 
-{/* CARE SYMBOLS */}
-{(profile?.careSymbols?.length ?? 0) > 0 && (
-  <View>
-    <Text style={styles.sectionTitle}>
-      {i18n.t("garmentDetails.careSymbols")}
-    </Text>
+          {/* CARE SYMBOLS */}
+          {(profile?.careSymbols?.length ?? 0) > 0 && (
+            <View>
+              <Text style={styles.sectionTitle}>
+                {i18n.t("garmentDetails.careSymbols")}
+              </Text>
 
-    {profile.careSymbols.map((symbol: string, _index: number) => (
-      <Text key={_index} style={styles.value}>• {symbol}</Text>
-    ))}
-  </View>
-)}
+              {profile.careSymbols.map((symbol: string, _index: number) => (
+                <Text key={_index} style={styles.value}>• {symbol}</Text>
+              ))}
+            </View>
+          )}
 
           {/* EDIT BUTTON */}
           <TouchableOpacity

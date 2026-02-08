@@ -7,12 +7,14 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GarmentCard } from "../components/GarmentCard";
 import i18n from "../i18n";
+
 import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
-import { analyzeGarmentProCached } from "../utils/AI/analyzeGarmentProCached";
-import { translateGarmentProfile } from "../utils/AI/translateGarment";
-import { translationCache } from "../utils/AI/translationCache";
 
+// ⭐ Correct SmartWardrobe v3 imports
+import { translateWardrobeProfile } from "../utils/AI/SmartWardrobe/translateWardrobeProfile";
+import { translationCache } from "../utils/AI/SmartWardrobe/translationCache";
+import { wardrobePipeline } from "../utils/AI/SmartWardrobe/wardrobePipeline";
 
 export default function WardrobeScreen() {
   const navigation = useNavigation<any>();
@@ -26,40 +28,44 @@ export default function WardrobeScreen() {
   const [analyzing, setAnalyzing] = useState(false);
   const locale = useLanguageStore((s) => s.language);
 
+  // Load wardrobe from storage
   useEffect(() => {
     hydrate();
   }, []);
-useEffect(() => {
-  async function translateAll() {
-    if (garments.length === 0) return;
 
-    const translatedProfiles = await Promise.all(
-      garments.map(async (g) => {
-        const translated =
-          locale === "en"
-            ? g.original
-            : await translateGarmentProfile(
-                g.original,
-                locale,
-                g.id.toString(),
-                translationCache
-              );
+  // Auto‑translate when locale changes
+  useEffect(() => {
+    async function translateAll() {
+      if (garments.length === 0) return;
 
-        return {
-          ...g,
-          profile: translated,
-        };
-      })
-    );
+      const translatedProfiles = await Promise.all(
+        garments.map(async (g) => {
+          const translated =
+            locale === "en"
+              ? g.original
+              : await translateWardrobeProfile(
+                  g.original,
+                  locale,
+                  g.id.toString(),
+                  translationCache
+                );
 
-    for (const updated of translatedProfiles) {
-      updateGarment(updated);
+          return {
+            ...g,
+            profile: translated,
+          };
+        })
+      );
+
+      for (const updated of translatedProfiles) {
+        updateGarment(updated);
+      }
     }
-  }
 
-  translateAll();
-}, [locale]);
+    translateAll();
+  }, [locale]);
 
+  // ⭐ Clean, deterministic SmartWardrobe v3 add flow
   const handleAddGarment = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -69,39 +75,24 @@ useEffect(() => {
 
     if (res.canceled) return;
 
-    const base64 = res.assets[0].base64!;
     const uri = res.assets[0].uri;
 
     setAnalyzing(true);
 
     try {
-      // 1. Analyze image → ALWAYS natural English
-      
-const ai = await analyzeGarmentProCached(base64);
-
-      // 2. Detect current locale
       const locale = (i18n as any).language;
 
-      // 3. Translate ONLY if not English
-      const finalProfile =
-        locale === "en"
-          ? ai
-          : await translateGarmentProfile(
-              ai,
-              locale,
-              Date.now().toString(),
-              translationCache
-            );
+      // Full pipeline: preprocess → AI → normalize → cache → translate
+      const { original, profile } = await wardrobePipeline(uri, locale);
 
-      // 4. Store BOTH original + translated profile
       await addGarment({
         id: Date.now(),
-        original: ai,          // always EN
-        profile: finalProfile, // translated or EN
+        original, // always EN canonical
+        profile,  // translated or EN
         image: uri,
       });
     } catch (err) {
-      console.log("AI error:", err);
+      console.log("❌ Wardrobe error:", err);
     }
 
     setAnalyzing(false);
@@ -142,63 +133,64 @@ const ai = await analyzeGarmentProCached(base64);
           </TouchableOpacity>
         </View>
 
-        {/* AI LOADING */}
+        {/* AI LOADING OVERLAY */}
         {analyzing && (
-  <View
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: "rgba(0,0,0,0.65)",
-      justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: 30,
-      zIndex: 999,
-    }}
-  >
-    <View
-      style={{
-        backgroundColor: "rgba(15,12,41,0.9)",
-        borderRadius: 20,
-        paddingVertical: 24,
-        paddingHorizontal: 20,
-        alignItems: "center",
-        width: "80%",
-      }}
-    >
-      <LottieView
-        source={require("../wardrobe-analyzing.json")}
-        autoPlay
-        loop
-        style={{ width: 120, height: 120, marginBottom: 10 }}
-      />
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0,0,0,0.65)",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 30,
+              zIndex: 999,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "rgba(15,12,41,0.9)",
+                borderRadius: 20,
+                paddingVertical: 24,
+                paddingHorizontal: 20,
+                alignItems: "center",
+                width: "80%",
+              }}
+            >
+              <LottieView
+                source={require("../wardrobe-analyzing.json")}
+                autoPlay
+                loop
+                style={{ width: 120, height: 120, marginBottom: 10 }}
+              />
 
-      <Text
-        style={{
-          color: "#fff",
-          fontSize: 18,
-          fontWeight: "600",
-          textAlign: "center",
-          marginBottom: 4,
-        }}
-      >
-        {String(i18n.t("wardrobe.analyzing"))}
-      </Text>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 18,
+                  fontWeight: "600",
+                  textAlign: "center",
+                  marginBottom: 4,
+                }}
+              >
+                {String(i18n.t("wardrobe.analyzing"))}
+              </Text>
 
-      <Text
-        style={{
-          color: "rgba(255,255,255,0.7)",
-          fontSize: 14,
-          textAlign: "center",
-        }}
-      >
-        {String(i18n.t("wardrobe.analyzingSubtitle"))}
-      </Text>
-    </View>
-  </View>
-)}
+              <Text
+                style={{
+                  color: "rgba(255,255,255,0.7)",
+                  fontSize: 14,
+                  textAlign: "center",
+                }}
+              >
+                {String(i18n.t("wardrobe.analyzingSubtitle"))}
+              </Text>
+            </View>
+          </View>
+        )}
+
         {/* EMPTY STATE */}
         {garments.length === 0 && !analyzing && (
           <View
@@ -233,7 +225,6 @@ const ai = await analyzeGarmentProCached(base64);
               {String(i18n.t("wardrobe.emptySubtitle"))}
             </Text>
 
-            {/* ADD BUTTON */}
             <TouchableOpacity
               onPress={handleAddGarment}
               style={{
@@ -267,17 +258,16 @@ const ai = await analyzeGarmentProCached(base64);
               columnWrapperStyle={{ justifyContent: "space-between" }}
               renderItem={({ item }) => (
                 <GarmentCard
-  item={item}
-  onPress={() =>
-    navigation.navigate("GarmentDetails", {
-      id: item.id,
-    })
-  }
-/>
+                  item={item}
+                  onPress={() =>
+                    navigation.navigate("GarmentDetails", {
+                      id: item.id,
+                    })
+                  }
+                />
               )}
             />
 
-            {/* FLOATING BUTTON */}
             <TouchableOpacity
               onPress={handleAddGarment}
               style={{

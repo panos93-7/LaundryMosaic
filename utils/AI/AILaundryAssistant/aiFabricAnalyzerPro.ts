@@ -1,4 +1,4 @@
-import { preprocessImage } from "./AI/preprocessImage";
+import { preprocessImage } from "../Core/preprocessImage";
 
 export async function analyzeFabricPro(base64: string) {
   try {

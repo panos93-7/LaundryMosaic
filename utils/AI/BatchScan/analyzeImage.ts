@@ -1,4 +1,4 @@
-import { getProgramFor } from "../constants/programMapping";
+import { getProgramFor } from "../../../constants/programMapping";
 
 export async function analyzeImageWithGemini(
   base64: string,

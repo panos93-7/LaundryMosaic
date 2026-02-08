@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
-import { GarmentProfile } from "../utils/AI/translateGarment";
+
+// ⭐ Correct canonical type
+import { WardrobeCanonical } from "../utils/AI/SmartWardrobe/wardrobeCanonical";
 
 /* --------------------------------------------- */
 /* TYPES                                         */
@@ -9,11 +11,11 @@ import { GarmentProfile } from "../utils/AI/translateGarment";
 export type Garment = {
   id: number;
 
-  // 🔥 ALWAYS natural English (AI output)
-  original: GarmentProfile;
+  // 🔥 ALWAYS natural English (AI canonical output)
+  original: WardrobeCanonical;
 
   // 🔥 Translated or EN depending on locale
-  profile: GarmentProfile;
+  profile: WardrobeCanonical;
 
   image?: string | null;
 };
@@ -27,7 +29,7 @@ type WardrobeState = {
 
   hydrate: () => Promise<void>;
   addGarment: (g: Garment) => Promise<void>;
-  updateGarment: (g: { id: number; profile: GarmentProfile }) => Promise<void>;
+  updateGarment: (g: { id: number; profile: WardrobeCanonical }) => Promise<void>;
   deleteGarment: (id: number) => Promise<void>;
 };
 
@@ -45,7 +47,12 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
     try {
       const saved = await AsyncStorage.getItem(STORAGE_KEY);
       if (saved) {
-        set({ garments: JSON.parse(saved) });
+        const parsed = JSON.parse(saved);
+
+        // ⭐ Safety: ensure canonical structure
+        const safe = Array.isArray(parsed) ? parsed : [];
+
+        set({ garments: safe });
       }
     } catch (err) {
       console.log("Wardrobe hydrate error:", err);
@@ -56,6 +63,7 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
   addGarment: async (g) => {
     try {
       const updated = [...get().garments, g];
+
       set({ garments: updated });
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     } catch (err) {
@@ -86,6 +94,7 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
   deleteGarment: async (id) => {
     try {
       const updated = get().garments.filter((g) => g.id !== id);
+
       set({ garments: updated });
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     } catch (err) {

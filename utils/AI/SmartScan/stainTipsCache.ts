@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AI_CACHE_VERSION } from "./aiCache";
+import { AI_CACHE_VERSION } from "../Core/aiCache";
 
 const MEMORY_CACHE = new Map<string, any>();
 

@@ -1,6 +1,6 @@
-import { analyzeImageWithGemini } from "../../services/analyzeImage";
-import { aiCacheGet, aiCacheSet } from "./aiCache";
-import { getImageHash } from "./imageHash";
+import { aiCacheGet, aiCacheSet } from "../Core/aiCache";
+import { getImageHash } from "../Core/imageHash";
+import { analyzeImageWithGemini } from "./analyzeImage";
 
 export async function analyzeImageCached(base64: string, mimeType?: string) {
   try {

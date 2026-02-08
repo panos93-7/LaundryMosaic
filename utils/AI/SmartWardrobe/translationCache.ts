@@ -1,8 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AI_CACHE_VERSION } from "./aiCache"; // ⭐ version import
-import { GarmentProfile, Locale, TranslationCache } from "./translateGarment";
+// utils/SmartWardrobe/translationCache.ts
 
-// ⭐ Versioned key
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AI_CACHE_VERSION } from "../Core/aiCache";
+
+// Correct type imports
+import { Locale, TranslationCache } from "./translationTypes";
+import { WardrobeCanonical } from "./wardrobeCanonical";
+
+// Versioned key
 const makeKey = (garmentId: string, locale: Locale) =>
   `v${AI_CACHE_VERSION}:garment:${garmentId}:${locale}`;
 
@@ -16,28 +21,27 @@ export const translationCache: TranslationCache = {
 
       const parsed = JSON.parse(json);
 
-      // Safety: ensure __locale exists
+      // Ensure locale metadata exists
       if (!parsed.__locale) {
         parsed.__locale = locale;
       }
 
-      return parsed as GarmentProfile;
+      return parsed as WardrobeCanonical;
     } catch (err) {
       console.log("⚠️ translationCache.get error:", err);
       return null;
     }
   },
 
-  async set(garmentId: string, locale: Locale, value: GarmentProfile) {
+  async set(garmentId: string, locale: Locale, value: WardrobeCanonical) {
     try {
       const key = makeKey(garmentId, locale);
 
-      // Ensure locale metadata is stored
       const toStore = { ...value, __locale: locale };
 
       await AsyncStorage.setItem(key, JSON.stringify(toStore));
     } catch (err) {
       console.log("⚠️ translationCache.set error:", err);
     }
-  }
+  },
 };

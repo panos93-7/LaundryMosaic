@@ -14,8 +14,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
-import { generateLaundryAdviceCached } from "../utils/AI/generateLaundryAdviceCached";
-import { hashQuery } from "../utils/AI/hashQuery";
+import { generateLaundryAdviceCached } from "../utils/AI/AILaundryAssistant/generateLaundryAdviceCached";
+import { hashQuery } from "../utils/AI/Core/hashQuery";
 
 function detectQueryLanguage(text: string) {
   return /[α-ωΑ-Ω]/.test(text) ? "el" : "en";
@@ -67,19 +67,12 @@ export default function AILaundryAssistantScreen() {
 
       const output = ai.translated || ai.canonical;
 
-      const formatted = output?.care
-        ? [
-            output.care.wash,
-            output.care.bleach,
-            output.care.dry,
-            output.care.iron,
-            output.care.dryclean,
-            ...(output.care.warnings || []),
-          ]
-            .filter(Boolean)
-            .map((line) => `• ${line}`)
-            .join("\n")
-        : String(i18n.t("aiAssistant.noAnswer"));
+const formatted = [
+  `• ${output.recommended.temp}°C`,
+  `• ${output.recommended.spin} rpm`,
+  `• ${output.recommended.program}`,
+  ...output.careInstructions.map((x) => `• ${x}`)
+].join("\n");
 
       setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
     } catch (err) {

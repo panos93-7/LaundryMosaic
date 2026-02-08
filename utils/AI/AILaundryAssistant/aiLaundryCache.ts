@@ -1,10 +1,9 @@
+// utils/AI/AILaundryAssistant/aiLaundryCache.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AI_CACHE_VERSION } from "./aiCache";
+import { AI_CACHE_VERSION } from "../Core/aiCache";
 
 const MEMORY_CACHE = new Map<string, any>();
 
-// canonicalKey = sha256(normalizedQuery)
-// subKey = "canonical" OR "translated_en" OR "translated_el" ...
 function makeKey(canonicalKey: string, subKey: string) {
   const raw = `v${AI_CACHE_VERSION}::laundry::${canonicalKey}::${subKey}`;
   return encodeURIComponent(raw);
@@ -31,5 +30,5 @@ export const aiLaundryCache = {
 
     MEMORY_CACHE.set(key, value);
     await AsyncStorage.setItem(key, JSON.stringify(value));
-  }
+  },
 };

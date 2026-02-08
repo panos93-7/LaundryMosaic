@@ -1,20 +1,15 @@
+// screens/BatchScanScreen.tsx
+
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import i18n from "../i18n";
-import { analyzeBatchCached } from "../utils/AI/analyzeBatchCached";
-import { preprocessImage } from "../utils/AI/preprocessImage";
+import { analyzeBatchCached } from "../utils/AI/BatchScan/analyzeBatchCached";
 
 export default function BatchScanScreen() {
   const navigation = useNavigation<any>();
@@ -46,20 +41,10 @@ export default function BatchScanScreen() {
     setIsProcessing(true);
 
     try {
-      // preprocess (keeps consistency with SmartScan)
-      await preprocessImage(uri);
-
-      // NEW: premium batch pipeline
       const batch = await analyzeBatchCached(uri);
-
-      if (!batch) {
-        setIsProcessing(false);
-        return;
-      }
-
       setResult(batch);
     } catch (err) {
-      console.log("❌ Error analyzing image:", err);
+      console.log("❌ BatchScan error:", err);
     }
 
     setIsProcessing(false);
@@ -126,7 +111,7 @@ export default function BatchScanScreen() {
           <View style={{ marginTop: 40 }}>
             <ActivityIndicator size="large" color="#fff" />
             <Text style={{ color: "#fff", textAlign: "center", marginTop: 10 }}>
-              {i18n.t("batchScan.analyzing")}
+              {String(i18n.t("batchScan.analyzing"))}
             </Text>
           </View>
         )}
@@ -209,7 +194,7 @@ export default function BatchScanScreen() {
               }}
             >
               <Text style={{ color: "#fff", textAlign: "center", fontSize: 16 }}>
-                {i18n.t("batchScan.scanAgain")}
+                {String(i18n.t("batchScan.scanAgain"))}
               </Text>
             </TouchableOpacity>
           </Animated.View>

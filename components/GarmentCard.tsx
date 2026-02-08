@@ -2,6 +2,8 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export function GarmentCard({ item, onPress }: any) {
+  const profile = item?.profile ?? item?.original ?? {};
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -13,6 +15,7 @@ export function GarmentCard({ item, onPress }: any) {
         marginBottom: 14,
       }}
     >
+      {/* IMAGE */}
       <View
         style={{
           height: 120,
@@ -35,13 +38,27 @@ export function GarmentCard({ item, onPress }: any) {
       </View>
 
       {/* TITLE — ALWAYS TRANSLATED */}
-      <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
-        {item.profile?.name ?? item.original?.name}
+      <Text
+        style={{
+          color: "#fff",
+          fontSize: 16,
+          fontWeight: "600",
+        }}
+        numberOfLines={1}
+      >
+        {profile.name || "—"}
       </Text>
 
       {/* SUBTITLE — ALWAYS TRANSLATED */}
-      <Text style={{ color: "#aaa", fontSize: 13, marginTop: 2 }}>
-        {item.profile?.type ?? item.original?.type}
+      <Text
+        style={{
+          color: "#aaa",
+          fontSize: 13,
+          marginTop: 2,
+        }}
+        numberOfLines={1}
+      >
+        {profile.type || "—"}
       </Text>
     </TouchableOpacity>
   );
