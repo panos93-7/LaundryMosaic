@@ -1,3 +1,5 @@
+import i18n from "../../../i18n";
+
 export async function generateStainRemovalTips(
   stain: string,
   fabric: string,
@@ -6,6 +8,8 @@ export async function generateStainRemovalTips(
   const { signal } = options;
 
   try {
+    const locale = String(i18n.locale || "en").split("-")[0];
+
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
       {
@@ -13,7 +17,7 @@ export async function generateStainRemovalTips(
         signal,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: buildPrompt(stain, fabric),
+          prompt: buildPrompt(stain, fabric, locale),
         }),
       }
     );
@@ -30,7 +34,6 @@ export async function generateStainRemovalTips(
 
     raw = raw.trim();
 
-    // Extract JSON even if Gemini adds text around it
     const first = raw.indexOf("{");
     const last = raw.lastIndexOf("}");
 
@@ -57,11 +60,13 @@ export async function generateStainRemovalTips(
   }
 }
 
-function buildPrompt(stain: string, fabric: string) {
+function buildPrompt(stain: string, fabric: string, locale: string) {
   return `
 You are a deterministic stain-removal engine.
 
 Return ONLY valid JSON. No markdown. No prose. No explanations.
+
+Language: ${locale}
 
 JSON schema:
 {

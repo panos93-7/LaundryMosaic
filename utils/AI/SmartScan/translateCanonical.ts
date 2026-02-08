@@ -10,10 +10,10 @@ export async function translateCanonical(
 
   try {
     /* ---------------------------------------------------------------------- */
-    /* 1) DETECT LOCALE                                                       */
+    /* 1) DETECT LOCALE (FIXED)                                               */
     /* ---------------------------------------------------------------------- */
-    const rawLocale = (i18n as any).language || i18n.locale || "en";
-    const locale = String(rawLocale).split("-")[0];
+    const rawLocale = String(i18n.locale || "en");
+    const locale = rawLocale.split("-")[0];
 
     /* ---------------------------------------------------------------------- */
     /* 2) ENGLISH → NO TRANSLATION NEEDED                                     */
