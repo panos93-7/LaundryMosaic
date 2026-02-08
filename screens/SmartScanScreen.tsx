@@ -303,6 +303,46 @@ export default function SmartScanScreen({ navigation }: any) {
           justifyContent: image ? "flex-start" : "center",
         }}
       >
+        {/* HEADER — ONLY WHEN IMAGE EXISTS */}
+  {image && (
+    <View
+      style={{
+        width: "100%",
+        paddingTop: 10,
+        paddingBottom: 10,
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
+      {/* LEFT SIDE — TITLE */}
+      <View style={{ flex: 1, paddingRight: 10 }}>
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 20,
+            fontWeight: "700",
+            flexShrink: 1,
+          }}
+          numberOfLines={2}
+        >
+          {i18n.t("smartScan.title")}
+        </Text>
+      </View>
+
+      {/* RIGHT SIDE — CLOSE */}
+      <TouchableOpacity
+        onPress={resetState}
+        style={{
+          paddingHorizontal: 6,
+          paddingVertical: 2,
+        }}
+      >
+        <Text style={{ color: "#fff", fontSize: 24, fontWeight: "600" }}>
+          ✕
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )}
         {/* CAMERA NOT READY */}
         {!cameraReady && (
           <View
@@ -634,52 +674,44 @@ export default function SmartScanScreen({ navigation }: any) {
                         {safeResult.stains.join(", ")}
                       </Text>
 
-                      {canSeeStainTips ? (
-                        <View>
-                          {safeResult.stainTips.map((item: any, i: number) => {
-                            const steps: string[] = Array.isArray(item.tips)
-  ? item.tips.filter(
-      (s: any) => typeof s === "string" && s.trim().length > 0
-    )
-  : [];
-                            return (
-                              <View
-                                key={i}
-                                style={{
-                                  backgroundColor: "rgba(255,255,255,0.08)",
-                                  padding: 14,
-                                  borderRadius: 12,
-                                  marginBottom: 12,
-                                }}
-                              >
-                                <Text
-                                  style={{
-                                    color: "#fff",
-                                    fontSize: 16,
-                                    fontWeight: "600",
-                                    marginBottom: 6,
-                                  }}
-                                >
-                                  {item.stain}
-                                </Text>
+{canSeeStainTips ? (
+  <View>
+    {safeResult.stainTips.length > 0 && (
+      <View
+        style={{
+          backgroundColor: "rgba(255,255,255,0.08)",
+          padding: 14,
+          borderRadius: 12,
+          marginBottom: 12,
+        }}
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 16,
+            fontWeight: "600",
+            marginBottom: 6,
+          }}
+        >
+          {safeResult.stains.join(", ")}
+        </Text>
 
-                                {steps.map((step, idx) => (
-                                  <Text
-                                    key={idx}
-                                    style={{
-                                      color: "rgba(255,255,255,0.85)",
-                                      marginBottom: 4,
-                                      fontSize: 14,
-                                    }}
-                                  >
-                                    {idx + 1}. {step}
-                                  </Text>
-                                ))}
-                              </View>
-                            );
-                          })}
-                        </View>
-                      ) : (
+        {safeResult.stainTips.map((step: string, idx: number) => (
+          <Text
+            key={idx}
+            style={{
+              color: "rgba(255,255,255,0.85)",
+              marginBottom: 4,
+              fontSize: 14,
+            }}
+          >
+            {idx + 1}. {step}
+          </Text>
+        ))}
+      </View>
+    )}
+  </View>
+) : (
                         /* PAYWALL BUTTON */
                         <View
                           style={{
