@@ -324,13 +324,12 @@ export default function SmartScanScreen({ navigation }: any) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
       <LinearGradient
-         colors={["#0f0c29", "#302b63", "#24243e"]}
-        style={{
-          flex: 1,
-          paddingHorizontal: 20,
-          justifyContent: image ? "flex-start" : "center",
-        }}
-      >
+  colors={["#0f0c29", "#302b63", "#24243e"]}
+  style={{
+    flex: 1,
+    paddingHorizontal: 20,
+  }}
+>
 {/* HEADER */}
 <View
   style={{
