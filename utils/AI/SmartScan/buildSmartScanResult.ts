@@ -1,3 +1,4 @@
+import { preprocessImage } from "../Core/preprocessImage"; // ⭐ σωστό path
 import { analyzeImageCanonicalCached } from "./analyzeImageCanonicalCached";
 import { generateStainRemovalTips } from "./generateStainRemovalTips";
 import { translateCanonical } from "./translateCanonical";
@@ -10,9 +11,16 @@ export async function buildSmartScanResult(
 
   try {
     /* ---------------------------------------------------------------------- */
+    /* 0) PREPROCESS IMAGE → CLEANED BASE64 (DETERMINISTIC FOR CACHING)       */
+    /* ---------------------------------------------------------------------- */
+    const { base64: cleaned } = await preprocessImage(
+      `data:image/jpeg;base64,${base64}`
+    );
+
+    /* ---------------------------------------------------------------------- */
     /* 1) CANONICAL ANALYSIS (CACHED)                                         */
     /* ---------------------------------------------------------------------- */
-    const canonicalResult = await analyzeImageCanonicalCached(base64, { signal });
+    const canonicalResult = await analyzeImageCanonicalCached(cleaned, { signal });
     console.log("🧩 canonicalResult:", canonicalResult);
     if (!canonicalResult) return null;
 
