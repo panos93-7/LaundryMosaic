@@ -1,5 +1,5 @@
 import { analyzeImageCanonicalCached } from "./analyzeImageCanonicalCached";
-import { generateStainRemovalTipsCached } from "./generateStainRemovalTips";
+import { generateStainRemovalTips } from "./generateStainRemovalTips";
 import { translateCanonical } from "./translateCanonical";
 
 export async function buildSmartScanResult(
@@ -47,14 +47,12 @@ export async function buildSmartScanResult(
       translatedRaw && typeof translatedRaw === "object" ? translatedRaw : {};
 
     /* ---------------------------------------------------------------------- */
-    /* 4) STAIN TIPS (CACHED)                                                 */
+    /* 4) STAIN TIPS (NO CACHE)                                               */
     /* ---------------------------------------------------------------------- */
     let stainTips: string[] = [];
 
     if (stains.length > 0 && fabric) {
-      const tips = await generateStainRemovalTipsCached(stains[0], fabric, {
-        signal,
-      });
+      const tips = await generateStainRemovalTips(stains[0], fabric, { signal });
 
       const steps: string[] = Array.isArray(tips?.steps)
         ? tips.steps

@@ -1,5 +1,3 @@
-import { stainTipsCache } from "./stainTipsCache";
-
 export async function generateStainRemovalTips(
   stain: string,
   fabric: string,
@@ -20,85 +18,63 @@ export async function generateStainRemovalTips(
       }
     );
 
-    if (!response.ok) return fabricAwareFallback(stain, fabric);
-
-    const data = await response.json();
-    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
-
-    if (!raw.startsWith("{") || !raw.endsWith("}"))
-      return fabricAwareFallback(stain, fabric);
-
-    let parsed;
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      return fabricAwareFallback(stain, fabric);
+    if (!response.ok) {
+      console.log("❌ StainTips worker error:", await response.text());
+      return null;
     }
 
-    return {
-      stain: parsed.stain ?? stain,
-      fabric: parsed.fabric ?? fabric,
-      steps: Array.isArray(parsed.steps)
-        ? parsed.steps
-            .filter((x: any) => typeof x === "string")
-            .map((x: string) => x.trim())
-        : [],
-    };
+    const data = await response.json();
+    let raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    console.log("RAW STAIN TIPS OUTPUT:", raw);
+
+    raw = raw.trim();
+
+    // Extract JSON even if Gemini adds text around it
+    const first = raw.indexOf("{");
+    const last = raw.lastIndexOf("}");
+
+    if (first === -1 || last === -1) {
+      console.log("❌ No JSON found in stain tips:", raw);
+      return null;
+    }
+
+    const jsonString = raw.slice(first, last + 1);
+
+    let parsed: any;
+    try {
+      parsed = JSON.parse(jsonString);
+    } catch (err) {
+      console.log("❌ StainTips JSON parse error:", jsonString);
+      return null;
+    }
+
+    return parsed;
   } catch (err: any) {
-    if (err?.name === "AbortError") return fabricAwareFallback(stain, fabric);
-    return fabricAwareFallback(stain, fabric);
-  }
-}
-
-export async function generateStainRemovalTipsCached(
-  stain: string,
-  fabric: string,
-  options: { signal?: AbortSignal } = {}
-) {
-  const { signal } = options;
-
-  try {
-    const cached = await stainTipsCache.get(stain, fabric);
-    if (cached) return cached;
-
-    const result = await generateStainRemovalTips(stain, fabric, { signal });
-
-    await stainTipsCache.set(stain, fabric, result);
-
-    return result;
-  } catch (err: any) {
-    if (err?.name === "AbortError") return fabricAwareFallback(stain, fabric);
-    return fabricAwareFallback(stain, fabric);
+    if (err?.name === "AbortError") return null;
+    console.log("❌ generateStainRemovalTips fatal error:", err);
+    return null;
   }
 }
 
 function buildPrompt(stain: string, fabric: string) {
   return `
-You are a deterministic textile-care engine.
+You are a deterministic stain-removal engine.
 
-Return ONLY valid JSON. No markdown. No prose.
+Return ONLY valid JSON. No markdown. No prose. No explanations.
 
 JSON schema:
 {
-  "stain": string,
-  "fabric": string,
   "steps": string[]
 }
 
-Now return the JSON for:
+Rules:
+- steps MUST be an array of strings.
+- No extra fields.
+- No nulls.
+- No text outside JSON.
+
 Stain: "${stain}"
 Fabric: "${fabric}"
 `.trim();
-}
-
-function fabricAwareFallback(stain: string, fabric: string) {
-  return {
-    stain,
-    fabric,
-    steps: [
-      "Blot gently with cold water",
-      "Apply mild detergent",
-      "Rinse and repeat if needed",
-    ],
-  };
 }

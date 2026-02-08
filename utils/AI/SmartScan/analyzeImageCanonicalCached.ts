@@ -14,9 +14,16 @@ export async function analyzeImageCanonicalCached(
   const { signal } = options;
 
   try {
+    // Log incoming base64 length for debugging
+    console.log("📸 analyzeImageCanonicalCached RECEIVED base64 length:", base64?.length);
+
+    // Ensure base64 is a proper data URL
+    const dataUrl = base64.startsWith("data:")
+      ? base64
+      : `data:image/jpeg;base64,${base64}`;
+
     // Hash the image for deterministic caching
     const hash = await hashBase64(base64);
-
     const key = makeKey(hash);
 
     // 1) Memory cache
@@ -33,7 +40,10 @@ export async function analyzeImageCanonicalCached(
     }
 
     // 3) Fresh analysis
-    const canonical = await analyzeImageCanonical(base64, { signal });
+    console.log("📦 Calling analyzeImageCanonical...");
+    const canonical = await analyzeImageCanonical(dataUrl, { signal });
+    console.log("📦 analyzeImageCanonical returned:", canonical);
+
     if (!canonical) return null;
 
     const result = { canonical, hash };
@@ -45,6 +55,7 @@ export async function analyzeImageCanonicalCached(
     return result;
   } catch (err: any) {
     if (err?.name === "AbortError") return null;
+    console.log("❌ analyzeImageCanonicalCached ERROR:", err);
     return null;
   }
 }
