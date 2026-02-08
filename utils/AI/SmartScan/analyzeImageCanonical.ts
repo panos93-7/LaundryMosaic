@@ -7,12 +7,15 @@ export async function analyzeImageCanonical(
   const { signal } = options;
 
   try {
+    // Clean base64
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
 
+    // Preprocess image (resize, compress, mime detection)
     const { base64: processedBase64, mimeType } = await preprocessImage(
       `data:image/jpeg;base64,${cleaned}`
     );
 
+    // Call Gemini Worker
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
       {
@@ -27,23 +30,50 @@ export async function analyzeImageCanonical(
       }
     );
 
-    if (!response.ok) return null;
+    if (!response.ok) {
+      console.log("❌ analyzeImageCanonical worker error:", await response.text());
+      return null;
+    }
 
     const data = await response.json();
-    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+    let raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    if (!raw.startsWith("{") || !raw.endsWith("}")) return null;
+    if (!raw || typeof raw !== "string") {
+      console.log("❌ Empty or invalid raw response");
+      return null;
+    }
 
-    let parsed;
+    raw = raw.trim();
+
+    // ------------------------------------------------------------------
+    // ⭐ FIX: Extract ONLY the JSON, even if Gemini adds text around it
+    // ------------------------------------------------------------------
+    const firstBrace = raw.indexOf("{");
+    const lastBrace = raw.lastIndexOf("}");
+
+    if (firstBrace === -1 || lastBrace === -1) {
+      console.log("❌ No JSON found in response:", raw);
+      return null;
+    }
+
+    const jsonString = raw.slice(firstBrace, lastBrace + 1);
+
+    let parsed: any;
     try {
-      parsed = JSON.parse(raw);
-    } catch {
+      parsed = JSON.parse(jsonString);
+    } catch (err) {
+      console.log("❌ JSON parse error:", jsonString);
       return null;
     }
 
     return normalizeCanonical(parsed);
   } catch (err: any) {
-    if (err?.name === "AbortError") return null;
+    if (err?.name === "AbortError") {
+      console.log("⛔ analyzeImageCanonical aborted");
+      return null;
+    }
+
+    console.log("❌ analyzeImageCanonical fatal error:", err);
     return null;
   }
 }
@@ -53,6 +83,7 @@ function buildPrompt() {
 You are a deterministic garment-analysis engine.
 
 Return ONLY valid JSON. No markdown. No prose. No explanations.
+Never wrap the JSON in backticks. Never include comments.
 
 JSON schema:
 {
@@ -84,16 +115,25 @@ JSON schema:
   "washFrequency": string,
   "careSymbols": string[]
 }
+
+Rules:
+- "stains" MUST ALWAYS be an array of strings.
+- NEVER return objects inside "stains".
+- NEVER return null in any field.
+- No extra fields.
+- No text outside JSON.
 `.trim();
 }
 
 function normalizeCanonical(obj: any) {
   const safeString = (v: any) =>
-    typeof v === "string" ? v.trim() : "";
+    typeof v === "string" && v.trim() ? v.trim() : "";
 
   const safeArray = (arr: any) =>
     Array.isArray(arr)
-      ? arr.filter((x) => typeof x === "string").map((x) => x.trim())
+      ? arr
+          .filter((x: any) => typeof x === "string")
+          .map((x: string) => x.trim())
       : [];
 
   return {
@@ -108,8 +148,14 @@ function normalizeCanonical(obj: any) {
 
     recommended: {
       program: safeString(obj?.recommended?.program),
-      temp: typeof obj?.recommended?.temp === "number" ? obj.recommended.temp : 30,
-      spin: typeof obj?.recommended?.spin === "number" ? obj.recommended.spin : 800,
+      temp:
+        typeof obj?.recommended?.temp === "number"
+          ? obj.recommended.temp
+          : 30,
+      spin:
+        typeof obj?.recommended?.spin === "number"
+          ? obj.recommended.spin
+          : 800,
     },
 
     care: {
