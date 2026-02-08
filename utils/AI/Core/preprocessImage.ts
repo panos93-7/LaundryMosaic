@@ -1,12 +1,5 @@
 import * as ImageManipulator from "expo-image-manipulator";
 
-/**
- * Preprocess image for Gemini Vision:
- * - Normalize URI (file://, content://, assets-library://)
- * - Resize to max 1024px
- * - Convert to JPEG
- * - Return clean { base64, mimeType }
- */
 export async function preprocessImage(
   uri: string
 ): Promise<{ base64: string; mimeType: string }> {
@@ -15,12 +8,7 @@ export async function preprocessImage(
       throw new Error("Invalid image URI");
     }
 
-    // Normalize URI (remove accidental whitespace, prefixes)
     const normalizedUri = uri.trim();
-
-    // iOS sometimes returns "ph://" URIs → ImageManipulator cannot read them
-    // Expo automatically resolves them internally, so we just pass the URI.
-    // If it fails, the catch block will handle it.
 
     const manipulated = await ImageManipulator.manipulateAsync(
       normalizedUri,
@@ -33,27 +21,25 @@ export async function preprocessImage(
     );
 
     if (!manipulated?.base64) {
-      throw new Error("ImageManipulator returned no base64 data");
+      console.log("❌ ImageManipulator returned no base64");
+      return { base64: "", mimeType: "image/jpeg" };
     }
 
-    // Always JPEG output
-    const mimeType = "image/jpeg";
-
-    // Clean base64 (remove accidental prefixes)
     const cleanedBase64 = manipulated.base64
       .replace(/^data:.*;base64,/, "")
       .trim();
 
-    if (!cleanedBase64 || cleanedBase64.length < 50) {
-      throw new Error("Base64 output is too small or corrupted");
+    if (!cleanedBase64 || cleanedBase64.length < 200) {
+      console.log("⚠️ Base64 unusually small:", cleanedBase64.length);
+      // αλλά ΔΕΝ κάνουμε throw
     }
 
     return {
       base64: cleanedBase64,
-      mimeType,
+      mimeType: "image/jpeg",
     };
   } catch (err) {
     console.log("❌ preprocessImage failed:", err);
-    throw new Error("Failed to preprocess image");
+    return { base64: "", mimeType: "image/jpeg" }; // fallback
   }
 }
