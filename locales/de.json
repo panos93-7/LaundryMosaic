@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "Waschen starten",
   "screenTitle": "Wascheinstellungen",
-
   "fabricTypeLabel": "Stoffart",
   "fabricColorLabel": "Stofffarbe",
   "laundryProgram": "Waschprogramm",
   "language": "Sprache",
-
   "savePreset": "Voreinstellung speichern",
   "loadPreset": "Voreinstellung laden",
-
   "lightMode": "Helles Design",
   "darkMode": "Dunkles Design",
-
   "fabricLabel": "Stoff",
   "colorLabel": "Farbe",
   "programLabel": "Programm",

@@ -1,45 +1,75 @@
 // utils/SmartWardrobe/translateWardrobeProfile.ts
 
-import { TranslationCache } from "./translationTypes";
+import { Locale } from "./translationTypes";
 import { WardrobeCanonical } from "./wardrobeCanonical";
 
 export async function translateWardrobeProfile(
-  original: WardrobeCanonical,
-  locale: string,
+  canonical: WardrobeCanonical,
+  locale: Locale,
   garmentId: string,
-  cache: TranslationCache
-) {
-  if (locale === "en") return { ...original, __locale: "en" };
-
+  translateFn: (text: string, locale: Locale) => Promise<string>,
+  cache: {
+    get: (id: string, locale: Locale) => Promise<WardrobeCanonical | null>;
+    set: (id: string, locale: Locale, value: WardrobeCanonical) => Promise<void>;
+  }
+): Promise<WardrobeCanonical> {
+  // 1) Translation cache check (persistent)
   const cached = await cache.get(garmentId, locale);
   if (cached) return cached;
 
-  const response = await fetch("https://gemini-proxy.panos-ai.workers.dev", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      prompt: `
-Translate ONLY the values of this JSON into ${locale}.
-Keep structure identical.
-Return ONLY JSON.
+  // 2) Helper for translating strings safely
+  const t = async (v: string) => (v ? await translateFn(v, locale) : "");
 
-${JSON.stringify(original)}
-`,
-    }),
-  });
+  // 3) Helper for translating arrays
+  const tArr = async (arr: string[]) =>
+    Promise.all(arr.map((item) => t(item)));
 
-  const data = await response.json();
-  let raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-  raw = raw.replace(/```json/g, "").replace(/```/g, "");
+  // 4) Build translated garment
+  const translated: WardrobeCanonical = {
+    ...canonical,
+    __locale: locale,
 
-  const first = raw.indexOf("{");
-  const last = raw.lastIndexOf("}");
+    name: await t(canonical.name),
+    type: await t(canonical.type),
+    category: await t(canonical.category),
+    fabric: await t(canonical.fabric),
+    color: await t(canonical.color),
+    pattern: await t(canonical.pattern),
 
-  const json = JSON.parse(raw.substring(first, last + 1));
+    stains: await tArr(canonical.stains),
+    stainTips: await tArr(canonical.stainTips),
 
-  json.__locale = locale;
+    recommended: {
+      ...canonical.recommended,
+      program: await t(canonical.recommended.program),
+      detergent: await t(canonical.recommended.detergent),
+      notes: await tArr(canonical.recommended.notes),
+    },
 
-  await cache.set(garmentId, locale, json);
+    care: {
+      ...canonical.care,
+      wash: await t(canonical.care.wash),
+      bleach: await t(canonical.care.bleach),
+      dry: await t(canonical.care.dry),
+      iron: await t(canonical.care.iron),
+      dryclean: await t(canonical.care.dryclean),
+      warnings: await tArr(canonical.care.warnings),
+    },
 
-  return json;
+    risks: {
+      shrinkage: await t(canonical.risks.shrinkage),
+      colorBleeding: await t(canonical.risks.colorBleeding),
+      delicacy: await t(canonical.risks.delicacy),
+    },
+
+    washFrequency: await t(canonical.washFrequency),
+
+    // careSymbols ΔΕΝ μεταφράζονται εδώ
+    careSymbols: canonical.careSymbols,
+  };
+
+  // 5) Save to translation cache (persistent)
+  await cache.set(garmentId, locale, translated);
+
+  return translated;
 }

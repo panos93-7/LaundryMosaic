@@ -19,10 +19,8 @@ export default function EditGarmentScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
-  // We receive ONLY the ID
   const { id } = route.params;
 
-  // Pull garment from store
   const garment = useWardrobeStore((s) =>
     s.garments.find((g) => g.id === id)
   );
@@ -30,7 +28,6 @@ export default function EditGarmentScreen() {
   const updateGarment = useWardrobeStore((s) => s.updateGarment);
   const deleteGarment = useWardrobeStore((s) => s.deleteGarment);
 
-  // If garment is missing (deleted or corrupted)
   if (!garment) {
     return (
       <LinearGradient
@@ -50,6 +47,7 @@ export default function EditGarmentScreen() {
   const [fabric, setFabric] = useState(garment.profile.fabric ?? "");
   const [pattern, setPattern] = useState(garment.profile.pattern ?? "");
   const [image, setImage] = useState<string | null>(garment?.image ?? null);
+
   const pickImage = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -61,18 +59,35 @@ export default function EditGarmentScreen() {
     }
   };
 
+  // ⭐ SmartWardrobe V3 aligned save
   const handleSave = () => {
+    const updatedProfile = {
+      ...garment.profile,
+      name,
+      type,
+      color,
+      category,
+      fabric,
+      pattern,
+      // __locale removed → forces re-translation
+    };
+
+    const updatedOriginal = {
+      ...garment.original,
+      name,
+      type,
+      color,
+      category,
+      fabric,
+      pattern,
+      __locale: "en", // canonical always EN
+    };
+
     updateGarment({
       id: garment.id,
-      profile: {
-        ...garment.profile,
-        name,
-        type,
-        color,
-        category,
-        fabric,
-        pattern,
-      },
+      original: updatedOriginal,
+      profile: updatedProfile,
+      image: image ?? garment.image,
     });
 
     navigation.goBack();
@@ -106,7 +121,6 @@ export default function EditGarmentScreen() {
         showsVerticalScrollIndicator={false}
       >
         <SafeAreaView>
-
           {/* BACK */}
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
@@ -297,7 +311,6 @@ export default function EditGarmentScreen() {
               {String(i18n.t("editGarment.deleteGarment"))}
             </Text>
           </TouchableOpacity>
-
         </SafeAreaView>
       </ScrollView>
     </LinearGradient>

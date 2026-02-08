@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "洗濯を開始",
   "screenTitle": "洗濯設定",
-
   "fabricTypeLabel": "素材タイプ",
   "fabricColorLabel": "色",
   "laundryProgram": "洗濯プログラム",
   "language": "言語",
-
   "savePreset": "プリセットを保存",
   "loadPreset": "プリセットを読み込む",
-
   "lightMode": "ライトモード",
   "darkMode": "ダークモード",
-
   "fabricLabel": "素材",
   "colorLabel": "色",
   "programLabel": "プログラム",

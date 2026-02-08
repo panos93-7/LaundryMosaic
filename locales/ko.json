@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "세탁 시작하기",
   "screenTitle": "세탁 설정",
-
   "fabricTypeLabel": "소재 종류",
   "fabricColorLabel": "색상",
   "laundryProgram": "세탁 프로그램",
   "language": "언어",
-
   "savePreset": "프리셋 저장",
   "loadPreset": "프리셋 불러오기",
-
   "lightMode": "라이트 모드",
   "darkMode": "다크 모드",
-
   "fabricLabel": "소재",
   "colorLabel": "색상",
   "programLabel": "프로그램",

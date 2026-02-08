@@ -3,7 +3,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AI_CACHE_VERSION } from "../Core/aiCache";
 
-// Correct type imports
 import { Locale, TranslationCache } from "./translationTypes";
 import { WardrobeCanonical } from "./wardrobeCanonical";
 
@@ -37,7 +36,10 @@ export const translationCache: TranslationCache = {
     try {
       const key = makeKey(garmentId, locale);
 
-      const toStore = { ...value, __locale: locale };
+      const toStore: WardrobeCanonical = {
+        ...value,
+        __locale: locale,
+      };
 
       await AsyncStorage.setItem(key, JSON.stringify(toStore));
     } catch (err) {

@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "Yıkamayı Başlat",
   "screenTitle": "Yıkama Ayarları",
-
   "fabricTypeLabel": "Kumaş Türü",
   "fabricColorLabel": "Kumaş Rengi",
   "laundryProgram": "Yıkama Programı",
   "language": "Dil",
-
   "savePreset": "Ön Ayarı Kaydet",
   "loadPreset": "Ön Ayarı Yükle",
-
   "lightMode": "Açık Tema",
   "darkMode": "Koyu Tema",
-
   "fabricLabel": "Kumaş",
   "colorLabel": "Renk",
   "programLabel": "Program",

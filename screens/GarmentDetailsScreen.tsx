@@ -9,7 +9,8 @@ import i18n from "../i18n";
 import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
 
-// ⭐ Correct SmartWardrobe v3 imports
+// SmartWardrobe v3
+import { translateText } from "../utils/AI/SmartWardrobe/translateText";
 import { translateWardrobeProfile } from "../utils/AI/SmartWardrobe/translateWardrobeProfile";
 import { translationCache } from "../utils/AI/SmartWardrobe/translationCache";
 
@@ -54,11 +55,11 @@ export default function GarmentDetailsScreen() {
 
   const [isTranslating, setIsTranslating] = useState(false);
 
-  // ⭐ LAZY TRANSLATION EFFECT (v3 clean)
+  // ⭐ LAZY TRANSLATION EFFECT (SmartWardrobe v3)
   useEffect(() => {
     if (!garment) return;
 
-    // 1. English → always original
+    // 1) English → always original canonical
     if (locale === "en") {
       updateGarment({
         id: garment.id,
@@ -67,21 +68,33 @@ export default function GarmentDetailsScreen() {
       return;
     }
 
-    // 2. Already translated → stop
-    if (garment.profile?.__locale === locale) {
-      return;
-    }
+    // 2) Already translated → stop
+    if (garment.profile?.__locale === locale) return;
 
-    // 3. Prevent double calls
+    // 3) Prevent double calls
     if (isTranslating) return;
 
     async function run() {
       setIsTranslating(true);
 
+      // Check translation cache
+      const cached = await translationCache.get(garment.id.toString(), locale);
+
+      if (cached) {
+        updateGarment({
+          id: garment.id,
+          profile: { ...cached, __locale: locale },
+        });
+        setIsTranslating(false);
+        return;
+      }
+
+      // Translate canonical EN → locale
       const translated = await translateWardrobeProfile(
         garment.original,
         locale,
         garment.id.toString(),
+        translateText,
         translationCache
       );
 

@@ -1,6 +1,7 @@
 // utils/SmartWardrobe/wardrobeNormalize.ts
-
+import { sanitizeCareSymbols } from "./sanitizeCareSymbols";
 import { WardrobeCanonical } from "./wardrobeCanonical";
+
 
 export function wardrobeNormalize(raw: any): WardrobeCanonical {
   if (!raw || typeof raw !== "object") {
@@ -8,45 +9,55 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
   }
 
   return {
-    name: raw.name || "",
-    type: raw.type || "",
-    category: raw.category || "",
-    fabric: raw.fabric || "",
-    color: raw.color || "",
-    pattern: raw.pattern || "",
+    name: clean(raw.name),
+    type: clean(raw.type),
+    category: clean(raw.category),
+    fabric: clean(raw.fabric),
+    color: clean(raw.color),
+    pattern: clean(raw.pattern),
 
-    stains: Array.isArray(raw.stains) ? raw.stains : [],
-    stainTips: Array.isArray(raw.stainTips) ? raw.stainTips : [],
+    stains: arr(raw.stains),
+    stainTips: arr(raw.stainTips),
 
     recommended: {
-      program: raw?.recommended?.program || "",
-      temp: typeof raw?.recommended?.temp === "number" ? raw.recommended.temp : 30,
-      spin: typeof raw?.recommended?.spin === "number" ? raw.recommended.spin : 800,
-      detergent: raw?.recommended?.detergent || "",
-      notes: Array.isArray(raw?.recommended?.notes) ? raw.recommended.notes : [],
+      program: clean(raw?.recommended?.program),
+      temp: num(raw?.recommended?.temp, 30),
+      spin: num(raw?.recommended?.spin, 800),
+      detergent: clean(raw?.recommended?.detergent),
+      notes: arr(raw?.recommended?.notes),
     },
 
     care: {
-      wash: raw?.care?.wash || "",
-      bleach: raw?.care?.bleach || "",
-      dry: raw?.care?.dry || "",
-      iron: raw?.care?.iron || "",
-      dryclean: raw?.care?.dryclean || "",
-      warnings: Array.isArray(raw?.care?.warnings) ? raw.care.warnings : [],
+      wash: clean(raw?.care?.wash),
+      bleach: clean(raw?.care?.bleach),
+      dry: clean(raw?.care?.dry),
+      iron: clean(raw?.care?.iron),
+      dryclean: clean(raw?.care?.dryclean),
+      warnings: arr(raw?.care?.warnings),
     },
 
     risks: {
-      shrinkage: raw?.risks?.shrinkage || "",
-      colorBleeding: raw?.risks?.colorBleeding || "",
-      delicacy: raw?.risks?.delicacy || "",
+      shrinkage: clean(raw?.risks?.shrinkage),
+      colorBleeding: clean(raw?.risks?.colorBleeding),
+      delicacy: clean(raw?.risks?.delicacy),
     },
 
-    washFrequency: raw.washFrequency || "",
-    careSymbols: Array.isArray(raw.careSymbols) ? raw.careSymbols : [],
+    washFrequency: clean(raw.washFrequency),
+    careSymbols: sanitizeCareSymbols(raw.careSymbols),
+
 
     __locale: raw.__locale || "en",
   };
 }
+
+const clean = (v: any) =>
+  typeof v === "string" ? v.trim() : "";
+
+const arr = (v: any) =>
+  Array.isArray(v) ? v.map(clean) : [];
+
+const num = (v: any, fallback: number) =>
+  typeof v === "number" ? v : fallback;
 
 export const EMPTY_CANONICAL: WardrobeCanonical = {
   name: "",

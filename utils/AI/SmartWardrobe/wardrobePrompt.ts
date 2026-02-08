@@ -1,15 +1,12 @@
 // utils/SmartWardrobe/wardrobePrompt.ts
 
-import i18n from "../../../i18n";
-const locale = i18n.locale;
-
 export const WARDROBE_PROMPT = `
 You are an expert fashion, textile, and laundry-care assistant.
 Analyze the garment in the image and return ONLY valid JSON.
 
 LANGUAGE RULES:
-- Respond ONLY in ${locale}.
-- Translate ALL values into ${locale}.
+- Respond ONLY in English.
+- Do NOT translate values.
 - Do NOT translate JSON keys.
 - No markdown, no explanations.
 

@@ -1,22 +1,21 @@
 // utils/SmartWardrobe/analyzeWardrobeCached.ts
-
 import { preprocessImage } from "../Core/preprocessImage";
 import { analyzeWardrobeImage } from "./analyzeWardrobeImage";
 import { wardrobeCacheGet, wardrobeCacheSet } from "./wardrobeCache";
+import { wardrobeCanonicalKey } from "./wardrobeCanonical";
 import { wardrobeNormalize } from "./wardrobeNormalize";
 
 export async function analyzeWardrobeCached(uri: string) {
   const { base64, mimeType } = await preprocessImage(uri);
 
-  const hash = base64.slice(0, 200);
+  const raw = await analyzeWardrobeImage(base64, mimeType);
+  const canonical = wardrobeNormalize(raw);
 
-  const cached = await wardrobeCacheGet(hash);
+  const key = wardrobeCanonicalKey(canonical);
+
+  const cached = await wardrobeCacheGet(key);
   if (cached) return cached;
 
-  const raw = await analyzeWardrobeImage(base64, mimeType);
-  const normalized = wardrobeNormalize(raw);
-
-  await wardrobeCacheSet(hash, normalized);
-
-  return normalized;
+  await wardrobeCacheSet(key, canonical);
+  return canonical;
 }

@@ -5,13 +5,15 @@ import LottieView from "lottie-react-native";
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { GarmentCard } from "../components/GarmentCard";
 import i18n from "../i18n";
 
 import { useLanguageStore } from "../store/languageStore";
 import { useWardrobeStore } from "../store/wardrobeStore";
 
-// ⭐ Correct SmartWardrobe v3 imports
+// SmartWardrobe v3
+import { translateText } from "../utils/AI/SmartWardrobe/translateText";
 import { translateWardrobeProfile } from "../utils/AI/SmartWardrobe/translateWardrobeProfile";
 import { translationCache } from "../utils/AI/SmartWardrobe/translationCache";
 import { wardrobePipeline } from "../utils/AI/SmartWardrobe/wardrobePipeline";
@@ -40,20 +42,27 @@ export default function WardrobeScreen() {
 
       const translatedProfiles = await Promise.all(
         garments.map(async (g) => {
-          const translated =
-            locale === "en"
-              ? g.original
-              : await translateWardrobeProfile(
-                  g.original,
-                  locale,
-                  g.id.toString(),
-                  translationCache
-                );
+          // English → no translation needed
+          if (locale === "en") {
+            return { ...g, profile: g.original };
+          }
 
-          return {
-            ...g,
-            profile: translated,
-          };
+          // Check translation cache
+          const cached = await translationCache.get(g.id.toString(), locale);
+          if (cached) {
+            return { ...g, profile: cached };
+          }
+
+          // Translate original canonical
+          const translated = await translateWardrobeProfile(
+            g.original,
+            locale,
+            g.id.toString(),
+            translateText,
+            translationCache
+          );
+
+          return { ...g, profile: translated };
         })
       );
 
@@ -65,7 +74,7 @@ export default function WardrobeScreen() {
     translateAll();
   }, [locale]);
 
-  // ⭐ Clean, deterministic SmartWardrobe v3 add flow
+  // Add garment flow
   const handleAddGarment = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -82,13 +91,16 @@ export default function WardrobeScreen() {
     try {
       const locale = (i18n as any).language;
 
-      // Full pipeline: preprocess → AI → normalize → cache → translate
-      const { original, profile } = await wardrobePipeline(uri, locale);
+      const { original, profile } = await wardrobePipeline(
+        uri,
+        locale,
+        translateText
+      );
 
       await addGarment({
         id: Date.now(),
-        original, // always EN canonical
-        profile,  // translated or EN
+        original,
+        profile,
         image: uri,
       });
     } catch (err) {

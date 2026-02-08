@@ -1,4 +1,5 @@
 // utils/SmartWardrobe/wardrobeCanonical.ts
+import { createHash } from "crypto";
 
 export type WardrobeCanonical = {
   name: string;
@@ -39,3 +40,9 @@ export type WardrobeCanonical = {
 
   __locale?: string;
 };
+
+export function wardrobeCanonicalKey(obj: WardrobeCanonical) {
+  const { __locale, ...rest } = obj;
+  const json = JSON.stringify(rest);
+  return createHash("sha256").update(json).digest("hex").slice(0, 32);
+}

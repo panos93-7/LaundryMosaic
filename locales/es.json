@@ -78,11 +78,9 @@
     "conflicts": "Conflictos",
     "suggestions": "Sugerencias",
     "scanAgain": "Escanear Nuevamente",
-
     "conflict_wool": "Las prendas de lana deben lavarse por separado.",
     "conflict_delicate": "Las prendas delicadas no deben mezclarse con otros tejidos.",
     "conflict_cotton_wool": "El algodón y la lana requieren diferentes temperaturas.",
-
     "suggest_cotton": "Carga ideal para el programa Algodón Colores.",
     "suggest_synthetics": "Se detectaron sintéticos — usa el programa Sintéticos.",
     "suggest_stains": "Algunos artículos tienen manchas — considera un pretratamiento.",

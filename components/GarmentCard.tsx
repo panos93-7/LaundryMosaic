@@ -1,8 +1,15 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useLanguageStore } from "../store/languageStore";
 
 export function GarmentCard({ item, onPress }: any) {
-  const profile = item?.profile ?? item?.original ?? {};
+  const locale = useLanguageStore((s) => s.language);
+
+  // Always prefer translated profile if locale matches
+  const profile =
+    item?.profile?.__locale === locale
+      ? item.profile
+      : item.original ?? {};
 
   return (
     <TouchableOpacity

@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "Démarrer le lavage",
   "screenTitle": "Paramètres de lavage",
-
   "fabricTypeLabel": "Type de tissu",
   "fabricColorLabel": "Couleur du tissu",
   "laundryProgram": "Programme de lavage",
   "language": "Langue",
-
   "savePreset": "Enregistrer le préréglage",
   "loadPreset": "Charger le préréglage",
-
   "lightMode": "Mode clair",
   "darkMode": "Mode sombre",
-
   "fabricLabel": "Tissu",
   "colorLabel": "Couleur",
   "programLabel": "Programme",

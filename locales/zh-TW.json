@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "開始洗衣",
   "screenTitle": "洗衣設定",
-
   "fabricTypeLabel": "布料種類",
   "fabricColorLabel": "布料顏色",
   "laundryProgram": "洗衣行程",
   "language": "語言",
-
   "savePreset": "儲存預設",
   "loadPreset": "載入預設",
-
   "lightMode": "淺色模式",
   "darkMode": "深色模式",
-
   "fabricLabel": "布料",
   "colorLabel": "顏色",
   "programLabel": "行程",

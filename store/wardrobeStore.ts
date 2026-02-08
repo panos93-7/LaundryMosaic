@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 
-// ⭐ Correct canonical type
+// Canonical type
 import { WardrobeCanonical } from "../utils/AI/SmartWardrobe/wardrobeCanonical";
 
 /* --------------------------------------------- */
@@ -11,10 +11,10 @@ import { WardrobeCanonical } from "../utils/AI/SmartWardrobe/wardrobeCanonical";
 export type Garment = {
   id: number;
 
-  // 🔥 ALWAYS natural English (AI canonical output)
+  // Always natural English (AI canonical output)
   original: WardrobeCanonical;
 
-  // 🔥 Translated or EN depending on locale
+  // Translated or EN depending on locale
   profile: WardrobeCanonical;
 
   image?: string | null;
@@ -29,7 +29,10 @@ type WardrobeState = {
 
   hydrate: () => Promise<void>;
   addGarment: (g: Garment) => Promise<void>;
-  updateGarment: (g: { id: number; profile: WardrobeCanonical }) => Promise<void>;
+
+  // Update canonical + profile + image
+  updateGarment: (g: Partial<Garment> & { id: number }) => Promise<void>;
+
   deleteGarment: (id: number) => Promise<void>;
 };
 
@@ -49,7 +52,7 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
       if (saved) {
         const parsed = JSON.parse(saved);
 
-        // ⭐ Safety: ensure canonical structure
+        // Safety: ensure array
         const safe = Array.isArray(parsed) ? parsed : [];
 
         set({ garments: safe });
@@ -71,14 +74,16 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
     }
   },
 
-  /* UPDATE GARMENT — ONLY UPDATE PROFILE (SAFE) */
+  /* UPDATE GARMENT — canonical + profile + image */
   updateGarment: async (g) => {
     try {
       const updated = get().garments.map((item) =>
         item.id === g.id
           ? {
               ...item,
-              profile: g.profile, // 🔥 ONLY replace profile
+              original: g.original ?? item.original,
+              profile: g.profile ?? item.profile,
+              image: g.image ?? item.image,
             }
           : item
       );
