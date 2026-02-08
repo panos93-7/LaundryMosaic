@@ -7,15 +7,12 @@ export async function analyzeImageCanonical(
   const { signal } = options;
 
   try {
-    // Clean base64
     const cleaned = base64.replace(/^data:.*;base64,/, "").trim();
 
-    // Preprocess image (resize, compress, mime detection)
     const { base64: processedBase64, mimeType } = await preprocessImage(
       `data:image/jpeg;base64,${cleaned}`
     );
 
-    // Call Gemini Worker
     const response = await fetch(
       "https://gemini-proxy.panos-ai.workers.dev",
       {
@@ -31,7 +28,7 @@ export async function analyzeImageCanonical(
     );
 
     if (!response.ok) {
-      console.log("❌ analyzeImageCanonical worker error:", await response.text());
+      console.log("❌ Worker error:", await response.text());
       return null;
     }
 
@@ -39,24 +36,24 @@ export async function analyzeImageCanonical(
     let raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
     if (!raw || typeof raw !== "string") {
-      console.log("❌ Empty or invalid raw response");
+      console.log("❌ Empty raw response");
       return null;
     }
 
     raw = raw.trim();
 
-    // ------------------------------------------------------------------
-    // ⭐ FIX: Extract ONLY the JSON, even if Gemini adds text around it
-    // ------------------------------------------------------------------
-    const firstBrace = raw.indexOf("{");
-    const lastBrace = raw.lastIndexOf("}");
+    // ------------------------------------------------------------
+    // ⭐ Extract JSON even if Gemini adds text around it
+    // ------------------------------------------------------------
+    const first = raw.indexOf("{");
+    const last = raw.lastIndexOf("}");
 
-    if (firstBrace === -1 || lastBrace === -1) {
-      console.log("❌ No JSON found in response:", raw);
+    if (first === -1 || last === -1) {
+      console.log("❌ No JSON found:", raw);
       return null;
     }
 
-    const jsonString = raw.slice(firstBrace, lastBrace + 1);
+    const jsonString = raw.slice(first, last + 1);
 
     let parsed: any;
     try {
@@ -73,7 +70,7 @@ export async function analyzeImageCanonical(
       return null;
     }
 
-    console.log("❌ analyzeImageCanonical fatal error:", err);
+    console.log("❌ Fatal error:", err);
     return null;
   }
 }
