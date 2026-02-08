@@ -13,7 +13,7 @@ export async function wardrobePipeline(
 ) {
   // 1) Canonical garment (AI analysis + normalize)
   const canonical = await analyzeWardrobeCached(uri);
-
+console.log("🧩 CANONICAL:", JSON.stringify(canonical, null, 2));
   // 2) Deterministic, language‑agnostic garment ID
   const garmentId = await wardrobeCanonicalKey(canonical); // ⭐ FIXED
 
