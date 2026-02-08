@@ -14,8 +14,12 @@ export async function analyzeBatch(uri: string) {
   // 1) Preprocess image
   const { base64, mimeType } = await preprocessImage(uri);
 
-  // 2) Deterministic cache key
-  const hash = base64.slice(0, 200);
+  // Detect locale (ΠΡΕΠΕΙ ΝΑ ΕΙΝΑΙ ΠΡΙΝ ΤΟ CACHE KEY)
+  const rawLocale = String(i18n.locale || "en");
+  const locale = rawLocale.split("-")[0];
+
+  // 2) Deterministic cache key (language‑aware)
+  const hash = `${base64.slice(0, 200)}:${locale}`;
 
   // 3) Cache check
   const cached = await getBatchCache(hash);
@@ -28,10 +32,6 @@ export async function analyzeBatch(uri: string) {
   const normalized = aiItems
     .map((it) => batchNormalize(it))
     .filter((x): x is BatchItemCanonical => x !== null);
-
-  // Detect locale
-  const rawLocale = String(i18n.locale || "en");
-  const locale = rawLocale.split("-")[0];
 
   // 6) Build final result object
   const result = {
