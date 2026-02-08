@@ -34,6 +34,7 @@ export async function analyzeImageCanonical(
 
     const data = await response.json();
     let raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+console.log("RAW WORKER OUTPUT:", raw);
 
     if (!raw || typeof raw !== "string") {
       console.log("❌ Empty raw response");
