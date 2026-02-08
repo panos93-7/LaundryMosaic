@@ -17,14 +17,24 @@ export async function translateWardrobeProfile(
   const cached = await cache.get(garmentId, locale);
   if (cached) return cached;
 
-  // 2) Helper for translating strings safely
-  const t = async (v: string) => (v ? await translateFn(v, locale) : "");
+  // 2) Logging start
+  console.log("⏱️ translation start for", garmentId);
 
-  // 3) Helper for translating arrays
+  // 3) Helper for translating strings with timing logs
+  const t = async (v: string) => {
+    if (!v) return "";
+
+    const start = Date.now();
+    const result = await translateFn(v, locale);
+    console.log("⏱️ translated:", `"${v}"`, "in", Date.now() - start, "ms");
+    return result;
+  };
+
+  // 4) Helper for translating arrays
   const tArr = async (arr: string[]) =>
     Promise.all(arr.map((item) => t(item)));
 
-  // 4) Build translated garment
+  // 5) Build translated garment
   const translated: WardrobeCanonical = {
     ...canonical,
     __locale: locale,
@@ -68,8 +78,11 @@ export async function translateWardrobeProfile(
     careSymbols: canonical.careSymbols,
   };
 
-  // 5) Save to translation cache (persistent)
+  // 6) Save to translation cache (persistent)
   await cache.set(garmentId, locale, translated);
+
+  // 7) Logging end
+  console.log("⏱️ translation finished for", garmentId);
 
   return translated;
 }

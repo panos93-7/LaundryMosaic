@@ -6,14 +6,22 @@ import { wardrobeCanonicalKey } from "./wardrobeCanonical";
 import { wardrobeNormalize } from "./wardrobeNormalize";
 
 export async function analyzeWardrobeCached(uri: string) {
-  const { base64, mimeType } = await preprocessImage(uri);
+  console.log("⏱️ preprocess start");
+const { base64, mimeType } = await preprocessImage(uri);
+console.log("⏱️ preprocess end");
 
-  const raw = await analyzeWardrobeImage(base64, mimeType);
-  const canonical = wardrobeNormalize(raw);
+console.log("⏱️ analyze start");
+const raw = await analyzeWardrobeImage(base64, mimeType);
+console.log("⏱️ analyze end");
 
-  const key = await wardrobeCanonicalKey(canonical); // ⭐ FIXED
+console.log("⏱️ normalize + hash start");
+const canonical = wardrobeNormalize(raw);
+const key = await wardrobeCanonicalKey(canonical);
+console.log("⏱️ normalize + hash end");
 
-  const cached = await wardrobeCacheGet(key);
+console.log("⏱️ cache get start");
+const cached = await wardrobeCacheGet(key);
+console.log("⏱️ cache get end");
   if (cached) return cached;
 
   await wardrobeCacheSet(key, canonical);
