@@ -10,14 +10,16 @@ export async function wardrobePipeline(
   uri: string,
   locale: Locale
 ) {
-  // 1) Canonical garment (AI analysis + normalize)
+  // 1) Canonical garment
   const canonical = await analyzeWardrobeCached(uri);
   console.log("🧩 CANONICAL:", JSON.stringify(canonical, null, 2));
 
-  // 2) Deterministic, language‑agnostic garment ID
+  // 2) Deterministic garment ID
   const garmentId = await wardrobeCanonicalKey(canonical);
 
-  // 3) English → no translation needed
+  console.log("🌍 wardrobePipeline locale:", locale);
+
+  // 3) English → no translation
   if (locale === "en") {
     return {
       original: canonical,
@@ -25,25 +27,23 @@ export async function wardrobePipeline(
     };
   }
 
-  // 4) Check translation cache
+  // 4) Cache check
   const cached = await translationCache.get(garmentId, locale);
   if (cached) {
+    console.log("🌍 HIT translation cache for", garmentId, locale);
     return {
       original: canonical,
       profile: cached,
     };
   }
 
-  // 5) Batch translate canonical → locale
+  // 5) Translate
   const translated = await translateWardrobeProfile(
     canonical,
     locale,
     garmentId,
     translationCache
   );
-
-  // 6) Save translated profile
-  await translationCache.set(garmentId, locale, translated);
 
   return {
     original: canonical,

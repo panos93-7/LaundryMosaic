@@ -7,6 +7,7 @@ import LottieView from "lottie-react-native";
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { resolveLocale } from "../utils/AI/SmartWardrobe/resolveLocale";
 
 import { GarmentCard } from "../components/GarmentCard";
 import i18n from "../i18n";
@@ -76,36 +77,39 @@ export default function WardrobeScreen() {
 
   // Add garment flow
   const handleAddGarment = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.9,
-      base64: true,
+  const res = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    quality: 0.9,
+    base64: true,
+  });
+
+  if (res.canceled) return;
+
+  const uri = res.assets[0].uri;
+
+  setAnalyzing(true);
+
+  try {
+    const rawLocale = (i18n as any).language;
+    const locale = resolveLocale(rawLocale);
+    console.log("🌍 ADD GARMENT rawLocale:", rawLocale, "resolved:", locale);
+
+    const { original, profile } = await wardrobePipeline(uri, locale);
+
+    await addGarment({
+      id: Date.now(),
+      original,
+      profile,
+      image: uri,
     });
+  } catch (err) {
+    console.log("❌ Wardrobe error:", err);
+  }
 
-    if (res.canceled) return;
+  setAnalyzing(false);
+};
 
-    const uri = res.assets[0].uri;
 
-    setAnalyzing(true);
-
-    try {
-      const locale = (i18n as any).language;
-
-      // Batch pipeline (no translateFn)
-      const { original, profile } = await wardrobePipeline(uri, locale);
-
-      await addGarment({
-        id: Date.now(),
-        original,
-        profile,
-        image: uri,
-      });
-    } catch (err) {
-      console.log("❌ Wardrobe error:", err);
-    }
-
-    setAnalyzing(false);
-  };
 
   return (
     <LinearGradient

@@ -11,13 +11,15 @@ export async function translateWardrobeBatch(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        temperature: 0,
         prompt: `
-Translate the following JSON object into ${locale}.
-Return ONLY valid JSON with the exact same structure and keys.
+Translate this JSON object into ${locale}.
+Return ONLY valid JSON.
 Do NOT add explanations.
-Do NOT add code fences.
 Do NOT add comments.
+Do NOT add code fences.
 
+JSON:
 ${JSON.stringify(canonical)}
         `,
       }),
@@ -28,11 +30,8 @@ ${JSON.stringify(canonical)}
 
     // ⭐ HARDENING LAYER
     raw = raw.trim();
-
-    // Remove code fences if present
     raw = raw.replace(/```json/gi, "").replace(/```/g, "").trim();
 
-    // Extract only the JSON part
     const firstBrace = raw.indexOf("{");
     const lastBrace = raw.lastIndexOf("}");
 
@@ -40,7 +39,6 @@ ${JSON.stringify(canonical)}
       raw = raw.substring(firstBrace, lastBrace + 1);
     }
 
-    // Final parse
     return JSON.parse(raw);
   } catch (err) {
     console.log("❌ translateWardrobeBatch error:", err);
