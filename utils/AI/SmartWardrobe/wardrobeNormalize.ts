@@ -11,52 +11,52 @@ const COLOR_MAP: Record<string, string> = {
   "baby blue": "Light Blue",
   "light grey": "Light Gray",
   "light gray": "Light Gray",
-  "grey": "Gray",
-  "gray": "Gray",
+  grey: "Gray",
+  gray: "Gray",
   "dark grey": "Dark Gray",
   "dark gray": "Dark Gray",
-  "black": "Black",
-  "white": "White",
-  "cream": "Cream",
-  "beige": "Beige",
+  black: "Black",
+  white: "White",
+  cream: "Cream",
+  beige: "Beige",
 };
 
 const TYPE_FORGIVING: Record<string, string> = {
-  "sweatshirt": "Sweatshirt",
-  "hoodie": "Sweatshirt",
-  "pullover": "Sweatshirt",
-  "crewneck": "Sweatshirt",
-  "knitwear": "Sweatshirt",
-  "knit": "Sweatshirt",
-  "jumper": "Sweatshirt",
-  "sweater": "Sweatshirt",
+  sweatshirt: "Sweatshirt",
+  hoodie: "Sweatshirt",
+  pullover: "Sweatshirt",
+  crewneck: "Sweatshirt",
+  knitwear: "Sweatshirt",
+  knit: "Sweatshirt",
+  jumper: "Sweatshirt",
+  sweater: "Sweatshirt",
   "long-sleeve": "Sweatshirt",
-  "top": "Sweatshirt",
+  top: "Sweatshirt",
   "t-shirt": "T-Shirt",
-  "tee": "T-Shirt",
-  "shirt": "Shirt",
-  "blouse": "Blouse",
+  tee: "T-Shirt",
+  shirt: "Shirt",
+  blouse: "Blouse",
 };
 
 const CATEGORY_FORGIVING: Record<string, string> = {
-  "top": "Tops",
-  "tops": "Tops",
-  "shirt": "Tops",
-  "shirts": "Tops",
+  top: "Tops",
+  tops: "Tops",
+  shirt: "Tops",
+  shirts: "Tops",
   "t-shirt": "Tops",
   "t-shirts": "Tops",
-  "sweatshirt": "Tops",
-  "sweatshirts": "Tops",
-  "hoodie": "Tops",
-  "hoodies": "Tops",
-  "knit": "Tops",
-  "knitwear": "Tops",
-  "pullover": "Tops",
-  "crewneck": "Tops",
+  sweatshirt: "Tops",
+  sweatshirts: "Tops",
+  hoodie: "Tops",
+  hoodies: "Tops",
+  knit: "Tops",
+  knitwear: "Tops",
+  pullover: "Tops",
+  crewneck: "Tops",
 };
 
 const FABRIC_FORGIVING: Record<string, string> = {
-  "cotton": "Cotton Blend",
+  cotton: "Cotton Blend",
   "cotton blend": "Cotton Blend",
   "cotton knit": "Cotton Blend",
   "cotton mix": "Cotton Blend",
@@ -65,9 +65,9 @@ const FABRIC_FORGIVING: Record<string, string> = {
 };
 
 const RISK_MAP: Record<string, string> = {
-  "low": "Low",
-  "medium": "Medium",
-  "high": "High",
+  low: "Low",
+  medium: "Medium",
+  high: "High",
 };
 
 const WASH_FREQ_MAP: Record<string, string> = {
@@ -86,14 +86,9 @@ const WASH_FREQ_MAP: Record<string, string> = {
    HELPERS
 --------------------------------------------------------- */
 
-const clean = (v: any) =>
-  typeof v === "string" ? v.trim() : "";
-
-const arr = (v: any) =>
-  Array.isArray(v) ? v.map(clean) : [];
-
-const num = (v: any, fallback: number) =>
-  typeof v === "number" ? v : fallback;
+const clean = (v: any) => (typeof v === "string" ? v.trim() : "");
+const arr = (v: any) => (Array.isArray(v) ? v.map(clean) : []);
+const num = (v: any, fallback: number) => (typeof v === "number" ? v : fallback);
 
 function forgivingMap(raw: any, map: Record<string, string>, fallback = "Unknown") {
   const v = clean(raw).toLowerCase();
@@ -136,12 +131,11 @@ function normalizeStains(stains: any) {
 }
 
 /* ---------------------------------------------------------
-   CARE SYMBOLS — FORGIVING + DEFAULT IronLow
+   CARE SYMBOLS — deterministic
 --------------------------------------------------------- */
 
 function normalizeCareSymbols(symbols: any) {
   const list = arr(symbols).map((s) => s.toLowerCase());
-
   const out = new Set<string>();
 
   for (const s of list) {
@@ -157,11 +151,36 @@ function normalizeCareSymbols(symbols: any) {
       if (s.includes("low")) out.add("IronLow");
       else if (s.includes("medium")) out.add("IronMedium");
       else if (s.includes("high")) out.add("IronHigh");
-      else out.add("IronLow"); // default
+      else out.add("IronLow");
     }
   }
 
   return Array.from(out);
+}
+
+/* ---------------------------------------------------------
+   CARE FIELD NORMALIZATION (THE FIX)
+--------------------------------------------------------- */
+
+function normalizeCareField(raw: any): string {
+  const v = clean(raw).toLowerCase();
+
+  if (v.includes("30")) return "WashAt30";
+  if (v.includes("40")) return "WashAt40";
+
+  if (v.includes("do not bleach") || v.includes("no bleach")) return "DoNotBleach";
+
+  if (v.includes("tumble") && v.includes("low")) return "TumbleDryLow";
+  if (v.includes("tumble") && v.includes("medium")) return "TumbleDryMedium";
+
+  if (v.includes("iron")) {
+    if (v.includes("low")) return "IronLow";
+    if (v.includes("medium")) return "IronMedium";
+    if (v.includes("high")) return "IronHigh";
+    return "IronLow";
+  }
+
+  return v; // fallback
 }
 
 /* ---------------------------------------------------------
@@ -208,11 +227,11 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
     },
 
     care: {
-      wash: clean(raw?.care?.wash),
-      bleach: clean(raw?.care?.bleach),
-      dry: clean(raw?.care?.dry),
-      iron: clean(raw?.care?.iron),
-      dryclean: clean(raw?.care?.dryclean),
+      wash: normalizeCareField(raw?.care?.wash),
+      bleach: normalizeCareField(raw?.care?.bleach),
+      dry: normalizeCareField(raw?.care?.dry),
+      iron: normalizeCareField(raw?.care?.iron),
+      dryclean: normalizeCareField(raw?.care?.dryclean),
       warnings: arr(raw?.care?.warnings),
     },
 
