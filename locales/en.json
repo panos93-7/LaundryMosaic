@@ -120,19 +120,15 @@
  "editGarment": {
   "back": "Back",
   "title": "Edit Garment",
-
   "tapToAddImage": "Tap to add image",
-
   "name": "Name",
   "type": "Type",
   "color": "Color",
   "category": "Category",
   "fabric": "Fabric",
   "pattern": "Pattern",
-
   "saveChanges": "Save Changes",
   "deleteGarment": "Delete Garment",
-
   "alertTitle": "Delete Garment",
   "alertMessage": "Are you sure you want to delete this item?",
   "cancel": "Cancel",

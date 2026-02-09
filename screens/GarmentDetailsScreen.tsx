@@ -268,30 +268,29 @@ export default function GarmentDetailsScreen() {
             </View>
           )}
 
-          {/* CARE INSTRUCTIONS */}
-          {profile?.care && (
-            <View>
-              <Text style={styles.sectionTitle}>
-                {i18n.t("garmentDetails.careInstructions")}
-              </Text>
+{/* CARE INSTRUCTIONS */}
+{profile?.care && (
+  <View>
+    <Text style={styles.sectionTitle}>
+      {i18n.t("garmentDetails.careInstructions")}
+    </Text>
 
-              <Text style={styles.value}>{profile.care.wash}</Text>
-              <Text style={styles.value}>{profile.care.bleach}</Text>
-              <Text style={styles.value}>{profile.care.dry}</Text>
-              <Text style={styles.value}>{profile.care.iron}</Text>
-              <Text style={styles.value}>{profile.care.dryclean}</Text>
+    <Text style={styles.value}>{profile.care.wash}</Text>
+    <Text style={styles.value}>{profile.care.bleach}</Text>
+    <Text style={styles.value}>{profile.care.dry}</Text>
+    <Text style={styles.value}>{profile.care.iron}</Text>
+    <Text style={styles.value}>{profile.care.dryclean}</Text>
 
-              {profile.care.warnings?.length > 0 && (
-                <View style={{ marginTop: 10 }}>
-                  <Text style={styles.label}>{i18n.t("garmentDetails.warnings")}</Text>
-                  {profile.care.warnings.map((warning: string, _index: number) => (
-                    <Text key={_index} style={styles.value}>• {warning}</Text>
-                  ))}
-                </View>
-              )}
-            </View>
-          )}
-
+    {profile.care.warnings?.length > 0 && (
+      <View style={{ marginTop: 10 }}>
+        <Text style={styles.label}>{i18n.t("garmentDetails.warnings")}</Text>
+        {profile.care.warnings.map((warning: string, _index: number) => (
+          <Text key={_index} style={styles.value}>• {warning}</Text>
+        ))}
+      </View>
+    )}
+  </View>
+)}
           {/* RISKS */}
           {profile?.risks && (
             <View>
@@ -321,16 +320,17 @@ export default function GarmentDetailsScreen() {
             </View>
           )}
 
-{/* CARE SYMBOLS (translated labels if available) */}
+{/* CARE SYMBOLS */}
 {(profile?.careSymbols?.length ?? 0) > 0 && (
   <View>
     <Text style={styles.sectionTitle}>
       {i18n.t("garmentDetails.careSymbols")}
     </Text>
 
+    {/* If translated labels exist */}
     {profile.careSymbolLabels
       ? Object.values(profile.careSymbolLabels as Record<string, string>).map(
-          (label, i) => (
+          (label: string, i: number) => (
             <Text key={i} style={styles.value}>• {label}</Text>
           )
         )
@@ -339,7 +339,6 @@ export default function GarmentDetailsScreen() {
         ))}
   </View>
 )}
-
           {/* EDIT BUTTON */}
           <TouchableOpacity
             onPress={() =>
