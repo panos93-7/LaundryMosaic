@@ -2,11 +2,8 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AI_CACHE_VERSION } from "../Core/aiCache";
-
 import { Locale, TranslationCache } from "./translationTypes";
-import { WardrobeCanonical } from "./wardrobeCanonical";
 
-// Versioned key
 const makeKey = (garmentId: string, locale: Locale) =>
   `v${AI_CACHE_VERSION}:garment:${garmentId}:${locale}`;
 
@@ -18,25 +15,31 @@ export const translationCache: TranslationCache = {
 
       if (!json) return null;
 
-      const parsed = JSON.parse(json);
+      let parsed: any = null;
 
-      // Ensure locale metadata exists
+      try {
+        parsed = JSON.parse(json);
+      } catch {
+        console.log("⚠️ translationCache.get: corrupted JSON");
+        return null;
+      }
+
       parsed.__locale = locale;
 
-      return parsed as WardrobeCanonical;
+      return parsed;
     } catch (err) {
       console.log("⚠️ translationCache.get error:", err);
       return null;
     }
   },
 
-  async set(garmentId: string, locale: Locale, value: WardrobeCanonical) {
+  async set(garmentId: string, locale: Locale, value: any) {
     try {
       const key = makeKey(garmentId, locale);
 
-      const toStore: WardrobeCanonical = {
+      const toStore = {
         ...value,
-        __locale: locale, // ensure locale is always stored
+        __locale: locale,
       };
 
       await AsyncStorage.setItem(key, JSON.stringify(toStore));

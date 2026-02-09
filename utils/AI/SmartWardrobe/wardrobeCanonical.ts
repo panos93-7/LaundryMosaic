@@ -52,9 +52,17 @@ export async function wardrobeCanonicalKey(c: WardrobeCanonical) {
     category: c.category,
     fabric: c.fabric,
     color: c.color,
-    pattern: c.pattern,
+
+    // pattern intentionally removed (unstable Vision output)
+
     careSymbols: [...c.careSymbols].sort(),
-    risks: c.risks,
+
+    risks: {
+      shrinkage: c.risks.shrinkage,
+      colorBleeding: c.risks.colorBleeding,
+      delicacy: c.risks.delicacy,
+    },
+
     washFrequency: c.washFrequency,
   };
 

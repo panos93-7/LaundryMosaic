@@ -7,9 +7,9 @@ export function GarmentCard({ item, onPress }: any) {
 
   // ⭐ Prefer translated profile if locale matches, else fallback to canonical EN
   const profile =
-    item?.profile?.__locale === locale
+    item?.profile?.__locale === locale && item.profile
       ? item.profile
-      : item.original ?? {};
+      : item.original;
 
   return (
     <TouchableOpacity
@@ -44,7 +44,7 @@ export function GarmentCard({ item, onPress }: any) {
         )}
       </View>
 
-      {/* TITLE — ALWAYS TRANSLATED IF AVAILABLE */}
+      {/* TITLE */}
       <Text
         style={{
           color: "#fff",
@@ -53,10 +53,10 @@ export function GarmentCard({ item, onPress }: any) {
         }}
         numberOfLines={1}
       >
-        {profile?.name || item.original?.name || "—"}
+        {profile.name || "—"}
       </Text>
 
-      {/* SUBTITLE — ALWAYS TRANSLATED IF AVAILABLE */}
+      {/* SUBTITLE */}
       <Text
         style={{
           color: "#aaa",
@@ -65,7 +65,7 @@ export function GarmentCard({ item, onPress }: any) {
         }}
         numberOfLines={1}
       >
-        {profile?.type || item.original?.type || "—"}
+        {profile.type || "—"}
       </Text>
     </TouchableOpacity>
   );

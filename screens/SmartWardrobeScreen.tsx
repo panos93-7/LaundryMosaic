@@ -1,5 +1,3 @@
-// SmartWardrobeScreen.tsx — SmartWardrobe V3 (Batch Translation)
-
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -77,38 +75,38 @@ export default function WardrobeScreen() {
 
   // Add garment flow
   const handleAddGarment = async () => {
-  const res = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    quality: 0.9,
-    base64: true,
-  });
-
-  if (res.canceled) return;
-
-  const uri = res.assets[0].uri;
-
-  setAnalyzing(true);
-
-  try {
-    const rawLocale = useLanguageStore.getState().language;
-const locale = resolveLocale(rawLocale);
-
-console.log("🌍 ADD GARMENT rawLocale:", rawLocale, "resolved:", locale);
-
-const { original, profile } = await wardrobePipeline(uri, locale);
-
-    await addGarment({
-      id: Date.now(),
-      original,
-      profile,
-      image: uri,
+    const res = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.9,
+      base64: true,
     });
-  } catch (err) {
-    console.log("❌ Wardrobe error:", err);
-  }
 
-  setAnalyzing(false);
-};
+    if (res.canceled) return;
+
+    const uri = res.assets[0].uri;
+
+    setAnalyzing(true);
+
+    try {
+      const rawLocale = useLanguageStore.getState().language;
+      const locale = resolveLocale(rawLocale);
+
+      console.log("🌍 ADD GARMENT rawLocale:", rawLocale, "resolved:", locale);
+
+      const { original, profile } = await wardrobePipeline(uri, locale);
+
+      await addGarment({
+        id: Date.now(),
+        original,
+        profile,
+        image: uri,
+      });
+    } catch (err) {
+      console.log("❌ Wardrobe error:", err);
+    }
+
+    setAnalyzing(false);
+  };
 
   return (
     <LinearGradient
@@ -259,8 +257,7 @@ const { original, profile } = await wardrobePipeline(uri, locale);
             </TouchableOpacity>
           </View>
         )}
-
-        {/* GRID VIEW */}
+                {/* GRID VIEW */}
         {garments.length > 0 && (
           <>
             <FlatList

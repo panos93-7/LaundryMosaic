@@ -1,5 +1,4 @@
 // utils/SmartWardrobe/wardrobeNormalize.ts
-import { sanitizeCareSymbols } from "./sanitizeCareSymbols";
 import { WardrobeCanonical } from "./wardrobeCanonical";
 
 /* ---------------------------------------------------------
@@ -22,22 +21,47 @@ const COLOR_MAP: Record<string, string> = {
   "beige": "Beige",
 };
 
-const TYPE_MAP: Record<string, string> = {
+const TYPE_FORGIVING: Record<string, string> = {
   "sweatshirt": "Sweatshirt",
   "hoodie": "Sweatshirt",
   "pullover": "Sweatshirt",
+  "crewneck": "Sweatshirt",
+  "knitwear": "Sweatshirt",
+  "knit": "Sweatshirt",
+  "jumper": "Sweatshirt",
+  "sweater": "Sweatshirt",
+  "long-sleeve": "Sweatshirt",
+  "top": "Sweatshirt",
   "t-shirt": "T-Shirt",
   "tee": "T-Shirt",
   "shirt": "Shirt",
   "blouse": "Blouse",
 };
 
-const CATEGORY_MAP: Record<string, string> = {
+const CATEGORY_FORGIVING: Record<string, string> = {
+  "top": "Tops",
   "tops": "Tops",
+  "shirt": "Tops",
   "shirts": "Tops",
+  "t-shirt": "Tops",
   "t-shirts": "Tops",
+  "sweatshirt": "Tops",
   "sweatshirts": "Tops",
+  "hoodie": "Tops",
   "hoodies": "Tops",
+  "knit": "Tops",
+  "knitwear": "Tops",
+  "pullover": "Tops",
+  "crewneck": "Tops",
+};
+
+const FABRIC_FORGIVING: Record<string, string> = {
+  "cotton": "Cotton Blend",
+  "cotton blend": "Cotton Blend",
+  "cotton knit": "Cotton Blend",
+  "cotton mix": "Cotton Blend",
+  "cotton fabric": "Cotton Blend",
+  "cotton blend knit": "Cotton Blend",
 };
 
 const RISK_MAP: Record<string, string> = {
@@ -48,9 +72,14 @@ const RISK_MAP: Record<string, string> = {
 
 const WASH_FREQ_MAP: Record<string, string> = {
   "after 1 wear": "After 1 wear",
+  "1 wear": "After 1 wear",
   "after 2-3 wears": "After 2-3 wears",
+  "2-3 wears": "After 2-3 wears",
+  "every 2-3 wears": "After 2-3 wears",
   "after 3-4 wears": "After 3-4 wears",
+  "3-4 wears": "After 3-4 wears",
   "after 4-5 wears": "After 4-5 wears",
+  "4-5 wears": "After 4-5 wears",
 };
 
 /* ---------------------------------------------------------
@@ -66,7 +95,7 @@ const arr = (v: any) =>
 const num = (v: any, fallback: number) =>
   typeof v === "number" ? v : fallback;
 
-function normalizeFromMap(raw: any, map: Record<string, string>, fallback = "Unknown") {
+function forgivingMap(raw: any, map: Record<string, string>, fallback = "Unknown") {
   const v = clean(raw).toLowerCase();
   for (const key of Object.keys(map)) {
     if (v.includes(key)) return map[key];
@@ -75,23 +104,27 @@ function normalizeFromMap(raw: any, map: Record<string, string>, fallback = "Unk
 }
 
 function normalizeColor(raw: any) {
-  return normalizeFromMap(raw, COLOR_MAP, "Unknown");
+  return forgivingMap(raw, COLOR_MAP, "Unknown");
 }
 
 function normalizeType(raw: any) {
-  return normalizeFromMap(raw, TYPE_MAP, "Unknown");
+  return forgivingMap(raw, TYPE_FORGIVING, "Unknown");
 }
 
 function normalizeCategory(raw: any) {
-  return normalizeFromMap(raw, CATEGORY_MAP, "Unknown");
+  return forgivingMap(raw, CATEGORY_FORGIVING, "Tops");
+}
+
+function normalizeFabric(raw: any) {
+  return forgivingMap(raw, FABRIC_FORGIVING, clean(raw));
 }
 
 function normalizeRisk(raw: any) {
-  return normalizeFromMap(raw, RISK_MAP, "Unknown");
+  return forgivingMap(raw, RISK_MAP, "Unknown");
 }
 
 function normalizeWashFrequency(raw: any) {
-  return normalizeFromMap(raw, WASH_FREQ_MAP, "Unknown");
+  return forgivingMap(raw, WASH_FREQ_MAP, "Unknown");
 }
 
 function normalizeStains(stains: any) {
@@ -100,6 +133,35 @@ function normalizeStains(stains: any) {
   if (list.some((s) => s.includes("oil"))) return ["Oil stain"];
   if (list.some((s) => s.includes("makeup"))) return ["Makeup stain"];
   return list.length ? ["General stain"] : [];
+}
+
+/* ---------------------------------------------------------
+   CARE SYMBOLS — FORGIVING + DEFAULT IronLow
+--------------------------------------------------------- */
+
+function normalizeCareSymbols(symbols: any) {
+  const list = arr(symbols).map((s) => s.toLowerCase());
+
+  const out = new Set<string>();
+
+  for (const s of list) {
+    if (s.includes("30")) out.add("WashAt30");
+    if (s.includes("40")) out.add("WashAt40");
+
+    if (s.includes("do not bleach") || s.includes("no bleach")) out.add("DoNotBleach");
+
+    if (s.includes("tumble") && s.includes("low")) out.add("TumbleDryLow");
+    if (s.includes("tumble") && s.includes("medium")) out.add("TumbleDryMedium");
+
+    if (s.includes("iron")) {
+      if (s.includes("low")) out.add("IronLow");
+      else if (s.includes("medium")) out.add("IronMedium");
+      else if (s.includes("high")) out.add("IronHigh");
+      else out.add("IronLow"); // default
+    }
+  }
+
+  return Array.from(out);
 }
 
 /* ---------------------------------------------------------
@@ -126,11 +188,11 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
   const color = normalizeColor(raw.color);
 
   return {
-    name: buildName(type, color), // ⭐ deterministic name
+    name: buildName(type, color),
 
     type,
     category: normalizeCategory(raw.category),
-    fabric: clean(raw.fabric),
+    fabric: normalizeFabric(raw.fabric),
     color,
     pattern: clean(raw.pattern),
 
@@ -138,7 +200,7 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
     stainTips: arr(raw.stainTips),
 
     recommended: {
-      program: clean(raw?.recommended?.program),
+      program: forgivingMap(raw?.recommended?.program, { cotton: "Cotton", cottons: "Cotton" }, "Cotton"),
       temp: num(raw?.recommended?.temp, 30),
       spin: num(raw?.recommended?.spin, 800),
       detergent: clean(raw?.recommended?.detergent),
@@ -161,7 +223,7 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
     },
 
     washFrequency: normalizeWashFrequency(raw.washFrequency),
-    careSymbols: sanitizeCareSymbols(raw.careSymbols),
+    careSymbols: normalizeCareSymbols(raw.careSymbols),
 
     __locale: raw.__locale || "en",
   };

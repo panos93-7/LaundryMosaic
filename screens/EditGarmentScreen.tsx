@@ -59,41 +59,42 @@ export default function EditGarmentScreen() {
     }
   };
 
-// ⭐ SmartWardrobe V3 aligned save
-const handleSave = () => {
-  // 1) Updated canonical (always EN)
-  const updatedOriginal = {
-    ...garment.original,
-    name,
-    type,
-    color,
-    category,
-    fabric,
-    pattern,
-    __locale: "en", // canonical always EN
+  // ⭐ SmartWardrobe V3 aligned save
+  const handleSave = () => {
+    // 1) Updated canonical (always EN)
+    const updatedOriginal = {
+      ...garment.original,
+      name,
+      type,
+      color,
+      category,
+      fabric,
+      pattern,
+      // canonical stays EN, no __locale override needed
+    };
+
+    // 2) Updated profile (UI preview only)
+    const updatedProfile = {
+      ...garment.profile,
+      name,
+      type,
+      color,
+      category,
+      fabric,
+      pattern,
+      careSymbolLabels: undefined, // force regeneration on next translation
+      __locale: undefined, // force re-translation
+    };
+
+    updateGarment({
+      id: garment.id,
+      original: updatedOriginal,
+      profile: updatedProfile,
+      image: image ?? garment.image,
+    });
+
+    navigation.goBack();
   };
-
-  // 2) Updated profile (UI preview only)
-  const updatedProfile = {
-    ...garment.profile,
-    name,
-    type,
-    color,
-    category,
-    fabric,
-    pattern,
-    // ❗ remove __locale to force re-translation
-  };
-
-  updateGarment({
-    id: garment.id,
-    original: updatedOriginal,
-    profile: updatedProfile,
-    image: image ?? garment.image,
-  });
-
-  navigation.goBack();
-};
 
   const handleDelete = () => {
     Alert.alert(
@@ -112,8 +113,7 @@ const handleSave = () => {
       ]
     );
   };
-
-  return (
+    return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}

@@ -3,6 +3,7 @@ import { create } from "zustand";
 
 // Canonical type
 import { WardrobeCanonical } from "../utils/AI/SmartWardrobe/wardrobeCanonical";
+import { WardrobeProfile } from "../utils/AI/SmartWardrobe/wardrobeProfile";
 
 /* --------------------------------------------- */
 /* TYPES                                         */
@@ -15,7 +16,7 @@ export type Garment = {
   original: WardrobeCanonical;
 
   // Translated or EN depending on locale
-  profile: WardrobeCanonical;
+  profile: WardrobeProfile;
 
   image?: string | null;
 };
@@ -45,16 +46,12 @@ const STORAGE_KEY = "wardrobe";
 export const useWardrobeStore = create<WardrobeState>((set, get) => ({
   garments: [],
 
-  /* LOAD FROM STORAGE */
   hydrate: async () => {
     try {
       const saved = await AsyncStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-
-        // Safety: ensure array
         const safe = Array.isArray(parsed) ? parsed : [];
-
         set({ garments: safe });
       }
     } catch (err) {
@@ -62,11 +59,9 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
     }
   },
 
-  /* ADD GARMENT */
   addGarment: async (g) => {
     try {
       const updated = [...get().garments, g];
-
       set({ garments: updated });
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     } catch (err) {
@@ -74,7 +69,6 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
     }
   },
 
-  /* UPDATE GARMENT — canonical + profile + image */
   updateGarment: async (g) => {
     try {
       const updated = get().garments.map((item) =>
@@ -95,11 +89,9 @@ export const useWardrobeStore = create<WardrobeState>((set, get) => ({
     }
   },
 
-  /* DELETE GARMENT */
   deleteGarment: async (id) => {
     try {
       const updated = get().garments.filter((g) => g.id !== id);
-
       set({ garments: updated });
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     } catch (err) {

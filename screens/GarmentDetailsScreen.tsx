@@ -225,8 +225,7 @@ export default function GarmentDetailsScreen() {
             <Text style={styles.label}>{i18n.t("garmentDetails.category")}</Text>
             <Text style={styles.value}>{profile.category}</Text>
           </View>
-
-          {/* STAINS */}
+                    {/* STAINS */}
           {(profile?.stains?.length ?? 0) > 0 && (
             <View>
               <Text style={styles.sectionTitle}>
@@ -322,18 +321,24 @@ export default function GarmentDetailsScreen() {
             </View>
           )}
 
-          {/* CARE SYMBOLS */}
-          {(profile?.careSymbols?.length ?? 0) > 0 && (
-            <View>
-              <Text style={styles.sectionTitle}>
-                {i18n.t("garmentDetails.careSymbols")}
-              </Text>
+{/* CARE SYMBOLS (translated labels if available) */}
+{(profile?.careSymbols?.length ?? 0) > 0 && (
+  <View>
+    <Text style={styles.sectionTitle}>
+      {i18n.t("garmentDetails.careSymbols")}
+    </Text>
 
-              {profile.careSymbols.map((symbol: string, _index: number) => (
-                <Text key={_index} style={styles.value}>• {symbol}</Text>
-              ))}
-            </View>
-          )}
+    {profile.careSymbolLabels
+      ? Object.values(profile.careSymbolLabels as Record<string, string>).map(
+          (label, i) => (
+            <Text key={i} style={styles.value}>• {label}</Text>
+          )
+        )
+      : profile.careSymbols.map((symbol: string, i: number) => (
+          <Text key={i} style={styles.value}>• {symbol}</Text>
+        ))}
+  </View>
+)}
 
           {/* EDIT BUTTON */}
           <TouchableOpacity

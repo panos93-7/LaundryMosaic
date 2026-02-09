@@ -21,36 +21,75 @@ export const VALID_CARE_SYMBOLS = [
 export function sanitizeCareSymbols(symbols: string[]): string[] {
   if (!Array.isArray(symbols)) return [];
 
-  return symbols
-    .map((s) => normalizeSymbol(s))
-    .filter((s) => VALID_CARE_SYMBOLS.includes(s));
+  const out = new Set<string>();
+
+  for (const raw of symbols) {
+    const s = normalizeSymbol(raw);
+    if (VALID_CARE_SYMBOLS.includes(s)) {
+      out.add(s);
+    }
+  }
+
+  return Array.from(out);
 }
 
-// Μετατρέπει διάφορες μορφές σε canonical enum
+// Μετατρέπει διάφορες μορφές σε canonical enum (FORGIVING + deterministic)
 function normalizeSymbol(raw: string): string {
   if (!raw) return "";
 
   const v = raw.trim().toLowerCase();
 
-  // Common AI outputs → canonical enums
+  /* -----------------------------
+     WASH
+  ----------------------------- */
   if (v.includes("30")) return "WashAt30";
   if (v.includes("40")) return "WashAt40";
   if (v.includes("cold")) return "WashCold";
-  if (v.includes("no wash") || v.includes("do not wash")) return "DoNotWash";
+  if (v.includes("do not wash") || v.includes("no wash")) return "DoNotWash";
 
-  if (v.includes("bleach")) return "DoNotBleach";
+  /* -----------------------------
+     BLEACH
+  ----------------------------- */
+  if (
+    v.includes("do not bleach") ||
+    v.includes("no bleach") ||
+    v.includes("avoid bleach") ||
+    v.includes("bleach not")
+  ) {
+    return "DoNotBleach";
+  }
 
-  if (v.includes("tumble") && v.includes("low")) return "TumbleDryLow";
-  if (v.includes("tumble") && v.includes("medium")) return "TumbleDryMedium";
-  if (v.includes("no tumble") || v.includes("do not tumble")) return "DoNotTumbleDry";
+  /* -----------------------------
+     TUMBLE DRY
+  ----------------------------- */
+  if (v.includes("tumble") || v.includes("dry")) {
+    if (v.includes("low")) return "TumbleDryLow";
+    if (v.includes("medium")) return "TumbleDryMedium";
+    if (v.includes("do not tumble") || v.includes("no tumble")) {
+      return "DoNotTumbleDry";
+    }
+  }
 
-  if (v.includes("iron") && v.includes("low")) return "IronLow";
-  if (v.includes("iron") && v.includes("medium")) return "IronMedium";
-  if (v.includes("iron") && v.includes("high")) return "IronHigh";
-  if (v.includes("no iron") || v.includes("do not iron")) return "DoNotIron";
+  /* -----------------------------
+     IRON (default IronLow)
+  ----------------------------- */
+  if (v.includes("iron")) {
+    if (v.includes("no iron") || v.includes("do not iron")) return "DoNotIron";
+    if (v.includes("low")) return "IronLow";
+    if (v.includes("medium")) return "IronMedium";
+    if (v.includes("high")) return "IronHigh";
 
-  if (v.includes("dry clean")) return "DryClean";
-  if (v.includes("no dry clean") || v.includes("do not dry clean")) return "DoNotDryClean";
+    // forgiving default
+    return "IronLow";
+  }
+
+  /* -----------------------------
+     DRY CLEAN
+  ----------------------------- */
+  if (v.includes("dry clean")) {
+    if (v.includes("do not") || v.includes("no")) return "DoNotDryClean";
+    return "DryClean";
+  }
 
   return "";
 }

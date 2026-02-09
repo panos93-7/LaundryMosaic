@@ -3,13 +3,14 @@
 import { translateWardrobeBatch } from "./translateWardrobeBatch";
 import { Locale, TranslationCache } from "./translationTypes";
 import { WardrobeCanonical } from "./wardrobeCanonical";
+import { WardrobeProfile } from "./wardrobeProfile";
 
 export async function translateWardrobeProfile(
   canonical: WardrobeCanonical,
   locale: Locale,
   garmentId: string,
   cache: TranslationCache
-): Promise<WardrobeCanonical> {
+): Promise<WardrobeProfile> {
   // 1) Cache check
   const cached = await cache.get(garmentId, locale);
   if (cached) return cached;
@@ -19,12 +20,14 @@ export async function translateWardrobeProfile(
   // 2) Batch translate whole canonical
   const translatedRaw = await translateWardrobeBatch(canonical, locale);
 
-  const translated: WardrobeCanonical = {
+  // 3) Merge canonical + translated
+  const translated: WardrobeProfile = {
     ...canonical,
     ...translatedRaw,
     __locale: locale,
   };
 
+  // 4) Log essential fields
   console.log(
     "🌍 TRANSLATED PROFILE:",
     JSON.stringify(
@@ -33,13 +36,14 @@ export async function translateWardrobeProfile(
         name: translated.name,
         type: translated.type,
         color: translated.color,
+        careSymbolLabels: translated.careSymbolLabels,
       },
       null,
       2
     )
   );
 
-  // 3) Save to cache
+  // 5) Save to cache
   await cache.set(garmentId, locale, translated);
 
   console.log("⏱️ batch translation end for", garmentId);

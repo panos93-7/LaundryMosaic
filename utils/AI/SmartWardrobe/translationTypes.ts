@@ -1,10 +1,8 @@
 // utils/SmartWardrobe/translationTypes.ts
 
-import { WardrobeCanonical } from "./wardrobeCanonical";
-
 export type Locale = string;
 
 export interface TranslationCache {
-  get(garmentId: string, locale: Locale): Promise<WardrobeCanonical | null>;
-  set(garmentId: string, locale: Locale, value: WardrobeCanonical): Promise<void>;
+  get(garmentId: string, locale: Locale): Promise<any | null>;
+  set(garmentId: string, locale: Locale, value: any): Promise<void>;
 }

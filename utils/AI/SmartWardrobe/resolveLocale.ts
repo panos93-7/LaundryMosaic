@@ -20,10 +20,21 @@ const SUPPORTED: Locale[] = [
 export function resolveLocale(raw: string | undefined | null): Locale {
   if (!raw) return "en";
 
-  if (SUPPORTED.includes(raw as Locale)) return raw as Locale;
+  const normalized = raw.toLowerCase();
 
-  const base = raw.split("-")[0]; // π.χ. "el-GR" → "el"
-  if (SUPPORTED.includes(base as Locale)) return base as Locale;
+  // Exact match
+  if (SUPPORTED.includes(normalized as Locale)) {
+    return normalized as Locale;
+  }
+
+  // Base language match (e.g. "el-GR" → "el")
+  const base = normalized.split("-")[0];
+  if (SUPPORTED.includes(base as Locale)) {
+    return base as Locale;
+  }
+
+  // Portuguese special case
+  if (base === "pt") return "pt-PT";
 
   return "en";
 }
