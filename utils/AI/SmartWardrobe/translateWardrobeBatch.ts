@@ -1,10 +1,24 @@
+// utils/SmartWardrobe/translateWardrobeBatch.ts
+
+export interface CareSymbolLabels {
+  [code: string]: string;
+}
+
+export interface TranslatedBatch {
+  name?: string;
+  type?: string;
+  color?: string;
+  careSymbolLabels?: CareSymbolLabels | string[] | null;
+  [key: string]: any;
+}
+
 export async function translateWardrobeBatch(
   canonical: any,
   locale: string
-): Promise<any> {
+): Promise<TranslatedBatch> {
   if (!canonical) return canonical;
 
-  const CARE_SYMBOL_LABELS = {
+  const CARE_SYMBOL_LABELS: CareSymbolLabels = {
     WashAt30: "Wash at 30°C",
     WashAt40: "Wash at 40°C",
     WashCold: "Cold wash",
@@ -18,7 +32,7 @@ export async function translateWardrobeBatch(
     IronHigh: "Iron on high heat",
     DoNotIron: "Do not iron",
     DryClean: "Dry clean",
-    DoNotDryClean: "Do not dry clean"
+    DoNotDryClean: "Do not dry clean",
   };
 
   try {
@@ -50,7 +64,7 @@ ${JSON.stringify(canonical)}
     });
 
     const data = await res.json();
-    let raw = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    let raw: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 
     // ⭐ HARDENING LAYER
     raw = raw.trim();
@@ -63,7 +77,27 @@ ${JSON.stringify(canonical)}
       raw = raw.substring(firstBrace, lastBrace + 1);
     }
 
-    return JSON.parse(raw);
+    const parsed: TranslatedBatch = JSON.parse(raw);
+
+    if (Array.isArray(parsed.careSymbolLabels)) {
+  const labelsArray = parsed.careSymbolLabels as string[];
+  const out: CareSymbolLabels = {};
+
+  canonical.careSymbols.forEach((code: string, i: number) => {
+    out[code] = labelsArray[i] ?? "";
+  });
+
+  parsed.careSymbolLabels = out;
+}
+
+    if (
+      !parsed.careSymbolLabels ||
+      typeof parsed.careSymbolLabels !== "object"
+    ) {
+      parsed.careSymbolLabels = {};
+    }
+
+    return parsed;
   } catch (err) {
     console.log("❌ translateWardrobeBatch error:", err);
     return canonical; // fallback

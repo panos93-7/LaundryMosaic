@@ -4,12 +4,18 @@ import { analyzeWardrobeCached } from "./analyzeWardrobeCached";
 import { translateWardrobeProfile } from "./translateWardrobeProfile";
 import { translationCache } from "./translationCache";
 import { Locale } from "./translationTypes";
-import { wardrobeCanonicalKey } from "./wardrobeCanonical";
+import { WardrobeCanonical, wardrobeCanonicalKey } from "./wardrobeCanonical";
+import { WardrobeProfile } from "./wardrobeProfile";
+
+export interface WardrobePipelineResult {
+  original: WardrobeCanonical;
+  profile: WardrobeProfile;
+}
 
 export async function wardrobePipeline(
   uri: string,
   locale: Locale
-) {
+): Promise<WardrobePipelineResult> {
   // 1) Canonical garment (deterministic)
   const canonical = await analyzeWardrobeCached(uri);
   console.log("🧩 CANONICAL:", JSON.stringify(canonical, null, 2));
@@ -21,13 +27,12 @@ export async function wardrobePipeline(
 
   // 3) English → no translation
   if (locale === "en") {
-    return {
-      original: canonical,
-      profile: {
-        ...canonical,
-        careSymbolLabels: null, // English UI can map directly if needed
-      },
+    const profile: WardrobeProfile = {
+      ...canonical,
+      careSymbolLabels: {}, // English UI maps directly
+      __locale: "en",
     };
+    return { original: canonical, profile };
   }
 
   // 4) Cache check
@@ -36,7 +41,7 @@ export async function wardrobePipeline(
     console.log("🌍 HIT translation cache for", garmentId, locale);
     return {
       original: canonical,
-      profile: cached,
+      profile: cached as WardrobeProfile,
     };
   }
 

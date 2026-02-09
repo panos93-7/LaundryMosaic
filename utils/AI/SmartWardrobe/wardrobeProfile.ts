@@ -1,9 +1,9 @@
 import { WardrobeCanonical } from "./wardrobeCanonical";
 
 export type WardrobeProfile = WardrobeCanonical & {
-  careSymbolLabels?: Record<string, string>;
+  careSymbolLabels: Record<string, string>; // ALWAYS object
 
-  recommended?: {
+  recommended: {
     program: string;
     temp: number;
     spin: number;
@@ -11,25 +11,25 @@ export type WardrobeProfile = WardrobeCanonical & {
     notes?: string[];
   };
 
-  care?: {
-    wash?: string;
-    bleach?: string;
-    dry?: string;
-    iron?: string;
-    dryclean?: string;
-    warnings?: string[];
+  care: {
+    wash: string;
+    bleach: string;
+    dry: string;
+    iron: string;
+    dryclean: string;
+    warnings: string[];
   };
 
-  risks?: {
+  risks: {
     shrinkage: string;
     colorBleeding: string;
     delicacy: string;
   };
 
-  stains?: string[];
-  stainTips?: string[];
+  stains: string[];
+  stainTips: string[];
 
-  washFrequency?: string;
+  washFrequency: string;
 
-  __locale?: string; // locale of this translated profile
+  __locale: string; // locale of this translated profile
 };

@@ -142,10 +142,24 @@ function normalizeCareSymbols(symbols: any) {
     if (s.includes("30")) out.add("WashAt30");
     if (s.includes("40")) out.add("WashAt40");
 
-    if (s.includes("do not bleach") || s.includes("no bleach")) out.add("DoNotBleach");
+    if (
+      s.includes("donotbleach") ||
+      s.includes("do not bleach") ||
+      s.includes("no bleach")
+    ) {
+      out.add("DoNotBleach");
+    }
 
     if (s.includes("tumble") && s.includes("low")) out.add("TumbleDryLow");
     if (s.includes("tumble") && s.includes("medium")) out.add("TumbleDryMedium");
+
+    if (
+      s.includes("donotdryclean") ||
+      s.includes("do not dry clean") ||
+      s.includes("no dry clean")
+    ) {
+      out.add("DoNotDryClean");
+    }
 
     if (s.includes("iron")) {
       if (s.includes("low")) out.add("IronLow");
@@ -159,20 +173,44 @@ function normalizeCareSymbols(symbols: any) {
 }
 
 /* ---------------------------------------------------------
-   CARE FIELD NORMALIZATION (THE FIX)
+   CARE FIELD NORMALIZATION (stable codes)
 --------------------------------------------------------- */
 
 function normalizeCareField(raw: any): string {
   const v = clean(raw).toLowerCase();
+  if (!v) return "";
 
-  if (v.includes("30")) return "WashAt30";
-  if (v.includes("40")) return "WashAt40";
+  // wash
+  if (v.includes("washat30") || (v.includes("wash") && v.includes("30")) || v.includes("30°")) {
+    return "WashAt30";
+  }
+  if (v.includes("washat40") || (v.includes("wash") && v.includes("40")) || v.includes("40°")) {
+    return "WashAt40";
+  }
 
-  if (v.includes("do not bleach") || v.includes("no bleach")) return "DoNotBleach";
+  // bleach
+  if (
+    v.includes("donotbleach") ||
+    v.includes("do not bleach") ||
+    v.includes("no bleach")
+  ) {
+    return "DoNotBleach";
+  }
 
+  // dry
   if (v.includes("tumble") && v.includes("low")) return "TumbleDryLow";
   if (v.includes("tumble") && v.includes("medium")) return "TumbleDryMedium";
 
+  // dry clean
+  if (
+    v.includes("donotdryclean") ||
+    v.includes("do not dry clean") ||
+    v.includes("no dry clean")
+  ) {
+    return "DoNotDryClean";
+  }
+
+  // iron
   if (v.includes("iron")) {
     if (v.includes("low")) return "IronLow";
     if (v.includes("medium")) return "IronMedium";
@@ -180,7 +218,7 @@ function normalizeCareField(raw: any): string {
     return "IronLow";
   }
 
-  return v; // fallback
+  return v;
 }
 
 /* ---------------------------------------------------------
