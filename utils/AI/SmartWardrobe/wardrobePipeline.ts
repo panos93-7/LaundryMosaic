@@ -1,6 +1,5 @@
-// utils/SmartWardrobe/wardrobePipeline.ts
-
 import { analyzeWardrobeCached } from "./analyzeWardrobeCached";
+import { normalizeCanonical } from "./normalizeCanonical";
 import { translateWardrobeProfile } from "./translateWardrobeProfile";
 import { translationCache } from "./translationCache";
 import { Locale } from "./translationTypes";
@@ -16,44 +15,46 @@ export async function wardrobePipeline(
   uri: string,
   locale: Locale
 ): Promise<WardrobePipelineResult> {
-  // 1) Canonical garment (deterministic)
-  const canonical = await analyzeWardrobeCached(uri);
+
+  // 1) Vision → raw
+  const raw = await analyzeWardrobeCached(uri);
+
+  // 2) Deterministic canonical
+  const canonical: WardrobeCanonical = normalizeCanonical(raw);
   console.log("🧩 CANONICAL:", JSON.stringify(canonical, null, 2));
 
-  // 2) Deterministic garment ID
+  // 3) Deterministic garment ID
   const garmentId = await wardrobeCanonicalKey(canonical);
   console.log("🧩 garmentId:", garmentId);
   console.log("🌍 wardrobePipeline locale:", locale);
 
-  // 3) English → no translation
+  // 4) English → no translation
   if (locale === "en") {
     const profile: WardrobeProfile = {
       ...canonical,
-      careSymbolLabels: {}, // English UI maps directly
+      careSymbolLabels: {},
       __locale: "en",
     };
     return { original: canonical, profile };
   }
 
-  // 4) Cache check
+  // 5) Cache check
   const cached = await translationCache.get(garmentId, locale);
   if (cached) {
-    console.log("🌍 HIT translation cache for", garmentId, locale);
     return {
       original: canonical,
       profile: cached as WardrobeProfile,
     };
   }
 
-  // 5) Translate (deterministic)
-  const translated = await translateWardrobeProfile(
+  // 6) Translate canonical → locale
+  const translated: WardrobeProfile = await translateWardrobeProfile(
     canonical,
     locale,
     garmentId,
     translationCache
   );
 
-  // 6) Return both original + translated
   return {
     original: canonical,
     profile: translated,
