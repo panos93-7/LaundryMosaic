@@ -173,52 +173,51 @@ function normalizeCareSymbols(symbols: any) {
 }
 
 /* ---------------------------------------------------------
-   CARE FIELD NORMALIZATION (stable codes)
+   CARE FIELDS — derive ONLY from careSymbols
 --------------------------------------------------------- */
 
-function normalizeCareField(raw: any): string {
-  const v = clean(raw).toLowerCase();
-  if (!v) return "";
+function deriveCareFields(symbols: string[]) {
+  const set = new Set(symbols);
 
-  // wash
-  if (v.includes("washat30") || (v.includes("wash") && v.includes("30")) || v.includes("30°")) {
-    return "WashAt30";
-  }
-  if (v.includes("washat40") || (v.includes("wash") && v.includes("40")) || v.includes("40°")) {
-    return "WashAt40";
-  }
+  return {
+    wash: set.has("WashAt30")
+      ? "WashAt30"
+      : set.has("WashAt40")
+      ? "WashAt40"
+      : set.has("WashCold")
+      ? "WashCold"
+      : set.has("DoNotWash")
+      ? "DoNotWash"
+      : "",
 
-  // bleach
-  if (
-    v.includes("donotbleach") ||
-    v.includes("do not bleach") ||
-    v.includes("no bleach")
-  ) {
-    return "DoNotBleach";
-  }
+    bleach: set.has("DoNotBleach") ? "DoNotBleach" : "",
 
-  // dry
-  if (v.includes("tumble") && v.includes("low")) return "TumbleDryLow";
-  if (v.includes("tumble") && v.includes("medium")) return "TumbleDryMedium";
+    dry: set.has("TumbleDryLow")
+      ? "TumbleDryLow"
+      : set.has("TumbleDryMedium")
+      ? "TumbleDryMedium"
+      : set.has("DoNotTumbleDry")
+      ? "DoNotTumbleDry"
+      : "",
 
-  // dry clean
-  if (
-    v.includes("donotdryclean") ||
-    v.includes("do not dry clean") ||
-    v.includes("no dry clean")
-  ) {
-    return "DoNotDryClean";
-  }
+    iron: set.has("IronLow")
+      ? "IronLow"
+      : set.has("IronMedium")
+      ? "IronMedium"
+      : set.has("IronHigh")
+      ? "IronHigh"
+      : set.has("DoNotIron")
+      ? "DoNotIron"
+      : "",
 
-  // iron
-  if (v.includes("iron")) {
-    if (v.includes("low")) return "IronLow";
-    if (v.includes("medium")) return "IronMedium";
-    if (v.includes("high")) return "IronHigh";
-    return "IronLow";
-  }
+    dryclean: set.has("DoNotDryClean")
+      ? "DoNotDryClean"
+      : set.has("DryClean")
+      ? "DryClean"
+      : "",
 
-  return v;
+    warnings: [], // warnings μένουν όπως είναι
+  };
 }
 
 /* ---------------------------------------------------------
@@ -244,6 +243,8 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
   const type = normalizeType(raw.type);
   const color = normalizeColor(raw.color);
 
+  const careSymbols = normalizeCareSymbols(raw.careSymbols);
+
   return {
     name: buildName(type, color),
 
@@ -264,14 +265,7 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
       notes: arr(raw?.recommended?.notes),
     },
 
-    care: {
-      wash: normalizeCareField(raw?.care?.wash),
-      bleach: normalizeCareField(raw?.care?.bleach),
-      dry: normalizeCareField(raw?.care?.dry),
-      iron: normalizeCareField(raw?.care?.iron),
-      dryclean: normalizeCareField(raw?.care?.dryclean),
-      warnings: arr(raw?.care?.warnings),
-    },
+    care: deriveCareFields(careSymbols),
 
     risks: {
       shrinkage: normalizeRisk(raw?.risks?.shrinkage),
@@ -280,7 +274,7 @@ export function wardrobeNormalize(raw: any): WardrobeCanonical {
     },
 
     washFrequency: normalizeWashFrequency(raw.washFrequency),
-    careSymbols: normalizeCareSymbols(raw.careSymbols),
+    careSymbols,
 
     __locale: raw.__locale || "en",
   };
