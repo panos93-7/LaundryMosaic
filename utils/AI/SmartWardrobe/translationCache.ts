@@ -15,18 +15,12 @@ export const translationCache: TranslationCache = {
 
       if (!json) return null;
 
-      let parsed: any = null;
-
       try {
-        parsed = JSON.parse(json);
+        return JSON.parse(json);
       } catch {
         console.log("⚠️ translationCache.get: corrupted JSON");
         return null;
       }
-
-      parsed.__locale = locale;
-
-      return parsed;
     } catch (err) {
       console.log("⚠️ translationCache.get error:", err);
       return null;
@@ -36,13 +30,7 @@ export const translationCache: TranslationCache = {
   async set(garmentId: string, locale: Locale, value: any) {
     try {
       const key = makeKey(garmentId, locale);
-
-      const toStore = {
-        ...value,
-        __locale: locale,
-      };
-
-      await AsyncStorage.setItem(key, JSON.stringify(toStore));
+      await AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (err) {
       console.log("⚠️ translationCache.set error:", err);
     }

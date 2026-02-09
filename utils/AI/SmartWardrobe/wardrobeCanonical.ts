@@ -1,5 +1,4 @@
 // utils/SmartWardrobe/wardrobeCanonical.ts
-import * as Crypto from "expo-crypto";
 
 export type WardrobeCanonical = {
   name: string;
@@ -37,39 +36,4 @@ export type WardrobeCanonical = {
 
   washFrequency: string;
   careSymbols: string[];
-
-  __locale?: string;
 };
-
-/* ---------------------------------------------------------
-   DETERMINISTIC KEY
-   Hash ONLY stable fields
---------------------------------------------------------- */
-
-export async function wardrobeCanonicalKey(c: WardrobeCanonical) {
-  const stable = {
-    type: c.type,
-    category: c.category,
-    fabric: c.fabric,
-    color: c.color,
-
-    // pattern intentionally removed (unstable Vision output)
-
-    careSymbols: [...c.careSymbols].sort(),
-
-    risks: {
-      shrinkage: c.risks.shrinkage,
-      colorBleeding: c.risks.colorBleeding,
-      delicacy: c.risks.delicacy,
-    },
-
-    washFrequency: c.washFrequency,
-  };
-
-  const json = JSON.stringify(stable);
-
-  return await Crypto.digestStringAsync(
-    Crypto.CryptoDigestAlgorithm.SHA256,
-    json
-  );
-}

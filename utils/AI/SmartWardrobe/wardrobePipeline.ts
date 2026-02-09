@@ -1,16 +1,42 @@
+// utils/SmartWardrobe/wardrobePipeline.ts
+
 import { analyzeWardrobeCached } from "./analyzeWardrobeCached";
 import { normalizeCanonical } from "./normalizeCanonical";
 import { translateWardrobeProfile } from "./translateWardrobeProfile";
 import { translationCache } from "./translationCache";
 import { Locale } from "./translationTypes";
-import { WardrobeCanonical, wardrobeCanonicalKey } from "./wardrobeCanonical";
+import { WardrobeCanonical } from "./wardrobeCanonical";
 import { WardrobeProfile } from "./wardrobeProfile";
+
+// Use your existing hashing utility
+import { hashQuery } from "../Core/hashQuery";
 
 export interface WardrobePipelineResult {
   original: WardrobeCanonical;
   profile: WardrobeProfile;
 }
 
+/* ---------------------------------------------------------
+   STABLE GARMENT KEY (NO NEW FILE)
+   Only identity fields go into the hash.
+--------------------------------------------------------- */
+async function wardrobeCanonicalKey(canonical: WardrobeCanonical): Promise<string> {
+  const stable = {
+    name: canonical.name,
+    type: canonical.type,
+    category: canonical.category,
+    fabric: canonical.fabric,
+    color: canonical.color,
+    pattern: canonical.pattern,
+    careSymbols: [...canonical.careSymbols].sort(),
+  };
+
+  return await hashQuery(JSON.stringify(stable));
+}
+
+/* ---------------------------------------------------------
+   MAIN PIPELINE
+--------------------------------------------------------- */
 export async function wardrobePipeline(
   uri: string,
   locale: Locale
@@ -28,7 +54,7 @@ export async function wardrobePipeline(
   console.log("🧩 garmentId:", garmentId);
   console.log("🌍 wardrobePipeline locale:", locale);
 
-  // 4) English → no translation
+  // 4) English → no translation needed
   if (locale === "en") {
     const profile: WardrobeProfile = {
       ...canonical,
@@ -41,6 +67,7 @@ export async function wardrobePipeline(
   // 5) Cache check
   const cached = await translationCache.get(garmentId, locale);
   if (cached) {
+    console.log("🌍 HIT translation cache for", garmentId, locale);
     return {
       original: canonical,
       profile: cached as WardrobeProfile,

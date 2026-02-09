@@ -17,13 +17,26 @@ IMPORTANT:
 ALLOWED VALUES:
 
 TYPE:
-["Sweatshirt", "T-Shirt", "Shirt", "Blouse"]
+[
+  "TShirt", "Shirt", "Blouse", "Top",
+  "Sweatshirt", "Hoodie", "Sweater",
+  "TankTop", "Polo", "LongSleeve",
+  "Dress", "Skirt", "Shorts", "Pants",
+  "Jeans", "Leggings", "Jacket",
+  "Coat", "Blazer"
+]
 
 CATEGORY:
-["Tops"]
+[
+  "Tops", "Bottoms", "Outerwear", "Dresses"
+]
 
 FABRIC:
-["Cotton Blend", "Polyester", "Wool", "Linen", "Silk"]
+[
+  "Cotton", "Cotton Blend", "Polyester",
+  "Wool", "Linen", "Silk", "Denim",
+  "Nylon", "Acrylic", "Viscose"
+]
 
 CARE SYMBOL ENUMS:
 [
@@ -42,6 +55,7 @@ SCHEMA:
   "fabric": "...",
   "color": "...",
   "pattern": "...",
+
   "stains": ["..."],
   "stainTips": ["..."],
 

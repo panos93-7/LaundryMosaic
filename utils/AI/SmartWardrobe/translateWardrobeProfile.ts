@@ -79,15 +79,15 @@ export async function translateWardrobeProfile(
   merged.careSymbolLabels = {};
 
   for (const symbol of canonical.careSymbols) {
-  const jsonKey =
-    CARE_SYMBOL_MAP[symbol as keyof typeof CARE_SYMBOL_MAP];
+    const jsonKey =
+      CARE_SYMBOL_MAP[symbol as keyof typeof CARE_SYMBOL_MAP];
 
-  if (jsonKey && json.careSymbols?.[jsonKey]) {
-    merged.careSymbolLabels[symbol] = json.careSymbols[jsonKey];
-  } else {
-    merged.careSymbolLabels[symbol] = symbol; // fallback
+    if (jsonKey && json.careSymbols?.[jsonKey]) {
+      merged.careSymbolLabels[symbol] = json.careSymbols[jsonKey];
+    } else {
+      merged.careSymbolLabels[symbol] = symbol; // fallback
+    }
   }
-}
 
   /* ---------------------------------------------------------
      CAST AFTER NORMALIZATION
