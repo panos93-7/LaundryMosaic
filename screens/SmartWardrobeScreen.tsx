@@ -110,8 +110,6 @@ const { original, profile } = await wardrobePipeline(uri, locale);
   setAnalyzing(false);
 };
 
-
-
   return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}

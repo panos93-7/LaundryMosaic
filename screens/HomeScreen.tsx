@@ -266,7 +266,8 @@ export default function HomeScreen({ navigation }: any) {
   setLanguage(value);
   i18n.locale = value;
   setGlobalLanguage(value); // ⭐ ενημερώνει ΟΛΟ το app
-  };
+  useLanguageStore.getState().setLanguage(value);
+};
 
   const handleStart = () => {
     const program = getProgram(fabric, color);
