@@ -10,7 +10,7 @@ import { WardrobeProfile } from "../utils/AI/SmartWardrobe/wardrobeProfile";
 /* --------------------------------------------- */
 
 export type Garment = {
-  id: number;
+  id: string; // ✔ FIXED — garmentId είναι string hash
 
   // Always natural English (AI canonical output)
   original: WardrobeCanonical;
@@ -32,9 +32,9 @@ type WardrobeState = {
   addGarment: (g: Garment) => Promise<void>;
 
   // Update canonical + profile + image
-  updateGarment: (g: Partial<Garment> & { id: number }) => Promise<void>;
+  updateGarment: (g: Partial<Garment> & { id: string }) => Promise<void>;
 
-  deleteGarment: (id: number) => Promise<void>;
+  deleteGarment: (id: string) => Promise<void>;
 };
 
 const STORAGE_KEY = "wardrobe";

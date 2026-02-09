@@ -14,6 +14,7 @@ import { hashQuery } from "../Core/hashQuery";
 export interface WardrobePipelineResult {
   original: WardrobeCanonical;
   profile: WardrobeProfile;
+  garmentId: string;
 }
 
 /* ---------------------------------------------------------
@@ -65,7 +66,7 @@ export async function wardrobePipeline(
       careSymbolLabels: {},
       __locale: "en",
     };
-    return { original: canonical, profile };
+    return { original: canonical, profile, garmentId };
   }
 
   // 5) Cache check
@@ -75,6 +76,7 @@ export async function wardrobePipeline(
     return {
       original: canonical,
       profile: cached as WardrobeProfile,
+      garmentId,
     };
   }
 
@@ -89,5 +91,6 @@ export async function wardrobePipeline(
   return {
     original: canonical,
     profile: translated,
+    garmentId,
   };
 }

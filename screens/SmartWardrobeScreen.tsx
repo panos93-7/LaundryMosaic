@@ -93,14 +93,14 @@ export default function WardrobeScreen() {
 
       console.log("🌍 ADD GARMENT rawLocale:", rawLocale, "resolved:", locale);
 
-      const { original, profile } = await wardrobePipeline(uri, locale);
+      const { original, profile, garmentId } = await wardrobePipeline(uri, locale);
 
-      await addGarment({
-        id: Date.now(),
-        original,
-        profile,
-        image: uri,
-      });
+await addGarment({
+  id: garmentId,     // ✔️ ΣΩΣΤΟ ID
+  original,
+  profile,
+  image: uri,
+});
     } catch (err) {
       console.log("❌ Wardrobe error:", err);
     }
