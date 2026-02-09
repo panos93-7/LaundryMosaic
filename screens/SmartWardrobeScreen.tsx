@@ -90,11 +90,12 @@ export default function WardrobeScreen() {
   setAnalyzing(true);
 
   try {
-    const rawLocale = (i18n as any).language;
-    const locale = resolveLocale(rawLocale);
-    console.log("🌍 ADD GARMENT rawLocale:", rawLocale, "resolved:", locale);
+    const rawLocale = useLanguageStore.getState().language;
+const locale = resolveLocale(rawLocale);
 
-    const { original, profile } = await wardrobePipeline(uri, locale);
+console.log("🌍 ADD GARMENT rawLocale:", rawLocale, "resolved:", locale);
+
+const { original, profile } = await wardrobePipeline(uri, locale);
 
     await addGarment({
       id: Date.now(),
