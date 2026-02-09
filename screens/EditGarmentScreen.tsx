@@ -39,80 +39,85 @@ export default function EditGarmentScreen() {
     );
   }
 
-  // Editable fields come from garment.profile
-  const [name, setName] = useState(garment.profile.name);
-  const [type, setType] = useState(garment.profile.type);
-  const [color, setColor] = useState(garment.profile.color ?? "");
-  const [category, setCategory] = useState(garment.profile.category ?? "");
-  const [fabric, setFabric] = useState(garment.profile.fabric ?? "");
-  const [pattern, setPattern] = useState(garment.profile.pattern ?? "");
-  const [image, setImage] = useState<string | null>(garment?.image ?? null);
+// Editable fields come from garment.profile
+const [name, setName] = useState(garment.profile.name);
+const [type, setType] = useState(garment.profile.type);
+const [color, setColor] = useState(garment.profile.color ?? "");
+const [category, setCategory] = useState(garment.profile.category ?? "");
+const [fabric, setFabric] = useState(garment.profile.fabric ?? "");
+const [pattern, setPattern] = useState(garment.profile.pattern ?? "");
+const [image, setImage] = useState<string | null>(garment?.image ?? null);
 
-  const pickImage = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.9,
-    });
+const pickImage = async () => {
+  const res = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    quality: 0.9,
+  });
 
-    if (!res.canceled) {
-      setImage(res.assets[0].uri);
-    }
+  if (!res.canceled) {
+    setImage(res.assets[0].uri);
+  }
+};
+
+// ⭐ SmartWardrobe V3 aligned save
+const handleSave = () => {
+  // 1) Updated canonical (always EN)
+  const updatedOriginal = {
+    ...garment.original,
+    name,
+    type,
+    color,
+    category,
+    fabric,
+    pattern,
   };
 
-  // ⭐ SmartWardrobe V3 aligned save
-  const handleSave = () => {
-    // 1) Updated canonical (always EN)
-    const updatedOriginal = {
-      ...garment.original,
-      name,
-      type,
-      color,
-      category,
-      fabric,
-      pattern,
-      // canonical stays EN, no __locale override needed
-    };
-
-    // 2) Updated profile (UI preview only)
-    const updatedProfile = {
-      ...garment.profile,
-      name,
-      type,
-      color,
-      category,
-      fabric,
-      pattern,
-      careSymbolLabels: undefined, // force regeneration on next translation
-      __locale: undefined, // force re-translation
-    };
-
-    updateGarment({
-      id: garment.id,
-      original: updatedOriginal,
-      profile: updatedProfile,
-      image: image ?? garment.image,
-    });
-
-    navigation.goBack();
+  // 2) Updated profile (UI preview only)
+  const updatedProfile = {
+    ...garment.profile,
+    name,
+    type,
+    color,
+    category,
+    fabric,
+    pattern,
   };
 
-  const handleDelete = () => {
-    Alert.alert(
-      String(i18n.t("editGarment.alertTitle")),
-      String(i18n.t("editGarment.alertMessage")),
-      [
-        { text: String(i18n.t("editGarment.cancel")), style: "cancel" },
-        {
-          text: String(i18n.t("editGarment.delete")),
-          style: "destructive",
-          onPress: () => {
-            deleteGarment(garment.id);
-            navigation.goBack();
-          },
+  // ⭐ 3) Make profile SAFE (no undefined fields)
+  const safeProfile = {
+    ...updatedProfile,
+    careSymbolLabels: updatedProfile.careSymbolLabels ?? {},
+    __locale: updatedProfile.__locale ?? garment.profile.__locale ?? "en",
+  };
+
+  // ⭐ 4) Save garment
+  updateGarment({
+    id: garment.id,
+    original: updatedOriginal,
+    profile: safeProfile,
+    image: image ?? garment.image,
+  });
+
+  navigation.goBack();
+};
+
+const handleDelete = () => {
+  Alert.alert(
+    String(i18n.t("editGarment.alertTitle")),
+    String(i18n.t("editGarment.alertMessage")),
+    [
+      { text: String(i18n.t("editGarment.cancel")), style: "cancel" },
+      {
+        text: String(i18n.t("editGarment.delete")),
+        style: "destructive",
+        onPress: () => {
+          deleteGarment(garment.id);
+          navigation.goBack();
         },
-      ]
-    );
-  };
+      },
+    ]
+  );
+};
     return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
