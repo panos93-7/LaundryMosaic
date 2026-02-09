@@ -51,17 +51,16 @@ export function normalizeCanonical(raw: any): WardrobeCanonical {
     color: mapColor(raw.color),
     pattern: norm(raw.pattern),
 
+    stains: raw.stains ?? [],
+    stainTips: raw.stainTips ?? [],
+
     recommended: {
       program: mapProgram(raw.recommended?.program),
       temp: raw.recommended?.temp ?? 30,
       spin: raw.recommended?.spin ?? 800,
       detergent: norm(raw.recommended?.detergent),
-      notes: raw.recommended?.notes ?? [],   // ⭐ required by type
+      notes: raw.recommended?.notes ?? [],
     },
-
-    // ⭐ Required by WardrobeCanonical
-    stains: raw.stains ?? [],
-    stainTips: raw.stainTips ?? [],
 
     care: {
       wash: raw.care?.wash ?? "",
