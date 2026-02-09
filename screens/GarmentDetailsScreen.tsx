@@ -54,58 +54,46 @@ export default function GarmentDetailsScreen() {
 
   const [isTranslating, setIsTranslating] = useState(false);
 
-  // ⭐ LAZY TRANSLATION EFFECT (SmartWardrobe v3)
-  useEffect(() => {
-    if (!garment) return;
+// ⭐ LAZY TRANSLATION EFFECT (SmartWardrobe v3)
+useEffect(() => {
+  if (!garment) return;
 
-    // 1) English → always original canonical
-    if (locale === "en") {
+  // 1) Already translated → stop
+  if (garment.profile?.__locale === locale) return;
+
+  async function run() {
+    setIsTranslating(true);
+
+    // 2) Try cache
+    const cached = await translationCache.get(garment.id.toString(), locale);
+
+    if (cached) {
       updateGarment({
         id: garment.id,
-        profile: { ...garment.original, __locale: "en" },
+        profile: { ...cached, __locale: locale },
       });
+      setIsTranslating(false);
       return;
     }
 
-    // 2) Already translated → stop
-    if (garment.profile?.__locale === locale) return;
+    // 3) Translate canonical EN → locale
+    const translated = await translateWardrobeProfile(
+      garment.original,
+      locale,
+      garment.id.toString(),
+      translationCache
+    );
 
-    // 3) Prevent double calls
-    if (isTranslating) return;
+    updateGarment({
+      id: garment.id,
+      profile: { ...translated, __locale: locale },
+    });
 
-    async function run() {
-      setIsTranslating(true);
+    setIsTranslating(false);
+  }
 
-      // Check translation cache
-      const cached = await translationCache.get(garment.id.toString(), locale);
-
-      if (cached) {
-        updateGarment({
-          id: garment.id,
-          profile: { ...cached, __locale: locale },
-        });
-        setIsTranslating(false);
-        return;
-      }
-
-      // ⭐ Batch translate canonical EN → locale
-      const translated = await translateWardrobeProfile(
-        garment.original,
-        locale,
-        garment.id.toString(),
-        translationCache
-      );
-
-      updateGarment({
-        id: garment.id,
-        profile: { ...translated, __locale: locale },
-      });
-
-      setIsTranslating(false);
-    }
-
-    run();
-  }, [locale, garment?.id]);
+  run();
+}, [locale, garment?.id]);
 
   if (!garment) {
     return (
