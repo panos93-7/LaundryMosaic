@@ -22,13 +22,17 @@ export interface WardrobePipelineResult {
 --------------------------------------------------------- */
 async function wardrobeCanonicalKey(canonical: WardrobeCanonical): Promise<string> {
   const stable = {
-    name: canonical.name,
     type: canonical.type,
     category: canonical.category,
     fabric: canonical.fabric,
     color: canonical.color,
-    pattern: canonical.pattern,
     careSymbols: [...canonical.careSymbols].sort(),
+    risks: {
+      shrinkage: canonical.risks.shrinkage,
+      colorBleeding: canonical.risks.colorBleeding,
+      delicacy: canonical.risks.delicacy,
+    },
+    washFrequency: canonical.washFrequency,
   };
 
   return await hashQuery(JSON.stringify(stable));
