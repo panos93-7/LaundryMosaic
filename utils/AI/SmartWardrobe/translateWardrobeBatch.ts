@@ -17,9 +17,10 @@ export async function translateWardrobeBatch(
       body: JSON.stringify({
         temperature: 0,
         prompt: `
-Translate ONLY the natural-language sentences in this JSON object into ${locale}.
-DO NOT translate enums.
-DO NOT translate careSymbols.
+Translate ALL values in this JSON object into ${locale}.
+Translate everything: name, type, category, fabric, color, pattern,
+stains, stainTips, recommended fields, care fields, risks, washFrequency.
+DO NOT translate careSymbols (these are fixed codes).
 DO NOT generate careSymbolLabels.
 Return ONLY valid JSON, no comments, no explanations.
 
