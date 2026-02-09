@@ -191,22 +191,20 @@ export default function HomeScreen({ navigation }: any) {
   const [languageOpen, setLanguageOpen] = useState(false);
 
   const languageItems = [
-  { label: "🇬🇷 Ελληνικά", value: "el" },
-  { label: "🇬🇧 English", value: "en" },
-  { label: "🇪🇸 Español", value: "es" },
-  { label: "🇫🇷 Français", value: "fr" },
-  { label: "🇩🇪 Deutsch", value: "de" },
-  { label: "🇮🇹 Italiano", value: "it" },
-  { label: "🇹🇷 Türkçe", value: "tr" },
-  { label: "🇷🇺 Русский", value: "ru" },
-  { label: "🇯🇵 日本語", value: "ja" },
-  { label: "🇰🇷 한국어", value: "ko" },
-  { label: "🇹🇼 繁體中文", value: "zh-TW" },
-  { label: "🇵🇹 Português (PT)", value: "pt-PT" },
-  { label: "🇧🇷 Português (BR)", value: "pt-BR" }
-];
-
-
+    { label: "🇬🇷 Ελληνικά", value: "el" },
+    { label: "🇬🇧 English", value: "en" },
+    { label: "🇪🇸 Español", value: "es" },
+    { label: "🇫🇷 Français", value: "fr" },
+    { label: "🇩🇪 Deutsch", value: "de" },
+    { label: "🇮🇹 Italiano", value: "it" },
+    { label: "🇹🇷 Türkçe", value: "tr" },
+    { label: "🇷🇺 Русский", value: "ru" },
+    { label: "🇯🇵 日本語", value: "ja" },
+    { label: "🇰🇷 한국어", value: "ko" },
+    { label: "🇹🇼 繁體中文", value: "zh-TW" },
+    { label: "🇵🇹 Português (PT)", value: "pt-PT" },
+    { label: "🇧🇷 Português (BR)", value: "pt-BR" }
+  ];
 
   const fabricItems = [
     { label: i18n.t("fabricValues.cotton"), value: "cotton" },
@@ -221,8 +219,14 @@ export default function HomeScreen({ navigation }: any) {
     { label: i18n.t("colorValues.colored"), value: "colored" },
   ];
 
-  const [language, setLanguage] = useState(i18n.locale);
+  /* ⭐⭐⭐ LANGUAGE FIX — NO LOCAL STATE ⭐⭐⭐ */
+  const language = useLanguageStore((s) => s.language);
   const setGlobalLanguage = useLanguageStore((s) => s.setLanguage);
+
+  const handleLanguageChange = (value: string) => {
+    i18n.locale = value;
+    setGlobalLanguage(value);
+  };
 
   /* Load theme */
   useEffect(() => {
@@ -230,7 +234,8 @@ export default function HomeScreen({ navigation }: any) {
       if (saved) setIsDarkMode(saved === "true");
     });
   }, []);
-    /* Reset animation when fabric/color changes */
+
+  /* Reset animation when fabric/color changes */
   useEffect(() => {
     animationRef.current?.reset();
     setIsRunning(false);
@@ -261,13 +266,6 @@ export default function HomeScreen({ navigation }: any) {
       position: Toast.positions.BOTTOM,
     });
   };
-
-  const handleLanguageChange = (value: string) => {
-  setLanguage(value);
-  i18n.locale = value;
-  setGlobalLanguage(value); // ⭐ ενημερώνει ΟΛΟ το app
-  useLanguageStore.getState().setLanguage(value);
-};
 
   const handleStart = () => {
     const program = getProgram(fabric, color);
@@ -420,36 +418,37 @@ export default function HomeScreen({ navigation }: any) {
                   borderRadius: 12,
                 }}
               >
-                <DropDownPicker
-                  listMode="SCROLLVIEW"
-                  open={languageOpen}
-                  value={language}
-                  items={languageItems}
-                  setOpen={setLanguageOpen}
-                  setValue={(val: any) => {
-                    const newLang =
-                      typeof val === "function" ? val(language) : val;
-                    if (newLang) handleLanguageChange(newLang);
-                  }}
-                  setItems={() => {}}
-                  placeholder=" "
-                  style={{
-                    backgroundColor: "transparent",
-                    borderColor: "transparent",
-                  }}
-                  dropDownContainerStyle={{
-                    backgroundColor: isDarkMode ? "#1e1e1e" : "#fff",
-                    borderColor: "transparent",
-                    borderRadius: 12,
-                    maxHeight: languageItems.length * 52,
-                  }}
-                  textStyle={{
-                    color: isDarkMode ? "#fff" : "#000",
-                    fontSize: 16,
-                  }}
-                  zIndex={3000}
-                  zIndexInverse={4000}
-                />
+              <DropDownPicker
+  listMode="SCROLLVIEW"
+  open={languageOpen}
+  value={language}
+  items={languageItems}
+  setOpen={setLanguageOpen}
+
+  // ⭐ ΑΥΤΟ ΧΡΕΙΑΖΕΤΑΙ για να μην έχεις TypeScript error
+  setValue={(callback) => {
+    const newLang = callback(language);
+    if (newLang) handleLanguageChange(newLang);
+  }}
+
+  placeholder=" "
+  style={{
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+  }}
+  dropDownContainerStyle={{
+    backgroundColor: isDarkMode ? "#1e1e1e" : "#fff",
+    borderColor: "transparent",
+    borderRadius: 12,
+    maxHeight: languageItems.length * 52,
+  }}
+  textStyle={{
+    color: isDarkMode ? "#fff" : "#000",
+    fontSize: 16,
+  }}
+  zIndex={3000}
+  zIndexInverse={4000}
+/>
               </View>
             </LinearGradient>
           </View>
