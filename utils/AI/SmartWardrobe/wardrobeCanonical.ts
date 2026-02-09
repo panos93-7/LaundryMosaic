@@ -41,9 +41,24 @@ export type WardrobeCanonical = {
   __locale?: string;
 };
 
-export async function wardrobeCanonicalKey(obj: WardrobeCanonical) {
-  const { __locale, ...rest } = obj;
-  const json = JSON.stringify(rest);
+/* ---------------------------------------------------------
+   DETERMINISTIC KEY
+   Hash ONLY stable fields
+--------------------------------------------------------- */
+
+export async function wardrobeCanonicalKey(c: WardrobeCanonical) {
+  const stable = {
+    type: c.type,
+    category: c.category,
+    fabric: c.fabric,
+    color: c.color,
+    pattern: c.pattern,
+    careSymbols: [...c.careSymbols].sort(),
+    risks: c.risks,
+    washFrequency: c.washFrequency,
+  };
+
+  const json = JSON.stringify(stable);
 
   return await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
