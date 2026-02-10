@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
 import React, { useState } from "react";
 import {
@@ -17,11 +18,8 @@ import i18n from "../i18n";
 import { generateLaundryAdviceCached } from "../utils/AI/AILaundryAssistant/generateLaundryAdviceCached";
 import { hashQuery } from "../utils/AI/Core/hashQuery";
 
-/* ---------------------------------------------------------
-   Detect if the user typed Greek → force EL
---------------------------------------------------------- */
 function detectQueryLanguage(text: string) {
-  return /[α-ωΑ-Ω]/.test(text) ? "el" : "en";
+  return /[α-ωΑ-Ω]/.test(text) ? "el" : null;
 }
 
 export default function AILaundryAssistantScreen() {
@@ -44,32 +42,34 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
-      /* ---------------------------------------------------------
-         1) UI locale (from i18n)
-      --------------------------------------------------------- */
-      const uiLang = (i18n as any).language || "en";
-      const normalizedLocale = uiLang.split("-")[0].toLowerCase();
+      // 1) Try i18n language
+      let uiLang = (i18n as any).language;
 
-      /* ---------------------------------------------------------
-         2) Detect if user typed Greek → override locale
-      --------------------------------------------------------- */
+      // 2) Fallback to device locale
+      if (!uiLang) {
+        uiLang = Localization.getLocales()?.[0]?.languageCode || "en";
+      }
+
+      // 3) Normalize
+      let normalizedLocale = uiLang.split("-")[0].toLowerCase();
+
+      // 4) If user typed Greek → force Greek
       const queryLang = detectQueryLanguage(userMessage);
-      const finalLocale =
-        queryLang === "el" ? "el" : normalizedLocale;
+      if (queryLang) {
+        normalizedLocale = "el";
+      }
 
-      /* ---------------------------------------------------------
-         3) Canonical key for caching
-      --------------------------------------------------------- */
+      console.log("🌍 FINAL targetLocale:", normalizedLocale);
+
+      // Canonical key
       const normalizedQuery = userMessage.trim().toLowerCase();
       const canonicalKey = await hashQuery(normalizedQuery);
 
-      /* ---------------------------------------------------------
-         4) Ask AI (canonical + translated)
-      --------------------------------------------------------- */
+      // AI
       const ai = await generateLaundryAdviceCached({
         canonicalKey,
         userQuery: userMessage,
-        targetLocale: finalLocale,
+        targetLocale: normalizedLocale,
       });
 
       if (!ai) {
@@ -78,9 +78,6 @@ export default function AILaundryAssistantScreen() {
 
       const output = ai.translated || ai.canonical;
 
-      /* ---------------------------------------------------------
-         5) Format output for chat bubble
-      --------------------------------------------------------- */
       const formatted = [
         `• ${output.recommended.temp}°C`,
         `• ${output.recommended.spin} rpm`,
