@@ -3,14 +3,42 @@ import { LaundryCanonical } from "./aiLaundryCanonical";
 
 const WORKER_URL = "https://gemini-proxy.panos-ai.workers.dev";
 
+/* ---------------------------------------------------------
+   Locale → Language Name Mapping (Gemini-friendly)
+--------------------------------------------------------- */
+const LANGUAGE_MAP: Record<string, string> = {
+  en: "English",
+  el: "Greek",
+  es: "Spanish",
+  fr: "French",
+  de: "German",
+  it: "Italian",
+  tr: "Turkish",
+  ru: "Russian",
+  ja: "Japanese",
+  ko: "Korean",
+  "zh-tw": "Traditional Chinese",
+  "pt-pt": "Portuguese (Portugal)",
+  "pt-br": "Portuguese (Brazil)",
+};
+
+function resolveLanguageName(locale: string): string {
+  const key = locale.toLowerCase();
+  return LANGUAGE_MAP[key] || "English";
+}
+
+/* ---------------------------------------------------------
+   MAIN TRANSLATION FUNCTION
+--------------------------------------------------------- */
 export async function translateLaundry(
   canonical: LaundryCanonical,
   targetLocale: string
 ): Promise<LaundryCanonical> {
-  const userLanguage = (targetLocale || "en").toLowerCase();
+  const normalized = (targetLocale || "en").toLowerCase();
+  const languageName = resolveLanguageName(normalized);
 
-  // If EN, just return canonical
-  if (userLanguage === "en") {
+  // If EN → no translation needed
+  if (normalized === "en") {
     return canonical;
   }
 
@@ -22,10 +50,10 @@ export async function translateLaundry(
         prompt: `
 You are a professional translator specialized in laundry and textile care.
 
-USER_LANGUAGE: ${userLanguage}
+TARGET_LANGUAGE: ${languageName}
 
 LANGUAGE RULES:
-- Translate ALL text fields into "${userLanguage}".
+- Translate ALL text fields into ${languageName}.
 - Keep ALL numeric values EXACTLY the same.
 - Do NOT add or remove fields.
 - Do NOT change the JSON structure.
@@ -35,7 +63,7 @@ INPUT (canonical EN JSON):
 ${JSON.stringify(canonical, null, 2)}
 
 TASK:
-Translate ONLY the text values (strings) into "${userLanguage}".
+Translate ONLY the text values (strings) into ${languageName}.
 Keep the same JSON structure and numeric values.
 
 Return ONLY valid JSON in this exact format:
@@ -101,7 +129,9 @@ Return ONLY valid JSON in this exact format:
       careInstructions:
         Array.isArray(parsed?.careInstructions) &&
         parsed.careInstructions.length > 0
-          ? parsed.careInstructions.map((x: any) => String(x || "").trim()).filter(Boolean)
+          ? parsed.careInstructions
+              .map((x: any) => String(x || "").trim())
+              .filter(Boolean)
           : canonical.careInstructions,
     };
   } catch (err) {
