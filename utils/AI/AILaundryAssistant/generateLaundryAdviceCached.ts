@@ -26,10 +26,10 @@ export async function generateLaundryAdviceCached({
 
   const normalizedLocale = (targetLocale || "en").split("-")[0].toLowerCase();
 
-  // If EN → no translation needed
-  if (normalizedLocale === "en") {
-    return { canonical, translated: canonical };
-  }
+// Always translate unless locale === "en"
+if (normalizedLocale === "en") {
+  return { canonical, translated: canonical };
+}
 
   // 2) Translation from cache
   const subKey = `translated_${normalizedLocale}`;

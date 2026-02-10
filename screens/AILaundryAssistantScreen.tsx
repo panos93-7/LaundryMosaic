@@ -17,6 +17,9 @@ import i18n from "../i18n";
 import { generateLaundryAdviceCached } from "../utils/AI/AILaundryAssistant/generateLaundryAdviceCached";
 import { hashQuery } from "../utils/AI/Core/hashQuery";
 
+/* ---------------------------------------------------------
+   Detect if the user typed Greek → force EL
+--------------------------------------------------------- */
 function detectQueryLanguage(text: string) {
   return /[α-ωΑ-Ω]/.test(text) ? "el" : "en";
 }
@@ -41,24 +44,32 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
-      // UI locale (ONLY for translation target)
-      const lang = (i18n as any).language || "en";
-      const normalizedLocale = lang.split("-")[0].toLowerCase();
+      /* ---------------------------------------------------------
+         1) UI locale (from i18n)
+      --------------------------------------------------------- */
+      const uiLang = (i18n as any).language || "en";
+      const normalizedLocale = uiLang.split("-")[0].toLowerCase();
 
-      // Canonical key
+      /* ---------------------------------------------------------
+         2) Detect if user typed Greek → override locale
+      --------------------------------------------------------- */
+      const queryLang = detectQueryLanguage(userMessage);
+      const finalLocale =
+        queryLang === "el" ? "el" : normalizedLocale;
+
+      /* ---------------------------------------------------------
+         3) Canonical key for caching
+      --------------------------------------------------------- */
       const normalizedQuery = userMessage.trim().toLowerCase();
       const canonicalKey = await hashQuery(normalizedQuery);
 
-      // ⭐ REAL FIX: detect query language for canonical
-      const queryLang = detectQueryLanguage(userMessage);
-
-      // Ask AI (canonical + translated)
+      /* ---------------------------------------------------------
+         4) Ask AI (canonical + translated)
+      --------------------------------------------------------- */
       const ai = await generateLaundryAdviceCached({
         canonicalKey,
         userQuery: userMessage,
-        targetLocale: normalizedLocale,
-        // ⭐ pass queryLang to generator INSIDE generateLaundryAdviceCached
-        // (already handled there)
+        targetLocale: finalLocale,
       });
 
       if (!ai) {
@@ -67,12 +78,15 @@ export default function AILaundryAssistantScreen() {
 
       const output = ai.translated || ai.canonical;
 
-const formatted = [
-  `• ${output.recommended.temp}°C`,
-  `• ${output.recommended.spin} rpm`,
-  `• ${output.recommended.program}`,
-  ...output.careInstructions.map((x) => `• ${x}`)
-].join("\n");
+      /* ---------------------------------------------------------
+         5) Format output for chat bubble
+      --------------------------------------------------------- */
+      const formatted = [
+        `• ${output.recommended.temp}°C`,
+        `• ${output.recommended.spin} rpm`,
+        `• ${output.recommended.program}`,
+        ...output.careInstructions.map((x) => `• ${x}`),
+      ].join("\n");
 
       setMessages((prev) => [...prev, { from: "ai", text: formatted }]);
     } catch (err) {
