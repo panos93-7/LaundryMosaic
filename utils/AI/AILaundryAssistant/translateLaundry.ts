@@ -28,7 +28,7 @@ function resolveLanguageName(locale: string): string {
 }
 
 /* ---------------------------------------------------------
-   MAIN TRANSLATION FUNCTION
+   MAIN TRANSLATION FUNCTION (WITH LOGS)
 --------------------------------------------------------- */
 export async function translateLaundry(
   canonical: LaundryCanonical,
@@ -37,17 +37,17 @@ export async function translateLaundry(
   const normalized = (targetLocale || "en").toLowerCase();
   const languageName = resolveLanguageName(normalized);
 
+  console.log("🌍 translateLaundry → targetLocale:", targetLocale);
+  console.log("🌍 translateLaundry → normalized:", normalized);
+  console.log("🌍 translateLaundry → languageName:", languageName);
+
   // If EN → no translation needed
   if (normalized === "en") {
+    console.log("ℹ️ translateLaundry → locale is EN, skipping translation.");
     return canonical;
   }
 
-  try {
-    const response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt: `
+  const prompt = `
 You are a professional translator specialized in laundry and textile care.
 
 TARGET_LANGUAGE: ${languageName}
@@ -82,33 +82,47 @@ Return ONLY valid JSON in this exact format:
   },
   "careInstructions": ["...", "..."]
 }
-`,
-      }),
+`;
+
+  console.log("📤 translateLaundry → PROMPT SENT TO WORKER:\n", prompt);
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
     });
 
     if (!response.ok) {
-      console.log("❌ translateLaundry worker error:", await response.text());
+      const errText = await response.text();
+      console.log("❌ translateLaundry worker error:", errText);
       return canonical;
     }
 
     const data = await response.json();
+    console.log("📥 translateLaundry → RAW WORKER RESPONSE:\n", JSON.stringify(data, null, 2));
+
     let rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    console.log("📥 translateLaundry → rawText:", rawText);
 
     const cleanedJson = rawText
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
 
+    console.log("🧹 translateLaundry → cleanedJson:", cleanedJson);
+
     let parsed: any;
     try {
       parsed = JSON.parse(cleanedJson);
+      console.log("📦 translateLaundry → parsed JSON:", parsed);
     } catch (err) {
       console.log("❌ translateLaundry JSON parse error:", cleanedJson);
       return canonical;
     }
 
     // Light normalization: fall back to canonical if something is missing
-    return {
+    const finalResult = {
       fabricType: parsed?.fabricType || canonical.fabricType,
       weave: parsed?.weave || canonical.weave,
       sensitivity: parsed?.sensitivity || canonical.sensitivity,
@@ -137,6 +151,10 @@ Return ONLY valid JSON in this exact format:
               .filter(Boolean)
           : canonical.careInstructions,
     };
+
+    console.log("✅ translateLaundry → FINAL RESULT:", finalResult);
+
+    return finalResult;
   } catch (err) {
     console.log("❌ translateLaundry fatal error:", err);
     return canonical;
