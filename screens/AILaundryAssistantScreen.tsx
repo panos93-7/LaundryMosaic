@@ -18,10 +18,6 @@ import i18n from "../i18n";
 import { generateLaundryAdviceCached } from "../utils/AI/AILaundryAssistant/generateLaundryAdviceCached";
 import { hashQuery } from "../utils/AI/Core/hashQuery";
 
-function detectQueryLanguage(text: string) {
-  return /[α-ωΑ-Ω]/.test(text) ? "el" : null;
-}
-
 export default function AILaundryAssistantScreen() {
   const navigation = useNavigation<any>();
 
@@ -52,12 +48,6 @@ export default function AILaundryAssistantScreen() {
 
       // 3) Normalize
       let normalizedLocale = uiLang.split("-")[0].toLowerCase();
-
-      // 4) If user typed Greek → force Greek
-      const queryLang = detectQueryLanguage(userMessage);
-      if (queryLang) {
-        normalizedLocale = "el";
-      }
 
       console.log("🌍 FINAL targetLocale:", normalizedLocale);
 
