@@ -4,7 +4,7 @@ import { LaundryCanonical } from "./aiLaundryCanonical";
 const WORKER_URL = "https://gemini-proxy.panos-ai.workers.dev";
 
 /* ---------------------------------------------------------
-   Locale → Language Name Mapping (Gemini-friendly)
+   Locale → Language Name Mapping (aligned with SmartWardrobe)
 --------------------------------------------------------- */
 const LANGUAGE_MAP: Record<string, string> = {
   en: "English",
@@ -51,6 +51,8 @@ export async function translateLaundry(
 You are a professional translator specialized in laundry and textile care.
 
 TARGET_LANGUAGE: ${languageName}
+
+ANSWER ONLY IN ${languageName}.
 
 LANGUAGE RULES:
 - Translate ALL text fields into ${languageName}.
