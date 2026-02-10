@@ -1,6 +1,6 @@
+import * as Localization from "expo-localization";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import i18n from "../i18n"; // αν δεν το έχεις ήδη, πρόσθεσέ το
 
 type LanguageState = {
   language: string;
@@ -10,7 +10,9 @@ type LanguageState = {
 export const useLanguageStore = create<LanguageState>()(
   persist(
     (set) => ({
-      language: i18n.locale,          // ⭐ παίρνει τη γλώσσα της συσκευής
+      // ⭐ ΠΑΝΤΑ σωστό device locale
+      language: Localization.getLocales()?.[0]?.languageCode || "en",
+
       setLanguage: (lang) => set({ language: lang }),
     }),
     {

@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
 import React, { useState } from "react";
 import {
@@ -15,11 +14,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
+import { useLanguageStore } from "../store/languageStore";
 import { generateLaundryAdviceCached } from "../utils/AI/AILaundryAssistant/generateLaundryAdviceCached";
 import { hashQuery } from "../utils/AI/Core/hashQuery";
 
 export default function AILaundryAssistantScreen() {
   const navigation = useNavigation<any>();
+
+  const deviceLocale = useLanguageStore((s) => s.language);
 
   const [messages, setMessages] = useState<
     { from: "user" | "ai"; text: string }[]
@@ -38,24 +40,14 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
-      // 1) Try i18n language
-      let uiLang = (i18n as any).language;
-
-      // 2) Fallback to device locale
-      if (!uiLang) {
-        uiLang = Localization.getLocales()?.[0]?.languageCode || "en";
-      }
-
-      // 3) Normalize
-      let normalizedLocale = uiLang.split("-")[0].toLowerCase();
+      // Always use device locale from languageStore
+      let normalizedLocale = deviceLocale.split("-")[0].toLowerCase();
 
       console.log("🌍 FINAL targetLocale:", normalizedLocale);
 
-      // Canonical key
       const normalizedQuery = userMessage.trim().toLowerCase();
       const canonicalKey = await hashQuery(normalizedQuery);
 
-      // AI
       const ai = await generateLaundryAdviceCached({
         canonicalKey,
         userQuery: userMessage,
