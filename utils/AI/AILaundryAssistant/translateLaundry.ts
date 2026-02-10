@@ -53,6 +53,7 @@ You are a professional translator specialized in laundry and textile care.
 TARGET_LANGUAGE: ${languageName}
 
 ANSWER ONLY IN ${languageName}.
+TRANSLATE ALL TEXT STRICTLY INTO ${languageName}.
 
 LANGUAGE RULES:
 - Translate ALL text fields into ${languageName}.
@@ -81,7 +82,7 @@ Return ONLY valid JSON in this exact format:
   },
   "careInstructions": ["...", "..."]
 }
-        `,
+`,
       }),
     });
 
