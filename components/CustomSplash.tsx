@@ -18,9 +18,9 @@ export function CustomSplash({ onFinish }: CustomSplashProps) {
   const SOUND_VARIANT = 1;
 
   const soundFiles = {
-    1: require("../assets/sounds/startup1.mp3"), // Fairy sparkle whoosh
-    2: require("../assets/sounds/startup2.mp3"),
-    3: require("../assets/sounds/startup3.mp3"),
+    1: require("../assets/startup1.mp3"), // Fairy sparkle whoosh
+    2: require("../assets/startup2.mp3"),
+    3: require("../assets/startup3.mp3"),
   };
 
   useEffect(() => {
