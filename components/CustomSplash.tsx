@@ -1,22 +1,45 @@
+import { Audio } from "expo-av";
 import React, { useEffect, useRef } from "react";
-import { ActivityIndicator, Animated, Easing } from "react-native";
+import { ActivityIndicator, Animated, Easing, Platform } from "react-native";
 
 type CustomSplashProps = {
   onFinish?: () => void;
 };
 
 export function CustomSplash({ onFinish }: CustomSplashProps) {
-  // Fade-out wrapper
   const containerOpacity = useRef(new Animated.Value(1)).current;
 
-  // Your existing animations
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const taglineOpacity = useRef(new Animated.Value(0)).current;
   const loaderOpacity = useRef(new Animated.Value(0)).current;
   const microcopyOpacity = useRef(new Animated.Value(0)).current;
 
+  // ⭐ Change this to switch sounds WITHOUT build
+  const SOUND_VARIANT = 1;
+
+  const soundFiles = {
+    1: require("../assets/sounds/startup1.mp3"), // Fairy sparkle whoosh
+    2: require("../assets/sounds/startup2.mp3"),
+    3: require("../assets/sounds/startup3.mp3"),
+  };
+
   useEffect(() => {
-    // Run your existing sequence
+    let sound: Audio.Sound;
+
+    async function playStartupSound() {
+      sound = new Audio.Sound();
+      await sound.loadAsync(soundFiles[SOUND_VARIANT]);
+
+      // ⭐ Volume tuning (premium, not intrusive)
+      const volume = Platform.OS === "ios" ? 0.22 : 0.16;
+
+      await sound.setVolumeAsync(volume);
+      await sound.playAsync();
+    }
+
+    // ⭐ Play sound EXACTLY when animation starts
+    playStartupSound();
+
     Animated.sequence([
       Animated.timing(logoOpacity, {
         toValue: 1,
@@ -24,21 +47,18 @@ export function CustomSplash({ onFinish }: CustomSplashProps) {
         easing: Easing.out(Easing.ease),
         useNativeDriver: true,
       }),
-
       Animated.timing(taglineOpacity, {
         toValue: 1,
         duration: 500,
         easing: Easing.out(Easing.ease),
         useNativeDriver: true,
       }),
-
       Animated.timing(loaderOpacity, {
         toValue: 1,
         duration: 400,
         easing: Easing.out(Easing.ease),
         useNativeDriver: true,
       }),
-
       Animated.timing(microcopyOpacity, {
         toValue: 1,
         duration: 500,
@@ -46,7 +66,6 @@ export function CustomSplash({ onFinish }: CustomSplashProps) {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      // ⭐ EXTRA 2 SECONDS BEFORE FADE OUT
       setTimeout(() => {
         Animated.timing(containerOpacity, {
           toValue: 0,
@@ -54,10 +73,14 @@ export function CustomSplash({ onFinish }: CustomSplashProps) {
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }).start(() => {
-          onFinish?.(); // Notify AppNavigator
+          onFinish?.();
         });
-      }, 2000); // ← 2 seconds extra
+      }, 2000);
     });
+
+    return () => {
+      if (sound) sound.unloadAsync();
+    };
   }, []);
 
   return (
