@@ -1,7 +1,8 @@
 // utils/BatchScan/analyzeBatchCached.ts
-// BatchScan v2 — independent, canonical, cached, deterministic
+// BatchScan v3 — deterministic, hash-based, language-aware caching
 
 import i18n from "../../../i18n";
+import { getImageHash } from "../Core/imageHash";
 import { preprocessImage } from "../Core/preprocessImage";
 import { analyzeBatchImage } from "./analyzeBatchImage";
 import { getBatchCache, setBatchCache } from "./batchCache";
@@ -19,8 +20,9 @@ export async function analyzeBatchCached(uri: string) {
   const rawLocale = String(i18n.locale || "en");
   const locale = rawLocale.split("-")[0];
 
-  // 2) Deterministic cache key (language‑aware)
-  const cacheKey = `${base64.slice(0, 200)}:${locale}`;
+  // 2) Deterministic cache key (hash-based + language-aware)
+  const hash = await getImageHash(base64);
+  const cacheKey = `${hash}:${locale}`;
 
   // 3) Try cache first
   const cached = await getBatchCache(cacheKey);
