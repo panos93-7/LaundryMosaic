@@ -86,157 +86,155 @@ export default function AILaundryAssistantScreen() {
   ];
 
 return (
-  <KeyboardAvoidingView
+  <LinearGradient
+    colors={["#0f0c29", "#302b63", "#24243e"]}
     style={{ flex: 1 }}
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
   >
-    <LinearGradient
-      colors={["#0f0c29", "#302b63", "#24243e"]}
-      style={{ flex: 1 }}
-    >
-      <SafeAreaView style={{ flex: 1, padding: 20 }}>
+    <SafeAreaView style={{ flex: 1, padding: 20 }}>
 
-        {/* HEADER */}
-        <View
+      {/* HEADER */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <Text
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 10,
+            color: "#fff",
+            fontSize: 28,
+            fontWeight: "700",
+            flexShrink: 1,
+            maxWidth: "80%",
           }}
+          numberOfLines={2}
+          adjustsFontSizeToFit
+          minimumFontScale={0.85}
         >
+          {String(i18n.t("aiAssistant.title"))}
+        </Text>
+
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
+            {String(i18n.t("aiAssistant.close"))}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* SUGGESTED PROMPTS */}
+      {messages.length === 0 && (
+        <View style={{ marginBottom: 20 }}>
           <Text
             style={{
-              color: "#fff",
-              fontSize: 28,
-              fontWeight: "700",
-              flexShrink: 1,
-              maxWidth: "80%",
+              color: "rgba(255,255,255,0.8)",
+              fontSize: 18,
+              fontWeight: "600",
+              marginBottom: 10,
             }}
-            numberOfLines={2}
-            adjustsFontSizeToFit
-            minimumFontScale={0.85}
           >
-            {String(i18n.t("aiAssistant.title"))}
+            {String(i18n.t("aiAssistant.suggestedTitle"))}
           </Text>
 
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
-              {String(i18n.t("aiAssistant.close"))}
-            </Text>
-          </TouchableOpacity>
+          {suggested.map((s, i) => (
+            <TouchableOpacity
+              key={i}
+              onPress={() => {
+                setInput(s);
+                setTimeout(sendMessage, 50);
+              }}
+              style={{
+                backgroundColor: "rgba(255,255,255,0.1)",
+                padding: 12,
+                borderRadius: 10,
+                marginBottom: 8,
+              }}
+            >
+              <Text style={{ color: "#fff", fontSize: 16 }}>{s}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
+      )}
 
-        {/* SUGGESTED PROMPTS */}
-        {messages.length === 0 && (
-          <View style={{ marginBottom: 20 }}>
-            <Text
-              style={{
-                color: "rgba(255,255,255,0.8)",
-                fontSize: 18,
-                fontWeight: "600",
-                marginBottom: 10,
-              }}
-            >
-              {String(i18n.t("aiAssistant.suggestedTitle"))}
-            </Text>
-
-            {suggested.map((s, i) => (
-              <TouchableOpacity
-                key={i}
-                onPress={() => {
-                  setInput(s);
-                  setTimeout(sendMessage, 50);
-                }}
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  padding: 12,
-                  borderRadius: 10,
-                  marginBottom: 8,
-                }}
-              >
-                <Text style={{ color: "#fff", fontSize: 16 }}>{s}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
-        {/* CHAT */}
-        <FlatList
-          data={messages}
-          keyExtractor={(_, i) => i.toString()}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                alignSelf: item.from === "user" ? "flex-end" : "flex-start",
-                backgroundColor:
-                  item.from === "user"
-                    ? "rgba(37,117,252,0.95)"
-                    : "rgba(255,255,255,0.08)",
-                paddingVertical: 12,
-                paddingHorizontal: 14,
-                borderRadius: 16,
-                marginBottom: 12,
-                maxWidth: "85%",
-                borderWidth: item.from === "ai" ? 1 : 0,
-                borderColor: "rgba(255,255,255,0.12)",
-                shadowColor: "#000",
-                shadowOpacity: 0.15,
-                shadowRadius: 6,
-                shadowOffset: { width: 0, height: 3 },
-              }}
-            >
-              <Text style={{ color: "#fff", fontSize: 16, lineHeight: 22 }}>
-                {item.text}
-              </Text>
-            </View>
-          )}
-          style={{ flex: 1 }}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          keyboardShouldPersistTaps="handled"
-        />
-
-        {/* TYPING INDICATOR */}
-        {loading && (
+      {/* CHAT */}
+      <FlatList
+        data={messages}
+        keyExtractor={(_, i) => i.toString()}
+        renderItem={({ item }) => (
           <View
             style={{
-              alignSelf: "flex-start",
-              backgroundColor: "rgba(255,255,255,0.08)",
-              paddingVertical: 10,
+              alignSelf: item.from === "user" ? "flex-end" : "flex-start",
+              backgroundColor:
+                item.from === "user"
+                  ? "rgba(37,117,252,0.95)"
+                  : "rgba(255,255,255,0.08)",
+              paddingVertical: 12,
               paddingHorizontal: 14,
               borderRadius: 16,
               marginBottom: 12,
-              borderWidth: 1,
+              maxWidth: "85%",
+              borderWidth: item.from === "ai" ? 1 : 0,
               borderColor: "rgba(255,255,255,0.12)",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
+              shadowColor: "#000",
+              shadowOpacity: 0.15,
+              shadowRadius: 6,
+              shadowOffset: { width: 0, height: 3 },
             }}
           >
-            <LottieView
-              source={require("../typing.json")}
-              autoPlay
-              loop
-              style={{
-                width: 40,
-                height: 24,
-              }}
-            />
-
-            <Text
-              style={{
-                color: "rgba(255,255,255,0.7)",
-                fontSize: 14,
-                fontStyle: "italic",
-              }}
-            >
-              {String(i18n.t("aiAssistant.typing"))}
+            <Text style={{ color: "#fff", fontSize: 16, lineHeight: 22 }}>
+              {item.text}
             </Text>
           </View>
         )}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        keyboardShouldPersistTaps="handled"
+      />
 
-        {/* INPUT BAR */}
+      {/* TYPING INDICATOR */}
+      {loading && (
+        <View
+          style={{
+            alignSelf: "flex-start",
+            backgroundColor: "rgba(255,255,255,0.08)",
+            paddingVertical: 10,
+            paddingHorizontal: 14,
+            borderRadius: 16,
+            marginBottom: 12,
+            borderWidth: 1,
+            borderColor: "rgba(255,255,255,0.12)",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <LottieView
+            source={require("../typing.json")}
+            autoPlay
+            loop
+            style={{
+              width: 40,
+              height: 24,
+            }}
+          />
+
+          <Text
+            style={{
+              color: "rgba(255,255,255,0.7)",
+              fontSize: 14,
+              fontStyle: "italic",
+            }}
+          >
+            {String(i18n.t("aiAssistant.typing"))}
+          </Text>
+        </View>
+      )}
+
+      {/* INPUT BAR */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -284,9 +282,9 @@ return (
             )}
           </TouchableOpacity>
         </View>
+      </KeyboardAvoidingView>
 
-      </SafeAreaView>
-    </LinearGradient>
-  </KeyboardAvoidingView>
+    </SafeAreaView>
+  </LinearGradient>
 );
 }
