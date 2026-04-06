@@ -85,12 +85,18 @@ export default function AILaundryAssistantScreen() {
     String(i18n.t("aiAssistant.suggest4")),
   ];
 
-  return (
+return (
+  <KeyboardAvoidingView
+    style={{ flex: 1 }}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
+  >
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
     >
       <SafeAreaView style={{ flex: 1, padding: 20 }}>
+
         {/* HEADER */}
         <View
           style={{
@@ -114,6 +120,7 @@ export default function AILaundryAssistantScreen() {
           >
             {String(i18n.t("aiAssistant.title"))}
           </Text>
+
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{ color: "#ff6b6b", fontSize: 16 }}>
               {String(i18n.t("aiAssistant.close"))}
@@ -186,6 +193,8 @@ export default function AILaundryAssistantScreen() {
             </View>
           )}
           style={{ flex: 1 }}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          keyboardShouldPersistTaps="handled"
         />
 
         {/* TYPING INDICATOR */}
@@ -227,58 +236,57 @@ export default function AILaundryAssistantScreen() {
           </View>
         )}
 
-        {/* INPUT */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        {/* INPUT BAR */}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "rgba(255,255,255,0.1)",
+            borderRadius: 12,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            marginTop: 10,
+          }}
         >
-          <View
+          <TextInput
+            value={input}
+            onChangeText={setInput}
+            placeholder={String(i18n.t("aiAssistant.placeholder"))}
+            placeholderTextColor="rgba(255,255,255,0.4)"
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "rgba(255,255,255,0.1)",
-              borderRadius: 12,
-              paddingHorizontal: 12,
+              flex: 1,
+              color: "#fff",
+              fontSize: 16,
               paddingVertical: 8,
             }}
-          >
-            <TextInput
-              value={input}
-              onChangeText={setInput}
-              placeholder={String(i18n.t("aiAssistant.placeholder"))}
-              placeholderTextColor="rgba(255,255,255,0.4)"
-              style={{
-                flex: 1,
-                color: "#fff",
-                fontSize: 16,
-                paddingVertical: 8,
-              }}
-            />
+          />
 
-            <TouchableOpacity
-              onPress={sendMessage}
-              disabled={loading}
-              style={{
-                marginLeft: 10,
-                opacity: loading ? 0.6 : 1,
-              }}
-            >
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text
-                  style={{
-                    color: "#4CAF50",
-                    fontSize: 18,
-                    fontWeight: "700",
-                  }}
-                >
-                  ➤
-                </Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
+          <TouchableOpacity
+            onPress={sendMessage}
+            disabled={loading}
+            style={{
+              marginLeft: 10,
+              opacity: loading ? 0.6 : 1,
+            }}
+          >
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text
+                style={{
+                  color: "#4CAF50",
+                  fontSize: 18,
+                  fontWeight: "700",
+                }}
+              >
+                ➤
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
+
       </SafeAreaView>
     </LinearGradient>
-  );
+  </KeyboardAvoidingView>
+);
 }
