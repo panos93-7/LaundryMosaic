@@ -235,66 +235,70 @@ export default function HomeScreen({ navigation }: any) {
     });
   }, []);
 
-  /* Reset animation when fabric/color changes */
-  useEffect(() => {
-    animationRef.current?.reset();
-    setIsRunning(false);
-    setAutoProgram(null);
-  }, [fabric, color]);
+/* Reset animation when fabric/color changes */
+useEffect(() => {
+  animationRef.current?.reset();
+  setIsRunning(false);
+  setAutoProgram(null);
+}, [fabric, color]);
 
-  const getProgram = (fabric: string, color: string): Program | null => {
-    const programs = getWashingPrograms();
-    const category = programs[fabric];
-    if (!category) return null;
-    return category[color] || category["any"] || null;
-  };
+const getProgram = (fabric: string, color: string): Program | null => {
+  const programs = getWashingPrograms();
+  const category = programs[fabric];
+  if (!category) return null;
+  return category[color] || category["any"] || null;
+};
 
-  const toggleTheme = async () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
+/* ⭐ FIXED THEME ANIMATION — runs whenever isDarkMode changes */
+useEffect(() => {
+  Animated.timing(themeFade, {
+    toValue: isDarkMode ? 1 : 0,
+    duration: 450,
+    useNativeDriver: true,
+  }).start();
+}, [isDarkMode]);
 
-    await AsyncStorage.setItem("darkMode", newTheme.toString());
+/* CLEAN toggleTheme — no animation here */
+const toggleTheme = async () => {
+  const newTheme = !isDarkMode;
+  setIsDarkMode(newTheme);
 
-    Animated.timing(themeFade, {
-      toValue: newTheme ? 1 : 0,
-      duration: 450,
-      useNativeDriver: true,
-    }).start();
+  await AsyncStorage.setItem("darkMode", newTheme.toString());
 
-    Toast.show(newTheme ? "🌙 Dark Mode ON" : "☀️ Light Mode ON", {
+  Toast.show(newTheme ? "🌙 Dark Mode ON" : "☀️ Light Mode ON", {
+    duration: Toast.durations.SHORT,
+    position: Toast.positions.BOTTOM,
+  });
+};
+
+const handleStart = () => {
+  const program = getProgram(fabric, color);
+  setAutoProgram(program);
+  setIsRunning(true);
+  animationRef.current?.play();
+
+  if (!program) {
+    Toast.show("❌ No program available.", {
       duration: Toast.durations.SHORT,
       position: Toast.positions.BOTTOM,
     });
-  };
+    return;
+  }
 
-  const handleStart = () => {
-    const program = getProgram(fabric, color);
-    setAutoProgram(program);
-    setIsRunning(true);
-    animationRef.current?.play();
+  Animated.timing(fadeAnim, {
+    toValue: 1,
+    duration: 1000,
+    useNativeDriver: true,
+  }).start();
 
-    if (!program) {
-      Toast.show("❌ No program available.", {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-      });
-      return;
+  Toast.show(
+    `🧼 Program: ${program.program} | Temp: ${program.temp}°C | Spin: ${program.spin} rpm`,
+    {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.BOTTOM,
     }
-
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-
-    Toast.show(
-      `🧼 Program: ${program.program} | Temp: ${program.temp}°C | Spin: ${program.spin} rpm`,
-      {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
-      }
-    );
-  };
+  );
+};
 
   const savePreset = async () => {
     await AsyncStorage.setItem(
