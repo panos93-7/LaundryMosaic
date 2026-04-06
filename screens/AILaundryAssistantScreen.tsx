@@ -4,14 +4,13 @@ import LottieView from "lottie-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
-  Platform,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import i18n from "../i18n";
 import { useLanguageStore } from "../store/languageStore";
 import { generateLaundryAdviceCached } from "../utils/AI/AILaundryAssistant/generateLaundryAdviceCached";
@@ -20,6 +19,7 @@ import { hashQuery } from "../utils/AI/Core/hashQuery";
 export default function AILaundryAssistantScreen() {
   const navigation = useNavigation<any>();
   const deviceLocale = useLanguageStore((s) => s.language);
+  const insets = useSafeAreaInsets(); // ⭐ CRITICAL FIX
 
   const [messages, setMessages] = useState<
     { from: "user" | "ai"; text: string }[]
@@ -221,11 +221,11 @@ export default function AILaundryAssistantScreen() {
         </KeyboardAwareScrollView>
       </SafeAreaView>
 
-      {/* INPUT BAR — OUTSIDE SAFE AREA */}
+      {/* INPUT BAR — OUTSIDE SAFE AREA + SAFE INSETS FIX */}
       <View
         style={{
           paddingHorizontal: 20,
-          paddingBottom: Platform.OS === "ios" ? 20 : 10,
+          paddingBottom: insets.bottom + 10, // ⭐ REAL FIX FOR ANDROID BUILDS
           backgroundColor: "transparent",
         }}
       >
