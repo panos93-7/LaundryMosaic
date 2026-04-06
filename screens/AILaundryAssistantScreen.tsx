@@ -4,14 +4,12 @@ import LottieView from "lottie-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import i18n from "../i18n";
 import { useLanguageStore } from "../store/languageStore";
@@ -20,7 +18,6 @@ import { hashQuery } from "../utils/AI/Core/hashQuery";
 
 export default function AILaundryAssistantScreen() {
   const navigation = useNavigation<any>();
-
   const deviceLocale = useLanguageStore((s) => s.language);
 
   const [messages, setMessages] = useState<
@@ -40,11 +37,7 @@ export default function AILaundryAssistantScreen() {
     setLoading(true);
 
     try {
-      // Always use device locale from languageStore
       let normalizedLocale = deviceLocale.split("-")[0].toLowerCase();
-
-      console.log("🌍 FINAL targetLocale:", normalizedLocale);
-
       const normalizedQuery = userMessage.trim().toLowerCase();
       const canonicalKey = await hashQuery(normalizedQuery);
 
@@ -54,9 +47,7 @@ export default function AILaundryAssistantScreen() {
         targetLocale: normalizedLocale,
       });
 
-      if (!ai) {
-        throw new Error("AI returned null");
-      }
+      if (!ai) throw new Error("AI returned null");
 
       const output = ai.translated || ai.canonical;
 
@@ -85,12 +76,7 @@ export default function AILaundryAssistantScreen() {
     String(i18n.t("aiAssistant.suggest4")),
   ];
 
-return (
-  <KeyboardAvoidingView
-    style={{ flex: 1 }}
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
-  >
+  return (
     <LinearGradient
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
@@ -128,46 +114,52 @@ return (
           </TouchableOpacity>
         </View>
 
-        {/* SUGGESTED PROMPTS */}
-        {messages.length === 0 && (
-          <View style={{ marginBottom: 20 }}>
-            <Text
-              style={{
-                color: "rgba(255,255,255,0.8)",
-                fontSize: 18,
-                fontWeight: "600",
-                marginBottom: 10,
-              }}
-            >
-              {String(i18n.t("aiAssistant.suggestedTitle"))}
-            </Text>
-
-            {suggested.map((s, i) => (
-              <TouchableOpacity
-                key={i}
-                onPress={() => {
-                  setInput(s);
-                  setTimeout(sendMessage, 50);
-                }}
+        {/* CHAT SCROLL */}
+        <KeyboardAwareScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          extraScrollHeight={20}
+          enableOnAndroid={true}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* SUGGESTED PROMPTS */}
+          {messages.length === 0 && (
+            <View style={{ marginBottom: 20 }}>
+              <Text
                 style={{
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  padding: 12,
-                  borderRadius: 10,
-                  marginBottom: 8,
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: 18,
+                  fontWeight: "600",
+                  marginBottom: 10,
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>{s}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
+                {String(i18n.t("aiAssistant.suggestedTitle"))}
+              </Text>
 
-        {/* CHAT */}
-        <FlatList
-          data={messages}
-          keyExtractor={(_, i) => i.toString()}
-          renderItem={({ item }) => (
+              {suggested.map((s, i) => (
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => {
+                    setInput(s);
+                    setTimeout(sendMessage, 50);
+                  }}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    padding: 12,
+                    borderRadius: 10,
+                    marginBottom: 8,
+                  }}
+                >
+                  <Text style={{ color: "#fff", fontSize: 16 }}>{s}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+          {/* MESSAGES */}
+          {messages.map((item, i) => (
             <View
+              key={i}
               style={{
                 alignSelf: item.from === "user" ? "flex-end" : "flex-start",
                 backgroundColor:
@@ -181,60 +173,50 @@ return (
                 maxWidth: "85%",
                 borderWidth: item.from === "ai" ? 1 : 0,
                 borderColor: "rgba(255,255,255,0.12)",
-                shadowColor: "#000",
-                shadowOpacity: 0.15,
-                shadowRadius: 6,
-                shadowOffset: { width: 0, height: 3 },
               }}
             >
               <Text style={{ color: "#fff", fontSize: 16, lineHeight: 22 }}>
                 {item.text}
               </Text>
             </View>
-          )}
-          style={{ flex: 1 }}
-          contentContainerStyle={{ paddingBottom: 90 }} // ⭐ IMPORTANT
-          keyboardShouldPersistTaps="handled"
-        />
+          ))}
 
-        {/* TYPING INDICATOR */}
-        {loading && (
-          <View
-            style={{
-              alignSelf: "flex-start",
-              backgroundColor: "rgba(255,255,255,0.08)",
-              paddingVertical: 10,
-              paddingHorizontal: 14,
-              borderRadius: 16,
-              marginBottom: 12,
-              borderWidth: 1,
-              borderColor: "rgba(255,255,255,0.12)",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <LottieView
-              source={require("../typing.json")}
-              autoPlay
-              loop
+          {/* TYPING INDICATOR */}
+          {loading && (
+            <View
               style={{
-                width: 40,
-                height: 24,
-              }}
-            />
-
-            <Text
-              style={{
-                color: "rgba(255,255,255,0.7)",
-                fontSize: 14,
-                fontStyle: "italic",
+                alignSelf: "flex-start",
+                backgroundColor: "rgba(255,255,255,0.08)",
+                paddingVertical: 10,
+                paddingHorizontal: 14,
+                borderRadius: 16,
+                marginBottom: 12,
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,0.12)",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
               }}
             >
-              {String(i18n.t("aiAssistant.typing"))}
-            </Text>
-          </View>
-        )}
+              <LottieView
+                source={require("../typing.json")}
+                autoPlay
+                loop
+                style={{ width: 40, height: 24 }}
+              />
+
+              <Text
+                style={{
+                  color: "rgba(255,255,255,0.7)",
+                  fontSize: 14,
+                  fontStyle: "italic",
+                }}
+              >
+                {String(i18n.t("aiAssistant.typing"))}
+              </Text>
+            </View>
+          )}
+        </KeyboardAwareScrollView>
 
         {/* INPUT BAR */}
         <View
@@ -287,6 +269,5 @@ return (
 
       </SafeAreaView>
     </LinearGradient>
-  </KeyboardAvoidingView>
-);
+  );
 }
