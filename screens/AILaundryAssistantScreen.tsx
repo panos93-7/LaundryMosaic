@@ -4,6 +4,7 @@ import LottieView from "lottie-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
@@ -81,8 +82,9 @@ export default function AILaundryAssistantScreen() {
       colors={["#0f0c29", "#302b63", "#24243e"]}
       style={{ flex: 1 }}
     >
-      <SafeAreaView style={{ flex: 1, padding: 20 }}>
-
+      {/* CONTENT AREA */}
+      <SafeAreaView style={{ flex: 1, paddingHorizontal: 20, paddingTop: 20 }}>
+        
         {/* HEADER */}
         <View
           style={{
@@ -217,8 +219,16 @@ export default function AILaundryAssistantScreen() {
             </View>
           )}
         </KeyboardAwareScrollView>
+      </SafeAreaView>
 
-        {/* INPUT BAR */}
+      {/* INPUT BAR — OUTSIDE SAFE AREA */}
+      <View
+        style={{
+          paddingHorizontal: 20,
+          paddingBottom: Platform.OS === "ios" ? 20 : 10,
+          backgroundColor: "transparent",
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -227,7 +237,6 @@ export default function AILaundryAssistantScreen() {
             borderRadius: 12,
             paddingHorizontal: 12,
             paddingVertical: 8,
-            marginTop: 10,
           }}
         >
           <TextInput
@@ -266,8 +275,7 @@ export default function AILaundryAssistantScreen() {
             )}
           </TouchableOpacity>
         </View>
-
-      </SafeAreaView>
+      </View>
     </LinearGradient>
   );
 }
