@@ -24,20 +24,19 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.panos9393.LaundryMosaic"
     },
-"android": {
-  "package": "com.panos9393.LaundryMosaic",
-  "permissions": [
-    "INTERNET",
-    "com.android.vending.BILLING"
-  ],
-  "googleServicesFile": "./google-services.json",
-  "adaptiveIcon": {
-    "foregroundImage": "./assets/adaptive-icon.png",
-    "backgroundColor": "#000000"
-  },
-  "versionCode": 439,
-  "softwareKeyboardLayoutMode": "pan"
-
+    "android": {
+      "package": "com.panos9393.LaundryMosaic",
+      "permissions": [
+        "INTERNET",
+        "com.android.vending.BILLING"
+      ],
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "versionCode": 440,
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

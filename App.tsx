@@ -9,6 +9,13 @@ import AppNavigator from "./navigation/AppNavigator";
 import Constants from "expo-constants";
 import * as Updates from "expo-updates";
 
+// ⭐ Notifications imports
+import {
+  requestNotificationPermissions,
+  setupAndroidChannel,
+  setupNotificationHandler,
+} from "./utils/notifications";
+
 // Debug logs
 console.log("CHANNEL:", Updates.channel);
 console.log("RUNTIME:", Updates.runtimeVersion);
@@ -76,6 +83,13 @@ export default function App() {
     }
 
     loadEntitlements();
+  }, []);
+
+  // ⭐ Notifications setup (ΠΡΟΣΤΕΘΗΚΕ)
+  useEffect(() => {
+    requestNotificationPermissions();
+    setupNotificationHandler();
+    setupAndroidChannel();
   }, []);
 
   return <AppNavigator />;
