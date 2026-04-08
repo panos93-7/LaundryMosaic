@@ -120,6 +120,11 @@
   "delete": "Eliminar",
   "washSuffix": "lavado"
  },
+
+ "reminder": {
+    "title": "Recordatorio de lavado",
+    "body": "{{washTitle}} comienza a las {{washTime}}"
+ },
  "editGarment": {
   "back": "Volver",
   "title": "Editar Prenda",

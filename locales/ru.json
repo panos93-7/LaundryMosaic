@@ -117,6 +117,12 @@
   "delete": "Удалить",
   "washSuffix": "стирка"
  },
+
+  "reminder": {
+    "title": "Напоминание о стирке",
+    "body": "{{washTitle}} начинается в {{washTime}}"
+    
+ },
  "editGarment": {
   "back": "Назад",
   "title": "Редактировать вещь",

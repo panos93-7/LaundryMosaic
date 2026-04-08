@@ -119,6 +119,12 @@
     "delete": "刪除",
     "washSuffix": "次洗衣"
   },
+  
+     "reminder": {
+    "title": "洗衣提醒",
+    "body": "{{washTitle}} 將於 {{washTime}} 開始"
+  },
+
   "editGarment": {
   "back": "返回",
   "title": "編輯衣物",

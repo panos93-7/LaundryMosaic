@@ -117,6 +117,11 @@
   "delete": "Supprimer",
   "washSuffix": "lavage"
  },
+
+ "reminder": {
+    "title": "Rappel de lavage",
+    "body": "{{washTitle}} commence à {{washTime}}"
+ },
  "editGarment": {
   "back": "Retour",
   "title": "Modifier le Vêtement",

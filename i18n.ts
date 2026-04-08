@@ -35,11 +35,27 @@ i18n.translations = {
   "pt-BR": ptBR
 };
 
-// ⭐ Modern, correct, no-underline locale detection
+// ⭐ SAFE locale detection (χωρίς να αλλάζει τίποτα στο app)
 const locales = Localization.getLocales();
-const primaryLocale = locales[0]?.languageCode ?? "en";
 
-i18n.locale = primaryLocale;
+// languageCode μπορεί να είναι undefined, αλλά ΠΟΤΕ null → TypeScript fix
+const langCode: string = locales[0]?.languageCode || "en";
+const region: string = locales[0]?.regionCode || "US";
+
+// ΠΑΝΤΑ string
+let locale: string = langCode;
+
+// Portuguese split
+if (langCode === "pt") {
+  locale = region === "BR" ? "pt-BR" : "pt-PT";
+}
+
+// Chinese Traditional
+if (langCode === "zh") {
+  locale = "zh-TW";
+}
+
+i18n.locale = locale;
 
 // ⭐ Allow manual language switching
 export const setAppLanguage = (lang: string) => {

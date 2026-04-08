@@ -116,6 +116,11 @@
     "delete": "삭제",
     "washSuffix": "세탁"
   },
+
+   "reminder": {
+    "title": "세탁 알림",
+    "body": "{{washTitle}}은 {{washTime}}에 시작됩니다"
+  },
   "editGarment": {
   "back": "뒤로",
   "title": "의류 편집",

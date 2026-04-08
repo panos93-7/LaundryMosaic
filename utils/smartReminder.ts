@@ -1,4 +1,6 @@
+import * as Localization from "expo-localization";
 import * as Notifications from "expo-notifications";
+import i18n from "../i18n";
 
 const batchingMap: Record<string, number[]> = {};
 
@@ -6,7 +8,52 @@ function getDateKey(wash: any) {
   return `${wash.year}-${wash.month + 1}-${wash.day}`;
 }
 
+/**
+ * ⭐ Επιλογή γλώσσας συσκευής με fallback σε English
+ * Συμβατό με Expo SDK 49/50/51
+ */
+function resolveLanguage() {
+  const locales = Localization.getLocales();
+
+  if (!locales || locales.length === 0) {
+    i18n.locale = "en";
+    return;
+  }
+
+  const langCode = locales[0].languageCode;   // π.χ. "en", "el", "pt"
+  const region = locales[0].regionCode;       // π.χ. "BR", "PT"
+
+  // ⭐ ΠΑΝΤΑ string — ποτέ null
+  let lang = langCode as string;
+
+  // Portuguese split
+  if (langCode === "pt") {
+    lang = region === "BR" ? "pt-BR" : "pt-PT";
+  }
+
+  // Chinese Traditional
+  if (langCode === "zh") {
+    lang = "zh-TW";
+  }
+
+  const supported = [
+    "en", "el", "de", "es", "fr", "it", "ja",
+    "ko", "pt-BR", "pt-PT", "ru", "tr", "zh-TW"
+  ];
+
+  if (!supported.includes(lang)) {
+    lang = "en";
+  }
+
+  i18n.locale = lang;
+}
+
+/**
+ * ⭐ Δημιουργία reminder
+ */
 export async function scheduleSmartReminder(wash: any) {
+  resolveLanguage();
+
   const washDate = new Date(wash.year, wash.month, wash.day);
   const [hours, minutes] = wash.time.split(":").map(Number);
   washDate.setHours(hours);
@@ -49,21 +96,41 @@ export async function scheduleSmartReminder(wash: any) {
     reminderDate.getHours() * 60 + reminderDate.getMinutes()
   );
 
+  // ⭐ MULTI-LANGUAGE TITLE & BODY
+  const title = i18n.t("reminder.title");
+  const body = i18n.t("reminder.body", {
+    washTitle: wash.title,
+    washTime: wash.time
+  });
+
   const id = await Notifications.scheduleNotificationAsync({
     content: {
-      title: "Laundry Reminder",
-      body: `${wash.title} starts at ${wash.time}`,
+      title,
+      body,
       sound: "default",
     },
     trigger: {
       date: reminderDate,
-      channelId: "default", // ⭐ ΑΠΑΡΑΙΤΗΤΟ ΓΙΑ ANDROID
+      channelId: "default",
     },
   });
 
   return id;
 }
 
-export async function cancelReminder(id: string) {
+/**
+ * ⭐ Ακύρωση reminder
+ */
+export async function cancelReminder(id: string | null) {
+  if (!id) return;
   await Notifications.cancelScheduledNotificationAsync(id);
+}
+
+/**
+ * ⭐ UPDATE reminder (cancel + reschedule)
+ */
+export async function updateSmartReminder(oldId: string | null, wash: any) {
+  await cancelReminder(oldId);
+  const newId = await scheduleSmartReminder(wash);
+  return newId;
 }

@@ -119,6 +119,11 @@
     "delete": "削除",
     "washSuffix": "洗濯"
   },
+
+  "reminder": {
+    "title": "洗濯リマインダー",
+    "body": "{{washTitle}} は {{washTime}} に開始します"
+  },
   "editGarment": {
   "back": "戻る",
   "title": "衣類を編集",

@@ -117,6 +117,11 @@
   "delete": "Διαγραφή",
   "washSuffix": "πλύση"
  },
+
+ "reminder": {
+    "title": "Υπενθύμιση Πλύσης",
+    "body": "Η πλύση '{{washTitle}}' ξεκινά στις {{washTime}}"
+ },
  "editGarment": {
   "back": "Πίσω",
   "title": "Επεξεργασία Ρούχου",

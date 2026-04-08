@@ -117,6 +117,11 @@
   "delete": "Sil",
   "washSuffix": "yıkama"
  },
+ 
+  "reminder": {
+    "title": "Çamaşır Hatırlatıcısı",
+    "body": "{{washTitle}} {{washTime}}'de başlıyor"
+ },
  "editGarment": {
   "back": "Geri",
   "title": "Giysiyi Düzenle",

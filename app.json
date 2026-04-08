@@ -17,7 +17,9 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/a95005a6-a67a-4cc5-b1b9-410101aff7b4"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.panos9393.LaundryMosaic"
@@ -34,7 +36,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "versionCode": 459,
+      "versionCode": 461,
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
