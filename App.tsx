@@ -86,9 +86,9 @@ export default function App() {
     loadEntitlements();
   }, []);
 
-  // ⭐ Notifications setup
+  // ⭐ Notifications setup (LOCAL NOTIFICATIONS)
   useEffect(() => {
-    requestNotificationPermissions();
+    requestNotificationPermissions();   // ← ΜΟΝΟ αυτό ζητάει άδεια
     setupNotificationHandler();
     setupAndroidChannel();
   }, []);
@@ -96,12 +96,6 @@ export default function App() {
   // ⭐ Get Expo Push Token (PUSH NOTIFICATIONS)
   useEffect(() => {
     async function registerForPush() {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status !== "granted") {
-        console.log("❌ Push permissions not granted");
-        return;
-      }
-
       const tokenData = await Notifications.getExpoPushTokenAsync();
       const token = tokenData.data;
 
