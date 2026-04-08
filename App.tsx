@@ -88,10 +88,27 @@ export default function App() {
 
   // ⭐ Notifications setup (LOCAL NOTIFICATIONS)
   useEffect(() => {
-    requestNotificationPermissions();   // ← ΜΟΝΟ αυτό ζητάει άδεια
+    requestNotificationPermissions();
     setupNotificationHandler();
     setupAndroidChannel();
   }, []);
+
+  // ⭐ TEST NOTIFICATION (5 seconds)
+useEffect(() => {
+  console.log("⏳ Scheduling TEST notification for 5 seconds...");
+
+  Notifications.scheduleNotificationAsync({
+    content: {
+      title: "TEST NOTIFICATION",
+      body: "If you see this, local notifications work.",
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+      seconds: 5,
+      repeats: false,
+    },
+  });
+}, []);
 
   // ⭐ Get Expo Push Token (PUSH NOTIFICATIONS)
   useEffect(() => {
@@ -100,8 +117,6 @@ export default function App() {
       const token = tokenData.data;
 
       console.log("📨 EXPO PUSH TOKEN:", token);
-
-      // 👉 Εδώ μπορείς να το στείλεις στον server σου
     }
 
     registerForPush();
