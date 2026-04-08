@@ -10,6 +10,7 @@ import Constants from "expo-constants";
 import * as Updates from "expo-updates";
 
 // ⭐ Notifications imports
+import * as Notifications from "expo-notifications";
 import {
   requestNotificationPermissions,
   setupAndroidChannel,
@@ -85,11 +86,31 @@ export default function App() {
     loadEntitlements();
   }, []);
 
-  // ⭐ Notifications setup (ΠΡΟΣΤΕΘΗΚΕ)
+  // ⭐ Notifications setup
   useEffect(() => {
     requestNotificationPermissions();
     setupNotificationHandler();
     setupAndroidChannel();
+  }, []);
+
+  // ⭐ Get Expo Push Token (PUSH NOTIFICATIONS)
+  useEffect(() => {
+    async function registerForPush() {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        console.log("❌ Push permissions not granted");
+        return;
+      }
+
+      const tokenData = await Notifications.getExpoPushTokenAsync();
+      const token = tokenData.data;
+
+      console.log("📨 EXPO PUSH TOKEN:", token);
+
+      // 👉 Εδώ μπορείς να το στείλεις στον server σου
+    }
+
+    registerForPush();
   }, []);
 
   return <AppNavigator />;

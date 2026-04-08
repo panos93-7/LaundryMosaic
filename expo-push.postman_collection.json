@@ -1,0 +1,33 @@
+{
+  "info": {
+    "name": "Expo Push Notifications",
+    "_postman_id": "expo-push-collection-001",
+    "description": "Send push notifications to Expo devices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Send Push Notification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"to\": \"EXPO_PUSH_TOKEN_HERE\",\n  \"title\": \"Hello Panos 👋\",\n  \"body\": \"Push notifications are working!\",\n  \"sound\": \"default\",\n  \"priority\": \"high\"\n}"
+        },
+        "url": {
+          "raw": "https://exp.host/--/api/v2/push/send",
+          "protocol": "https",
+          "host": ["exp", "host"],
+          "path": ["--", "api", "v2", "push", "send"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
