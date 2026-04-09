@@ -1,6 +1,5 @@
 import * as Localization from "expo-localization";
 import * as Notifications from "expo-notifications";
-import { Alert } from "react-native";
 import i18n from "../i18n";
 
 const batchingMap: Record<string, number[]> = {};
@@ -46,50 +45,31 @@ function resolveLanguage() {
 }
 
 /**
- * ⭐ Δημιουργία reminder (bulletproof)
+ * ⭐ Δημιουργία reminder (CLEAN VERSION)
  */
 export async function scheduleSmartReminder(wash: any) {
   resolveLanguage();
 
-  // ⭐ 1. VALIDATE TIME FORMAT HH:MM
-  if (!/^\d{2}:\d{2}$/.test(wash.time)) {
-    Alert.alert(
-      i18n.t("error.invalidTimeTitle"),
-      i18n.t("error.invalidTimeMessage")
-    );
-    console.log("❌ Invalid time format:", wash.time);
-    return null;
-  }
-
-  // ⭐ 2. SAFE PARSING
+  // 1. Parse time (UI already validated)
   const [hoursStr, minutesStr] = wash.time.split(":");
   const hours = Number(hoursStr);
   const minutes = Number(minutesStr);
 
-  if (
-    isNaN(hours) ||
-    isNaN(minutes) ||
-    hours < 0 ||
-    hours > 23 ||
-    minutes < 0 ||
-    minutes > 59
-  ) {
-    Alert.alert(
-      i18n.t("error.invalidTimeTitle"),
-      i18n.t("error.invalidTimeMessage")
-    );
-    console.log("❌ Invalid time numbers:", wash.time);
-    return null;
-  }
-
-  // ⭐ 3. BUILD washDate IN LOCAL TIMEZONE
-  const washDate = new Date(wash.year, wash.month, wash.day, hours, minutes, 0);
+  // 2. Build wash date in LOCAL timezone
+  const washDate = new Date(
+    wash.year,
+    wash.month,
+    wash.day,
+    hours,
+    minutes,
+    0
+  );
 
   const now = new Date();
   const diffMs = washDate.getTime() - now.getTime();
   const diffMinutes = diffMs / 1000 / 60;
 
-  // ⭐ 4. SMART REMINDER OFFSET
+  // 3. Smart reminder offset
   let reminderMinutesBefore = 30;
   if (diffMinutes > 180) reminderMinutesBefore = 60;
   if (diffMinutes < 60) reminderMinutesBefore = 10;
@@ -99,13 +79,13 @@ export async function scheduleSmartReminder(wash: any) {
     washDate.getTime() - reminderMinutesBefore * 60000
   );
 
-  // ⭐ 5. If reminder is in the past → DO NOT schedule
+  // 4. If reminder is in the past → skip silently
   if (reminderDate <= now) {
     console.log("⛔ Reminder in the past → skipping");
     return null;
   }
 
-  // ⭐ 6. BATCHING (avoid too many reminders close together)
+  // 5. Batching (avoid too many reminders close together)
   const key = getDateKey(wash);
   if (!batchingMap[key]) batchingMap[key] = [];
 
@@ -127,14 +107,14 @@ export async function scheduleSmartReminder(wash: any) {
     reminderDate.getHours() * 60 + reminderDate.getMinutes()
   );
 
-  // ⭐ 7. MULTI-LANGUAGE TITLE & BODY
+  // 6. Multi-language title & body
   const title = i18n.t("reminder.title");
   const body = i18n.t("reminder.body", {
     washTitle: wash.title,
     washTime: wash.time
   });
 
-  // ⭐ 8. SCHEDULE (DATE TRIGGER)
+  // 7. Schedule notification
   const id = await Notifications.scheduleNotificationAsync({
     content: {
       title,

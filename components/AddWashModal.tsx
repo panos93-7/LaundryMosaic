@@ -18,7 +18,6 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
   const [time, setTime] = useState(initialData?.time || "");
   const [type, setType] = useState(initialData?.type || "");
 
-  // ⭐ PREMIUM COLOR SWATCHES
   const washTypes = [
     { key: "whites", label: i18n.t("addWash.washTypes.whites"), color: "#ffffff" },
     { key: "colors", label: i18n.t("addWash.washTypes.colors"), color: "#ff8c00" },
@@ -35,7 +34,7 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
     }
   }, [initialData]);
 
-  function isPastDate() {
+  function isPastDay() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -45,46 +44,101 @@ export default function AddWashModal({ onClose, onSave, initialData, selectedDay
     return selected < today;
   }
 
-function handleSave() {
-  if (!title.trim()) {
-    Alert.alert(
-      String(i18n.t("addWash.errorMissingTitle")),
-      String(i18n.t("addWash.errorMissingTitleMsg"))
-    );
-    return;
-  }
+  function handleSave() {
+    // 1. Title
+    if (!title.trim()) {
+      Alert.alert(
+        String(i18n.t("addWash.errorMissingTitle")),
+        String(i18n.t("addWash.errorMissingTitleMsg"))
+      );
+      return;
+    }
 
-  if (!time.trim()) {
-    Alert.alert(
-      String(i18n.t("addWash.errorMissingTime")),
-      String(i18n.t("addWash.errorMissingTimeMsg"))
-    );
-    return;
-  }
+    // 2. Time empty
+    if (!time.trim()) {
+      Alert.alert(
+        String(i18n.t("addWash.errorMissingTime")),
+        String(i18n.t("addWash.errorMissingTimeMsg"))
+      );
+      return;
+    }
 
-  if (!type.trim()) {
-    Alert.alert(
-      String(i18n.t("addWash.errorMissingType")),
-      String(i18n.t("addWash.errorMissingTypeMsg"))
-    );
-    return;
-  }
+    // 3. Time format HH:MM
+    if (!/^\d{2}:\d{2}$/.test(time)) {
+      Alert.alert(
+        i18n.t("error.invalidTimeTitle"),
+        i18n.t("error.invalidTimeMessage")
+      );
+      return;
+    }
 
-  if (isPastDate()) {
-    Alert.alert(
-      String(i18n.t("addWash.errorInvalidDate")),
-      String(i18n.t("addWash.errorInvalidDateMsg"))
-    );
-    return;
-  }
+    // 4. Parse time safely
+    const [hStr, mStr] = time.split(":");
+    const hours = Number(hStr);
+    const minutes = Number(mStr);
 
-  onSave({
-    title,
-    time,
-    type,
-    careInstructions: []   // ← ΑΠΑΡΑΙΤΗΤΟ ΓΙΑ ΝΑ ΚΑΝΕΙ SAVE ΤΟ PLANNER
-  });
-}
+    if (
+      isNaN(hours) ||
+      isNaN(minutes) ||
+      hours < 0 ||
+      hours > 23 ||
+      minutes < 0 ||
+      minutes > 59
+    ) {
+      Alert.alert(
+        i18n.t("error.invalidTimeTitle"),
+        i18n.t("error.invalidTimeMessage")
+      );
+      return;
+    }
+
+    // 5. Build full wash datetime
+    const washDate = new Date(
+      selectedDay.year,
+      selectedDay.month,
+      selectedDay.day,
+      hours,
+      minutes,
+      0
+    );
+
+    const now = new Date();
+
+    // 6. Past day
+    if (isPastDay()) {
+      Alert.alert(
+        String(i18n.t("addWash.errorInvalidDate")),
+        String(i18n.t("addWash.errorInvalidDateMsg"))
+      );
+      return;
+    }
+
+    // 7. Past time (same day)
+    if (washDate.toDateString() === now.toDateString() && washDate <= now) {
+      Alert.alert(
+        i18n.t("error.invalidTimeTitle"),
+        i18n.t("addWash.errorPastTimeMsg")
+      );
+      return;
+    }
+
+    // 8. Type
+    if (!type.trim()) {
+      Alert.alert(
+        String(i18n.t("addWash.errorMissingType")),
+        String(i18n.t("addWash.errorMissingTypeMsg"))
+      );
+      return;
+    }
+
+    // 9. ALL GOOD → Save wash
+    onSave({
+      title,
+      time,
+      type,
+      careInstructions: []
+    });
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0d0d0d" }} edges={["top"]}>
@@ -161,7 +215,6 @@ function handleSave() {
             {String(i18n.t("addWash.labelType"))}
           </Text>
 
-          {/* ⭐ PREMIUM COLOR SWATCH BUTTONS */}
           <View
             style={{
               flexDirection: "row",
@@ -185,7 +238,6 @@ function handleSave() {
                   borderColor: type === t.label ? "#2575fc" : "#222",
                 }}
               >
-                {/* COLOR SWATCH */}
                 <View
                   style={{
                     width: 14,
@@ -198,7 +250,6 @@ function handleSave() {
                   }}
                 />
 
-                {/* LABEL */}
                 <Text style={{ color: "#fff", fontWeight: "600" }}>
                   {t.label}
                 </Text>

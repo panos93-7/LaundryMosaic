@@ -119,7 +119,8 @@
 
 "error": {
   "invalidTimeTitle": "Hora no válida",
-  "invalidTimeMessage": "Usa el formato HH:MM (por ejemplo, 13:00)."
+  "invalidTimeMessage": "Usa el formato HH:MM (por ejemplo, 13:00).",
+  "errorPastTimeMsg": "No puedes establecer una hora que ya haya pasado."
  },
 
  "reminder": {

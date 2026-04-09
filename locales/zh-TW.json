@@ -127,8 +127,8 @@
 
 "error": {
   "invalidTimeTitle": "時間格式無效",
-  "invalidTimeMessage": "請使用 HH:MM 格式（例如 13:00）。"
-
+  "invalidTimeMessage": "請使用 HH:MM 格式（例如 13:00）。",
+"errorPastTimeMsg": "無法設定已經過去的時間。"
   },
 
   "editGarment": {

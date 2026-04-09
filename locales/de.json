@@ -125,8 +125,8 @@
 
 "error": {
   "invalidTimeTitle": "Ungültige Uhrzeit",
-  "invalidTimeMessage": "Bitte verwende das Format HH:MM (z. B. 13:00)."
-
+  "invalidTimeMessage": "Bitte verwende das Format HH:MM (z. B. 13:00).",
+"errorPastTimeMsg": "Du kannst keine Uhrzeit einstellen, die bereits vergangen ist."
  },
  "editGarment": {
   "back": "Zurück",

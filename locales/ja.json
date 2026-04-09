@@ -127,8 +127,8 @@
 
 "error": {
   "invalidTimeTitle": "無効な時刻です",
-  "invalidTimeMessage": "HH:MM の形式で入力してください（例: 13:00）。"
-
+  "invalidTimeMessage": "HH:MM の形式で入力してください（例: 13:00）。",
+"errorPastTimeMsg": "すでに過ぎた時刻を設定することはできません。"
   },
   "editGarment": {
   "back": "戻る",

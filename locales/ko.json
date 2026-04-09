@@ -124,8 +124,8 @@
 
 "error": {
   "invalidTimeTitle": "잘못된 시간입니다",
-  "invalidTimeMessage": "HH:MM 형식을 사용하세요 (예: 13:00)."
-
+  "invalidTimeMessage": "HH:MM 형식을 사용하세요 (예: 13:00).",
+"errorPastTimeMsg": "이미 지난 시간을 설정할 수 없습니다."
   },
   "editGarment": {
   "back": "뒤로",

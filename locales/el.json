@@ -125,8 +125,8 @@
 
 "error": {
   "invalidTimeTitle": "Μη έγκυρη ώρα",
-  "invalidTimeMessage": "Χρησιμοποίησε τη μορφή ΩΩ:ΛΛ (π.χ. 13:00)."
-
+  "invalidTimeMessage": "Χρησιμοποίησε τη μορφή ΩΩ:ΛΛ (π.χ. 13:00).",
+ "errorPastTimeMsg": "Δεν μπορείς να βάλεις ώρα που έχει ήδη περάσει."
  },
  "editGarment": {
   "back": "Πίσω",

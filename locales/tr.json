@@ -125,8 +125,8 @@
 
 "error": {
   "invalidTimeTitle": "Geçersiz saat",
-  "invalidTimeMessage": "Lütfen HH:MM formatını kullanın (örn. 13:00)."
-
+  "invalidTimeMessage": "Lütfen HH:MM formatını kullanın (örn. 13:00).",
+"errorPastTimeMsg": "Geçmiş bir zamanı ayarlayamazsın."
  },
  "editGarment": {
   "back": "Geri",

@@ -125,8 +125,8 @@
 
 "error": {
   "invalidTimeTitle": "Heure invalide",
-  "invalidTimeMessage": "Veuillez utiliser le format HH:MM (ex. 13:00)."
-
+  "invalidTimeMessage": "Veuillez utiliser le format HH:MM (ex. 13:00).",
+"errorPastTimeMsg": "Vous ne pouvez pas définir une heure déjà passée."
  },
  "editGarment": {
   "back": "Retour",
