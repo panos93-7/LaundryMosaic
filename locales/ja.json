@@ -127,8 +127,7 @@
 
 "error": {
   "invalidTimeTitle": "無効な時刻です",
-  "invalidTimeMessage": "HH:MM の形式で入力してください（例: 13:00）。",
-"errorPastTimeMsg": "すでに過ぎた時刻を設定することはできません。"
+  "invalidTimeMessage": "HH:MM の形式で入力してください（例: 13:00）。"
   },
   "editGarment": {
   "back": "戻る",
@@ -208,6 +207,7 @@
   "labelType": "洗濯タイプ",
   "placeholderTitle": "例: 白物",
   "placeholderTime": "例: 10:30",
+  "errorPastTimeMsg": "すでに過ぎた時刻を設定することはできません。",
 
   "washTypes": {
     "whites": "白物",

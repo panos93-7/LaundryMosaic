@@ -124,8 +124,7 @@
 
 "error": {
   "invalidTimeTitle": "잘못된 시간입니다",
-  "invalidTimeMessage": "HH:MM 형식을 사용하세요 (예: 13:00).",
-"errorPastTimeMsg": "이미 지난 시간을 설정할 수 없습니다."
+  "invalidTimeMessage": "HH:MM 형식을 사용하세요 (예: 13:00)."
   },
   "editGarment": {
   "back": "뒤로",
@@ -205,6 +204,7 @@
   "labelType": "세탁 종류",
   "placeholderTitle": "예: 흰색 세탁",
   "placeholderTime": "예: 10:30",
+  "errorPastTimeMsg": "이미 지난 시간을 설정할 수 없습니다.",
   "washTypes": {
     "whites": "흰색",
     "colors": "색깔",

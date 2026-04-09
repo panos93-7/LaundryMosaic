@@ -125,8 +125,7 @@
 
 "error": {
   "invalidTimeTitle": "Ungültige Uhrzeit",
-  "invalidTimeMessage": "Bitte verwende das Format HH:MM (z. B. 13:00).",
-"errorPastTimeMsg": "Du kannst keine Uhrzeit einstellen, die bereits vergangen ist."
+  "invalidTimeMessage": "Bitte verwende das Format HH:MM (z. B. 13:00)."
  },
  "editGarment": {
   "back": "Zurück",
@@ -207,6 +206,7 @@
   "labelType": "Waschtyp",
   "placeholderTitle": "z. B. Weißwäsche",
   "placeholderTime": "z. B. 10:30",
+  "errorPastTimeMsg": "Du kannst keine Uhrzeit einstellen, die bereits vergangen ist.",
 
   "washTypes": {
     "whites": "Weißwäsche",

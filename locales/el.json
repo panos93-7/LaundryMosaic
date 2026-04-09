@@ -125,8 +125,7 @@
 
 "error": {
   "invalidTimeTitle": "Μη έγκυρη ώρα",
-  "invalidTimeMessage": "Χρησιμοποίησε τη μορφή ΩΩ:ΛΛ (π.χ. 13:00).",
- "errorPastTimeMsg": "Δεν μπορείς να βάλεις ώρα που έχει ήδη περάσει."
+  "invalidTimeMessage": "Χρησιμοποίησε τη μορφή ΩΩ:ΛΛ (π.χ. 13:00)."
  },
  "editGarment": {
   "back": "Πίσω",
@@ -206,6 +205,7 @@
   "labelType": "Τύπος Πλύσης",
   "placeholderTitle": "π.χ. Λευκά",
   "placeholderTime": "π.χ. 10:30",
+  "errorPastTimeMsg": "Δεν μπορείς να βάλεις ώρα που έχει ήδη περάσει.",
 
   "washTypes": {
     "whites": "Λευκά",

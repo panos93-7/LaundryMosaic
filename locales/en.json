@@ -125,8 +125,7 @@
 
  "error": {
   "invalidTimeTitle": "Invalid time",
-  "invalidTimeMessage": "Please use the format HH:MM (e.g. 13:00).",
-  "errorPastTimeMsg": "You cannot set a time that has already passed."
+  "invalidTimeMessage": "Please use the format HH:MM (e.g. 13:00)."
  },
  "editGarment": {
   "back": "Back",
@@ -163,33 +162,25 @@
   "fabric": "Fabric",
   "pattern": "Pattern",
   "category": "Category",
-
   "unknown": "Unknown",
   "none": "None",
   "uncategorized": "Uncategorized",
-
   "stainsDetected": "Stains detected:",
-
   "careInstructions": "Care Instructions:",
   "recommendedTemp": "Recommended Temp",
   "spinSpeed": "Spin Speed",
-
   "recommendedWashProgram": "Recommended Wash Program:",
   "program": "Program",
   "temp": "Temp",
   "spin": "Spin",
-
   "detergent": "Detergent",
   "notes": "Notes",
-
   "risks": "Risks:",
   "washFrequency": "Wash Frequency:",
   "careSymbols": "Care Symbols:",
-
   "riskShrinkage": "Shrinkage",
   "riskColorBleeding": "Color bleeding",
   "riskDelicacy": "Delicacy",
-
   "editGarment": "Edit Garment",
   "deleteGarment": "Delete Garment",
   "warnings": "Warnings",
@@ -198,11 +189,8 @@
  "history": {
   "title": "Wash History",
   "close": "Close",
-
   "emptyTitle": "No wash history yet.",
-
   "typeLabel": "wash",
-
   "premiumRedirect": "Redirecting…"
  },
  "calendar": {
@@ -213,13 +201,12 @@
   "addTitle": "Add New Wash",
   "editTitle": "Edit Wash",
   "close": "Close",
-
   "labelTitle": "Title",
   "labelTime": "Time",
   "labelType": "Wash Type",
-
   "placeholderTitle": "e.g. Whites Load",
   "placeholderTime": "e.g. 10:30",
+  "errorPastTimeMsg": "You cannot set a time that has already passed.",
 
   "washTypes": {
     "whites": "Whites",

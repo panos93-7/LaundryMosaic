@@ -119,8 +119,7 @@
 
 "error": {
   "invalidTimeTitle": "Hora no válida",
-  "invalidTimeMessage": "Usa el formato HH:MM (por ejemplo, 13:00).",
-  "errorPastTimeMsg": "No puedes establecer una hora que ya haya pasado."
+  "invalidTimeMessage": "Usa el formato HH:MM (por ejemplo, 13:00)."
  },
 
  "reminder": {
@@ -204,6 +203,7 @@
   "labelType": "Tipo de Lavado",
   "placeholderTitle": "ej. Carga de Blancos",
   "placeholderTime": "ej. 10:30",
+  "errorPastTimeMsg": "No puedes establecer una hora que ya haya pasado.",
 
   "washTypes": {
     "whites": "Blancos",

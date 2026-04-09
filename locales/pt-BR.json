@@ -126,8 +126,7 @@
 
 "error": {
   "invalidTimeTitle": "Hora inválida",
-  "invalidTimeMessage": "Use o formato HH:MM (ex.: 13:00).",
-"errorPastTimeMsg": "Você não pode definir um horário que já passou."
+  "invalidTimeMessage": "Use o formato HH:MM (ex.: 13:00)."
   },
   "editGarment": {
   "back": "Voltar",
@@ -207,6 +206,7 @@
   "labelType": "Tipo de Lavagem",
   "placeholderTitle": "ex.: Roupas Brancas",
   "placeholderTime": "ex.: 10:30",
+  "errorPastTimeMsg": "Você não pode definir um horário que já passou.",
 
   "washTypes": {
     "whites": "Brancas",

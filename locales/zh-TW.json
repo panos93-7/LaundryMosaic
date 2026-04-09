@@ -127,8 +127,7 @@
 
 "error": {
   "invalidTimeTitle": "時間格式無效",
-  "invalidTimeMessage": "請使用 HH:MM 格式（例如 13:00）。",
-"errorPastTimeMsg": "無法設定已經過去的時間。"
+  "invalidTimeMessage": "請使用 HH:MM 格式（例如 13:00）。"
   },
 
   "editGarment": {
@@ -210,6 +209,7 @@
   "labelType": "洗衣類型",
   "placeholderTitle": "例如：白色衣物",
   "placeholderTime": "例如：10:30",
+  "errorPastTimeMsg": "無法設定已經過去的時間。",
 
   "washTypes": {
     "whites": "白色衣物",
