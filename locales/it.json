@@ -122,6 +122,12 @@
     "title": "Promemoria di lavaggio",
     "body": "{{washTitle}} inizia alle {{washTime}}"
  },
+
+"error": {
+  "invalidTimeTitle": "Orario non valido",
+  "invalidTimeMessage": "Usa il formato HH:MM (es. 13:00)."
+
+ },
  "editGarment": {
   "back": "Indietro",
   "title": "Modifica Indumento",

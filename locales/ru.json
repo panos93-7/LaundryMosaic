@@ -121,7 +121,12 @@
   "reminder": {
     "title": "Напоминание о стирке",
     "body": "{{washTitle}} начинается в {{washTime}}"
-    
+  },
+  
+  "error": {
+  "invalidTimeTitle": "Неверное время",
+  "invalidTimeMessage": "Используйте формат ЧЧ:ММ (например, 13:00)."
+
  },
  "editGarment": {
   "back": "Назад",

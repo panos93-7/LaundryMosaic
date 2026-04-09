@@ -122,6 +122,12 @@
     "title": "Rappel de lavage",
     "body": "{{washTitle}} commence à {{washTime}}"
  },
+
+"error": {
+  "invalidTimeTitle": "Heure invalide",
+  "invalidTimeMessage": "Veuillez utiliser le format HH:MM (ex. 13:00)."
+
+ },
  "editGarment": {
   "back": "Retour",
   "title": "Modifier le Vêtement",
@@ -151,7 +157,6 @@
  "garmentDetails": {
   "back": "Retour",
   "noImage": "Pas d’image",
-
   "type": "Type",
   "color": "Couleur",
   "fabric": "Tissu",
@@ -164,7 +169,6 @@
   "careInstructions": "Instructions d’Entretien:",
   "recommendedTemp": "Température Recommandée",
   "spinSpeed": "Vitesse d’Essorage",
-
   "recommendedWashProgram": "Programme de Lavage Recommandé:",
   "program": "Programme",
   "temp": "Température",

@@ -123,6 +123,12 @@
      "reminder": {
     "title": "洗衣提醒",
     "body": "{{washTitle}} 將於 {{washTime}} 開始"
+     },
+
+"error": {
+  "invalidTimeTitle": "時間格式無效",
+  "invalidTimeMessage": "請使用 HH:MM 格式（例如 13:00）。"
+
   },
 
   "editGarment": {

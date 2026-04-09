@@ -93,23 +93,6 @@ export default function App() {
     setupAndroidChannel();
   }, []);
 
-  // ⭐ TEST NOTIFICATION (5 seconds)
-useEffect(() => {
-  console.log("⏳ Scheduling TEST notification for 5 seconds...");
-
-  Notifications.scheduleNotificationAsync({
-    content: {
-      title: "TEST NOTIFICATION",
-      body: "If you see this, local notifications work.",
-    },
-    trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-      seconds: 5,
-      repeats: false,
-    },
-  });
-}, []);
-
   // ⭐ Get Expo Push Token (PUSH NOTIFICATIONS)
   useEffect(() => {
     async function registerForPush() {

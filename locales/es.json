@@ -2,18 +2,14 @@
   "title": "LaundryMosaic",
   "start": "Iniciar Lavado",
   "screenTitle": "Ajustes de Lavado",
-
   "fabricTypeLabel": "Tipo de Tela",
   "fabricColorLabel": "Color de Tela",
   "laundryProgram": "Programa de Lavado",
   "language": "Idioma",
-
   "savePreset": "Guardar Preajuste",
   "loadPreset": "Cargar Preajuste",
-
   "lightMode": "Modo Claro",
   "darkMode": "Modo Oscuro",
-
   "fabricLabel": "Tela",
   "colorLabel": "Color",
   "programLabel": "Programa",
@@ -121,6 +117,11 @@
   "washSuffix": "lavado"
  },
 
+"error": {
+  "invalidTimeTitle": "Hora no válida",
+  "invalidTimeMessage": "Usa el formato HH:MM (por ejemplo, 13:00)."
+ },
+
  "reminder": {
     "title": "Recordatorio de lavado",
     "body": "{{washTitle}} comienza a las {{washTime}}"
@@ -128,19 +129,15 @@
  "editGarment": {
   "back": "Volver",
   "title": "Editar Prenda",
-
   "tapToAddImage": "Toca para añadir imagen",
-
   "name": "Nombre",
   "type": "Tipo",
   "color": "Color",
   "category": "Categoría",
   "fabric": "Tejido",
   "pattern": "Patrón",
-
   "saveChanges": "Guardar Cambios",
   "deleteGarment": "Eliminar Prenda",
-
   "alertTitle": "Eliminar Prenda",
   "alertMessage": "¿Seguro que deseas eliminar este artículo?",
   "cancel": "Cancelar",
@@ -158,37 +155,29 @@
  "garmentDetails": {
   "back": "Volver",
   "noImage": "Sin imagen",
-
   "type": "Tipo",
   "color": "Color",
   "fabric": "Tejido",
   "pattern": "Patrón",
   "category": "Categoría",
-
   "unknown": "Desconocido",
   "none": "Ninguno",
   "uncategorized": "Sin categoría",
-
   "stainsDetected": "Manchas detectadas:",
-
   "careInstructions": "Instrucciones de Cuidado:",
   "recommendedTemp": "Temperatura Recomendada",
   "spinSpeed": "Velocidad de Centrifugado",
-
   "recommendedWashProgram": "Programa de Lavado Recomendado:",
   "program": "Programa",
   "temp": "Temperatura",
   "spin": "Centrifugado",
-
   "riskShrinkage": "Encogimiento",
   "riskColorBleeding": "Pérdida de color",
   "riskDelicacy": "Delicadeza",
-
   "editGarment": "Editar Prenda",
   "deleteGarment": "Eliminar Prenda",
   "warnings": "Advertencias",
   "translating": "Traduciendo",
-
   "detergent": "Detergente",
   "notes": "Notas",
   "risks": "Riesgos:",
@@ -198,11 +187,8 @@
  "history": {
   "title": "Historial de Lavados",
   "close": "Cerrar",
-
   "emptyTitle": "Aún no hay historial de lavados.",
-
   "typeLabel": "lavado",
-
   "premiumRedirect": "Redirigiendo…"
  },"calendar": {
   "back": "Volver",
@@ -212,11 +198,9 @@
   "addTitle": "Añadir Nuevo Lavado",
   "editTitle": "Editar Lavado",
   "close": "Cerrar",
-
   "labelTitle": "Título",
   "labelTime": "Hora",
   "labelType": "Tipo de Lavado",
-
   "placeholderTitle": "ej. Carga de Blancos",
   "placeholderTime": "ej. 10:30",
 
@@ -230,30 +214,23 @@
 
   "errorMissingTitle": "Falta el Título",
   "errorMissingTitleMsg": "Por favor ingresa un título para el lavado.",
-
   "errorMissingTime": "Falta la Hora",
   "errorMissingTimeMsg": "Por favor ingresa una hora.",
-
   "errorMissingType": "Falta el Tipo",
   "errorMissingTypeMsg": "Por favor selecciona un tipo de lavado.",
-
   "errorInvalidDate": "Fecha No Válida",
   "errorInvalidDateMsg": "No puedes programar un lavado en el pasado.",
-
   "saveChanges": "Guardar Cambios",
   "saveWash": "Guardar Lavado"
  },
  "paywall": {
   "loading": "Cargando...",
   "noOfferings": "No se encontraron ofertas.",
-
   "headerTitle": "Desbloquea Laundry Pro+",
   "headerSubtitle": "Funciones de IA ilimitadas, escaneo por lotes, armario y más.",
-
   "monthly": "Pro Mensual",
   "annual": "Pro Anual (Mejor Valor)",
   "lifetime": "Pro Acceso de por Vida",
-
   "upgradeButton": "Actualizar a Pro+",
   "continueFree": "Continuar con la versión gratuita",
   "restore": "Restaurar Compras",
@@ -263,16 +240,12 @@
  "premiumMonthly": {
   "loading": "Cargando...",
   "noOfferings": "No se encontraron ofertas.",
-
   "title": "Acceso Premium",
-
   "msgHistory": "El historial es una función Premium.",
   "msgAutoAdd": "Auto‑Agregar al Planner es una función Premium.",
   "msgDefault": "Desbloquea funciones Premium.",
-
   "monthlyTitle": "Premium Mensual",
   "monthlySubtitle": "Desbloquea todas las funciones premium al instante.",
-
   "upgradeNow": "Actualizar Ahora",
   "continueFree": "Continuar Gratis",
   "restore": "Restaurar Compras"
@@ -280,10 +253,8 @@
  "premiumFallback": {
   "loading": "Cargando oferta...",
   "noOfferings": "No se encontraron ofertas.",
-
   "title": "Smart Wash Premium",
   "subtitle": "Un plan más ligero con lo esencial que necesitas.",
-
   "annualTitle": "Premium Anual",
   "annualSubtitle": "Ahorra más con nuestro mejor precio anual.",
   "perYear": "/año",
@@ -368,19 +339,16 @@
     "welcomeTitle": "Bienvenido a LaundryMosaic!",
     "welcomeSubtitle": "Tu asistente de lavandería con IA",
     "continue": "Continuar",
-
     "valueTitle": "Potentes funciones de IA!",
     "valueFeature1": "Escaneo inteligente y detección de manchas",
     "valueFeature2": "Armario inteligente para organizar tus prendas",
     "valueFeature3": "Escaneo por lotes y asistente de lavandería IA",
     "valueFeature4": "Planificador de lavado personalizado",
-
     "personalizeTitle": "Personaliza tu experiencia!",
     "personalizeQ1": "¿Qué lavas con más frecuencia?",
     "personalizeQ2": "¿Quieres detección de manchas con IA?",
     "personalizeQ3": "¿Quieres organización del armario?",
     "personalizeQ4": "Relájate y deja que la IA facilite tu vida!",
-
     "finishTitle": "Todo listo!",
     "finishSubtitle": "Desbloquea la experiencia completa con Premium o Pro."
   }

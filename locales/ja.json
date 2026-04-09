@@ -124,6 +124,12 @@
     "title": "洗濯リマインダー",
     "body": "{{washTitle}} は {{washTime}} に開始します"
   },
+
+"error": {
+  "invalidTimeTitle": "無効な時刻です",
+  "invalidTimeMessage": "HH:MM の形式で入力してください（例: 13:00）。"
+
+  },
   "editGarment": {
   "back": "戻る",
   "title": "衣類を編集",

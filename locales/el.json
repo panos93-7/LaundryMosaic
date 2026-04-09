@@ -122,6 +122,12 @@
     "title": "Υπενθύμιση Πλύσης",
     "body": "Η πλύση '{{washTitle}}' ξεκινά στις {{washTime}}"
  },
+
+"error": {
+  "invalidTimeTitle": "Μη έγκυρη ώρα",
+  "invalidTimeMessage": "Χρησιμοποίησε τη μορφή ΩΩ:ΛΛ (π.χ. 13:00)."
+
+ },
  "editGarment": {
   "back": "Πίσω",
   "title": "Επεξεργασία Ρούχου",

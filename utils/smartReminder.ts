@@ -1,5 +1,6 @@
 import * as Localization from "expo-localization";
 import * as Notifications from "expo-notifications";
+import { Alert } from "react-native";
 import i18n from "../i18n";
 
 const batchingMap: Record<string, number[]> = {};
@@ -10,7 +11,6 @@ function getDateKey(wash: any) {
 
 /**
  * ⭐ Επιλογή γλώσσας συσκευής με fallback σε English
- * Συμβατό με Expo SDK 49/50/51
  */
 function resolveLanguage() {
   const locales = Localization.getLocales();
@@ -20,18 +20,15 @@ function resolveLanguage() {
     return;
   }
 
-  const langCode = locales[0].languageCode;   // π.χ. "en", "el", "pt"
-  const region = locales[0].regionCode;       // π.χ. "BR", "PT"
+  const langCode = locales[0].languageCode;
+  const region = locales[0].regionCode;
 
-  // ⭐ ΠΑΝΤΑ string — ποτέ null
   let lang = langCode as string;
 
-  // Portuguese split
   if (langCode === "pt") {
     lang = region === "BR" ? "pt-BR" : "pt-PT";
   }
 
-  // Chinese Traditional
   if (langCode === "zh") {
     lang = "zh-TW";
   }
@@ -49,20 +46,50 @@ function resolveLanguage() {
 }
 
 /**
- * ⭐ Δημιουργία reminder
+ * ⭐ Δημιουργία reminder (bulletproof)
  */
 export async function scheduleSmartReminder(wash: any) {
   resolveLanguage();
 
-  const washDate = new Date(wash.year, wash.month, wash.day);
-  const [hours, minutes] = wash.time.split(":").map(Number);
-  washDate.setHours(hours);
-  washDate.setMinutes(minutes);
+  // ⭐ 1. VALIDATE TIME FORMAT HH:MM
+  if (!/^\d{2}:\d{2}$/.test(wash.time)) {
+    Alert.alert(
+      i18n.t("error.invalidTimeTitle"),
+      i18n.t("error.invalidTimeMessage")
+    );
+    console.log("❌ Invalid time format:", wash.time);
+    return null;
+  }
+
+  // ⭐ 2. SAFE PARSING
+  const [hoursStr, minutesStr] = wash.time.split(":");
+  const hours = Number(hoursStr);
+  const minutes = Number(minutesStr);
+
+  if (
+    isNaN(hours) ||
+    isNaN(minutes) ||
+    hours < 0 ||
+    hours > 23 ||
+    minutes < 0 ||
+    minutes > 59
+  ) {
+    Alert.alert(
+      i18n.t("error.invalidTimeTitle"),
+      i18n.t("error.invalidTimeMessage")
+    );
+    console.log("❌ Invalid time numbers:", wash.time);
+    return null;
+  }
+
+  // ⭐ 3. BUILD washDate IN LOCAL TIMEZONE
+  const washDate = new Date(wash.year, wash.month, wash.day, hours, minutes, 0);
 
   const now = new Date();
   const diffMs = washDate.getTime() - now.getTime();
   const diffMinutes = diffMs / 1000 / 60;
 
+  // ⭐ 4. SMART REMINDER OFFSET
   let reminderMinutesBefore = 30;
   if (diffMinutes > 180) reminderMinutesBefore = 60;
   if (diffMinutes < 60) reminderMinutesBefore = 10;
@@ -72,15 +99,19 @@ export async function scheduleSmartReminder(wash: any) {
     washDate.getTime() - reminderMinutesBefore * 60000
   );
 
-  if (reminderDate <= now) return null;
+  // ⭐ 5. If reminder is in the past → DO NOT schedule
+  if (reminderDate <= now) {
+    console.log("⛔ Reminder in the past → skipping");
+    return null;
+  }
 
+  // ⭐ 6. BATCHING (avoid too many reminders close together)
   const key = getDateKey(wash);
   if (!batchingMap[key]) batchingMap[key] = [];
 
-  const existing = batchingMap[key];
   const reminderMinutes = reminderDate.getHours() * 60 + reminderDate.getMinutes();
 
-  const conflict = existing.some(
+  const conflict = batchingMap[key].some(
     (t) => Math.abs(t - reminderMinutes) < 10
   );
 
@@ -96,13 +127,14 @@ export async function scheduleSmartReminder(wash: any) {
     reminderDate.getHours() * 60 + reminderDate.getMinutes()
   );
 
-  // ⭐ MULTI-LANGUAGE TITLE & BODY
+  // ⭐ 7. MULTI-LANGUAGE TITLE & BODY
   const title = i18n.t("reminder.title");
   const body = i18n.t("reminder.body", {
     washTitle: wash.title,
     washTime: wash.time
   });
 
+  // ⭐ 8. SCHEDULE (DATE TRIGGER)
   const id = await Notifications.scheduleNotificationAsync({
     content: {
       title,
@@ -110,10 +142,13 @@ export async function scheduleSmartReminder(wash: any) {
       sound: "default",
     },
     trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
       date: reminderDate,
       channelId: "default",
     },
   });
+
+  console.log("📌 Reminder scheduled for:", reminderDate.toString());
 
   return id;
 }

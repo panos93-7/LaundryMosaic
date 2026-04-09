@@ -122,6 +122,12 @@
     "title": "Laundry Reminder",
     "body": "{{washTitle}} starts at {{washTime}}"
  },
+
+ "error": {
+  "invalidTimeTitle": "Invalid time",
+  "invalidTimeMessage": "Please use the format HH:MM (e.g. 13:00)."
+  
+ },
  "editGarment": {
   "back": "Back",
   "title": "Edit Garment",

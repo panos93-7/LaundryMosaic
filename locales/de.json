@@ -122,6 +122,12 @@
     "title": "Wasch-Erinnerung",
     "body": "{{washTitle}} beginnt um {{washTime}}"
  },
+
+"error": {
+  "invalidTimeTitle": "Ungültige Uhrzeit",
+  "invalidTimeMessage": "Bitte verwende das Format HH:MM (z. B. 13:00)."
+
+ },
  "editGarment": {
   "back": "Zurück",
   "title": "Kleidungsstück Bearbeiten",

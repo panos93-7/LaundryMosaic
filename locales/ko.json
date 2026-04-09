@@ -120,6 +120,12 @@
    "reminder": {
     "title": "세탁 알림",
     "body": "{{washTitle}}은 {{washTime}}에 시작됩니다"
+   },
+
+"error": {
+  "invalidTimeTitle": "잘못된 시간입니다",
+  "invalidTimeMessage": "HH:MM 형식을 사용하세요 (예: 13:00)."
+
   },
   "editGarment": {
   "back": "뒤로",

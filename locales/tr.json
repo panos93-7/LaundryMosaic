@@ -121,6 +121,12 @@
   "reminder": {
     "title": "Çamaşır Hatırlatıcısı",
     "body": "{{washTitle}} {{washTime}}'de başlıyor"
+  },
+
+"error": {
+  "invalidTimeTitle": "Geçersiz saat",
+  "invalidTimeMessage": "Lütfen HH:MM formatını kullanın (örn. 13:00)."
+
  },
  "editGarment": {
   "back": "Geri",
